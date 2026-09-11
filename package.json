@@ -1,0 +1,9 @@
+{
+  "name": "widgy-world-marker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "pngjs": "^7.0.0"
+  }
+}
