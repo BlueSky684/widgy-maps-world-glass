@@ -77,7 +77,7 @@ export default async function handler(req, res) {
 
     // X remains longitude-linear.
     const xBase = ((lon + 180) / 360) * width;
-    const x = xBase + width * 0.052;
+    const x = xBase + width * 0.077;
 
     // The approved map visually matches a cropped Mercator world view
     // much better than an equirectangular latitude scale.
@@ -89,7 +89,7 @@ export default async function handler(req, res) {
     const current = mercatorY(lat);
 
     const yBase = ((top - current) / (top - bottom)) * height;
-    const y = yBase - height * 0.178;
+    const y = yBase - height * 0.213;
 
     const png = new PNG({
       width,
