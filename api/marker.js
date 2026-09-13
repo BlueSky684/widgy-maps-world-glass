@@ -35,9 +35,9 @@ export default async function handler(req,res){
   }
   const width=1536,height=963;
   const padX=24,padTop=42,innerW=1488,innerH=897;
-  const x=padX+((lon-(-180.0))/(360.0))*innerW;
+  const x=padX+((lon-(-180.0))/(360.0))*innerW - innerW*0.015;
   const topM=mercatorY(85.0),bottomM=mercatorY(-58.0),curM=mercatorY(lat);
-  const y=padTop+((topM-curM)/(topM-bottomM))*innerH;
+  const y=padTop+((topM-curM)/(topM-bottomM))*innerH + innerH*0.004;
 
   const png=new PNG({width,height,colorType:6});png.data.fill(0);
   const blue=[10,132,255];
