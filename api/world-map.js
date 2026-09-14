@@ -99,15 +99,15 @@ export default async function handler(req, res) {
 
     const { x, y } = project(lat, lon);
     const blue = [10, 132, 255];
-    drawCircle(png, x, y, 34, blue, 30);
-    drawCircle(png, x, y, 23, blue, 78);
-    drawCircle(png, x, y, 13, blue, 255);
-    drawCircle(png, x, y, 6, [255,255,255], 255);
+    drawCircle(png, x, y, 28, blue, 30);
+    drawCircle(png, x, y, 19, blue, 78);
+    drawCircle(png, x, y, 11, blue, 255);
+    drawCircle(png, x, y, 5, [255,255,255], 255);
 
     res.setHeader('Content-Type', 'image/png');
     res.setHeader('Cache-Control', 'no-store, max-age=0');
     res.status(200).send(PNG.sync.write(png));
   } catch (err) {
-    res.status(500).json({ error: err?.message || 'world-map renderer v3.1 self-contained failed' });
+    res.status(500).json({ error: err?.message || 'world-map renderer v3.2 smaller-marker failed' });
   }
 }
