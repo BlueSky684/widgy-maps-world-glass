@@ -1,0 +1,50 @@
+{
+  "source": "User export 20260921-191958; Contains/Night restored on phone after removing four leading spaces; Does Not Contain/Night shown in IMG_9441",
+  "variable": {
+    "1": "wx_status",
+    "2": 0,
+    "0": "3BA59B3A-EFCC-43E0-87C3-DA939F551448",
+    "3": {
+      "d": {
+        "b": 0,
+        "a": [
+          {
+            "d": 1290,
+            "b": 1290,
+            "a": 800,
+            "c": 0
+          }
+        ]
+      },
+      "e": {
+        "a": [
+          {
+            "b": 1290,
+            "a": 200,
+            "c": 0,
+            "d": 1290
+          }
+        ],
+        "b": 0
+      },
+      "66": [
+        {
+          "6": "Status (Full)",
+          "5": "Weather (Now)"
+        }
+      ],
+      "s": "Variable: wx_status",
+      "z": "1"
+    }
+  },
+  "contains": {
+    "1": 2,
+    "0": "3BA59B3A-EFCC-43E0-87C3-DA939F551448",
+    "2": "Night"
+  },
+  "doesNotContain": {
+    "0": "3BA59B3A-EFCC-43E0-87C3-DA939F551448",
+    "2": "Night",
+    "1": 3
+  }
+}
