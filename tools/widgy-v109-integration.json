@@ -1,0 +1,114 @@
+{
+  "status": "native-wind-speed-selector-ready-for-device-verification",
+  "source": "v108 approved artwork and native user export 20260921-195211",
+  "windVariable": {
+    "id": "CE558EC4-8EB7-48CF-B92E-9FB1A893D0A1",
+    "name": "wx_wind_speed",
+    "type": "Real Number",
+    "nativeType": 2,
+    "data": "Weather (Now) / Wind Speed",
+    "unit": "km/h via the existing Widgy app preference"
+  },
+  "threshold": 30,
+  "operators": {
+    "greaterThanOrEqual": 5,
+    "lessThan": 6
+  },
+  "windPriority": "Below Thunder, Snow/Sleet, Rain and Fog; above Cloudy, Fair and Clear.",
+  "changedGroups": [
+    {
+      "id": 80014,
+      "name": "WX rule · wind below 30 km/h",
+      "rule": {
+        "0": "CE558EC4-8EB7-48CF-B92E-9FB1A893D0A1",
+        "1": 6,
+        "2": "30"
+      }
+    },
+    {
+      "id": 80022,
+      "name": "WX rule · wind below 30 km/h",
+      "rule": {
+        "0": "CE558EC4-8EB7-48CF-B92E-9FB1A893D0A1",
+        "1": 6,
+        "2": "30"
+      }
+    },
+    {
+      "id": 80029,
+      "name": "WX rule · wind below 30 km/h",
+      "rule": {
+        "0": "CE558EC4-8EB7-48CF-B92E-9FB1A893D0A1",
+        "1": 6,
+        "2": "30"
+      }
+    },
+    {
+      "id": 80046,
+      "name": "WX rule · wind below 30 km/h",
+      "rule": {
+        "0": "CE558EC4-8EB7-48CF-B92E-9FB1A893D0A1",
+        "1": 6,
+        "2": "30"
+      }
+    },
+    {
+      "id": 80054,
+      "name": "WX rule · wind below 30 km/h",
+      "rule": {
+        "0": "CE558EC4-8EB7-48CF-B92E-9FB1A893D0A1",
+        "1": 6,
+        "2": "30"
+      }
+    },
+    {
+      "id": 80010,
+      "name": "WX · Wind",
+      "rule": {
+        "0": "CE558EC4-8EB7-48CF-B92E-9FB1A893D0A1",
+        "1": 5,
+        "2": "30"
+      }
+    },
+    {
+      "id": 80077,
+      "name": "WX rule · wind below 30 km/h",
+      "rule": {
+        "0": "CE558EC4-8EB7-48CF-B92E-9FB1A893D0A1",
+        "1": 6,
+        "2": "30"
+      }
+    },
+    {
+      "id": 80090,
+      "name": "WX rule · wind below 30 km/h",
+      "rule": {
+        "0": "CE558EC4-8EB7-48CF-B92E-9FB1A893D0A1",
+        "1": 6,
+        "2": "30"
+      }
+    }
+  ],
+  "verification": {
+    "approvedDrawingsPreserved": 46,
+    "allOtherLayersPreserved": true,
+    "layerCountUnchanged": true,
+    "temporaryGroupAbsent": true,
+    "emptyCustomTextRemoved": true,
+    "expectedStatusAndBoundaryTests": 340,
+    "overlapTests": 224,
+    "exactCopyPagePayload": true,
+    "nativeNumericParsingObserved": "User screenshot: Real Number 6.1 after changing units to KM/H",
+    "deviceHighWindTransitionVerified": false
+  },
+  "limitations": [
+    "Wind Speed follows the Widgy app unit preference; keep KM/H.",
+    "High-wind transitions still need device verification.",
+    "Sky/precipitation matching retains v108 English Status (Full) keyword rules.",
+    "Below the wind threshold an empty/unknown status still has no icon; a valid high wind speed can display Wind if no higher-priority weather keyword is present.",
+    "Numeric missing/invalid zero fallback is modeled from the variable UI description, not phone-tested."
+  ],
+  "payloadLength": 132679,
+  "payloadBytes": 132914,
+  "sha256": "9a622a164490b1d0c4ef1dbc4ba0951eb5dfb05952cbf185e25f264114edbf10"
+}
