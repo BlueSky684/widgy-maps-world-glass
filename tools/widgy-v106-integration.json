@@ -1,0 +1,112 @@
+{
+  "status": "setup-only; native condition binding required",
+  "source": "v105",
+  "target": "Home v24",
+  "scale": 0.78246,
+  "targetCenter": {
+    "x": 179,
+    "y": 1153
+  },
+  "groups": [
+    {
+      "id": 80000,
+      "name": "Clear Day",
+      "children": [
+        7002
+      ]
+    },
+    {
+      "id": 80001,
+      "name": "Partly Cloudy Day",
+      "children": [
+        7302,
+        7303,
+        7053,
+        7001
+      ]
+    },
+    {
+      "id": 80002,
+      "name": "Cloudy",
+      "children": [
+        7003
+      ]
+    },
+    {
+      "id": 80003,
+      "name": "Light Rain",
+      "children": [
+        76800,
+        77102,
+        77105,
+        77108
+      ]
+    },
+    {
+      "id": 80004,
+      "name": "Heavy Rain",
+      "children": [
+        76801,
+        77202,
+        77205,
+        77208,
+        77211
+      ]
+    },
+    {
+      "id": 80005,
+      "name": "Clear Night",
+      "children": [
+        7009
+      ]
+    },
+    {
+      "id": 80006,
+      "name": "Partly Cloudy Night",
+      "children": [
+        7010,
+        79001,
+        79002,
+        7011
+      ]
+    },
+    {
+      "id": 80007,
+      "name": "Thunderstorm",
+      "children": [
+        79101,
+        79102,
+        79201,
+        79202,
+        7006
+      ]
+    },
+    {
+      "id": 80008,
+      "name": "Snow",
+      "children": [
+        7012,
+        7013,
+        7014,
+        7015
+      ]
+    },
+    {
+      "id": 80009,
+      "name": "Fog",
+      "children": [
+        79401,
+        79402,
+        79403,
+        7007
+      ]
+    },
+    {
+      "id": 80010,
+      "name": "Wind",
+      "children": [
+        7008
+      ]
+    }
+  ]
+}
