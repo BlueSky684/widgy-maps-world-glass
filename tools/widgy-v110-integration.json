@@ -1,0 +1,31 @@
+{
+  "status": "ready-for-device-verification",
+  "nativeJavascriptCodeKey": "10",
+  "greetingHours": {
+    "MORNING": [
+      5,
+      12
+    ],
+    "AFTERNOON": [
+      12,
+      17
+    ],
+    "EVENING": [
+      17,
+      22
+    ],
+    "NIGHT": [
+      22,
+      5
+    ]
+  },
+  "progress": "floor(local wall-clock seconds / 86400 * 100)",
+  "originalWeatherAndLayoutPreserved": true,
+  "refresh": "Widgy widget refresh cadence",
+  "nativeSource": "Javascript / Script / key 10, native export 20260921-202337",
+  "temporaryTestLayerRemoved": true,
+  "verification": "Every minute in a local day; greeting boundaries; matching fill width; midnight reset; script execution parity; preservation of every unrelated layer and weather condition.",
+  "deviceVerified": false,
+  "payloadBytes": 171401,
+  "sha256": "1c4b79c11836a88c7b184e4fef52c42a83dc2e006209c7c2ed5846ab95d78c17"
+}

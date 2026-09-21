@@ -88,7 +88,7 @@ export function buildWidget(before, native) {
   layers.splice(layers.findIndex(n => n.d0 === 6150), 1, ...fills);
   data.a2 = nextId;
   data['3'] = 'Widgy Home v110 - Dynamic Greeting and Day Progress';
-  data['4'] = 'Local-time greeting: MORNING 05:00–11:59, AFTERNOON 12:00–16:59, EVENING 17:00–21:59, NIGHT 22:00–04:59. Day progress measures the local calendar day from midnight to midnight in whole percentages, shared by the label and native lime fill. Updates follow Widgy widget refreshes. Sunrise and sunset remain separate information. Weather artwork, conditions and KM/H wind threshold are preserved from v109. Javascript source encoding must be taken from a native device export.';
+  data['4'] = 'Local-time greeting: MORNING 05:00–11:59, AFTERNOON 12:00–16:59, EVENING 17:00–21:59, NIGHT 22:00–04:59. Day progress measures the local calendar day from midnight to midnight in whole percentages, shared by the label and native lime fill. Updates follow Widgy widget refreshes. Sunrise and sunset remain separate information. Weather artwork, conditions and KM/H wind threshold are preserved from v109. Synchronous Javascript Script data source and code key 10 confirmed by native export 20260921-202337. Temporary Time Test layer is omitted.';
 
   const nodes = allNodes(data);
   assert.equal(new Set(nodes.map(n => n.d0)).size, nodes.length);
@@ -124,12 +124,15 @@ function main() {
   assert.equal(gunzipSync(Buffer.from(html.match(/const packed=\['([^']+)'\]/)[1], 'base64')).toString(), payload);
   write('widgy-v110.json', payload);
   write('widgy-v110.html', html);
-  write('widgy-native-javascript-source.json', JSON.stringify(native, null, 2) + '\n');
+  write('widgy-native-javascript-source.json', JSON.stringify({...native, provenance: 'Native user export 20260921-202337, Time Test layer 80103'}, null, 2) + '\n');
   write('widgy-v110-integration.json', JSON.stringify({
     status: 'ready-for-device-verification', nativeJavascriptCodeKey: native.codeKey,
     greetingHours: {MORNING: [5, 12], AFTERNOON: [12, 17], EVENING: [17, 22], NIGHT: [22, 5]},
     progress: 'floor(local wall-clock seconds / 86400 * 100)',
     originalWeatherAndLayoutPreserved: true, refresh: 'Widgy widget refresh cadence',
+    nativeSource: 'Javascript / Script / key 10, native export 20260921-202337',
+    temporaryTestLayerRemoved: true,
+    verification: 'Every minute in a local day; greeting boundaries; matching fill width; midnight reset; script execution parity; preservation of every unrelated layer and weather condition.',
     deviceVerified: false, payloadBytes: Buffer.byteLength(payload), sha256: hash,
   }, null, 2) + '\n');
   console.log(JSON.stringify({bytes: Buffer.byteLength(payload), sha256: hash}));

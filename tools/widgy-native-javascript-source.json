@@ -1,0 +1,9 @@
+{
+  "entry": {
+    "5": "Javascript",
+    "6": "Script",
+    "10": "function main() {\n  return 1;\n}"
+  },
+  "codeKey": "10",
+  "provenance": "Native user export 20260921-202337, Time Test layer 80103"
+}
