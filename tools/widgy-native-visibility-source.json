@@ -1,0 +1,48 @@
+{
+  "source": "User export 20260921-185408; matching condition visible in IMG_9437",
+  "variable": {
+    "2": 0,
+    "1": "wx_clear_day",
+    "0": "3BA59B3A-EFCC-43E0-87C3-DA939F551448",
+    "3": {
+      "s": "Variable: wx_clear_day",
+      "d": {
+        "b": 0,
+        "a": [
+          {
+            "b": 1290,
+            "c": 0,
+            "d": 1290,
+            "a": 800
+          }
+        ]
+      },
+      "e": {
+        "b": 0,
+        "a": [
+          {
+            "c": 0,
+            "d": 1290,
+            "b": 1290,
+            "a": 200
+          }
+        ]
+      },
+      "66": [
+        {
+          "5": "Weather (Now)",
+          "6": "Status (Full)"
+        }
+      ],
+      "z": "1"
+    }
+  },
+  "groupId": 80006,
+  "condition": {
+    "0": "3BA59B3A-EFCC-43E0-87C3-DA939F551448",
+    "1": 0,
+    "2": "Partly Cloudy Night"
+  },
+  "operator": "Equals",
+  "runtimeObservedValue": "Partly Cloudy Night"
+}

@@ -1,0 +1,73 @@
+{
+  "status": "limited-native-visibility-test",
+  "source": "v106 approved native artwork and user-exported visibility condition",
+  "variable": {
+    "name": "wx_status",
+    "id": "3BA59B3A-EFCC-43E0-87C3-DA939F551448",
+    "type": "String",
+    "data": "Weather (Now) / Status (Full)"
+  },
+  "boundGroups": [
+    {
+      "id": 80006,
+      "name": "WX · Partly Cloudy Night",
+      "operator": "Equals",
+      "value": "Partly Cloudy Night"
+    }
+  ],
+  "pendingGroups": [
+    {
+      "id": 80000,
+      "name": "WX · Clear Day"
+    },
+    {
+      "id": 80001,
+      "name": "WX · Partly Cloudy Day"
+    },
+    {
+      "id": 80002,
+      "name": "WX · Cloudy"
+    },
+    {
+      "id": 80003,
+      "name": "WX · Light Rain"
+    },
+    {
+      "id": 80004,
+      "name": "WX · Heavy Rain"
+    },
+    {
+      "id": 80005,
+      "name": "WX · Clear Night"
+    },
+    {
+      "id": 80007,
+      "name": "WX · Thunderstorm"
+    },
+    {
+      "id": 80008,
+      "name": "WX · Snow"
+    },
+    {
+      "id": 80009,
+      "name": "WX · Fog"
+    },
+    {
+      "id": 80010,
+      "name": "WX · Wind"
+    }
+  ],
+  "verification": {
+    "artworkAndOtherLayersUnchanged": true,
+    "stockSunRestored": true,
+    "exactPayloadIntegrity": true,
+    "deviceFalseConditionTest": false,
+    "completeWeatherCoverage": false
+  },
+  "research": {
+    "officialTranslations": "https://github.com/duke4e/widgyTranslations/blob/main/en.xliff",
+    "finding": "Basic status names are documented, but the complete Status (Full) output mapping has not been verified. No speculative names or comparator enums are encoded."
+  },
+  "payloadLength": 108078,
+  "sha256": "f08ff30689d29c24463ce6649d7903f560270fd17449d02c59420ffaa68e3c43"
+}
