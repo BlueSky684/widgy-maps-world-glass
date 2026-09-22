@@ -1,0 +1,19 @@
+{
+  "base": "v112",
+  "status": "pending-deployment-and-device-check",
+  "changedLayerIds": [
+    6115,
+    6116,
+    6117,
+    6170,
+    6171
+  ],
+  "source": "User native Javascript image export, 2026-09-22",
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=113",
+  "location": "Approximate Vercel IP location; not phone GPS",
+  "mapRefresh": "On Widgy image source evaluation; no second-by-second redraw guarantee",
+  "clock": "Unchanged, native Live Timer export still required",
+  "deviceVerified": false,
+  "bytes": 173050,
+  "sha256": "e7d72f18c6e42c4e0d4ca6407bc30f03862601e9ce3d94d2bfbc93c2445d64f0"
+}

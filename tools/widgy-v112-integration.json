@@ -1,0 +1,22 @@
+{
+  "status": "ready-for-device-verification",
+  "base": "v111",
+  "changedLayerIds": [
+    6103,
+    6104
+  ],
+  "horizontalAlignment": {
+    "property": "2",
+    "value": 2
+  },
+  "nativeAlignmentSource": "https://github.com/zdunex25/zeppos-onlyus-widgy/blob/master/Widget/Widgy_iOS/OnlyUs.json",
+  "frames": {
+    "x": 1115,
+    "width": 260,
+    "right": 1375
+  },
+  "validation": "Only alignment and horizontal frame geometry differ on the two date labels; embedded copy payload matches JSON.",
+  "deviceVerified": false,
+  "payloadBytes": 172462,
+  "sha256": "a04de77a1c27a0d4c0038f30336abf6c1dd42851753f443ec8aafdaa810bbfd0"
+}
