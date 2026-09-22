@@ -1,0 +1,76 @@
+{
+  "base": "v130",
+  "terrainBase": "v129/v130 unchanged",
+  "changedLayerIds": [
+    6170
+  ],
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=131",
+  "resolution": [
+    1827,
+    861
+  ],
+  "staticLighting": false,
+  "nightSource": "NASA Black Marble 2016 colour composite; same v130 signal",
+  "terrainUnchanged": true,
+  "nightTerrainGain": 0.48,
+  "lightCoreResponseMax": {
+    "v130": 240,
+    "v131": 228
+  },
+  "bloomSigma": [
+    0.85,
+    3.2
+  ],
+  "bloomStrength": {
+    "near": {
+      "v130": 0.58,
+      "v131": 0.52
+    },
+    "far": {
+      "v130": 0.38,
+      "v131": 0.33
+    }
+  },
+  "pointColour": [
+    1,
+    0.76,
+    0.4
+  ],
+  "nearColour": [
+    1,
+    0.67,
+    0.25
+  ],
+  "farColour": [
+    1,
+    0.56,
+    0.17
+  ],
+  "marker": {
+    "glowRadius": {
+      "v130": 48,
+      "v131": 42
+    },
+    "ringRadius": {
+      "v130": 25,
+      "v131": 22
+    },
+    "stroke": {
+      "v130": 5,
+      "v131": 4.5
+    },
+    "centerRadius": {
+      "v130": 11,
+      "v131": 9.5
+    },
+    "glowOpacity": {
+      "v130": 0.28,
+      "v131": 0.22
+    }
+  },
+  "dynamicLocation": true,
+  "originalSolarField": true,
+  "nativeLayoutPreserved": true,
+  "deviceVerified": false,
+  "bytes": 171829
+}
