@@ -1,0 +1,25 @@
+{
+  "base": "v128",
+  "mapAppearanceBase": "v127",
+  "changedLayerIds": [
+    6170
+  ],
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=129",
+  "resolution": [
+    1827,
+    861
+  ],
+  "staticLighting": false,
+  "maximumDirectCoreReduction": 0.05,
+  "sourcePeakRamp": [
+    180,
+    240
+  ],
+  "bloomMultiplier": 1,
+  "nightTerrainGain": 0.48,
+  "originalGoldenColourAndBloom": true,
+  "nativePreservationVerified": true,
+  "deviceVerified": false,
+  "bytes": 172419,
+  "sha256": "5a7a79f60aacc4110c9198178cc3c26b10550692f6c0f00f20152fff700e7f8c"
+}
