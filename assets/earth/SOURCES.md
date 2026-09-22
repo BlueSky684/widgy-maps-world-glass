@@ -71,3 +71,9 @@ The renderer uses separate registered v121 day, night and historical NASA light 
 Local contrast reveals the terrain texture; night land and borders are darker to distinguish darkness. The entire warm city-light layer and its bloom are multiplied by the local night/twilight weight. Blue colour peaks at the solar horizon on both boundaries, following the same NOAA/Meeus solar equations documented above. The border may appear almost straight near the equinox: no artificial curve is forced into the astronomical result. The blue glow is an artistic treatment, not an atmospheric measurement.
 
 `node tools/build-widgy-v124.mjs` checks native preservation and full copy-payload integrity. `node tools/test-dynamic-map-v124.mjs` verifies actual rendered day/night changes in New York, Sao Paulo, Tokyo and London across four UTC times, a moving ocean horizon glow, solstice polar shading, server-time routing, cache headers, archived v122 output and the native dynamic source.
+
+## v125: richer graphite terrain
+
+v125 reduces the washed-out appearance of daylight land in the v124 device screenshot. It lowers daylight midtones and the solar brightness gain, retains more of the cool terrain colour, and softens the independent daylight border layer. An interior land mask attenuates local-contrast enhancement along the coast: the prior blur crossed into dark ocean and created a pale shoreline halo. Night ambience, geographic extent, solar equations, twilight weights, dynamic atmospheric glow and the complete city-light treatment are otherwise preserved from v124. This is shader styling of the live renderer; it does not modify or restore the static v123 artwork.
+
+Only native image layer 6170's URL and root version metadata change in the export. Earlier versioned renderers remain available. Build with `node tools/build-widgy-v125.mjs`.
