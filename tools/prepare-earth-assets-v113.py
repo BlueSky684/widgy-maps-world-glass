@@ -6,7 +6,7 @@ Run from the repository root with NASA JPGs and Natural Earth GeoJSON in work/ma
 from pathlib import Path
 import json
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image, ImageDraw
 
 W, H = 1484, 640
 NORTH, SOUTH = 85, -65
@@ -34,44 +34,32 @@ for feature in geo['features']:
             points=[tuple(v*2 for v in project(lon,lat)) for lon,lat in ring]
             # Natural Earth polygons already split at the antimeridian.
             md.polygon(points, fill=255 if i==0 else 0)
-            bd.line(points, fill=255, width=2, joint='curve')
+            bd.line(points, fill=255, width=1, joint='curve')
 land=np.asarray(mask.resize((W,H),Image.Resampling.LANCZOS),dtype=float)[...,None]/255
 edges=np.asarray(borders.resize((W,H),Image.Resampling.LANCZOS),dtype=float)[...,None]/255
 day=sample('work/map/blue-marble-september.jpg')
 night=sample('work/map/black-marble-2016.jpg')
 lum=(day[...,0]*.25+day[...,1]*.55+day[...,2]*.20)/255
-relief=np.power(lum,.90)[...,None]
-# Darker navy land with localized relief, rather than one broad pale blue fill.
-# The small-scale contrast comes only from NASA's geographic texture.
-blur=np.asarray(Image.fromarray((lum*255).astype('uint8')).filter(ImageFilter.GaussianBlur(3)),dtype=float)/255
-detail=np.clip((lum-blur)*2,-.20,.20)[...,None]
-day_rgb=np.array([3,10,17])*(1-land)+(np.array([13,24,38])+relief*np.array([47,56,68])+detail*np.array([30,35,41]))*land
-day_rgb=day_rgb*(1-edges*.57)+np.array([128,149,173])*edges*.57
-night_rgb=np.array([1,4,8])*(1-land)+(np.array([6,12,21])+relief*np.array([17,23,33]))*land
-night_rgb=night_rgb*(1-edges*.44)+np.array([67,86,111])*edges*.44
-
-# Fine blue coastal rim from the geographic land mask, not drawn highlights.
-land_image=mask.resize((W,H),Image.Resampling.LANCZOS)
-coast=np.clip(np.asarray(land_image.filter(ImageFilter.MaxFilter(3)),dtype=float)-np.asarray(land_image.filter(ImageFilter.MinFilter(3)),dtype=float),0,255)/255
-coast_glow=np.asarray(Image.fromarray((coast*255).astype('uint8')).filter(ImageFilter.GaussianBlur(2.2)),dtype=float)[...,None]/255
-day_rgb+=coast_glow*np.array([12,21,34])
-night_rgb+=coast_glow*np.array([5,9,17])
+relief=np.power(lum,.68)[...,None]
+day_rgb=np.array([5,14,23])*(1-land)+(np.array([24,38,55])+relief*np.array([58,68,83]))*land
+day_rgb=day_rgb*(1-edges*.63)+np.array([121,144,166])*edges*.63
+night_rgb=np.array([2,6,11])*(1-land)+(np.array([8,15,24])+relief*np.array([12,16,23]))*land
+night_rgb=night_rgb*(1-edges*.30)+np.array([50,67,84])*edges*.30
 # Black Marble's warm bright signal isolates city lighting from blue land/ocean.
-lights=np.clip((night[...,0]-.60*night[...,2]-.10*night[...,1]-3)/130,0,1)
-lights=np.power(lights,.64)
-lights_glow=np.asarray(Image.fromarray((lights*255).astype('uint8')).filter(ImageFilter.GaussianBlur(1.1)),dtype=float)/255
-night_rgb+=lights[...,None]*np.array([325,282,205])+lights_glow[...,None]*np.array([70,48,24])
+lights=np.clip((night[...,0]-.55*night[...,2]-.12*night[...,1]-5)/160,0,1)[...,None]
+lights=np.power(lights,.85)
+night_rgb+=lights*np.array([235,203,145])
 
 # Fine geographic graticule, projected with the exact same bounds as the imagery.
 grid=Image.new('L',(W*2,H*2)); gd=ImageDraw.Draw(grid)
 for lon in range(-150,180,30):
     x=project(lon,0)[0]*2
-    for y in range(0,H*2,12): gd.line((x,y,x,min(y+7,H*2)),fill=78,width=1)
+    for y in range(0,H*2,12): gd.line((x,y,x,min(y+5,H*2)),fill=60,width=1)
 for lat in range(-60,90,30):
     y=project(0,lat)[1]*2
-    for x in range(0,W*2,12): gd.line((x,y,min(x+7,W*2),y),fill=78,width=1)
+    for x in range(0,W*2,12): gd.line((x,y,min(x+5,W*2),y),fill=60,width=1)
 grid=np.asarray(grid.resize((W,H),Image.Resampling.LANCZOS),dtype=float)[...,None]/255
 for name,arr in [('day',day_rgb),('night',night_rgb)]:
     arr=arr*(1-grid)+np.array([88,113,137])*grid
-    Image.fromarray(np.clip(arr,0,255).astype('uint8')).save(OUT/f'{name}-v114.png',optimize=True)
-    print(name,(OUT/f'{name}-v114.png').stat().st_size)
+    Image.fromarray(np.clip(arr,0,255).astype('uint8')).save(OUT/f'{name}.png',optimize=True)
+    print(name,(OUT/f'{name}.png').stat().st_size)

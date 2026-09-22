@@ -1,0 +1,14 @@
+{
+  "base": "v113",
+  "status": "prepared",
+  "changedLayerIds": [
+    6170
+  ],
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=114",
+  "scope": "Map-only visual refinement; all other native layers unchanged",
+  "location": "Approximate Vercel IP location; missing city uses coordinates only, not phone GPS",
+  "clock": "Unchanged; native no-seconds Live Timer remains pending",
+  "deviceVerified": false,
+  "bytes": 173389,
+  "sha256": "8324b4c5f245105398985b9d86eeb6113e5c617d02a877a2de3e1d6ba89b5ce1"
+}
