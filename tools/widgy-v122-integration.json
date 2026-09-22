@@ -1,0 +1,17 @@
+{
+  "base": "v121",
+  "changedLayerIds": [
+    6170
+  ],
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=122",
+  "resolution": [
+    2400,
+    1188
+  ],
+  "nativePreservationVerified": true,
+  "deviceVerified": false,
+  "geometry": "Natural Earth 1:10m; independent border layer; same projection as terrain, marker and sun",
+  "terrain": "v121 Master-derived illustrative material with graphite tone curve",
+  "bytes": 172148,
+  "sha256": "91e8cb2d3514ecb7eec095ff06d459e40d306fdec8c8c849d5e200eca713798d"
+}

@@ -49,3 +49,9 @@ The output has **three separate layers**: `day-v121.png`, `night-v121.png` and `
 v121 changes only native image layer 6170's URL/script plus root release metadata. All native positions, fonts, weather visibility rules, variables, health sources and the **Live Timer (24 hours, No Seconds)** remain as in v120. `v=120` is now served by the archived `lib/home-map-v120.js`. Refresh cadence and approximate IP location limitations remain unchanged.
 
 To rebuild, install the project dependencies, restore the NASA/GeoJSON inputs described above under `work/map`, then run `node tools/prepare-master-map-v121.mjs` and `node tools/build-widgy-v121.mjs`. The generated clean material is included in the repository so reproducing a release never requires generating it again.
+
+## v122: country borders at widget scale
+
+The v121 screenshot showed that subpixel borders baked into the terrain became too weak when reduced to the device's widget size. v122 adds `land-v122.png` and `borders-v122.png`, generated from the same pinned Natural Earth 1:10m source with `tools/prepare-map-lines-v122.mjs`. The masks share the exact 2400×1188 geographic extent. Linework is composed separately from terrain/atmospheric tint and before city lights, with a visible night floor. A land-only graphite tone curve reduces the pale grey floor and saturation while retaining relief highlights. The v121 materials and all earlier renderers remain intact.
+
+This improves legibility and style; it is not a pixel-identical copy of the flattened approved dashboard. Solar geometry, historical light sources, geographic projection, approximate IP location and Widgy refresh behavior remain as documented for v121. Only native map layer 6170's URL/script and root release metadata change. `v=122` explicitly selects the new renderer. Build the masks with `node tools/prepare-map-lines-v122.mjs`, then build the export and copy page with `node tools/build-widgy-v122.mjs`.
