@@ -1,0 +1,25 @@
+{
+  "base": "v125",
+  "changedLayerIds": [
+    6170
+  ],
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=127",
+  "resolution": [
+    1827,
+    861
+  ],
+  "staticLighting": false,
+  "artworkCalibration": "68 landmarks; illustrative, not survey-grade",
+  "assets": [
+    "reference-base-v127.png",
+    "reference-lights-v127.png",
+    "reference-coordinates-v127.bin.gz",
+    "reference-mesh-v127.json"
+  ],
+  "locationMarker": "approximate IP when available",
+  "nativePreservationVerified": true,
+  "deviceVerified": false,
+  "refresh": "new server-time image on Widgy data refresh; timestamp query prevents URL cache reuse",
+  "bytes": 172138,
+  "sha256": "3611414998f7c802f2b376c79a64068c0c49b0d7c01a701f8f6a37e5e84d9d87"
+}

@@ -1,0 +1,14 @@
+{
+  "reference": "approved-map-v123.png",
+  "referenceSha256": "a0879c5994551a4297a5416952268fa4dfaab1b7c3d85f49747e57f0ce0a2761",
+  "method": "built-in image_gen extraction edits; albedo and emission reconstructed separately",
+  "assetHashes": {
+    "reference-base-v127.png": "58910f2aea5ca64e5381a06a78a478a2a279261df8a73ebf9b8dfc4f253d95c5",
+    "reference-lights-v127.png": "e66c54421781d02b0b45cd3f0319a2d94c7e127c9633a291c26237bcb1b9974f",
+    "reference-coordinates-v127.bin.gz": "19064ca877fc424e5b229720c56dc7262e373dd973b18682f2c379c2ac7af81f",
+    "reference-mesh-v127.json": "d0a31f5c122f97f30fca7916b1ec25d66140f675e47684339bb5f41e89a8734a"
+  },
+  "basePrompt": "Preserve approved map canvas, continent shapes, slate-blue graphite relief and fine borders. Remove all city lights, fixed blue Atlantic arc and grid; illuminate land uniformly; keep dark oceans. No dashboard or text.",
+  "lightsPrompt": "Extract only original warm city-light clusters, networks and soft glows onto black; preserve framing and positions. Remove terrain, borders, grid, blue halo, labels and UI.",
+  "calibration": "68 measured artwork landmarks, 122 piecewise affine triangles; approximate illustrated atlas. Not survey-grade geography or live satellite imagery."
+}
