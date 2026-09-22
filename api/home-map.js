@@ -2,6 +2,7 @@ import {renderHomeMap,resolveLocation} from '../lib/home-map.js';
 import {renderHomeMap as renderV113} from '../lib/home-map-v113.js';
 import {renderHomeMap as renderV114} from '../lib/home-map-v114.js';
 import {renderHomeMap as renderV115} from '../lib/home-map-v115.js';
+import {renderHomeMap as renderV116} from '../lib/home-map-v116.js';
 
 export default async function handler(req,res) {
   if(req.method&&req.method!=='GET'&&req.method!=='HEAD') return res.status(405).end();
@@ -12,8 +13,8 @@ export default async function handler(req,res) {
   try {
     // Older exported widgets retain their renderer, including the old default.
     const requested=url.searchParams.get('v');
-    const revision=['113','115','116'].includes(requested)?requested:'114';
-    const renderer=revision==='116'?renderHomeMap:revision==='115'?renderV115:revision==='113'?renderV113:renderV114;
+    const revision=['113','115','116','119'].includes(requested)?requested:'114';
+    const renderer=revision==='119'?renderHomeMap:revision==='116'?renderV116:revision==='115'?renderV115:revision==='113'?renderV113:renderV114;
     const png=await renderer({date,location});
     res.setHeader('Content-Type','image/png');
     res.setHeader('Cache-Control','private, no-store, max-age=0');
