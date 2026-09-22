@@ -2,6 +2,10 @@
   "functions": {
     "api/marker.js": {
       "maxDuration": 10
+    },
+    "api/home-map.js": {
+      "maxDuration": 10,
+      "includeFiles": "assets/earth/**"
     }
   }
 }
