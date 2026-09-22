@@ -1,0 +1,19 @@
+{
+  "base": "v120",
+  "status": "prepared",
+  "changedLayerIds": [
+    6170
+  ],
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=121",
+  "resolution": [
+    2400,
+    1188
+  ],
+  "nativePreservationVerified": true,
+  "deviceVerified": false,
+  "geometry": "Natural Earth 1:10m geographic masks; same projection as marker and solar boundary",
+  "material": "Restored Master-derived generated terrain; illustrative relief",
+  "lights": "Separate NASA Black Marble 2016 13500x6750 historical composite; night/twilight only",
+  "bytes": 172292,
+  "sha256": "306cdc63b99fe08fc3d439355aaad518afdea660353bf22783cf94048393e07e"
+}

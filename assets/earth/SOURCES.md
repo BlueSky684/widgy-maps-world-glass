@@ -1,6 +1,6 @@
 # World map sources and behaviour
 
-The map is rendered from georeferenced data, not generated geography or a crop of the approved widget mockup.
+Coastlines, country borders, city lights and solar geometry are rendered from georeferenced data. From v121 onward the land material additionally uses generated artwork derived from the approved mockup; see the v121 provenance below.
 
 - Day texture: NASA Blue Marble Next Generation, September 2004, with topography. https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/base-topography/
   Download: https://assets.science.nasa.gov/content/dam/science/esd/eo/images/bmng/bmng-topography/september/world.topo.200409.3x5400x2700.jpg
@@ -37,3 +37,15 @@ v119 replaces 1:50m country/coast polygons with **Natural Earth 1:10m countries*
 v120 changes the cartographic material, keeping the v119 frame and all native layers intact. Two-scale contrast from the Blue Marble texture adds restrained relief to cool-slate land. A separate shoreline treatment avoids doubling the country polygon edge along the coast. Warm light networks now use the **13,500×6,750 NASA Black Marble 2016 colour composite**, replacing the 3,600×1,800 input. Download: https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/144000/144898/BlackMarble_2016_3km.jpg . Save as `work/map/black-marble-2016-3km.jpg`, then run `python tools/prepare-earth-assets-v120.py` from the repository root. The other inputs are the same as v119.
 
 A restrained atmospheric blue tint in v120 is a function of solar elevation at both actual day/night boundaries. It does not use a screen-space circle, change the solar calculation, displace the horizon or affect the city-light mask. The colour is a graphic treatment, not an atmospheric radiative-transfer model. The unchanged twilight blend remains 50% at solar-centre elevation 0°. The real current boundary can therefore differ from the artistic curve in the flattened Master. This release is a style refinement, not a claim of pixel-identical reproduction. Use `v=120`; `v=119` retains its renderer and original textures.
+
+## v121: restored Master material, with geographic illumination
+
+The approved original Home Master was recovered as the generated PNG `לוח מחוונים עתידני עם מפת עולם לילית.png`, created 17 September 2026. Its source record does not establish an external map URL. A clean map was reconstructed from that complete dashboard, then imagegen removed its labels, city lights, political borders, grid and baked atmospheric arc to prepare `master-material-v121.png`. This is **illustrative terrain artwork, not satellite imagery or measured topography**. It is intentionally recorded as a separate material input, not misattributed to NASA.
+
+`tools/prepare-master-map-v121.mjs` registers the material using thin-plate interpolation of measured artwork landmarks. These controls align appearance only. The output's actual land, coastline and country geometry still comes from Natural Earth 1:10m. NASA Blue Marble contributes a small geographically registered component and a fallback at material registration gaps. All projected layers use longitude −180..180, latitude 85..−65, at 2400×1188; raster resizing explicitly preserves the entire longitude extent. Material interpolation is approximate and the artwork is not a pixel-identical match to the Master.
+
+The output has **three separate layers**: `day-v121.png`, `night-v121.png` and `lights-v121.png`. Night lights use the 13500×6750 historical Black Marble 2016 composite listed above. Their intensity is multiplied by the night/twilight contribution at render time, so lights in South America appear when those places are in darkness. No fixed illuminated city networks or curved Atlantic halo survive in the material. A new faint geographic grid is rendered separately. The solar model and its 0° horizon / symmetric −6..+6° illustrative blend remain unchanged. Colour near the horizon depends on solar elevation and therefore follows both boundaries; it is not a circle painted on the screen.
+
+v121 changes only native image layer 6170's URL/script plus root release metadata. All native positions, fonts, weather visibility rules, variables, health sources and the **Live Timer (24 hours, No Seconds)** remain as in v120. `v=120` is now served by the archived `lib/home-map-v120.js`. Refresh cadence and approximate IP location limitations remain unchanged.
+
+To rebuild, install the project dependencies, restore the NASA/GeoJSON inputs described above under `work/map`, then run `node tools/prepare-master-map-v121.mjs` and `node tools/build-widgy-v121.mjs`. The generated clean material is included in the repository so reproducing a release never requires generating it again.
