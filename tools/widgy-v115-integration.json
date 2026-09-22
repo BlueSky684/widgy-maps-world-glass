@@ -1,0 +1,17 @@
+{
+  "base": "v114",
+  "status": "prepared",
+  "changedLayerIds": [
+    6170
+  ],
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=115",
+  "scope": "Solar shading refinement; other native layers identical to v114",
+  "solarModel": "NOAA/Meeus, current server UTC; 50% blend at geometric 0-degree solar horizon",
+  "transition": "Symmetric -6 to +6 solar degrees; no fake curvature or blue halo",
+  "refresh": "On Widgy data-source refresh; not continuous animation",
+  "location": "Approximate Vercel IP location, not phone GPS",
+  "clock": "Unchanged; native no-seconds Live Timer remains pending",
+  "deviceVerified": false,
+  "bytes": 173737,
+  "sha256": "71a0851742c6317d118450e957ef12bf95fd1cbca10cc43697548c0a1a37dc1d"
+}
