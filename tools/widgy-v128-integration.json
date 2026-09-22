@@ -1,0 +1,22 @@
+{
+  "base": "v127",
+  "changedLayerIds": [
+    6170
+  ],
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=128",
+  "resolution": [
+    1827,
+    861
+  ],
+  "staticLighting": false,
+  "artworkCalibration": "v127 illustrative calibration retained",
+  "changes": [
+    "reduce continuous bright bands relative to point lights",
+    "smooth highlight compression",
+    "night terrain gain 0.42 to 0.62"
+  ],
+  "nativePreservationVerified": true,
+  "deviceVerified": false,
+  "bytes": 172181,
+  "sha256": "8d99c05d81c850b1ab01c16ba9aac539e69421aafd88ba8e38f4675ce16c78a0"
+}
