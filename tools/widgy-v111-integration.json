@@ -1,0 +1,156 @@
+{
+  "status": "ready-for-device-verification",
+  "base": "v110, verified by user at night and next morning",
+  "reference": "Approved master supplied 2026-09-22; card bounds exclude surrounding margin",
+  "measurements": [
+    {
+      "id": 6101,
+      "name": "Greeting White",
+      "before": {
+        "b": 64,
+        "c": 28,
+        "d": 285,
+        "e": 154
+      },
+      "after": {
+        "b": 60,
+        "c": 34,
+        "d": 285,
+        "e": 170
+      }
+    },
+    {
+      "id": 6102,
+      "name": "Greeting Lime · MORNING",
+      "before": {
+        "b": 355,
+        "c": 28,
+        "d": 665,
+        "e": 154
+      },
+      "after": {
+        "b": 347,
+        "c": 34,
+        "d": 665,
+        "e": 170
+      }
+    },
+    {
+      "id": 80103,
+      "name": "Greeting Lime · AFTERNOON",
+      "before": {
+        "b": 355,
+        "c": 28,
+        "d": 665,
+        "e": 154
+      },
+      "after": {
+        "b": 347,
+        "c": 34,
+        "d": 665,
+        "e": 170
+      }
+    },
+    {
+      "id": 80104,
+      "name": "Greeting Lime · EVENING",
+      "before": {
+        "b": 355,
+        "c": 28,
+        "d": 665,
+        "e": 154
+      },
+      "after": {
+        "b": 347,
+        "c": 34,
+        "d": 665,
+        "e": 170
+      }
+    },
+    {
+      "id": 80105,
+      "name": "Greeting Lime · NIGHT",
+      "before": {
+        "b": 355,
+        "c": 28,
+        "d": 665,
+        "e": 154
+      },
+      "after": {
+        "b": 347,
+        "c": 34,
+        "d": 665,
+        "e": 170
+      }
+    },
+    {
+      "id": 6103,
+      "name": "Header Weekday",
+      "before": {
+        "b": 1110,
+        "c": 32,
+        "d": 250,
+        "e": 82
+      },
+      "after": {
+        "b": 1118,
+        "c": 58,
+        "d": 260,
+        "e": 66
+      }
+    },
+    {
+      "id": 6104,
+      "name": "Header Month",
+      "before": {
+        "b": 1110,
+        "c": 105,
+        "d": 250,
+        "e": 62
+      },
+      "after": {
+        "b": 1129,
+        "c": 109,
+        "d": 248,
+        "e": 72
+      }
+    },
+    {
+      "id": 6105,
+      "name": "Header Day",
+      "before": {
+        "b": 1428,
+        "c": 28,
+        "d": 105,
+        "e": 145
+      },
+      "after": {
+        "b": 1428,
+        "c": 27,
+        "d": 130,
+        "e": 185
+      }
+    },
+    {
+      "id": 6190,
+      "name": "Header Date Divider",
+      "before": {
+        "b": 1398,
+        "c": 40,
+        "d": 2,
+        "e": 120
+      },
+      "after": {
+        "b": 1400,
+        "c": 72,
+        "d": 2,
+        "e": 103
+      }
+    }
+  ],
+  "unchanged": "All non-header layers, variables, weather rules, day progress, fonts and colors",
+  "validation": "Full unrelated-data equality; all seven weekdays and twelve months; year rollover; copy-page payload equality",
+  "deviceVerified": false,
+  "payloadBytes": 172088,
+  "sha256": "325b4c11ff7277b507a822f96ec84de118b258f5fe4e86995bc6e5c4796bd243"
+}
