@@ -1,0 +1,34 @@
+{
+  "base": "v117",
+  "status": "prepared",
+  "changedLayerIds": [
+    6110
+  ],
+  "scope": "Native clock source, font and text frame",
+  "source": [
+    {
+      "5": "Date And Time",
+      "6": "Live Timer (24 hours, No Seconds)"
+    }
+  ],
+  "sourceEvidence": "User-uploaded Midnight Glass(2).txt, September 13 2026, layer 21",
+  "font": "System Light",
+  "frame": {
+    "b": 88,
+    "c": 466,
+    "d": 610,
+    "e": 200
+  },
+  "previousFrame": {
+    "b": 88,
+    "c": 472,
+    "d": 610,
+    "e": 188
+  },
+  "fontRegistration": "System Light: 1",
+  "map": "Unchanged from v117: 4% larger complete image frame; v116 renderer",
+  "layout": "Text-box height +6.38%; same horizontal extent and vertical centre. Final glyph rendering is native Widgy.",
+  "deviceVerified": false,
+  "bytes": 171886,
+  "sha256": "88a1756481b368e944cdc957f6b50803f046fbf0ea820af56cfe9ea228993730"
+}
