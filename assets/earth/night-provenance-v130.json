@@ -1,0 +1,30 @@
+{
+  "version": 130,
+  "source": "https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/144000/144898/BlackMarble_2016_3km.jpg",
+  "sourcePage": "https://science.nasa.gov/earth/earth-observatory/earth-at-night/maps/",
+  "sourceSha256": "230aac448ae68c358be433dd518888cccb3a85ccf66f7b44326441c324ad6725",
+  "sourceYear": 2016,
+  "sourceSize": [
+    13500,
+    6750
+  ],
+  "signal": "warm-colour separation, 3x3 footprint sampling, scalar gzip uint16; values /512",
+  "registration": "v127 calibration with 18 additional lighting-only coastal controls; approximate, not survey-grade",
+  "terrainBase": "reference-base-v127.png",
+  "terrainSha256": "58910f2aea5ca64e5381a06a78a478a2a279261df8a73ebf9b8dfc4f253d95c5",
+  "terrainAndSolarFieldUnchanged": true,
+  "newSignalSha256": "dcb8f83e6dc19c23908af592ad4fa04adca3a8adecd8ecb7379a8bfe20965acc",
+  "airOnlySmoothing": {
+    "moderateSigma": [
+      22,
+      12
+    ],
+    "edgeSigma": [
+      55,
+      12
+    ],
+    "maxCoordinateChangeDegrees": 2,
+    "p95CoordinateChangeDegrees": 0.7528171539306641
+  },
+  "meaning": "Historical urban light texture; runtime UTC determines day/night. Not a live satellite feed."
+}

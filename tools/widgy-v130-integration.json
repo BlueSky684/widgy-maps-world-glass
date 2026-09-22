@@ -1,0 +1,46 @@
+{
+  "base": "v129",
+  "terrainBase": "v129",
+  "changedLayerIds": [
+    6170
+  ],
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=129",
+  "resolution": [
+    1827,
+    861
+  ],
+  "staticLighting": false,
+  "nightSource": "NASA Black Marble 2016 colour composite",
+  "sourceRegistration": "approximate illustrated-atlas controls; not survey-grade",
+  "nightTerrainGain": 0.48,
+  "terrainUnchanged": true,
+  "bloomSigma": [
+    0.85,
+    3.2
+  ],
+  "bloomStrength": [
+    0.58,
+    0.38
+  ],
+  "coreColour": [
+    1,
+    0.79,
+    0.46
+  ],
+  "nearColour": [
+    1,
+    0.7,
+    0.3
+  ],
+  "farColour": [
+    1,
+    0.6,
+    0.2
+  ],
+  "airOverlaySmoothed": true,
+  "originalSolarField": true,
+  "nativePreservationVerified": true,
+  "deviceVerified": false,
+  "bytes": 172359,
+  "sha256": "225c1665568e3c8a3c38c502c408c2c41f4beb0714b0441b45515c651f937196"
+}

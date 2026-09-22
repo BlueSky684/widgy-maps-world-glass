@@ -99,3 +99,42 @@ Only native map layer 6170's URL/script and release metadata change from v127. A
 ## v129: restore the preferred golden glow with a minimal reduction
 
 The user preferred v127's softer golden night lights and found v128 excessively subdued. The agreed correction restores v127's lighting and reduces only the brightest direct-light cores by up to 5%, retaining the original golden halo exactly. A smooth source-peak selection ramps from zero reduction at 180/255 to 5% at 240/255. At each selected pixel, the original visible emission is clipped as in v127; its unchanged bloom contribution is subtracted to identify the visible direct core. Only that core is attenuated before screen compositing. Dimmer light emission and the bloom contribution remain unchanged, including the bloom's colour, strength and 2.4-pixel radius. The user additionally requested correcting overly dark terrain; its night gain is raised gently from v127's 0.42 to 0.48, substantially below v128's 0.62. This changes the terrain backdrop independently of city-light emission and leaves full daylight unchanged. Dynamic solar shading, twilight, approximate IP marker, source artwork and calibration retain their documented behavior and limitations. All earlier endpoints remain available. Only map layer 6170 URL/script and release metadata change in the native export. Build with `node tools/build-widgy-v129.mjs`.
+
+## v130 — independent fine golden night emission; v129 terrain locked
+
+The terrain remains `reference-base-v127.png`, with the exact v129 palette,
+0.48 night gain, daytime shading, border, marker calibration and native frame.
+The generated `reference-lights-v127.png` is no longer used by v130.
+
+Night emission is rebuilt from NASA's **2016** Black Marble colour composite
+(13,500 × 6,750):
+https://science.nasa.gov/earth/earth-observatory/earth-at-night/maps/
+https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/144000/144898/BlackMarble_2016_3km.jpg
+
+`tools/prepare-night-v130.py` separates the warm light signal from the blue
+backdrop, samples each destination footprint at 3×3 points, and stores scalar
+energy in `night-signal-v130.bin.gz` (little-endian uint16, divide by 512).
+This is display signal extracted from a colour composite, not raw radiance.
+`night-mesh-v130.json` records approximate illustrated-atlas registration with
+18 additional coastal controls; it is not a survey-grade projection. No city
+points, roads, or lit coast outlines are invented. Emission coverage is clipped
+to the existing terrain artwork; this never changes the albedo itself.
+
+At runtime a smooth highlight shoulder retains fine points. The direct light,
+0.85px near halo and 3.2px far halo have independently controlled golden colours
+and screen blending without additive white clipping. Bloom is calculated from
+night-masked light and faded to zero in daylight. The historical texture is
+static; actual UTC solar position makes the displayed illumination dynamic.
+There is no live satellite feed and refresh frequency is controlled by Widgy.
+
+`air-coordinates-v130.bin.gz` smooths only the decorative blue-air projection
+residual (at most 2 degrees), reducing the visible triangular kink at the Pacific
+edge. The original v127 field still determines terrain illumination and the
+night mask. `night-provenance-v130.json` records source and asset hashes.
+
+`tools/test-night-v130.mjs` verifies pixel-identical v129 terrain/backdrop when
+isolating it from emission and the intentional blue-overlay change, at equinox
+and both solstices; actual city emission switches between night/day fixtures;
+bright white regions shrink; the right dawn arc loses its sharp kink; and the
+API uses real server UTC, version 130 and private no-store caching. The native
+JSON builder separately verifies preservation of all other widget nodes.
