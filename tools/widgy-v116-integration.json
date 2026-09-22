@@ -1,0 +1,17 @@
+{
+  "base": "v115",
+  "status": "prepared",
+  "changedLayerIds": [
+    6170
+  ],
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=116",
+  "scope": "Night brightness only; all other native layers identical to v115",
+  "nightGain": "Midpoint of v114 and v115; .66 to 1, preserving bright lights",
+  "solarModel": "Unchanged v115 NOAA/Meeus current UTC geometry and symmetric horizon blend",
+  "refresh": "On Widgy data-source refresh",
+  "location": "Approximate IP, not phone GPS",
+  "clock": "Unchanged; native no-seconds Live Timer remains pending",
+  "deviceVerified": false,
+  "bytes": 173982,
+  "sha256": "5443eb299eab92c667516f7384e704c000b18d289624f5d27ceac8b71ed8f845"
+}

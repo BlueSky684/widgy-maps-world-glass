@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {writeFileSync} from 'node:fs';
-import {daylightMix,solarElevation,solarPosition,renderHomeMap} from '../lib/home-map.js';
+import {daylightMix,solarElevation,solarPosition,renderHomeMap} from '../lib/home-map-v115.js';
 import {renderHomeMap as renderV114} from '../lib/home-map-v114.js';
 import {renderHomeMap as renderV113} from '../lib/home-map-v113.js';
 import handler from '../api/home-map.js';
