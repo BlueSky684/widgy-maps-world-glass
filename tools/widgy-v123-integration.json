@@ -1,0 +1,25 @@
+{
+  "base": "v122",
+  "changedLayerIds": [
+    6170
+  ],
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/assets/earth/approved-map-v123.png",
+  "resolution": [
+    1828,
+    860
+  ],
+  "imageSha256": "a0879c5994551a4297a5416952268fa4dfaab1b7c3d85f49747e57f0ce0a2761",
+  "imageBytes": 2029994,
+  "staticLighting": true,
+  "locationMarker": false,
+  "frame": {
+    "x": 28.32,
+    "y": 203.3373986870898,
+    "width": 1543.36,
+    "height": 726.0884026258204
+  },
+  "nativePreservationVerified": true,
+  "deviceVerified": false,
+  "bytes": 172017,
+  "sha256": "6b2e7c492eec7a2ce1747d97a40b863e75d799d02e5a39395fdf31a36cd69e87"
+}
