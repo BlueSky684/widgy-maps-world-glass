@@ -1,0 +1,29 @@
+{
+  "base": "v116",
+  "status": "prepared",
+  "changedLayerIds": [
+    6170
+  ],
+  "scope": "Native map frame only",
+  "scale": 1.04,
+  "oldFrame": {
+    "b": 58,
+    "c": 210,
+    "d": 1484,
+    "e": 640
+  },
+  "frame": {
+    "b": 28.32,
+    "c": 184.4,
+    "d": 1543.36,
+    "e": 665.6
+  },
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=116",
+  "rendererRevision": 116,
+  "clipping": "No additional crop; same image aspect and native fitting settings",
+  "extent": "Same displayed geography: longitude -180..180, latitude 85..-65",
+  "anchor": "Horizontal centre 800; bottom 850",
+  "deviceVerified": false,
+  "bytes": 174236,
+  "sha256": "f9d45e287ef65c8817c65dc9474a068242d45fe1c3f1e161f8828fb23bb40c9f"
+}
