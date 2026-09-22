@@ -1,0 +1,18 @@
+{
+  "base": "v123",
+  "changedLayerIds": [
+    6170
+  ],
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=124",
+  "resolution": [
+    1828,
+    860
+  ],
+  "staticLighting": false,
+  "locationMarker": "approximate IP when available",
+  "nativePreservationVerified": true,
+  "deviceVerified": false,
+  "refresh": "new server-time image on Widgy data refresh; timestamp query prevents URL cache reuse",
+  "bytes": 172175,
+  "sha256": "f106d0469c6e352850afce66bf32797a4b73c19f020f7a5230f294fa121f9778"
+}
