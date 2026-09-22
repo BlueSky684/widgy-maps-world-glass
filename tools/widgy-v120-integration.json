@@ -1,0 +1,33 @@
+{
+  "base": "v119",
+  "status": "prepared",
+  "changedLayerIds": [
+    6170
+  ],
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=120",
+  "scope": "Map rendering only; all native layout, sources, conditions and artwork preserved",
+  "resolution": [
+    2400,
+    1188
+  ],
+  "coastline": "Natural Earth 1:10m",
+  "nightSource": {
+    "provider": "NASA Black Marble",
+    "year": 2016,
+    "resolution": [
+      13500,
+      6750
+    ]
+  },
+  "appearance": [
+    "Cool-slate multi-scale relief",
+    "Independent soft shoreline highlights",
+    "Detailed warm city-light networks",
+    "Elevation-based subtle twilight colour"
+  ],
+  "solarModel": "Unchanged NOAA/Meeus UTC geometry and -6..+6 degree blend with 50% at the geometric horizon",
+  "nativePreservationVerified": true,
+  "deviceVerified": false,
+  "bytes": 172293,
+  "sha256": "57c6a2aa43311b51b3b8039523efe8573369d42a76bfdd901c75922ca80bdfc2"
+}
