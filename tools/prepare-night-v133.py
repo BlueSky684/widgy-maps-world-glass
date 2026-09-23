@@ -1,4 +1,4 @@
-"""Build v133 night-light signal from scratch against the approved map geometry.
+"""Build v133 night-light signal from scratch against the approved map geometry.\n\n# v133 rebuild trigger
 
 The source is NASA's 2016 Black Marble colour composite. The output contains
 only a scalar historical light-energy field. It contains no golden tint,
