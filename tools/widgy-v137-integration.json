@@ -1,0 +1,55 @@
+{
+  "version": 137,
+  "base": "fresh rebuild from untouched NASA Black Marble 2016",
+  "release": "Approved HD Yellow-Gold Night Master",
+  "changedLayerIds": [
+    6170
+  ],
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=137",
+  "source": "NASA Black Marble 2016 historical colour composite",
+  "newNightSignal": "assets/earth/night-signal-v137.bin.gz",
+  "previousSignalReuse": false,
+  "signalScale": 384,
+  "sampling": "5x5 compact subpixel footprint; 64% centre + 26% q68 + 10% q84 + 22% one-sided high-frequency recovery",
+  "regionalBoosts": false,
+  "handEdits": false,
+  "bakedGlow": false,
+  "bakedColour": false,
+  "bakedDayNightMask": false,
+  "runtimeToneCurve": "238 * (energy / (energy + 6.9))^0.78",
+  "approvedReferenceStyle": {
+    "pointColour": [
+      1,
+      0.84,
+      0.57
+    ],
+    "nearColour": [
+      1,
+      0.74,
+      0.34
+    ],
+    "farColour": [
+      1,
+      0.63,
+      0.22
+    ],
+    "shineColour": [
+      1,
+      0.95,
+      0.76
+    ],
+    "nearSigma": 0.5,
+    "farSigma": 1.45,
+    "nearStrength": 0.21,
+    "farStrength": 0.045,
+    "shineThreshold": 152,
+    "shineStrength": 0.13,
+    "character": "clean premium yellow-gold; crisp HD networks; restrained brilliance; realistic and balanced"
+  },
+  "decorativeBlueAtmosphericArc": false,
+  "dynamicSolarMask": true,
+  "terrainBaseUnchanged": true,
+  "markerProjectionUnchanged": true,
+  "nativeLayoutPreserved": true,
+  "deviceVerified": false
+}
