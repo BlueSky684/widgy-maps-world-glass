@@ -25,3 +25,7 @@ jobs:
           node-version: '24'
       - run: npm install --ignore-scripts=false
       - run: node tools/test-v133-render.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v133-preview
+          path: work/v133-preview/*.png
