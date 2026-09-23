@@ -1,3 +1,4 @@
+// signal revision c869a579
 import assert from 'node:assert/strict';
 import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import sharp from 'sharp';
