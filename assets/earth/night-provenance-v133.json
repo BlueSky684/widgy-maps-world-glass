@@ -1,0 +1,28 @@
+{
+  "version": 133,
+  "build": "Night Lighting Rebuild",
+  "sourceAsset": "assets/earth/lights-v121.png",
+  "sourceAssetSha256": "repository blob 5d0773dc63edd81755941cabe40d91fddfbf8a7a",
+  "sourceDescription": "Existing repository layer explicitly used by the v121 renderer as a separate historical city-light layer on black.",
+  "upstreamDataset": "Not documented in the currently available repository files; v133 does not invent an upstream attribution.",
+  "independentOfV130Signal": true,
+  "v130SignalUsed": false,
+  "remap": "Sample lights-v121 geographically through reference-coordinates-v127.bin.gz onto the approved 1827x861 illustrated terrain.",
+  "response": {
+    "blackFloor": 0.75,
+    "lowMidGamma": 0.72,
+    "highlightCompression": "normalized 1-exp(-3.2*x)",
+    "outputPeak": 215,
+    "coastalLandGate": "0.22 + 0.78*smooth(3,18,baseLuma)"
+  },
+  "runtimeGlow": {
+    "point": 0.92,
+    "nearSigma": 0.85,
+    "nearStrength": 0.42,
+    "farSigma": 3.2,
+    "farStrength": 0.22
+  },
+  "dynamicLighting": "UTC solar position -> daylightMix(-6°, +6°) -> per-pixel night mask on every render",
+  "terrainUnchanged": true,
+  "markerProjection": "Separate marker-mesh-v133.json; does not affect lighting or solar terrain coordinates."
+}
