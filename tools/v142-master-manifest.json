@@ -1,19 +1,29 @@
 {
   "version": 142,
-  "name": "Pixel Master HD",
-  "source": "User-approved visual master",
+  "name": "Approved Pixel Master HD",
+  "source": "User-approved v142 visual master",
   "storedFormat": "WebP lossless",
-  "dimensions": [
+  "nativeDimensions": [
+    1653,
+    779
+  ],
+  "hdDimensions": [
     3306,
     1558
   ],
   "panelAspect": "87:41",
-  "hdMethod": "integer 2x nearest-neighbor replication from approved panel master; no interpolation",
-  "pixelIdentity": "Decoded lossless WebP verified pixel-identical to HD PNG",
-  "sha256": "9fb9af28bbf267aac6c1e8fe3c0f9b8d1eda06c5e3c963413a99afe4a5f51dbf",
-  "bytes": 1623572,
+  "hdMethod": "integer 2x nearest-neighbor replication; no interpolation",
+  "decodedPixelSha256": "ce6b103526a116a85a758387807f95c9a4a870ca1cb9353c4b7e94d6e4b7459e",
+  "encodedSha256": "eabfa04341f7709f873ed8501bc1459d1f15c4a444c18b4df99094df411dfa7c",
+  "encodedBytes": 1274000,
+  "decodedPixelIdentityVerified": true,
   "lossyConversion": false,
   "aiUpscale": false,
   "sharpening": false,
-  "recompression": false
+  "recompression": false,
+  "dynamicBehavior": {
+    "fullNight": "approved master pixels preserved",
+    "daylight": "warm emissive component attenuated by UTC solar mask only",
+    "location": "Widgy Latitude / Longitude / City variables"
+  }
 }
