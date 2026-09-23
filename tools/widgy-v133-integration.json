@@ -27,5 +27,7 @@
   "markerDesignUnchanged": true,
   "terrainUnchanged": true,
   "nativeLayoutPreserved": true,
-  "deviceVerified": false
+  "deviceVerified": false,
+  "dynamicLocationSource": "Same server-side endpoint mechanism used by the prior World Map Glass: explicit lat/lon query override when supplied; otherwise Vercel IP geolocation headers. Native Widgy City/Country fields remain separate.",
+  "locationPrecision": "Dynamic globally, but IP fallback is approximate rather than device-GPS-grade."
 }
