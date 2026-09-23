@@ -1,0 +1,53 @@
+{
+  "version": 135,
+  "target": "85% Option C structure + 15% Option D finishing glow at runtime",
+  "source": "https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/144000/144898/BlackMarble_2016_3km.jpg",
+  "sourcePage": "https://science.nasa.gov/earth/earth-observatory/earth-at-night/maps/",
+  "sourceYear": 2016,
+  "sourceSize": [
+    13500,
+    6750
+  ],
+  "sourceSha256": "230aac448ae68c358be433dd518888cccb3a85ccf66f7b44326441c324ad6725",
+  "geometry": "reference-coordinates-v127.bin.gz (approved map field)",
+  "geometrySha256": "19064ca877fc424e5b229720c56dc7262e373dd973b18682f2c379c2ac7af81f",
+  "signalExtraction": {
+    "formula": "max(R - 0.60*B - 0.10*G - 1.0, 0)",
+    "regionalBoosts": false,
+    "bakedGlow": false,
+    "bakedColour": false,
+    "bakedDayNightMask": false
+  },
+  "sampling": {
+    "footprint": "9 samples at +/-0.30 destination pixel",
+    "combination": "60% centre + 40% local 75th percentile",
+    "purpose": "retain compact city/road structure without full-footprint blur or max-pool sparkle"
+  },
+  "encoding": "gzip uint16 little-endian, scalar energy / 256",
+  "signalScale": 256.0,
+  "clipCeiling": 255.99609375,
+  "energyPercentiles": {
+    "50": 0.0,
+    "75": 0.0,
+    "90": 0.0,
+    "95": 0.0,
+    "97": 0.47997260093688965,
+    "99": 17.362239837646484,
+    "99.5": 46.07670974731445,
+    "99.9": 100.78437042236328,
+    "99.99": 128.6034698486328
+  },
+  "signalRange": [
+    0.0,
+    150.23550415039062
+  ],
+  "litPixelsAbove": {
+    "0.25": 51241,
+    "0.5": 46878,
+    "1": 41519,
+    "2": 35554,
+    "5": 27066
+  },
+  "outputSha256": "59891f2e5191c043ec5be6c0dc2b1c5239395b9482175d6b3170102b3e9f24da",
+  "meaning": "Clean historical urban-light scalar only. Warm gold, micro-glow and UTC solar visibility are runtime effects."
+}
