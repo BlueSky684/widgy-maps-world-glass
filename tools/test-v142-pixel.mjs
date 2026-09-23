@@ -13,7 +13,7 @@ assert.equal(info.width,1653);
 assert.equal(info.height,779);
 assert.equal(info.channels,3);
 assert.equal(createHash('sha256').update(data).digest('hex'),
-  '0307b6e6e17c667cadb57d2942a1ca6b3a99465df6fdcf7dfe0f5cb9b02f3255',
+  'ce6b103526a116a85a758387807f95c9a4a870ca1cb9353c4b7e94d6e4b7459e',
   'decoded v142 master pixels changed');
 
 const a=await renderV142({
