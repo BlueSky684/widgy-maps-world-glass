@@ -1,0 +1,33 @@
+name: Render v140 multi-layer technical preview
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - lib/home-map-v140.js
+      - assets/earth/night-network-v140.bin.gz
+      - assets/earth/night-body-v140.bin.gz
+      - assets/earth/night-core-v140.bin.gz
+      - assets/earth/night-provenance-v140.json
+      - tools/test-v140-technical.mjs
+      - .github/workflows/test-v140-technical.yml
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --ignore-scripts=false
+      - run: node tools/test-v140-technical.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v140-technical-preview
+          path: work/v140-technical/*.png
