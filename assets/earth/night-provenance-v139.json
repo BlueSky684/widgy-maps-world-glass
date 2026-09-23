@@ -23,9 +23,9 @@
     "highFrequencyOvershoot": false
   },
   "sampling": {
-    "footprint": "5x5 at offsets -0.15,-0.075,0,+0.075,+0.15 destination pixel",
-    "combination": "68% centre + 22% q64 + 10% q80",
-    "purpose": "preserve crisp compact points and connected urban networks without max-pool sparkle or sharpened star cores"
+    "footprint": "5x5 at offsets -0.18,-0.09,0,+0.09,+0.18 destination pixel",
+    "combination": "60% centre + 28% q68 + 12% q84",
+    "purpose": "preserve more weak urban corridors and suburban networks while keeping compact points and avoiding max-pool sparkle or sharpened star cores"
   },
   "encoding": "gzip uint16 little-endian, scalar energy / 384",
   "signalScale": 384.0,
@@ -35,24 +35,24 @@
     "75": 0.0,
     "90": 0.0,
     "95": 0.0,
-    "97": 0.1428622603416443,
-    "99": 14.999671936035156,
-    "99.5": 46.24093246459961,
-    "99.9": 102.12310028076172,
-    "99.99": 132.07943725585938
+    "97": 0.31413114070892334,
+    "99": 16.759843826293945,
+    "99.5": 48.09895706176758,
+    "99.9": 102.63538360595703,
+    "99.99": 131.62863159179688
   },
   "signalRange": [
     0.0,
-    156.9090118408203
+    155.2102813720703
   ],
   "litPixelsAbove": {
-    "0.25": 44264,
-    "0.5": 40324,
-    "1": 35816,
-    "2": 30884,
-    "5": 23979,
-    "10": 18731
+    "0.25": 48655,
+    "0.5": 44035,
+    "1": 38912,
+    "2": 33454,
+    "5": 25779,
+    "10": 19808
   },
-  "outputSha256": "8ffda4856c2eeaa85dbe957d314c24f7351e2647914d405afc8adad10081d6db",
+  "outputSha256": "c869a579739ddbe93666f11b8dc4822e6ae8aafe9c5f5aeb0302d9652fbac030",
   "meaning": "Clean historical urban-light scalar master. Luxury yellow-gold and ivory round cores are runtime effects only."
 }
