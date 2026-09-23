@@ -1,22 +1,19 @@
 {
   "version": 142,
-  "name": "Pixel Master",
-  "source": "User-approved generated visual master",
+  "name": "Pixel Master HD",
+  "source": "User-approved visual master",
   "storedFormat": "WebP lossless",
-  "nativeDimensions": [
-    1653,
-    779
-  ],
-  "hdDimensions": [
+  "dimensions": [
     3306,
     1558
   ],
-  "hdMethod": "integer 2x nearest-neighbor replication; no interpolation",
   "panelAspect": "87:41",
-  "pixelIdentity": "Decoded lossless WebP verified pixel-identical to approved native PNG",
-  "sha256": "dc30ccc9266ce0390f19d8f77f321bdb6144bbaa3b1c3c1a7b4b653560dda489",
-  "bytes": 1265746,
+  "hdMethod": "integer 2x nearest-neighbor replication from approved panel master; no interpolation",
+  "pixelIdentity": "Decoded lossless WebP verified pixel-identical to HD PNG",
+  "sha256": "9fb9af28bbf267aac6c1e8fe3c0f9b8d1eda06c5e3c963413a99afe4a5f51dbf",
+  "bytes": 1623572,
   "lossyConversion": false,
   "aiUpscale": false,
-  "sharpening": false
+  "sharpening": false,
+  "recompression": false
 }
