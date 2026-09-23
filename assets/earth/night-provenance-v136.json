@@ -1,0 +1,55 @@
+{
+  "version": 136,
+  "master": "HD Night Lights Master",
+  "source": "https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/144000/144898/BlackMarble_2016_3km.jpg",
+  "sourcePage": "https://science.nasa.gov/earth/earth-observatory/earth-at-night/maps/",
+  "sourceYear": 2016,
+  "sourceSize": [
+    13500,
+    6750
+  ],
+  "sourceSha256": "230aac448ae68c358be433dd518888cccb3a85ccf66f7b44326441c324ad6725",
+  "geometry": "reference-coordinates-v127.bin.gz (approved map field)",
+  "geometrySha256": "19064ca877fc424e5b229720c56dc7262e373dd973b18682f2c379c2ac7af81f",
+  "signalExtraction": {
+    "formula": "max(R - 0.60*B - 0.10*G - 1.0, 0)",
+    "regionalBoosts": false,
+    "handEdits": false,
+    "bakedGlow": false,
+    "bakedColour": false,
+    "bakedDayNightMask": false
+  },
+  "sampling": {
+    "footprint": "5x5 at offsets -0.22,-0.11,0,+0.11,+0.22 destination pixel",
+    "combination": "60% centre + 28% q72 + 12% q88 + 14% positive centre-minus-median detail",
+    "purpose": "HD-like subpixel recovery of compact lights and urban networks while avoiding blur and max-pool sparkle"
+  },
+  "encoding": "gzip uint16 little-endian, scalar energy / 384",
+  "signalScale": 384.0,
+  "clipCeiling": 170.6640625,
+  "energyPercentiles": {
+    "50": 0.0,
+    "75": 0.0,
+    "90": 0.0,
+    "95": 0.0,
+    "97": 0.6226539015769958,
+    "99": 19.31049919128418,
+    "99.5": 51.64216995239258,
+    "99.9": 105.08679962158203,
+    "99.99": 133.9289093017578
+  },
+  "signalRange": [
+    0.0,
+    162.10348510742188
+  ],
+  "litPixelsAbove": {
+    "0.25": 54359,
+    "0.5": 49084,
+    "1": 43066,
+    "2": 36825,
+    "5": 28171,
+    "10": 21580
+  },
+  "outputSha256": "828d60460acbf6213f74a36f585dc0a8a51fb0e47fcc3092d936723e9b4ce206",
+  "meaning": "Clean historical urban-light scalar master. Champagne-gold colour, brilliance, micro-glow and UTC solar visibility are runtime effects."
+}
