@@ -1,3 +1,4 @@
+import {writeFileSync,mkdirSync} from 'node:fs';
 import assert from 'node:assert/strict';
 import {renderHomeMap} from '../lib/home-map-v133.js';
 import handler from '../api/home-map.js';
@@ -10,6 +11,9 @@ const twelveHours=await renderHomeMap({date:new Date('2026-09-23T12:30:00Z'),loc
 assert(isPng(night),'v133 fixed-time night render is not a PNG');
 assert(isPng(twelveHours),'v133 fixed-time day render is not a PNG');
 assert(!night.equals(twelveHours),'dynamic solar mask did not change across 12 hours');
+mkdirSync('work/v133-preview',{recursive:true});
+writeFileSync('work/v133-preview/ashkelon-night.png',night);
+writeFileSync('work/v133-preview/ashkelon-day.png',twelveHours);
 
 async function call(url){
   let body,statusCode=200;
