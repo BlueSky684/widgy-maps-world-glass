@@ -5,7 +5,7 @@ on:
   push:
     branches: [main]
     paths:
-      - tools/v142-master-chunks/**
+      - tools/v142-master-ready.txt
       - .github/workflows/assemble-v142-master.yml
 
 permissions:
@@ -24,16 +24,16 @@ jobs:
       - name: Assemble lossless pixel master
         run: |
           mkdir -p assets/earth
-          cat tools/v142-master-chunks/part-*.b64 | base64 -d > assets/earth/v142-master-native.webp
-          echo "dc30ccc9266ce0390f19d8f77f321bdb6144bbaa3b1c3c1a7b4b653560dda489  assets/earth/v142-master-native.webp" | sha256sum -c -
-          test "$(stat -c%s assets/earth/v142-master-native.webp)" = "1265746"
+          cat tools/v142-master-chunks/part-*.b64 | base64 -d > assets/earth/v142-master-hd.webp
+          echo "9fb9af28bbf267aac6c1e8fe3c0f9b8d1eda06c5e3c963413a99afe4a5f51dbf  assets/earth/v142-master-native.webp" | sha256sum -c -
+          test "$(stat -c%s assets/earth/v142-master-native.webp)" = "1623572"
 
       - name: Commit verified master and remove transfer chunks
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/earth/v142-master-native.webp
-          git rm -r tools/v142-master-chunks
+          git add assets/earth/v142-master-hd.webp
+          git rm -r tools/v142-master-chunks tools/v142-master-ready.txt
           git commit -m 'Add v142 approved lossless pixel master'
           git pull --rebase origin main
           git push
