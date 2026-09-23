@@ -12,12 +12,12 @@ const provenance=JSON.parse(readFileSync(new URL('../assets/earth/night-provenan
 
 assert(src.includes("night-signal-v139.bin.gz"),'v139 must use its fresh signal');
 assert(!src.includes("night-signal-v137.bin.gz"),'v139 must not reuse v137 signal');
-assert(src.includes("const BODY=[1,.88,.45],IVORY=[1,.98,.80],NEAR=[1,.80,.28],FAR=[1,.70,.22];"),'v139 palette mismatch');
+assert(src.includes("const BODY=[1,.90,.46],IVORY=[1,.99,.82],NEAR=[1,.84,.35],FAR=[1,.74,.26];"),'v139 palette mismatch');
 assert(!src.includes("const shine="),'shine computation must be absent');
 assert(!src.includes("SHINE=["),'SHINE palette must be absent');
-assert(src.includes("near[p]*.19"),'near micro-glow mismatch');
-assert(src.includes("far[p]*.028"),'far micro-glow mismatch');
-assert(src.includes("const ivory=clamp((nightSignal[p]-120)*.12,0,15)*IVORY[k];"),'ivory core mismatch');
+assert(src.includes("near[p]*.24"),'near micro-glow mismatch');
+assert(src.includes("far[p]*.035"),'far micro-glow mismatch');
+assert(src.includes("const ivory=clamp((nightSignal[p]-125)*.10,0,12)*IVORY[k];"),'ivory core mismatch');
 assert.equal(provenance.version,139);
 assert.equal(provenance.signalExtraction.previousSignalReuse,false);
 assert.equal(provenance.signalExtraction.regionalBoosts,false);
