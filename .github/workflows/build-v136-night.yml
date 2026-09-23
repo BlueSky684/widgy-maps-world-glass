@@ -1,0 +1,47 @@
+name: Build v136 HD night master
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - tools/prepare-night-v136.py
+      - .github/workflows/build-v136-night.yml
+
+permissions:
+  contents: write
+
+jobs:
+  build-night-signal:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install builder dependencies
+        run: python -m pip install --disable-pip-version-check numpy pillow scipy
+      - name: Download original NASA Black Marble source
+        run: |
+          mkdir -p work/map
+          curl -L --fail --retry 3 \
+            -o work/map/BlackMarble_2016_3km.jpg \
+            'https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/144000/144898/BlackMarble_2016_3km.jpg'
+      - name: Build v136 HD scalar master from scratch
+        run: python tools/prepare-night-v136.py
+      - name: Commit generated v136 master
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/earth/night-signal-v136.bin.gz assets/earth/night-provenance-v136.json
+          if git diff --cached --quiet; then
+            echo 'Generated files are unchanged.'
+            exit 0
+          fi
+          git commit -m 'Build v136 HD night lighting master'
+          git pull --rebase origin main
+          git push
