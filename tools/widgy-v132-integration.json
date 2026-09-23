@@ -1,0 +1,29 @@
+{
+  "base": "v131",
+  "changedLayerIds": [
+    6170
+  ],
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=132",
+  "resolution": [
+    1827,
+    861
+  ],
+  "microPolishOnly": true,
+  "nearBloomStrength": {
+    "v131": 0.52,
+    "v132": 0.494,
+    "relativeChange": "-5%"
+  },
+  "pointLightUnchanged": true,
+  "farBloomUnchanged": true,
+  "lightColoursUnchanged": true,
+  "terrainUnchanged": true,
+  "markerUnchanged": true,
+  "labelsUnchanged": true,
+  "dynamicLocation": true,
+  "solarFieldUnchanged": true,
+  "nightTerrainGain": 0.48,
+  "nativeLayoutPreserved": true,
+  "deviceVerified": false,
+  "bytes": 171688
+}
