@@ -1,0 +1,58 @@
+{
+  "version": 137,
+  "master": "Approved HD Yellow-Gold Night Lights Master",
+  "derivation": "fresh rebuild from original NASA source; no previous night signal used",
+  "source": "https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/144000/144898/BlackMarble_2016_3km.jpg",
+  "sourcePage": "https://science.nasa.gov/earth/earth-observatory/earth-at-night/maps/",
+  "sourceYear": 2016,
+  "sourceSize": [
+    13500,
+    6750
+  ],
+  "sourceSha256": "230aac448ae68c358be433dd518888cccb3a85ccf66f7b44326441c324ad6725",
+  "geometry": "reference-coordinates-v127.bin.gz (approved map field)",
+  "geometrySha256": "19064ca877fc424e5b229720c56dc7262e373dd973b18682f2c379c2ac7af81f",
+  "signalExtraction": {
+    "formula": "max(R - 0.60*B - 0.10*G - 1.0, 0)",
+    "regionalBoosts": false,
+    "handEdits": false,
+    "previousSignalReuse": false,
+    "bakedGlow": false,
+    "bakedColour": false,
+    "bakedDayNightMask": false
+  },
+  "sampling": {
+    "footprint": "5x5 at offsets -0.18,-0.09,0,+0.09,+0.18 destination pixel",
+    "combination": "64% centre + 26% q68 + 10% q84 + 22% positive high-frequency recovery",
+    "highFrequencySigma": 0.58,
+    "purpose": "maximum practical crispness at final map resolution while preserving thin urban networks and avoiding broad city blobs"
+  },
+  "encoding": "gzip uint16 little-endian, scalar energy / 384",
+  "signalScale": 384.0,
+  "clipCeiling": 170.6640625,
+  "energyPercentiles": {
+    "50": 0.0,
+    "75": 0.0,
+    "90": 0.0,
+    "95": 0.0,
+    "97": 0.28840872645378113,
+    "99": 17.157520294189453,
+    "99.5": 50.65501403808594,
+    "99.9": 109.37384796142578,
+    "99.99": 140.01220703125
+  },
+  "signalRange": [
+    0.0,
+    171.31019592285156
+  ],
+  "litPixelsAbove": {
+    "0.25": 48068,
+    "0.5": 43498,
+    "1": 38501,
+    "2": 33162,
+    "5": 25663,
+    "10": 19905
+  },
+  "outputSha256": "db4d193ed7a5ec230864291c167eac486162a5a525811b56e27196345cff5fba",
+  "meaning": "Clean historical urban-light scalar master only. Approved yellow-gold colour, restrained brilliance and UTC solar visibility are runtime effects."
+}
