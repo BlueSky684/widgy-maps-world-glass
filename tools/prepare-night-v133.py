@@ -26,17 +26,14 @@ sh,sw=rgb.shape[:2]
 assert (sw,sh)==(13500,6750), (sw,sh)
 
 r,g,b=rgb[:,:,0],rgb[:,:,1],rgb[:,:,2]
-luma=.34*r+.46*g+.20*b
 
-# Extract luminous urban emission while rejecting the blue/purple geographic
-# backdrop. Keep weak warm/neutral points instead of applying the old hard
-# source floor that disproportionately removed dim networks.
-warm=np.maximum(r-.48*b-.08*g-.35,0)
-neutral_gate=np.clip((((r+g)*.5)-b+3.0)/14.0,0,1)
-neutral=np.maximum(luma-14.0,0)*neutral_gate
-signal=.78*warm+.22*neutral
-signal=np.maximum(signal,0).astype(np.float32)
-del rgb,r,g,b,luma,warm,neutral,neutral_gate
+# Extract light emission by warm/neutral chroma separation only. The previous
+# v133 draft admitted too much low-frequency land colour (most visibly across
+# the Sahara). This stricter separation rejects the blue/purple Black Marble
+# backdrop while keeping a much lower floor than v130, so weak urban points
+# survive without turning terrain itself into light.
+signal=np.maximum(r-.60*b-.10*g-1.0,0).astype(np.float32)
+del rgb,r,g,b
 
 raw=gzip.decompress((root/'reference-coordinates-v127.bin.gz').read_bytes())
 coords=np.frombuffer(raw,'<i2').reshape(H,W,2).cumsum(axis=1).astype(np.float32)/100
@@ -76,10 +73,8 @@ meta={
   'geometry':'reference-coordinates-v127.bin.gz (same approved map field used by terrain/solar/marker)',
   'geometrySha256':sha(root/'reference-coordinates-v127.bin.gz'),
   'signalExtraction':{
-    'warm':'max(R - 0.48*B - 0.08*G - 0.35, 0)',
-    'neutral':'max(luma - 14, 0) * clamp((((R+G)/2)-B+3)/14,0,1)',
-    'mix':'0.78*warm + 0.22*neutral',
-    'sourceFloor':0,
+    'formula':'max(R - 0.60*B - 0.10*G - 1.0, 0)',
+    'purpose':'reject Black Marble terrain/background while retaining weak warm/neutral urban emission',
     'regionalBoosts':False
   },
   'sampling':'3x3 destination footprint through approved coordinate field',
