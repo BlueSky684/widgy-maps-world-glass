@@ -1,0 +1,129 @@
+{
+  "version": 141,
+  "master": "High-Res Emissive Light Atlas",
+  "derivation": "fresh rebuild from original NASA source; no previous night asset reused",
+  "source": "https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/144000/144898/BlackMarble_2016_3km.jpg",
+  "sourcePage": "https://science.nasa.gov/earth/earth-observatory/earth-at-night/maps/",
+  "sourceYear": 2016,
+  "sourceSize": [
+    13500,
+    6750
+  ],
+  "sourceSha256": "230aac448ae68c358be433dd518888cccb3a85ccf66f7b44326441c324ad6725",
+  "geometry": "reference-coordinates-v127.bin.gz (approved map field)",
+  "geometrySha256": "19064ca877fc424e5b229720c56dc7262e373dd973b18682f2c379c2ac7af81f",
+  "workingResolution": [
+    3654,
+    1722
+  ],
+  "finalResolution": [
+    1827,
+    861
+  ],
+  "supersampling": "2x destination resolution then exact 2x2 area reduction",
+  "sourceExtraction": "max(R - 0.60*B - 0.10*G - 1.0, 0)",
+  "layers": {
+    "network": {
+      "file": "night-network-v141.bin.gz",
+      "pipeline": "58% original + 42% 3x3 isotropic max-filter, Gaussian sigma 0.55 at 2x, floor 0.05, area downsample",
+      "purpose": "continuous weak/mid urban ribbons without point-dust appearance",
+      "range": [
+        0.0,
+        140.98300170898438
+      ],
+      "percentiles": {
+        "50": 0.0,
+        "75": 0.0,
+        "90": 0.050304852426052094,
+        "95": 3.8206968307495117,
+        "97": 11.715375900268555,
+        "99": 37.84893798828125,
+        "99.5": 56.61151885986328,
+        "99.9": 94.74601745605469,
+        "99.99": 120.21126556396484
+      },
+      "pixelsAbove": {
+        "0.10": 149744,
+        "0.25": 137119,
+        "0.5": 125379,
+        "1": 111588,
+        "2": 95324,
+        "5": 71398,
+        "10": 51830
+      }
+    },
+    "body": {
+      "file": "night-body-v141.bin.gz",
+      "pipeline": "Gaussian sigma 1.35 at 2x, floor 0.18, global soft-knee /105, area downsample",
+      "purpose": "smooth city mass / premium emissive body",
+      "range": [
+        0.0,
+        56.10940170288086
+      ],
+      "percentiles": {
+        "50": 0.0,
+        "75": 0.0,
+        "90": 0.0,
+        "95": 1.3270148038864136,
+        "97": 3.8276305198669434,
+        "99": 13.270904541015625,
+        "99.5": 21.675630569458008,
+        "99.9": 39.199729919433594,
+        "99.99": 49.93281555175781
+      },
+      "pixelsAbove": {
+        "0.10": 132077,
+        "0.25": 117669,
+        "0.5": 103770,
+        "1": 86610,
+        "2": 66552,
+        "5": 39210,
+        "10": 21505
+      }
+    },
+    "core": {
+      "file": "night-core-v141.bin.gz",
+      "pipeline": "threshold 11.5, Gaussian sigma 0.48 at 2x, global soft-knee /95, area downsample",
+      "purpose": "compact round strongest centres only",
+      "range": [
+        0.0,
+        53.26823806762695
+      ],
+      "percentiles": {
+        "50": 0.0,
+        "75": 0.0,
+        "90": 0.0,
+        "95": 0.007991718128323555,
+        "97": 0.762250542640686,
+        "99": 9.413222312927246,
+        "99.5": 17.994741439819336,
+        "99.9": 39.08882522583008,
+        "99.99": 48.190303802490234
+      },
+      "pixelsAbove": {
+        "0.10": 66881,
+        "0.25": 58954,
+        "0.5": 52080,
+        "1": 43691,
+        "2": 33921,
+        "5": 23332,
+        "10": 14874
+      }
+    }
+  },
+  "encoding": "gzip uint16 little-endian, scalar energy / 384",
+  "signalScale": 384.0,
+  "regionalBoosts": false,
+  "handEdits": false,
+  "previousSignalReuse": false,
+  "bakedColour": false,
+  "bakedGlow": false,
+  "bakedDayNightMask": false,
+  "starburstLayer": false,
+  "directionalKernel": false,
+  "outputs": {
+    "night-network-v141.bin.gz": "d4e391f3f1601b89e4cb19b4f488b80c5ce3e42c89670705e544734ba29dfc62",
+    "night-body-v141.bin.gz": "63131a047de64b8e9dfa73539d70f3bb77fea36d8fc5089895bad752e5ca334b",
+    "night-core-v141.bin.gz": "aacca8ac61b276142642575209b80c2fc86d02739631c7498ba694fa34facca1"
+  }
+}
