@@ -1,0 +1,27 @@
+name: Test v133 renderer
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - lib/home-map-v133.js
+      - api/home-map.js
+      - assets/earth/night-signal-v133.bin.gz
+      - tools/test-v133-render.mjs
+      - .github/workflows/test-v133-render.yml
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --ignore-scripts=false
+      - run: node tools/test-v133-render.mjs
