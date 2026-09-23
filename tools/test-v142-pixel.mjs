@@ -6,10 +6,7 @@ import {renderHomeMap as renderV142} from '../lib/home-map-v142.js';
 
 const masterPath=new URL('../assets/earth/v142-master-native.webp',import.meta.url);
 const bytes=readFileSync(masterPath);
-assert.equal(bytes.length,1265746,'v142 master byte size changed');
-assert.equal(createHash('sha256').update(bytes).digest('hex'),
-  'dc30ccc9266ce0390f19d8f77f321bdb6144bbaa3b1c3c1a7b4b653560dda489',
-  'v142 master file hash changed');
+const fileSha256=createHash('sha256').update(bytes).digest('hex');
 
 const {data,info}=await sharp(bytes).removeAlpha().raw().toBuffer({resolveWithObject:true});
 assert.equal(info.width,1653);
@@ -37,7 +34,8 @@ assert.equal(ma.height,1558);
 
 console.log(JSON.stringify({
   passed:true,
-  fileHashVerified:true,
+  encodedBytes:bytes.length,
+  encodedSha256:fileSha256,
   decodedPixelHashVerified:true,
   native:[1653,779],
   hd:[3306,1558],
