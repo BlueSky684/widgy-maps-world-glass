@@ -1,0 +1,72 @@
+{
+  "version": 134,
+  "base": "v133",
+  "release": "85% Option C + 15% Option D Premium Night Polish",
+  "changedLayerIds": [
+    6170
+  ],
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=134",
+  "signalUnchanged": "assets/earth/night-signal-v133.bin.gz",
+  "terrainUnchanged": true,
+  "toneCurveUnchanged": "228 * (energy / (energy + 8))^0.68",
+  "weakMidLiftUnchanged": true,
+  "hotspotCompressionUnchanged": true,
+  "blendIntent": {
+    "optionC": 0.85,
+    "optionD": 0.15,
+    "interpretation": "Option C is the structural base; Option D contributes only finishing warmth/glow."
+  },
+  "glow": {
+    "pointColour": {
+      "v133": [
+        1,
+        0.76,
+        0.39
+      ],
+      "v134": [
+        1,
+        0.77,
+        0.41
+      ]
+    },
+    "nearColour": {
+      "v133": [
+        1,
+        0.66,
+        0.23
+      ],
+      "v134": [
+        1,
+        0.69,
+        0.27
+      ]
+    },
+    "farColour": {
+      "v133": [
+        1,
+        0.55,
+        0.15
+      ],
+      "v134": [
+        1,
+        0.57,
+        0.17
+      ]
+    },
+    "nearStrength": {
+      "v133": 0.43,
+      "v134": 0.47
+    },
+    "farStrength": {
+      "v133": 0.24,
+      "v134": 0.25
+    }
+  },
+  "dynamicSolarMask": true,
+  "markerUnchanged": true,
+  "markerMethod": "direct inverse lookup on reference-coordinates-v127 field",
+  "dynamicLocation": true,
+  "nativeLayoutPreserved": true,
+  "deviceVerified": false,
+  "bytes": 171698
+}
