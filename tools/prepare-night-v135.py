@@ -1,4 +1,4 @@
-"""Build v135 night-light signal from scratch for the locked 85%C / 15%D target.
+"""Build v135 night-light signal from scratch for the locked 85%C / 15%D target.\n\nWorkflow trigger: clean rebuild.
 
 The source is NASA Black Marble 2016. The generated file is a clean scalar
 historical light-energy field only: no colour tint, bloom, day/night mask,
