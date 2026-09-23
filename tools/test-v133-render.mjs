@@ -1,3 +1,4 @@
+// signal revision a904cef2
 import {writeFileSync,mkdirSync} from 'node:fs';
 import assert from 'node:assert/strict';
 import {renderHomeMap} from '../lib/home-map-v133.js';
