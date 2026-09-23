@@ -1,0 +1,31 @@
+name: Render v139 luxury technical preview
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - lib/home-map-v139.js
+      - assets/earth/night-signal-v139.bin.gz
+      - assets/earth/night-provenance-v139.json
+      - tools/test-v139-technical.mjs
+      - .github/workflows/test-v139-technical.yml
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --ignore-scripts=false
+      - run: node tools/test-v139-technical.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v139-technical-preview
+          path: work/v139-technical/*.png
