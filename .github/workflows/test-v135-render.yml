@@ -1,0 +1,33 @@
+name: Test v135 clean renderer
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - lib/home-map-v135.js
+      - api/home-map.js
+      - assets/earth/night-signal-v135.bin.gz
+      - assets/earth/night-provenance-v135.json
+      - tools/widgy-v135.json
+      - tools/test-v135-render.mjs
+      - .github/workflows/test-v135-render.yml
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --ignore-scripts=false
+      - run: node tools/test-v135-render.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v135-preview
+          path: work/v135-preview/*.png
