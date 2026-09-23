@@ -1,28 +1,44 @@
 {
   "version": 133,
-  "build": "Night Lighting Rebuild",
-  "sourceAsset": "assets/earth/lights-v121.png",
-  "sourceAssetSha256": "repository blob 5d0773dc63edd81755941cabe40d91fddfbf8a7a",
-  "sourceDescription": "Existing repository layer explicitly used by the v121 renderer as a separate historical city-light layer on black.",
-  "upstreamDataset": "Not documented in the currently available repository files; v133 does not invent an upstream attribution.",
-  "independentOfV130Signal": true,
-  "v130SignalUsed": false,
-  "remap": "Sample lights-v121 geographically through reference-coordinates-v127.bin.gz onto the approved 1827x861 illustrated terrain.",
-  "response": {
-    "blackFloor": 0.75,
-    "lowMidGamma": 0.72,
-    "highlightCompression": "normalized 1-exp(-3.2*x)",
-    "outputPeak": 215,
-    "coastalLandGate": "0.22 + 0.78*smooth(3,18,baseLuma)"
+  "source": "https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/144000/144898/BlackMarble_2016_3km.jpg",
+  "sourcePage": "https://science.nasa.gov/earth/earth-observatory/earth-at-night/maps/",
+  "sourceYear": 2016,
+  "sourceSize": [
+    13500,
+    6750
+  ],
+  "sourceSha256": "230aac448ae68c358be433dd518888cccb3a85ccf66f7b44326441c324ad6725",
+  "geometry": "reference-coordinates-v127.bin.gz (same approved map field used by terrain/solar/marker)",
+  "geometrySha256": "19064ca877fc424e5b229720c56dc7262e373dd973b18682f2c379c2ac7af81f",
+  "signalExtraction": {
+    "warm": "max(R - 0.48*B - 0.08*G - 0.35, 0)",
+    "neutral": "max(luma - 14, 0) * clamp((((R+G)/2)-B+3)/14,0,1)",
+    "mix": "0.78*warm + 0.22*neutral",
+    "sourceFloor": 0,
+    "regionalBoosts": false
   },
-  "runtimeGlow": {
-    "point": 0.92,
-    "nearSigma": 0.85,
-    "nearStrength": 0.42,
-    "farSigma": 3.2,
-    "farStrength": 0.22
+  "sampling": "3x3 destination footprint through approved coordinate field",
+  "encoding": "gzip uint16 little-endian, scalar energy / 1024",
+  "energyPercentiles": {
+    "50": 0.0,
+    "75": 0.0,
+    "90": 0.46823689341545105,
+    "95": 2.245755910873413,
+    "97": 4.107546806335449,
+    "99": 22.867002487182617,
+    "99.5": 44.65095520019531,
+    "99.9": 108.7314224243164
   },
-  "dynamicLighting": "UTC solar position -> daylightMix(-6°, +6°) -> per-pixel night mask on every render",
-  "terrainUnchanged": true,
-  "markerProjection": "Separate marker-mesh-v133.json; does not affect lighting or solar terrain coordinates."
+  "signalRange": [
+    0.0,
+    163.57705688476562
+  ],
+  "litPixelsAbove": {
+    "0.25": 189569,
+    "0.5": 153965,
+    "1": 119577,
+    "2": 85057
+  },
+  "outputSha256": "4abfe1e8e6efa920088ed13e8e8d35a9da296ac933cc0fb67951f83ec89d490f",
+  "meaning": "Historical urban-light signal only; golden colour, bloom and UTC solar night mask are runtime effects. Not live radiance."
 }
