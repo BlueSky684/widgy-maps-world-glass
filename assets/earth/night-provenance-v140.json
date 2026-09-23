@@ -1,0 +1,118 @@
+{
+  "version": 140,
+  "master": "Luxury Multi-Layer Night Lights Rebuild",
+  "derivation": "fresh rebuild from original NASA source; no previous night asset reused",
+  "source": "https://assets.science.nasa.gov/content/dam/science/esd/eo/images/imagerecords/144000/144898/BlackMarble_2016_3km.jpg",
+  "sourcePage": "https://science.nasa.gov/earth/earth-observatory/earth-at-night/maps/",
+  "sourceYear": 2016,
+  "sourceSize": [
+    13500,
+    6750
+  ],
+  "sourceSha256": "230aac448ae68c358be433dd518888cccb3a85ccf66f7b44326441c324ad6725",
+  "geometry": "reference-coordinates-v127.bin.gz (approved map field)",
+  "geometrySha256": "19064ca877fc424e5b229720c56dc7262e373dd973b18682f2c379c2ac7af81f",
+  "sourceExtraction": "max(R - 0.60*B - 0.10*G - 1.0, 0)",
+  "sampling": "5x5 compact footprint at +/-0.18 and +/-0.09 destination pixel",
+  "layers": {
+    "network": {
+      "file": "night-network-v140.bin.gz",
+      "formula": "50% centre + 32% q56 + 18% q68",
+      "purpose": "weak/mid connected urban corridors and roads",
+      "range": [
+        0.0,
+        148.7353973388672
+      ],
+      "percentiles": {
+        "50": 0.0,
+        "75": 0.0,
+        "90": 0.0,
+        "95": 0.0,
+        "97": 0.0703124850988388,
+        "99": 13.444690704345703,
+        "99.5": 42.686866760253906,
+        "99.9": 99.81997680664062,
+        "99.99": 128.01951599121094
+      },
+      "pixelsAbove": {
+        "0.25": 42098,
+        "0.5": 38518,
+        "1": 34202,
+        "2": 29661,
+        "5": 22935,
+        "10": 17817
+      }
+    },
+    "body": {
+      "file": "night-body-v140.bin.gz",
+      "formula": "max(52% centre + 30% q68 + 18% q80 - 0.18, 0)",
+      "purpose": "compact city mass for soft premium glow",
+      "range": [
+        0.0,
+        153.6120147705078
+      ],
+      "percentiles": {
+        "50": 0.0,
+        "75": 0.0,
+        "90": 0.0,
+        "95": 0.0,
+        "97": 0.1162266731262207,
+        "99": 17.024402618408203,
+        "99.5": 48.62057113647461,
+        "99.9": 102.762939453125,
+        "99.99": 130.87745666503906
+      },
+      "pixelsAbove": {
+        "0.25": 44872,
+        "0.5": 41786,
+        "1": 37743,
+        "2": 33020,
+        "5": 25774,
+        "10": 19919
+      }
+    },
+    "core": {
+      "file": "night-core-v140.bin.gz",
+      "formula": "max(64% centre + 36% q88 - 10.0, 0)",
+      "purpose": "strongest city centres only, for small round ivory cores",
+      "range": [
+        0.0,
+        147.562744140625
+      ],
+      "percentiles": {
+        "50": 0.0,
+        "75": 0.0,
+        "90": 0.0,
+        "95": 0.0,
+        "97": 0.0,
+        "99": 11.60921859741211,
+        "99.5": 43.81493377685547,
+        "99.9": 95.81346130371094,
+        "99.99": 124.19735717773438
+      },
+      "pixelsAbove": {
+        "0.25": 22918,
+        "0.5": 22674,
+        "1": 22199,
+        "2": 21304,
+        "5": 19105,
+        "10": 16389
+      }
+    }
+  },
+  "encoding": "gzip uint16 little-endian, scalar energy / 384",
+  "signalScale": 384.0,
+  "regionalBoosts": false,
+  "handEdits": false,
+  "previousSignalReuse": false,
+  "bakedColour": false,
+  "bakedGlow": false,
+  "bakedDayNightMask": false,
+  "starburstLayer": false,
+  "directionalKernel": false,
+  "outputs": {
+    "night-network-v140.bin.gz": "3a01bf5399459f3b215c4a84b85542b60139dc2460e8353343ba3b8cab98ad75",
+    "night-body-v140.bin.gz": "b9d898c92b93dfbfbc0297451da8b558dcfdedbce12cdf6a4fd66a082f175de9",
+    "night-core-v140.bin.gz": "862985b82948ca0e42a4713a9f4ceb4675b29a228f75e6dc91498d8d8f33217c"
+  }
+}
