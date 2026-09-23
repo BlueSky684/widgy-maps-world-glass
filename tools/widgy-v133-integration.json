@@ -1,33 +1,48 @@
 {
+  "version": 133,
   "base": "v132",
-  "release": "v133 Night Lighting Rebuild",
+  "release": "Night Lighting Rebuild",
   "changedLayerIds": [
     6170
   ],
   "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=133",
-  "renderer": "lib/home-map-v133.js",
-  "signalBuilder": "lib/night-signal-v133.js",
-  "signalSource": "assets/earth/lights-v121.png",
-  "v130SignalUsed": false,
-  "terrainBase": "reference-base-v127.png unchanged",
-  "dynamicSolarMask": true,
+  "terrainUnchanged": true,
+  "newNightSignal": "assets/earth/night-signal-v133.bin.gz",
+  "source": "NASA Black Marble 2016 historical colour composite",
+  "scalarSignal": true,
+  "regionalBoosts": false,
+  "sourceGeometry": "reference-coordinates-v127.bin.gz",
+  "signalScale": 1024,
+  "runtimeToneCurve": "228 * (energy / (energy + 8))^0.68",
   "weakMidLift": true,
   "hotspotCompression": true,
-  "pointStrength": 0.92,
-  "nearGlow": {
-    "sigma": 0.85,
-    "strength": 0.42
+  "glow": {
+    "pointColour": [
+      1,
+      0.76,
+      0.39
+    ],
+    "nearColour": [
+      1,
+      0.66,
+      0.23
+    ],
+    "farColour": [
+      1,
+      0.55,
+      0.15
+    ],
+    "nearStrength": 0.43,
+    "farStrength": 0.24
   },
-  "farGlow": {
-    "sigma": 3.2,
-    "strength": 0.22
+  "dynamicSolarMask": true,
+  "marker": {
+    "method": "direct inverse lookup on reference-coordinates-v127 field",
+    "design": "v132 unchanged",
+    "dynamic": true
   },
-  "markerMesh": "assets/earth/marker-mesh-v133.json",
-  "dynamicLocation": true,
-  "markerDesignUnchanged": true,
-  "terrainUnchanged": true,
+  "locationSource": "explicit lat/lon query override when supplied; otherwise same server dynamic location mechanism",
   "nativeLayoutPreserved": true,
   "deviceVerified": false,
-  "dynamicLocationSource": "Same server-side endpoint mechanism used by the prior World Map Glass: explicit lat/lon query override when supplied; otherwise Vercel IP geolocation headers. Native Widgy City/Country fields remain separate.",
-  "locationPrecision": "Dynamic globally, but IP fallback is approximate rather than device-GPS-grade."
+  "bytes": 171927
 }
