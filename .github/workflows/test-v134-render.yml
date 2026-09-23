@@ -1,0 +1,31 @@
+name: Test v134 renderer
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - lib/home-map-v134.js
+      - api/home-map.js
+      - tools/widgy-v134.json
+      - tools/test-v134-render.mjs
+      - .github/workflows/test-v134-render.yml
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --ignore-scripts=false
+      - run: node tools/test-v134-render.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v134-preview
+          path: work/v134-preview/*.png
