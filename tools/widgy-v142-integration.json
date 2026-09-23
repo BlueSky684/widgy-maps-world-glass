@@ -1,39 +1,25 @@
 {
   "version": 142,
   "release": "Approved Pixel Master HD",
-  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=142",
-  "visualSource": "user-approved Pixel Master raster",
+  "endpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=142",
+  "master": "assets/earth/v142-master-native.webp",
   "nativeDimensions": [
     1653,
     779
   ],
-  "renderDimensions": [
+  "hdDimensions": [
     3306,
     1558
   ],
-  "pixelPolicy": {
-    "storage": "lossless",
-    "upscale": "integer 2x nearest-neighbour replication",
-    "interpolation": false,
-    "aiUpscale": false,
-    "sharpening": false,
-    "terrainReconstruction": false,
-    "nightLightRedraw": false
-  },
-  "masterAsset": "assets/earth/v142-master-native.webp",
-  "masterSha256": "dc30ccc9266ce0390f19d8f77f321bdb6144bbaa3b1c3c1a7b4b653560dda489",
-  "decodedRawRgbSha256": "0307b6e6e17c667cadb57d2942a1ca6b3a99465df6fdcf7dfe0f5cb9b02f3255",
-  "dynamicSolarMask": true,
-  "solarRule": "approved master stays untouched at night; only detected warm emissive pixels attenuate on daylight side",
-  "decorativeBlueAtmosphericArc": false,
-  "dynamicLocation": {
-    "source": "Widgy Location variables",
-    "variables": [
-      "Latitude",
-      "Longitude",
-      "City"
-    ],
-    "serverIpFallbackOnlyWhenDeviceCoordinatesUnavailable": true
-  },
-  "status": "pending final binary master commit and verification"
+  "decodedPixelSha256": "ce6b103526a116a85a758387807f95c9a4a870ca1cb9353c4b7e94d6e4b7459e",
+  "encodedSha256": "eabfa04341f7709f873ed8501bc1459d1f15c4a444c18b4df99094df411dfa7c",
+  "pixelIdentityVerified": true,
+  "upscale": "exact 2x nearest-neighbor",
+  "lossyConversion": false,
+  "aiUpscale": false,
+  "sharpening": false,
+  "dayNight": "UTC solar mask attenuates warm emissive pixels on daylight side only",
+  "locationSource": "Widgy Location variables: Latitude, Longitude, City",
+  "ipFallback": "only if explicit Widgy coordinates are unavailable",
+  "visualMaster": "locked user-approved terrain and night-light appearance"
 }
