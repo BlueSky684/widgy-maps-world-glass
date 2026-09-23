@@ -11,10 +11,8 @@
   "geometry": "reference-coordinates-v127.bin.gz (same approved map field used by terrain/solar/marker)",
   "geometrySha256": "19064ca877fc424e5b229720c56dc7262e373dd973b18682f2c379c2ac7af81f",
   "signalExtraction": {
-    "warm": "max(R - 0.48*B - 0.08*G - 0.35, 0)",
-    "neutral": "max(luma - 14, 0) * clamp((((R+G)/2)-B+3)/14,0,1)",
-    "mix": "0.78*warm + 0.22*neutral",
-    "sourceFloor": 0,
+    "formula": "max(R - 0.60*B - 0.10*G - 1.0, 0)",
+    "purpose": "reject Black Marble terrain/background while retaining weak warm/neutral urban emission",
     "regionalBoosts": false
   },
   "sampling": "3x3 destination footprint through approved coordinate field",
@@ -22,23 +20,23 @@
   "energyPercentiles": {
     "50": 0.0,
     "75": 0.0,
-    "90": 0.46823689341545105,
-    "95": 2.245755910873413,
-    "97": 4.107546806335449,
-    "99": 22.867002487182617,
-    "99.5": 44.65095520019531,
-    "99.9": 108.7314224243164
+    "90": 0.0,
+    "95": 0.23892445862293243,
+    "97": 2.3855669498443604,
+    "99": 16.643800735473633,
+    "99.5": 33.64719772338867,
+    "99.9": 82.47816467285156
   },
   "signalRange": [
     0.0,
-    163.57705688476562
+    141.8677520751953
   ],
   "litPixelsAbove": {
-    "0.25": 189569,
-    "0.5": 153965,
-    "1": 119577,
-    "2": 85057
+    "0.25": 78210,
+    "0.5": 70211,
+    "1": 60714,
+    "2": 50029
   },
-  "outputSha256": "4abfe1e8e6efa920088ed13e8e8d35a9da296ac933cc0fb67951f83ec89d490f",
+  "outputSha256": "a904cef26fd2c1f6a12c2cad455ccd1b8a162dc5b7476b437bf4a51d6fe8d8cc",
   "meaning": "Historical urban-light signal only; golden colour, bloom and UTC solar night mask are runtime effects. Not live radiance."
 }
