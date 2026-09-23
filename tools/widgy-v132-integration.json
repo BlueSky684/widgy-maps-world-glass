@@ -18,12 +18,37 @@
   "farBloomUnchanged": true,
   "lightColoursUnchanged": true,
   "terrainUnchanged": true,
-  "markerUnchanged": true,
+  "markerUnchanged": false,
   "labelsUnchanged": true,
   "dynamicLocation": true,
   "solarFieldUnchanged": true,
   "nightTerrainGain": 0.48,
   "nativeLayoutPreserved": true,
   "deviceVerified": false,
-  "bytes": 171688
+  "bytes": 171688,
+  "marker": {
+    "note": "Further reduced after device review; style and calibrated position unchanged",
+    "glowRadius": {
+      "v131": 42,
+      "v132": 34
+    },
+    "ringRadius": {
+      "v131": 22,
+      "v132": 18
+    },
+    "stroke": {
+      "v131": 4.5,
+      "v132": 3.8
+    },
+    "centerRadius": {
+      "v131": 9.5,
+      "v132": 8
+    },
+    "glowOpacity": {
+      "v131": 0.22,
+      "v132": 0.2
+    }
+  },
+  "markerPositionUnchanged": true,
+  "markerStyleUnchanged": true
 }
