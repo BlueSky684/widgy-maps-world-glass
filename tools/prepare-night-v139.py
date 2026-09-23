@@ -44,7 +44,7 @@ lat_field=coords[:,:,1]
 # Compact 5x5 subpixel footprint: enough sampling for connected urban networks,
 # but deliberately tighter than a broad average so cities remain crisp.
 yy,xx=np.mgrid[:H,:W].astype(np.float32)
-axis=(-.15,-.075,0,.075,.15)
+axis=(-.18,-.09,0,.09,.18)
 samples=[]
 centre=None
 for dy in axis:
@@ -62,10 +62,10 @@ stack=np.stack(samples,axis=0)
 # Robust percentile blend: centre dominates exact point placement, while q64/q80
 # reconnect thin networks. No max-pooling and no high-frequency overshoot term,
 # specifically to avoid harsh isolated "star" cores.
-q64=np.partition(stack,15,axis=0)[15]
-q80=np.partition(stack,19,axis=0)[19]
-energy=np.maximum(.68*centre+.22*q64+.10*q80,0).astype(np.float32)
-del stack,samples,q64,q80,centre,source_signal
+q68=np.partition(stack,16,axis=0)[16]
+q84=np.partition(stack,20,axis=0)[20]
+energy=np.maximum(.60*centre+.28*q68+.12*q84,0).astype(np.float32)
+del stack,samples,q68,q84,centre,source_signal
 
 scale=384.0
 max_energy=65535/scale
@@ -97,9 +97,9 @@ meta={
     'highFrequencyOvershoot':False
   },
   'sampling':{
-    'footprint':'5x5 at offsets -0.15,-0.075,0,+0.075,+0.15 destination pixel',
-    'combination':'68% centre + 22% q64 + 10% q80',
-    'purpose':'preserve crisp compact points and connected urban networks without max-pool sparkle or sharpened star cores'
+    'footprint':'5x5 at offsets -0.18,-0.09,0,+0.09,+0.18 destination pixel',
+    'combination':'60% centre + 28% q68 + 12% q84',
+    'purpose':'preserve more weak urban corridors and suburban networks while keeping compact points and avoiding max-pool sparkle or sharpened star cores'
   },
   'encoding':'gzip uint16 little-endian, scalar energy / 384',
   'signalScale':scale,
