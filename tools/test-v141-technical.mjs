@@ -15,13 +15,13 @@ for(const name of ['night-network-v141.bin.gz','night-body-v141.bin.gz','night-c
 assert(!src.includes('night-network-v140.bin.gz'),'v141 must not reuse v140 network');
 assert(!src.includes('SHINE=['),'SHINE palette must not exist');
 assert(!src.includes('const shine='),'shine computation must not exist');
-assert(src.includes('const NETWORK=[1,.91,.55],BODY=[1,.87,.40],IVORY=[1,.98,.84];'),'v141 palette mismatch');
-assert(src.includes('networkSignal[p]*.24'),'network strength mismatch');
-assert(src.includes('bodySignal[p]*.24'),'body point mismatch');
-assert(src.includes('bodyNear[p]*.52'),'body strength mismatch');
-assert(src.includes('bodyWide[p]*.075'),'halo strength mismatch');
-assert(src.includes('coreSignal[p]*.38'),'core strength mismatch');
-assert(src.includes('[.58,1.35]'),'body glow widths mismatch');
+assert(src.includes('const NETWORK=[1,.87,.30],BODY=[1,.83,.20],IVORY=[1,.97,.72];'),'v141 palette mismatch');
+assert(src.includes('networkSignal[p]*.12'),'network strength mismatch');
+assert(src.includes('bodySignal[p]*.18'),'body point mismatch');
+assert(src.includes('bodyNear[p]*.72'),'body strength mismatch');
+assert(src.includes('bodyWide[p]*.13'),'halo strength mismatch');
+assert(src.includes('coreSignal[p]*.34'),'core strength mismatch');
+assert(src.includes('[.92,2.20]'),'body glow widths mismatch');
 
 assert.equal(provenance.version,141);
 assert.equal(provenance.previousSignalReuse,false);
