@@ -1,0 +1,29 @@
+name: Render v138 zero-starburst technical preview
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - lib/home-map-v138.js
+      - tools/test-v138-technical.mjs
+      - .github/workflows/test-v138-technical.yml
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --ignore-scripts=false
+      - run: node tools/test-v138-technical.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v138-technical-preview
+          path: work/v138-technical/*.png
