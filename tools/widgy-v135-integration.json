@@ -1,0 +1,53 @@
+{
+  "version": 135,
+  "base": "clean rebuild from original NASA source",
+  "release": "Clean Night Lights Rebuild — 85% C structure / 15% D finish",
+  "changedLayerIds": [
+    6170
+  ],
+  "imageEndpoint": "https://widgy-maps-world-glass.vercel.app/api/home-map?v=135",
+  "source": "NASA Black Marble 2016 historical colour composite",
+  "newNightSignal": "assets/earth/night-signal-v135.bin.gz",
+  "signalScale": 256,
+  "sourceGeometry": "reference-coordinates-v127.bin.gz",
+  "signalSampling": "60% centre + 40% local 75th percentile over 9 samples at +/-0.30 destination pixel",
+  "regionalBoosts": false,
+  "bakedGlow": false,
+  "bakedColour": false,
+  "bakedDayNightMask": false,
+  "runtimeToneCurve": "236 * (energy / (energy + 7.5))^0.74",
+  "glow": {
+    "pointColour": [
+      1,
+      0.79,
+      0.46
+    ],
+    "nearColour": [
+      1,
+      0.68,
+      0.28
+    ],
+    "farColour": [
+      1,
+      0.56,
+      0.18
+    ],
+    "nearSigma": 0.68,
+    "farSigma": 2.2,
+    "nearStrength": 0.32,
+    "farStrength": 0.1
+  },
+  "visualTarget": {
+    "optionC": 0.85,
+    "optionD": 0.15,
+    "interpretation": "Option C defines signal structure and sharpness; Option D only contributes restrained warm-gold micro-glow."
+  },
+  "terrainUnchanged": true,
+  "dynamicSolarMask": true,
+  "markerUnchanged": true,
+  "markerMethod": "direct inverse lookup on reference-coordinates-v127 field",
+  "dynamicLocation": true,
+  "nativeLayoutPreserved": true,
+  "deviceVerified": false,
+  "bytes": 171877
+}
