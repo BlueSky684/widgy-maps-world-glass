@@ -85,6 +85,11 @@ terrain_native=Image.fromarray(np.rint(terrain).astype(np.uint8),'RGB')
 lights_native=Image.fromarray(np.rint(lights).astype(np.uint8),'RGB')
 rgba_native=Image.fromarray(np.rint(rgba).astype(np.uint8),'RGBA')
 
+clean_base_native=Image.fromarray(np.clip(base,0,255).astype(np.uint8),'RGB')
+clean_base_hd=clean_base_native.resize(TARGET_HD,Image.Resampling.LANCZOS)
+clean_base_path=OUT/'CleanBase_v127_FullHD.png'
+clean_base_hd.save(clean_base_path,optimize=False)
+
 terrain_hd=terrain_native.resize(TARGET_HD,Image.Resampling.LANCZOS)
 lights_hd=lights_native.resize(TARGET_HD,Image.Resampling.LANCZOS)
 rgba_hd=rgba_native.resize(TARGET_HD,Image.Resampling.LANCZOS)
@@ -123,7 +128,8 @@ meta={
     lights_path.name:sha256(lights_path),
     rgba_path.name:sha256(rgba_path),
     reference_path.name:sha256(reference_path),
-    recomp_path.name:sha256(recomp_path)
+    recomp_path.name:sha256(recomp_path),
+    clean_base_path.name:sha256(clean_base_path)
   }
 }
 (OUT/'v144-manifest.json').write_text(json.dumps(meta,indent=2)+'\n')
