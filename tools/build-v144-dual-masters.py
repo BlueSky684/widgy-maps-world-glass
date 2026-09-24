@@ -128,3 +128,5 @@ meta={
 }
 (OUT/'v144-manifest.json').write_text(json.dumps(meta,indent=2)+'\n')
 print(json.dumps(meta))
+
+# run trigger: restored approved master
