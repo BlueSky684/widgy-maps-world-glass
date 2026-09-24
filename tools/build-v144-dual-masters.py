@@ -94,6 +94,46 @@ for name,cfg in light_configs.items():
     Image.fromarray(out,'RGB').resize((HD_W,HD_H),Image.Resampling.LANCZOS).save(
         OUT/f'LightsCandidate_{name}_FullHD.png',optimize=False)
 
+
+# --- Additional high-contrast light candidates from v137 scalar ---
+raw137=gzip.decompress((AS/'night-signal-v137.bin.gz').read_bytes())
+if len(raw137)!=SRC_W*SRC_H*2:
+    raise RuntimeError('Invalid v137 signal')
+e137=np.frombuffer(raw137,dtype='<u2').reshape(SRC_H,SRC_W).astype(np.float32)/384.0
+# Slight floor removes dusty weak noise while keeping thin real networks.
+e137=np.maximum(e137-.12,0)
+p137=255*np.power(e137/(e137+4.5),.66)
+p137=np.clip(p137,0,230)
+p1378=np.clip(p137,0,255).astype(np.uint8)
+n137=np.asarray(Image.fromarray(p1378,'L').filter(ImageFilter.GaussianBlur(radius=.68)),dtype=np.float32)
+f137=np.asarray(Image.fromarray(p1378,'L').filter(ImageFilter.GaussianBlur(radius=1.75)),dtype=np.float32)
+core137=np.clip((p137-92)*1.15,0,150)
+
+configs137={
+  'D': dict(point=.64,near=.48,far=.065,core=.24,
+            pcol=(1,.72,.30),ncol=(1,.61,.17),ccol=(1,.93,.72)),
+  'E': dict(point=.70,near=.58,far=.080,core=.30,
+            pcol=(1,.74,.32),ncol=(1,.62,.18),ccol=(1,.94,.74)),
+  'F': dict(point=.60,near=.68,far=.095,core=.32,
+            pcol=(1,.76,.36),ncol=(1,.65,.22),ccol=(1,.95,.77)),
+}
+for name,cfg in configs137.items():
+    out=np.zeros((SRC_H,SRC_W,3),dtype=np.float32)
+    for k in range(3):
+        pt=p137*cfg['point']*cfg['pcol'][k]
+        ng=n137*cfg['near']*cfg['ncol'][k]
+        fg=f137*cfg['far']*cfg['ncol'][k]
+        cc=core137*cfg['core']*cfg['ccol'][k]
+        tr=(1-pt/255)*(1-ng/255)*(1-fg/255)*(1-cc/255)
+        out[:,:,k]=255*(1-tr)
+    # soft global peak cap; round isotropic appearance only
+    mx=out.max(axis=2)
+    scale=np.ones_like(mx); hot=mx>242
+    scale[hot]=242/np.maximum(mx[hot],1)
+    out=np.clip(out*scale[:,:,None],0,255).astype(np.uint8)
+    Image.fromarray(out,'RGB').resize((HD_W,HD_H),Image.Resampling.LANCZOS).save(
+        OUT/f'LightsCandidate_{name}_FullHD.png',optimize=False)
+
 # Candidate B is the closest target: rich yellow-gold, restrained ivory cores.
 light_rgb=lights_variants['B']
 lights_path=OUT/'NightLightsMaster_v144_FullHD_Lossless.png'
