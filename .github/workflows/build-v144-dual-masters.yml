@@ -1,0 +1,27 @@
+name: Build v144 clean dual masters
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - tools/build-v144-dual-masters.py
+      - .github/workflows/build-v144-dual-masters.yml
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check numpy pillow
+      - run: python tools/build-v144-dual-masters.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v144-clean-dual-masters
+          path: |
+            work/v144/*.png
+            work/v144/v144-manifest.json
