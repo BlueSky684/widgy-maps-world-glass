@@ -6,6 +6,10 @@
     "api/home-map.js": {
       "maxDuration": 10,
       "includeFiles": "assets/earth/**"
+    },
+    "api/night-map.js": {
+      "maxDuration": 10,
+      "includeFiles": "assets/earth/**"
     }
   }
 }

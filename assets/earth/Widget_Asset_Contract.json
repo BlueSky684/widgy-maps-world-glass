@@ -1,0 +1,40 @@
+{
+  "canvas": {
+    "width": 3306,
+    "height": 1558,
+    "origin": [
+      0,
+      0
+    ],
+    "crop": "full canvas"
+  },
+  "format": {
+    "type": "PNG",
+    "compression": "lossless",
+    "bits_per_channel": 8,
+    "colour_profile": "embedded shared sRGB"
+  },
+  "compositing": {
+    "blend": "normal source-over",
+    "opacity_before_night_mask": 1,
+    "mask_application": "multiply alpha only",
+    "required": "same frame, aspect ratio, transform and origin for both layers"
+  },
+  "source_projection": {
+    "x": "(longitude + 180) / 360 * 3306",
+    "y": "(85 - latitude) / 146 * 1558",
+    "note": "Source raster mapping, not a verified live widget implementation."
+  },
+  "assets": {
+    "Terrain_Master_3306x1558.png": {
+      "role": "opaque terrain, RGB",
+      "sha256": "82d5ef93612689b4e5d48d06503292832fa743bad528d0b14b31630a03350907"
+    },
+    "Night_Lights_Master_3306x1558.png": {
+      "role": "night lights, straight RGBA",
+      "sha256": "51df5942dd84f0dc52d5d6975472b2397d53de0cad99cd7085bcb8ebc44db4aa"
+    }
+  },
+  "approved_at": "2026-09-29T22:03:04+03:00",
+  "registration": "Source-raster mapping for approved illustrative artwork; not survey-grade geography."
+}
