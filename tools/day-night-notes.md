@@ -22,27 +22,29 @@ The old v142 renderer's −75° bottom bound must not be reused with these asset
 
 Solar position uses the repository's existing NOAA/Meeus calculation. Both the
 terrain transition and alpha-only light mask use the same solar elevation.
-The terrain transition is 50% at the geometric horizon and spans −1.5..+1.5°.
-This symmetric visual feather sharpens the shadow without moving the horizon;
-it is a styling choice, not a physical model of twilight duration. City lights
-still fade in from 0 to −6°. Gain and ocean floor are provisional device-test
-styling, not new visual approval. No atmospheric refraction is modeled.
-The night terrain multiplier is 0.76; daylight is 1.08. The day ocean floor is
-RGB(20,31,45), so the shadow stays visible over water; night oceans remain black.
-The terrain gain endpoints, fully night pixels and city-light masking are
-unchanged from day-night-1. The brighter ambient floor can also affect the darkest
-daylit terrain pixels. No colored terminator outline is drawn.
+The terrain is rendered first at daylight gain 1.08, then receives a translucent
+black shadow at up to 22% opacity. The shadow starts at solar elevation 0° and
+softly increases inward to full strength at −6°; at −3° its opacity is 11%.
+No shadow is applied on the sunlit side. These are visual styling choices;
+they do not model atmospheric scattering or refraction.
 
-The reference screenshot is 2013-05-23 09:24 UTC. Its southern turning point is
+The approved city lights are composited AFTER the shadow in normal source-over.
+Their RGB and sharpness are preserved; only alpha fades from 0 to −6° as before.
+There is no blur on either source asset or on the final map. The small daylight
+ocean floor is RGB(8,13,19), fading to black at night; this avoids the heavy bright
+interior of day-night-2. Styling remains subject to visual approval.
+
+The earlier dated reference screenshot is 2013-05-23 09:24 UTC. Its southern turning point is
 near −69.36°, outside this map's −61° southern edge. This build does not stretch
 the geometry or extend the approved artwork to force the complete reference arc.
 Near an equinox the boundary naturally approaches a vertical line.
 
-`day-night-2` adopts the reference's clearer continuous shadow treatment while
-retaining the date-dependent solar geometry. It does not promise the same U shape
-year-round or recrop the approved map to expose a polar turning point.
+`day-night-3` follows the later reference's soft translucent shadow and sharp
+city-light treatment. It retains date-dependent solar geometry and does not
+claim an identical reference silhouette year-round, reposition darkness over
+sunlit land, or recrop the approved map to expose a polar turning point.
 
-Production HTTP checks passed for day-night-1, and the user confirmed the direct
+Production HTTP checks passed for day-night-1 and day-night-2; the user confirmed the direct
 image loads on the iPhone. The imported widget's map area was blank, so native
 Widgy image-source inspection is still pending; this style revision does not
 claim to fix that separate loading issue.

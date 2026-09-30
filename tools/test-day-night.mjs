@@ -25,12 +25,12 @@ for (const [lat, lon] of [[31.8,34.65],[35.68,139.69],[-33.87,151.21],[-33.93,18
   assert(Math.max(...textures.terrain.subarray(at, at+3))>10, 'coordinate is outside approved artwork land');
 }
 assert.equal(project(-70,0), null);
-assert.equal(weightsAt(0).day, .5);
-assert.equal(weightsAt(-1.5).day, 0);
-assert.equal(weightsAt(1.5).day, 1);
+assert.equal(weightsAt(0).day, 1);
+assert.equal(weightsAt(-3).shadow, .5);
+assert.equal(weightsAt(-6).shadow, 1);
+for (const e of [0,1,3,4,20]) assert.equal(weightsAt(e).shadow, 0, 'shadow spills onto the day side');
 assert.equal(weightsAt(0).lights, 0);
 assert.equal(weightsAt(-6).lights, 1);
-for (const e of [0,1,3,4,20]) assert(Math.abs(weightsAt(e).day+weightsAt(-e).day-1)<1e-12);
 assert(Math.abs(solarElevation(0,0,{latitude:0,longitude:0})-90)<1e-9);
 assert(Math.abs(solarElevation(0,180,{latitude:0,longitude:0})+90)<1e-9);
 const dates = ['2013-05-23T09:24:00Z','2026-06-21T12:00:00Z','2026-09-30T06:00:00Z','2026-12-21T12:00:00Z'];
@@ -49,10 +49,15 @@ assert.deepEqual(solarPosition(new Date('2026-09-30T09:00:00+03:00')), solarPosi
 
 // Independent source-over expectations, including zero-alpha ocean and light
 // visibility. Production pixels are compared to scalar samples in both frames.
-assert.deepEqual(composePixel([0,0,0],[255,200,30,0],20), [20,31,45]);
+assert.deepEqual(composePixel([0,0,0],[255,200,30,0],20), [8,13,19]);
 assert.deepEqual(composePixel([0,0,0],[255,200,30,0],-20), [0,0,0]);
 assert.deepEqual(composePixel([100,100,100],[255,200,30,255],-20), [255,200,30]);
 assert.deepEqual(composePixel([100,100,100],[255,200,30,255],20), [108,108,108]);
+// The translucent shadow retains 78% of the day terrain at full night; it is
+// below the lights, so even partial-alpha light color is never shadowed again.
+assert.deepEqual(composePixel([100,100,100],[255,200,30,0],-20), [84,84,84]);
+assert.deepEqual(composePixel([100,100,100],[255,200,30,0],-3), [96,96,96]);
+assert.deepEqual(composePixel([100,100,100],[255,200,30,128],-20), [170,142,57]);
 const first = renderPixels(new Date(dates[2]));
 const later = renderPixels(new Date('2026-09-30T18:00:00Z'));
 assert.notEqual(sha(first.data), sha(later.data));
