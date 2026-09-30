@@ -26,6 +26,8 @@ for (const [lat, lon] of [[31.8,34.65],[35.68,139.69],[-33.87,151.21],[-33.93,18
 }
 assert.equal(project(-70,0), null);
 assert.equal(weightsAt(0).day, .5);
+assert.equal(weightsAt(-1.5).day, 0);
+assert.equal(weightsAt(1.5).day, 1);
 assert.equal(weightsAt(0).lights, 0);
 assert.equal(weightsAt(-6).lights, 1);
 for (const e of [0,1,3,4,20]) assert(Math.abs(weightsAt(e).day+weightsAt(-e).day-1)<1e-12);
@@ -47,7 +49,7 @@ assert.deepEqual(solarPosition(new Date('2026-09-30T09:00:00+03:00')), solarPosi
 
 // Independent source-over expectations, including zero-alpha ocean and light
 // visibility. Production pixels are compared to scalar samples in both frames.
-assert.deepEqual(composePixel([0,0,0],[255,200,30,0],20), [12,20,29]);
+assert.deepEqual(composePixel([0,0,0],[255,200,30,0],20), [20,31,45]);
 assert.deepEqual(composePixel([0,0,0],[255,200,30,0],-20), [0,0,0]);
 assert.deepEqual(composePixel([100,100,100],[255,200,30,255],-20), [255,200,30]);
 assert.deepEqual(composePixel([100,100,100],[255,200,30,255],20), [108,108,108]);

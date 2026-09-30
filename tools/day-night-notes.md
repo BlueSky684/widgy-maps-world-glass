@@ -22,16 +22,30 @@ The old v142 renderer's −75° bottom bound must not be reused with these asset
 
 Solar position uses the repository's existing NOAA/Meeus calculation. Both the
 terrain transition and alpha-only light mask use the same solar elevation.
-The terrain transition is 50% at the geometric horizon and spans −4..+4°;
-lights fade in from 0 to −6°. Twilight, gain and ocean floor are provisional
-device-test styling, not new visual approval. No atmospheric refraction is modeled.
+The terrain transition is 50% at the geometric horizon and spans −1.5..+1.5°.
+This symmetric visual feather sharpens the shadow without moving the horizon;
+it is a styling choice, not a physical model of twilight duration. City lights
+still fade in from 0 to −6°. Gain and ocean floor are provisional device-test
+styling, not new visual approval. No atmospheric refraction is modeled.
 The night terrain multiplier is 0.76; daylight is 1.08. The day ocean floor is
-RGB(12,20,29); night oceans remain black. No colored terminator outline is drawn.
+RGB(20,31,45), so the shadow stays visible over water; night oceans remain black.
+The terrain gain endpoints, fully night pixels and city-light masking are
+unchanged from day-night-1. The brighter ambient floor can also affect the darkest
+daylit terrain pixels. No colored terminator outline is drawn.
 
 The reference screenshot is 2013-05-23 09:24 UTC. Its southern turning point is
 near −69.36°, outside this map's −61° southern edge. This build does not stretch
 the geometry or extend the approved artwork to force the complete reference arc.
 Near an equinox the boundary naturally approaches a vertical line.
+
+`day-night-2` adopts the reference's clearer continuous shadow treatment while
+retaining the date-dependent solar geometry. It does not promise the same U shape
+year-round or recrop the approved map to expose a polar turning point.
+
+Production HTTP checks passed for day-night-1, and the user confirmed the direct
+image loads on the iPhone. The imported widget's map area was blank, so native
+Widgy image-source inspection is still pending; this style revision does not
+claim to fix that separate loading issue.
 
 ## Reproduce checks
 
