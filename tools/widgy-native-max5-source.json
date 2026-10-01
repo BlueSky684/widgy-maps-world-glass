@@ -1,0 +1,20 @@
+{
+  "provenance": "Native user export 20261001-130422, Text layer 96018; IMG_9646 confirms Decimals: Max 5; IMG_9647 shows additional latitude digits in the editor. No outside-editor precision result yet.",
+  "propertyKey": "28",
+  "max5": {
+    "b": 0,
+    "a": [
+      {
+        "c": 0,
+        "b": 960,
+        "d": 960,
+        "a": 11
+      }
+    ]
+  },
+  "source": {
+    "6": "Latitude (Decimal)",
+    "5": "Location"
+  },
+  "scope": "Text-layer formatting confirmed. Applying this setting inside a variable body is a hypothesis requiring device verification."
+}

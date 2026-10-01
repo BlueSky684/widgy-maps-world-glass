@@ -70,7 +70,8 @@ OTHER CONTROLS
 - Direct image JavaScript also lacked City in a separate probe, so failure
   is not confined to a JavaScript-variable-to-image-variable chain.
 - Text vs Real Number variable types both expose Decimal coordinates with
-  one decimal. A synthetic numeric input retains all its decimal digits.
+  one decimal under the tested default formatting. A synthetic numeric input
+  retains all its decimal digits.
   This does not mean the device location itself has only one-decimal precision:
   native DMS data demonstrates that more precise location data is available.
 - The latest async diagnostic is local text only: no images, fetch calls,
@@ -103,3 +104,18 @@ https://www.reddit.com/r/widgy/comments/1wgx4k4/variables_order/
 The main dashboard, map renderer and approved short coordinate display were
 not changed by these diagnostic probes. This report is a draft for review;
 it has not been sent to the Widgy developer.
+
+FOLLOW-UP: NATIVE DECIMAL FORMATTING (2026-10-01)
+IMG_9644-9646 expose the Text / Decimals control. In IMG_9647 the user-added
+native Latitude (Decimal) layer shows five meaningful decimal places after
+choosing Max 5, while the existing async variable still shows one decimal.
+This screenshot is INSIDE the editor; it does not establish outside-editor
+or JavaScript precision. The user's export 20261001-130422 identifies Max 5
+as text-layer property 28, scalar value 11. The sanitized schema is recorded
+in tools/widgy-native-max5-source.json without a stored location value.
+
+The separate Widgy_Max5_JavaScript_Check.json compares native direct output,
+native variables, Auto JS, Max 5 Text/Real Number variables in JS, Async and
+consumer-only formatting. All scripts are local text only. The native-proven
+property is copied exactly; applying it to variable bodies is UNVERIFIED
+until a screenshot outside the editor is received. No City fix is claimed.
