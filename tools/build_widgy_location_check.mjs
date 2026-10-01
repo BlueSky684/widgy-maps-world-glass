@@ -19,8 +19,14 @@ function row(name,entries,y) {
 }
 const request=widget['36'].find(v=>v['1']==='map_request');
 assert(request);
-request['3']['66'][0]['10']=request['3']['66'][0]['10'].replace("return url + '&t='", "return url + '&diagnostic=location&t='");
-assert(request['3']['66'][0]['10'].includes('&diagnostic=location'));
+const nativeRequest=request['3']['66'][0]['5']==='Custom Text';
+if (nativeRequest) {
+  request['3']['66'][0]['25']=request['3']['66'][0]['25'].replace('&t=','&diagnostic=location&t=');
+  assert(request['3']['66'][0]['25'].includes('&diagnostic=location'));
+} else {
+  request['3']['66'][0]['10']=request['3']['66'][0]['10'].replace("return url + '&t='", "return url + '&diagnostic=location&t='");
+  assert(request['3']['66'][0]['10'].includes('&diagnostic=location'));
+}
 const rows=[
   row('Check 1 · Native City',[custom('1 CITY SOURCE: ['),native('City'),custom(']')],188),
   row('Check 2 · Variable City',[custom('2 CITY VARIABLE: [${widgy.City}]')],227),
@@ -37,15 +43,18 @@ const rows=[
     return 'lat=' + field('lat') + ' / lon=' + field('lon') + ' / city=' + field('city');
   }`}],344),
 ];
+// The JS URL inspector did not reflect the server's received coordinates in
+// IMG_9629. Do not present that inspector as evidence for the new native path.
+if (nativeRequest) rows[4]['66']=[custom('5 URL BUILD: native Location + Date/Time (no JavaScript)')];
 const bg=structuredClone(layer(5001));bg.d0=widget.a2++;bg.s='Location Check · Panel';bg.g='uicol_black-100';delete bg.a;delete bg.o1;
 frame(bg,[40,180,1050,205]);
 home['1'].unshift(...rows,bg);
 widget['3']='Widgy Location Check';
-widget['4']='Separate diagnostic copy of Glass 3. Rows compare direct native city/coordinates, variables, and outgoing map request outside the editor. The map SERVER stamp reports its actual resolved source and city. This is a diagnostic, not a claimed fix. No fixed location, no external geocoding, no logging or storage of location data. Original Glass 3 remains unchanged.';
+widget['4']='Separate diagnostic copy. Rows compare direct native city/coordinates and variables outside the editor. The SERVER stamp reports the actual source and city received by the map. For native URL construction, row 5 identifies the pipeline instead of using the unreliable nested JS inspector. No fixed location, external geocoding, or location storage. The normal widget is unchanged.';
 writeFileSync(new URL('./Widgy_Location_Check.json',import.meta.url),JSON.stringify(widget));
 
 let page=readFileSync(new URL('./widgy-home-glass.html',import.meta.url),'utf8');
-page=page.replace(/Widgy Home · Glass(?: 3)?/g,'Widgy · Location Check')
+page=page.replace(/Widgy Home · Glass(?: \d+)?/g,'Widgy · Location Check')
   .replace(/<p>העיצוב[\s\S]*?<button/, '<p>עותק בדיקה נפרד לאיתור היעלמות שם העיר. תופיע טבלת בדיקה מעל המפה ושורת SERVER בתוכה.</p>\n  <p>ייבא כעותק נוסף, צא מהעורך ושלח צילום מלא של תצוגת הווידג׳ט מחוץ לעורך.</p>\n  <button')
   .replaceAll('Widgy_Home_Glass.json','Widgy_Location_Check.json')
   .replace("widget['3']!=='Widgy Home Glass'", "widget['3']!=='Widgy Location Check'")
