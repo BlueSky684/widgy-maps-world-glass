@@ -51,11 +51,19 @@ for(const n of fills){
  const p=Number(n.o1['2']);assert(Math.abs(val(n,'d')*REFERENCE.width/1600-DAY_BAR.width*p/100)<.001);
  assert.equal(n.o1['0'],after['36'].find(v=>v['1']==='day_progress')['0']);
 }
-for(const loc of [ ['31.8','34.7','Ashdod'],['31.8','34.7',"St. John's"],['0','0','Zero'],['','', ''],['${widgy.Latitude}','${widgy.Longitude}','${widgy.City}'] ]){
- let code=map['22'];for(const [key,value] of Object.entries({Latitude:loc[0],Longitude:loc[1],City:loc[2]}))code=code.replaceAll('${widgy.'+key+'}',value);
+assert.equal(map['1'],'Web URL');
+assert.equal(map['2'],'${widgy.map_request}');
+assert(!('22' in map),'No JavaScript may execute in the map image layer');
+const requestVariable=after['36'].find(v=>v['1']==='map_request');
+assert.equal(requestVariable['2'],0,'URL must be a text variable');
+const mapScript=requestVariable['3']['66'][0]['10'];
+for(const loc of [ ['31.8','34.7','Ashdod'],['31.8','34.7',"St. John's"],['40.7128','-74.006','New York'],['48.85','2.35','Paris & Centre'],['0','0','Zero'],['31.8','34.7',''],['','', ''],['${widgy.Latitude}','${widgy.Longitude}','${widgy.City}'] ]){
+ let code=mapScript;for(const [key,value] of Object.entries({Latitude:loc[0],Longitude:loc[1],City:loc[2]}))code=code.replaceAll('${widgy.'+key+'}',value);
  const url=new URL(vm.runInNewContext(code+'\nmain()'));
  assert.equal(url.searchParams.get('presentation'),'glass');assert.equal(url.searchParams.get('width'),'3306');
- assert.equal(url.searchParams.has('lat'),loc[0]==='31.8'||loc[0]==='0');
+ const available=loc[0]!==''&&!loc[0].includes('${');
+ assert.equal(url.searchParams.has('lat'),available);
+ assert.equal(url.searchParams.get('city'),available&&loc[2]?loc[2]:null);
 }
 // Every approved weather shape/glyph and conditional branch must survive styling.
 function oldWalk(n){
@@ -72,4 +80,4 @@ const alpha=(x,y)=>data[(Math.round(y*info.height/REFERENCE.height)*info.width+M
 assert.equal(alpha(700,400),0,'Map opening must stay transparent');
 assert.equal(alpha(500,70),255);assert.equal(alpha(400,900),255);
 console.log(`PASS: ${all.length} unique native layers; measured frames; original live sources, tabs and weather masters; daylight binding; step goals and missing data; global location; transparent 3306 x 3449 lossless chrome.`);
-console.log('Native step ring and prior variables confirmed in IMG_9626; revised spacing and formatted steps require the next iPhone screenshot.');
+console.log('Native step ring, spacing and formatted steps confirmed in screenshots; map_request Web URL binding requires an OUTSIDE-editor device check.');

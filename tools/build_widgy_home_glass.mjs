@@ -17,7 +17,7 @@ function frame(n,[x,y,w,h]) {
 const text=s=>({'5':'Custom Text','6':'Text','25':s});
 const source=(c,f)=>({'5':c,'6':f});
 const script=s=>({'5':'Javascript','6':'Script','10':s});
-const ids={steps:'AD5D21AF-E1F3-486C-A001-000000000001',goal:'AD5D21AF-E1F3-486C-A001-000000000002',progress:'AD5D21AF-E1F3-486C-A001-000000000003',label:'AD5D21AF-E1F3-486C-A001-000000000004'};
+const ids={steps:'AD5D21AF-E1F3-486C-A001-000000000001',goal:'AD5D21AF-E1F3-486C-A001-000000000002',progress:'AD5D21AF-E1F3-486C-A001-000000000003',label:'AD5D21AF-E1F3-486C-A001-000000000004',map:'AD5D21AF-E1F3-486C-A001-000000000005'};
 const newColors={};
 for(const [i,[name,color]] of Object.entries(COLORS).entries()) {
   const key=`hexcol_0C70EACC00004000A000${String(i+1).padStart(12,'0')}`;
@@ -129,8 +129,7 @@ const host=new URL(origin);assert(host.protocol==='https:'&&host.pathname==='/'&
 const map=layer(6170);
 frame(map,[HERO.x,HERO.y,HERO.width,HERO.height]);
 const endpoint=host.origin+'/api/night-map?mode=live&width=3306&presentation=glass';
-map['2']=endpoint+'&lat=31.8&lon=34.6&city=Ashdod';
-map['22']=`function main() {
+const mapRequestScript=`function main() {
   var latitude = String('${'${widgy.Latitude}'}').trim();
   var longitude = String('${'${widgy.Longitude}'}').trim();
   var city = String("${'${widgy.City}'}").trim();
@@ -142,13 +141,22 @@ map['22']=`function main() {
   }
   return url + '&t=' + Date.now();
 }`;
+// The city appears only in the editor with the current image-JavaScript path.
+// Resolve the request in the text-variable pipeline, as for working day/step
+// variables, then let the native Web URL image source load the result.
+// No device/city is baked into this path. Native home-screen review is required.
+widget['36'].push(variable('map_request',ids.map,0,[script(mapRequestScript)]));
+map['1']='Web URL';
+map['2']='${widgy.map_request}';
+delete map['22'];
 const chrome=structuredClone(map);chrome.d0=widget.a2++;chrome.s='Approved Glass · Chrome and Frames';
+chrome['1']='Javascript';
 chrome['2']=host.origin+'/assets/home-glass/Home_Glass_Chrome.png?v=1';
 chrome['22']=`function main() { return '${chrome['2']}'; }`;
 frame(chrome,[0,0,REFERENCE.width,REFERENCE.height]);
 home['1'].splice(home['1'].indexOf(map),0,chrome);
 widget['3']='Widgy Home Glass';
-widget['4']='Glass revision 2: event and day-progress spacing corrected from IMG_9626; step numbers use thousands separators. The native step ring, day progress and Health calories were confirmed in IMG_9626. Steps goal defaults to 10000 and can be changed in Variables > steps_goal. F50 terrain, lights and lossless map resolution remain unchanged. Device-local daylight and DST, native weather and 24-hour System Light clock preserved. City source is Location / City; an empty native city remains unavailable, never replaced with a fixed city. Calendar content is still demo data. Revised text fitting requires native iPhone review.';
+widget['4']='Glass revision 3: move live map request generation from image-layer JavaScript to the map_request text variable and load through the native Web URL image source, to address city disappearing outside the editor. Home-screen confirmation still required. No fixed city or location is used. Revision 2 layout, step formatting, step ring, daylight and Health sources preserved. Steps goal is 10000, editable in Variables > steps_goal. F50 terrain, lights and lossless map resolution unchanged. Calendar content remains demo data.';
 const output=new URL('./Widgy_Home_Glass.json',import.meta.url);
 writeFileSync(output,JSON.stringify(widget));
 console.log(JSON.stringify({output:output.pathname,name:widget['3'],bytes:Buffer.byteLength(JSON.stringify(widget)),stepsGoal:STEPS_RING.goal}));
