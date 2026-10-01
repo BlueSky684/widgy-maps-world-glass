@@ -17,7 +17,7 @@ function frame(n,[x,y,w,h]) {
 const text=s=>({'5':'Custom Text','6':'Text','25':s});
 const source=(c,f)=>({'5':c,'6':f});
 const script=s=>({'5':'Javascript','6':'Script','10':s});
-const ids={steps:'AD5D21AF-E1F3-486C-A001-000000000001',goal:'AD5D21AF-E1F3-486C-A001-000000000002',progress:'AD5D21AF-E1F3-486C-A001-000000000003'};
+const ids={steps:'AD5D21AF-E1F3-486C-A001-000000000001',goal:'AD5D21AF-E1F3-486C-A001-000000000002',progress:'AD5D21AF-E1F3-486C-A001-000000000003',label:'AD5D21AF-E1F3-486C-A001-000000000004'};
 const newColors={};
 for(const [i,[name,color]] of Object.entries(COLORS).entries()) {
   const key=`hexcol_0C70EACC00004000A000${String(i+1).padStart(12,'0')}`;
@@ -75,10 +75,15 @@ widget['36'].push(
     var count = Number(raw.replace(/,/g, '')), goal = Number(target.replace(/,/g, ''));
     if (!isFinite(count) || count < 0 || !isFinite(goal) || goal <= 0) return -1;
     return Math.min(100, Math.max(0, Math.floor(count / goal * 100)));
+  }`)]),
+  variable('steps_label',ids.label,0,[script(`function main() {
+    var raw = String('${'${widgy.steps_today}'}').trim().replace(/,/g, '');
+    if (!raw || !/^\\d+$/.test(raw)) return '—';
+    return raw.replace(/\\B(?=(\\d{3})+(?!\\d))/g, ',');
   }`)])
 );
-// Native number binding avoids a second label script and removes the repeated unit.
-layer(6141)['66']=[text('${widgy.steps_today}')];
+// Bind the native text to the formatted label; the ring keeps its raw numeric source.
+layer(6141)['66']=[text('${widgy.steps_label}')];
 
 let shapeTemplate;
 visit(home,n=>{if(!shapeTemplate&&n.z==='2'&&n['2']&&n['3'])shapeTemplate=n;});
@@ -143,7 +148,7 @@ chrome['22']=`function main() { return '${chrome['2']}'; }`;
 frame(chrome,[0,0,REFERENCE.width,REFERENCE.height]);
 home['1'].splice(home['1'].indexOf(map),0,chrome);
 widget['3']='Widgy Home Glass';
-widget['4']='Approved glass reference layout, measured from 7B498FAE-FA8F-4E28-9BDB-075E5E20749B(8).jpeg. Lossless glass chrome, rounded cards, native live text and dynamic progress ring. Steps goal defaults to 10000 and can be changed in Variables > steps_goal. F50 terrain, lights and map raster resolution remain unchanged. Device-local daylight and DST, Health (Daily) calories and weather bindings preserved. Clock remains native 24-hour System Light and weather uses the existing device units. Larger current-location marker and label. Calendar content is still demo data. Native iPhone layout review required.';
+widget['4']='Glass revision 2: event and day-progress spacing corrected from IMG_9626; step numbers use thousands separators. The native step ring, day progress and Health calories were confirmed in IMG_9626. Steps goal defaults to 10000 and can be changed in Variables > steps_goal. F50 terrain, lights and lossless map resolution remain unchanged. Device-local daylight and DST, native weather and 24-hour System Light clock preserved. City source is Location / City; an empty native city remains unavailable, never replaced with a fixed city. Calendar content is still demo data. Revised text fitting requires native iPhone review.';
 const output=new URL('./Widgy_Home_Glass.json',import.meta.url);
 writeFileSync(output,JSON.stringify(widget));
 console.log(JSON.stringify({output:output.pathname,name:widget['3'],bytes:Buffer.byteLength(JSON.stringify(widget)),stepsGoal:STEPS_RING.goal}));
