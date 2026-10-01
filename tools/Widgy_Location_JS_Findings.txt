@@ -1,0 +1,105 @@
+Widgy 27.0.1: Location variables are empty in both sync and async JavaScript outside the editor
+Investigation date: 2026-10-01
+Status: reproducible on the tested iPhone; internal cause and workaround unconfirmed
+
+SUMMARY
+Native text and native variable interpolation can display City and precise
+Location components outside the editor. The same variables become empty
+strings when inserted into JavaScript text sources outside the editor.
+Both Script and Async + No main() are affected in this test. JavaScript
+itself executes successfully. Changing to Async does not restore the data.
+
+The installed Widgy version was reported as 27.0.1. This is evidence from
+one device, not a claim that all installations or OS versions are affected.
+The reporter's actual city, address and coordinates are intentionally omitted.
+
+REPRODUCTION
+1. Import the diagnostic linked below as a separate widget.
+2. It defines a Text variable named async_city, sourced directly from
+   Location > City. No variable depends on another variable.
+3. Compare these text-layer sources:
+
+   Custom Text:
+   [${widgy.async_city}]
+
+   Javascript > Script:
+   function main() { return '[' + String("${widgy.async_city}") + ']'; }
+
+   Javascript > Async + No main():
+   sendToWidgy('[' + String("${widgy.async_city}") + ']');
+
+   Javascript > Async + No main(), Promise completion:
+   Promise.resolve().then(function () {
+     sendToWidgy('[' + String("${widgy.async_city}") + ']');
+   });
+
+4. The async control uses no Location input:
+   sendToWidgy('RAN at ' + new Date().toISOString().slice(11, 19) + ' UTC');
+5. Render outside the editor and compare with the editor.
+
+EXPECTED
+The native and JavaScript text layers resolve the same current Location
+variable, or the app documents a supported mechanism/limitation for this case.
+
+OBSERVED OUTSIDE THE EDITOR
+                                      Native text    Script      Async
+City                                  populated      []          []
+Country                               populated      []          not tested
+Latitude Degrees/Minutes/Seconds       populated      []/[]/[]    []/[]/[]
+Latitude Hemisphere                    populated      []          []
+Longitude (full DMS string)            populated      []          []
+Location Name                          populated      []          not tested
+Latitude Decimal                       1 decimal      1 decimal   1 decimal
+Longitude Decimal                      1 decimal      1 decimal   not tested
+
+Async control: RAN with a fresh execution timestamp.
+Async Promise City: [] as well.
+Async runtime: typeof widgy = undefined; typeof setTimeout = undefined;
+typeof fetch = function. sendToWidgy successfully delivers the results.
+This does not establish what other runtime APIs might be supported.
+
+EDITOR COMPARISON
+Earlier synchronous probes of City, Country, Location Name, DMS and full
+Longitude populate inside the editor. The latest async probe has a confirmed
+outside-editor result; an inside-editor async comparison has not been supplied.
+
+OTHER CONTROLS
+- Static text variables reach synchronous JavaScript correctly.
+- Fresh City aliases and a combined native location packet do not resolve
+  the outside-editor failure in JavaScript.
+- Direct image JavaScript also lacked City in a separate probe, so failure
+  is not confined to a JavaScript-variable-to-image-variable chain.
+- Text vs Real Number variable types both expose Decimal coordinates with
+  one decimal. A synthetic numeric input retains all its decimal digits.
+  This does not mean the device location itself has only one-decimal precision:
+  native DMS data demonstrates that more precise location data is available.
+- The latest async diagnostic is local text only: no images, fetch calls,
+  geocoding services or map endpoint are involved.
+
+INTERPRETATION AND LIMITS
+The evidence is consistent with a Location-variable substitution/evaluation
+problem outside the editor, shared by the tested sync and async sources.
+It does not identify the internal cause or prove that no workaround exists.
+Delaying an already-substituted empty string cannot recreate its missing data.
+A city should not be guessed from one-decimal coordinates as an exact result.
+
+QUESTIONS FOR THE DEVELOPER
+Is this native Location -> JavaScript substitution pattern supported outside
+the editor? Why do Decimal sources resolve while other Location fields do not?
+Is there a supported raw/full-precision Location accessor, dependency setting,
+or source-evaluation option that should be used instead?
+
+REPRODUCTION FILES (PINNED TO THE TESTED REVISION)
+https://github.com/BlueSky684/widgy-maps-world-glass/blob/c16bfbd554d468dfb64770640c6dc806ef7ec752/tools/Widgy_Async_Location_Check.json
+https://github.com/BlueSky684/widgy-maps-world-glass/blob/c16bfbd554d468dfb64770640c6dc806ef7ec752/tools/build_widgy_async_check.mjs
+
+Convenient importer:
+https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/tools/widgy-async-location-check.html
+
+RELATED DEVELOPER GUIDANCE
+https://www.reddit.com/r/widgy/comments/pdpi2j/fetch_use/
+https://www.reddit.com/r/widgy/comments/1wgx4k4/variables_order/
+
+The main dashboard, map renderer and approved short coordinate display were
+not changed by these diagnostic probes. This report is a draft for review;
+it has not been sent to the Widgy developer.
