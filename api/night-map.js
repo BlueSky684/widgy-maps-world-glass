@@ -1,4 +1,5 @@
 import {renderHomeMap, resolveLocation, REVISION} from '../lib/home-map-day-night.js';
+import {parseMapRequest} from '../lib/native-map-request.js';
 
 // This route is opt-in. Existing widget endpoints retain their behavior.
 export default async function handler(req, res) {
@@ -9,7 +10,7 @@ export default async function handler(req, res) {
     res.setHeader('Allow', 'GET, HEAD');
     return res.status(405).end();
   }
-  const url = new URL(req.url, 'https://widgy-maps-world-glass.vercel.app');
+  const url = parseMapRequest(req.url);
   const fixed = url.searchParams.get('at');
   // An explicit fixed UTC instant is for reproducible geometric checks only.
   // Widgy's t= cache buster never controls the solar instant.

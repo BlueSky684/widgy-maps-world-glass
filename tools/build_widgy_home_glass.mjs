@@ -129,23 +129,18 @@ const host=new URL(origin);assert(host.protocol==='https:'&&host.pathname==='/'&
 const map=layer(6170);
 frame(map,[HERO.x,HERO.y,HERO.width,HERO.height]);
 const endpoint=host.origin+'/api/night-map?mode=live&width=3306&presentation=glass';
-const mapRequestScript=`function main() {
-  var latitude = String('${'${widgy.Latitude}'}').trim();
-  var longitude = String('${'${widgy.Longitude}'}').trim();
-  var city = String("${'${widgy.City}'}").trim();
-  var url = '${endpoint}';
-  var lat = Number(latitude), lon = Number(longitude);
-  if (latitude && longitude && isFinite(lat) && isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180) {
-    url += '&lat=' + encodeURIComponent(lat) + '&lon=' + encodeURIComponent(lon);
-    if (city && city.indexOf('$'+'{') === -1) url += '&city=' + encodeURIComponent(city);
-  }
-  return url + '&t=' + Date.now();
-}`;
-// The city appears only in the editor with the current image-JavaScript path.
-// Resolve the request in the text-variable pipeline, as for working day/step
-// variables, then let the native Web URL image source load the result.
-// No device/city is baked into this path. Native home-screen review is required.
-widget['36'].push(variable('map_request',ids.map,0,[script(mapRequestScript)]));
+// IMG_9629 confirms native Location and text variables are available outside
+// the editor, while JS request construction/inspection loses those values.
+// Compose the entire URL directly from native data; no JS or nested variables.
+// The timestamp format uses the Custom/11 schema in the user's native export.
+// city_text MUST remain last; the API treats its entire tail as one city name.
+widget['36'].push(variable('map_request',ids.map,0,[
+  text(endpoint+'&binding=native4&t='),
+  {'5':'Date And Time','6':'Custom','11':'yyyyMMddHHmmssZ'},
+  text('&lat='),source('Location','Latitude (Decimal)'),
+  text('&lon='),source('Location','Longitude (Decimal)'),
+  text('&city_text='),source('Location','City'),
+]));
 map['1']='Web URL';
 map['2']='${widgy.map_request}';
 delete map['22'];
@@ -156,7 +151,7 @@ chrome['22']=`function main() { return '${chrome['2']}'; }`;
 frame(chrome,[0,0,REFERENCE.width,REFERENCE.height]);
 home['1'].splice(home['1'].indexOf(map),0,chrome);
 widget['3']='Widgy Home Glass';
-widget['4']='Glass revision 3: move live map request generation from image-layer JavaScript to the map_request text variable and load through the native Web URL image source, to address city disappearing outside the editor. Home-screen confirmation still required. No fixed city or location is used. Revision 2 layout, step formatting, step ring, daylight and Health sources preserved. Steps goal is 10000, editable in Variables > steps_goal. F50 terrain, lights and lossless map resolution unchanged. Calendar content remains demo data.';
+widget['4']='Glass revision 4: IMG_9629 confirms native City and coordinates exist outside the editor, but the map receives no city. The map_request URL now consists exclusively of native Location and Date And Time data sources; no JavaScript or nested variable substitution builds it. City is a terminal text field, preserving spaces, Unicode, apostrophes, ampersands and plus signs. No fixed city or location. Clean layout with no diagnostic panel. Home-screen confirmation still required. Approved F50 assets, layout, step goal and live sources unchanged. Calendar content remains demo data.';
 const output=new URL('./Widgy_Home_Glass.json',import.meta.url);
 writeFileSync(output,JSON.stringify(widget));
 console.log(JSON.stringify({output:output.pathname,name:widget['3'],bytes:Buffer.byteLength(JSON.stringify(widget)),stepsGoal:STEPS_RING.goal}));

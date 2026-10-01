@@ -3,6 +3,8 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import sharp from 'sharp';
 import {REFERENCE,DAY_BAR,STEPS_RING,BOXES} from './home_glass_design.mjs';
+import {parseMapRequest} from '../lib/native-map-request.js';
+import {resolveLocation} from '../lib/home-map-v122.js';
 const read=n=>JSON.parse(readFileSync(new URL(n,import.meta.url),'utf8'));
 const before=read('./widgy-home-f50-data.json'),after=read('./Widgy_Home_Glass.json');
 const all=[];function walk(n){all.push(n);if(n.z==='13')n['1'].forEach(walk);}after['1'].forEach(walk);
@@ -56,15 +58,36 @@ assert.equal(map['2'],'${widgy.map_request}');
 assert(!('22' in map),'No JavaScript may execute in the map image layer');
 const requestVariable=after['36'].find(v=>v['1']==='map_request');
 assert.equal(requestVariable['2'],0,'URL must be a text variable');
-const mapScript=requestVariable['3']['66'][0]['10'];
-for(const loc of [ ['31.8','34.7','Ashdod'],['31.8','34.7',"St. John's"],['40.7128','-74.006','New York'],['48.85','2.35','Paris & Centre'],['0','0','Zero'],['31.8','34.7',''],['','', ''],['${widgy.Latitude}','${widgy.Longitude}','${widgy.City}'] ]){
- let code=mapScript;for(const [key,value] of Object.entries({Latitude:loc[0],Longitude:loc[1],City:loc[2]}))code=code.replaceAll('${widgy.'+key+'}',value);
- const url=new URL(vm.runInNewContext(code+'\nmain()'));
+const requestEntries=requestVariable['3']['66'];
+assert(!JSON.stringify(requestEntries).includes('${'),'Native URL must have no nested variable references');
+assert(!requestEntries.some(e=>e['5']==='Javascript'),'Native URL must have no JS data source');
+assert.deepEqual(requestEntries.at(-1),{'5':'Location','6':'City'});
+assert.deepEqual(requestEntries[1],{'5':'Date And Time','6':'Custom','11':'yyyyMMddHHmmssZ'});
+const buildNative=([lat,lon,city])=>requestEntries.map(e=>{
+ if(e['5']==='Custom Text')return e['25'];
+ if(e['5']==='Date And Time')return '20261001121300+0300';
+ assert.equal(e['5'],'Location');
+ return {'Latitude (Decimal)':lat,'Longitude (Decimal)':lon,'City':city}[e['6']];
+}).join('');
+for(const loc of [ ['31.8','34.7','Ashdod'],['31.8','34.7',"St. John's"],['40.7128','-74.006','New York'],['48.85','2.35','Paris & Centre'],['0','0','Zero'],['31.8','34.7',''],['','', ''],['${widgy.Latitude}','${widgy.Longitude}','${widgy.City}'],['35','139','東京'],['31.8','34.7','אשדוד'],['0','0','Test + City'],['0','0','A &at=invalid&city=B'],['0','0','Town "Quoted"'],['0','0','100% Test'] ]){
+ const raw=buildNative(loc),url=parseMapRequest(raw);
  assert.equal(url.searchParams.get('presentation'),'glass');assert.equal(url.searchParams.get('width'),'3306');
+ assert.equal(url.searchParams.get('binding'),'native4');
+ assert.equal(url.searchParams.get('at'),null,'City content cannot inject request options');
  const available=loc[0]!==''&&!loc[0].includes('${');
- assert.equal(url.searchParams.has('lat'),available);
- assert.equal(url.searchParams.get('city'),available&&loc[2]?loc[2]:null);
+ const resolved=resolveLocation(url,{});
+ assert.equal(Boolean(resolved),available);
+ if(available) {
+  assert.equal(resolved.city,loc[2]);
+  assert.equal(resolved.latitude,Number(loc[0]));assert.equal(resolved.longitude,Number(loc[1]));
+ }
+ // Simulate native URL percent-encoding of the terminal text field.
+ const split=raw.indexOf('&city_text=')+'&city_text='.length;
+ const encoded=raw.slice(0,split)+encodeURIComponent(loc[2]);
+ assert.equal(parseMapRequest(encoded).searchParams.get('city'),url.searchParams.get('city'));
 }
+for(const raw of ['/?lat=0&lon=0&city=Legacy&at=2000-01-01T12:00:00Z','/?mode=live&width=3306'])
+ assert.equal(parseMapRequest(raw).href,new URL(raw,'https://widgy-maps-world-glass.vercel.app').href);
 // Every approved weather shape/glyph and conditional branch must survive styling.
 function oldWalk(n){
  const current=get(n.d0);assert(current);
@@ -80,4 +103,4 @@ const alpha=(x,y)=>data[(Math.round(y*info.height/REFERENCE.height)*info.width+M
 assert.equal(alpha(700,400),0,'Map opening must stay transparent');
 assert.equal(alpha(500,70),255);assert.equal(alpha(400,900),255);
 console.log(`PASS: ${all.length} unique native layers; measured frames; original live sources, tabs and weather masters; daylight binding; step goals and missing data; global location; transparent 3306 x 3449 lossless chrome.`);
-console.log('Native step ring, spacing and formatted steps confirmed in screenshots; map_request Web URL binding requires an OUTSIDE-editor device check.');
+console.log('Native map URL has no JS or nested substitution; global city round trips and legacy requests pass. Final outside-editor device confirmation is still required.');
