@@ -4,9 +4,9 @@ import {STEPS_RING} from './home_glass_design.mjs';
 // Short convex capsules overlap to form a continuous round-ended stroke.
 // Unlike a long concave outline, each individual layer has no hole to fill.
 // The 3.6-degree chord differs from the radius-63 circle by <0.032 pixels.
-export function stepRingSegment(percent) {
+export function stepRingSegment(percent, geometry = STEPS_RING) {
   assert(Number.isInteger(percent) && percent >= 1 && percent <= 100);
-  const {width, height, radius, stroke} = STEPS_RING;
+  const {width, height, radius, stroke} = geometry;
   const a0 = -Math.PI / 2 + (percent - 1) * 2 * Math.PI / 100;
   const a1 = -Math.PI / 2 + percent * 2 * Math.PI / 100;
   const start = [radius * Math.cos(a0), radius * Math.sin(a0)];
@@ -25,7 +25,7 @@ export function stepRingSegment(percent) {
   return points;
 }
 
-export function replaceStepsRing(widget) {
+export function replaceStepsRing(widget, geometry = STEPS_RING) {
   const home = widget['1'].find(n => n.d0 === 245);
   const layers = home['1'].filter(n => n.s?.startsWith('Steps Goal Ring'));
   assert.equal(layers.length, 100);
@@ -34,7 +34,7 @@ export function replaceStepsRing(widget) {
     const library = JSON.parse(Buffer.from(layer['2'], 'base64').toString());
     const item = library.items.find(item => item.id === layer['3']);
     assert(item);
-    item.shape.points = stepRingSegment(Number(layer.o1['2']));
+    item.shape.points = stepRingSegment(Number(layer.o1['2']), geometry);
     item.shape.rounding = 0;
     layer['2'] = Buffer.from(JSON.stringify(library)).toString('base64');
   }
