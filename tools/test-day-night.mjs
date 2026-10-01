@@ -5,7 +5,7 @@ import vm from 'node:vm';
 import {performance} from 'node:perf_hooks';
 import {PNG} from 'pngjs';
 import {WIDTH, HEIGHT, project, pixelCoordinates, solarPosition, solarElevation,
-  weightsAt, composePixel, renderPixels, getTextures, renderHomeMap} from '../lib/home-map-day-night.js';
+  weightsAt, composePixel, renderPixels, renderPixelsForSun, getEngraving, getTextures, renderHomeMap} from '../lib/home-map-day-night.js';
 import handler from '../api/night-map.js';
 
 mkdirSync('work/day-night', {recursive: true});
@@ -47,24 +47,41 @@ assert(southTurningLatitude < -61, 'reference lower arc is outside the approved 
 assert(Math.abs(solarElevation(southTurningLatitude,refSun.longitude,refSun))<1e-9);
 assert.deepEqual(solarPosition(new Date('2026-09-30T09:00:00+03:00')), solarPosition(new Date(dates[2])));
 
-// Independent source-over expectations, including zero-alpha ocean and light
-// visibility. Production pixels are compared to scalar samples in both frames.
-assert.deepEqual(composePixel([0,0,0],[255,200,30,0],20), [8,13,19]);
-assert.deepEqual(composePixel([0,0,0],[255,200,30,0],-20), [0,0,0]);
-assert.deepEqual(composePixel([100,100,100],[255,200,30,255],-20), [255,200,30]);
-assert.deepEqual(composePixel([100,100,100],[255,200,30,255],20), [108,108,108]);
-// The translucent shadow retains 78% of the day terrain at full night; it is
-// below the lights, so even partial-alpha light color is never shadowed again.
-assert.deepEqual(composePixel([100,100,100],[255,200,30,0],-20), [84,84,84]);
-assert.deepEqual(composePixel([100,100,100],[255,200,30,0],-3), [96,96,96]);
-assert.deepEqual(composePixel([100,100,100],[255,200,30,128],-20), [170,142,57]);
+// Exact golden-pixel regression against the user-selected F50 native PNG.
+const approved=renderPixelsForSun({latitude:20,longitude:-165});
+const rgba=Buffer.alloc(WIDTH*HEIGHT*4,255);
+for(let p=0;p<WIDTH*HEIGHT;p++)for(let c=0;c<3;c++)rgba[p*4+c]=approved.data[p*3+c];
+assert.equal(sha(rgba),'188ba82a67bd6c5d9f2232da7afe68a95e08ea6e5ea872dfe4a260231e57d1c3');
+const engraving=getEngraving();
+assert.deepEqual(composePixel([100,100,100],[255,200,30,255],20),[100,100,100]);
+assert.deepEqual(composePixel([100,100,100],[255,200,30,0],-20),[100,100,100]);
+assert.deepEqual(composePixel([100,100,100],[255,200,30,255],-20),[255,200,30]);
+assert.deepEqual(composePixel([0,0,0],[255,200,30,0],20,[20,30,40]),[0,0,0]);
+for(const instant of [...dates,'2026-10-01T04:00:00Z','2026-10-01T16:00:00Z']){
+  const frame=renderPixels(new Date(instant));
+  for(let p=0;p<WIDTH*HEIGHT;p+=113){
+    const i=p*4,o=p*3,{latitude,longitude}=pixelCoordinates(p%WIDTH,Math.floor(p/WIDTH));
+    const e=solarElevation(latitude,longitude,frame.sun);
+    for(let c=0;c<3;c++){
+      if(e>=0)assert.equal(frame.data[o+c],textures.terrain[i+c],'daytime artwork changed');
+      if(e<=-6&&!engraving.ocean[p]){
+        const a=textures.lights[i+3]/255;
+        assert.equal(frame.data[o+c],Math.round(textures.terrain[i+c]*(1-a)+textures.lights[i+c]*a),'night land or lights changed');
+      }
+    }
+  }
+}
 const first = renderPixels(new Date(dates[2]));
+const lossless=PNG.sync.read(await renderHomeMap({date:new Date(dates[2])}));
+for(let p=0;p<WIDTH*HEIGHT;p++)if(lossless.data[p*4+3]===255)
+  for(let c=0;c<3;c++)assert.equal(lossless.data[p*4+c],first.data[p*3+c],'full-resolution PNG altered composed pixels');
 const later = renderPixels(new Date('2026-09-30T18:00:00Z'));
 assert.notEqual(sha(first.data), sha(later.data));
 for (const frame of [first,later]) for (const [x,y] of [[600,900],[2000,550],[1450,1400],[100,700],[3200,400]]) {
   const i = (y*WIDTH+x)*4, o = (y*WIDTH+x)*3, geo = pixelCoordinates(x,y);
   const expected = composePixel(textures.terrain.subarray(i,i+4),textures.lights.subarray(i,i+4),
-    solarElevation(geo.latitude,geo.longitude,frame.sun));
+    solarElevation(geo.latitude,geo.longitude,frame.sun),
+    engraving.ocean[y*WIDTH+x]?engraving.rgb.subarray(o,o+3):null);
   assert.deepEqual([...frame.data.subarray(o,o+3)], expected);
 }
 const started = performance.now();
@@ -85,11 +102,15 @@ const call = async (url, method='GET') => {
 };
 assert.equal((await call('/?at=2013-05-23')).status,400);
 assert.equal((await call('/', 'POST')).status,405);
+assert.equal((await call('/?width=999')).status,400);
 const RealDate = globalThis.Date, fixed = new RealDate(dates[2]);
 globalThis.Date = class extends RealDate {constructor(...a){super(...(a.length?a:[fixed.getTime()]));}static now(){return fixed.getTime();}};
 try {
-  const live = await call('/api/night-map?t=0');
-  assert.equal(live.status,200);assert.equal(live.headers['X-Map-Rendered-At'],fixed.toISOString());
+  const live = await call('/api/night-map?t=0&width=1653');
+  assert.equal(live.status,200);
+  const small=PNG.sync.read(live.body);assert.equal(small.width,1653);assert.equal(small.height,779);
+  writeFileSync('work/day-night/widget-map.png',live.body);
+  assert.equal(live.headers['X-Map-Revision'],'engraved-coasts-f50');assert.equal(live.headers['X-Map-Rendered-At'],fixed.toISOString());
   assert.equal(live.headers['X-Map-Time-Mode'],'server-now');
   assert(live.headers['Cache-Control'].includes('no-store'));
   assert.equal(live.headers['Vercel-CDN-Cache-Control'],'no-store');
@@ -109,11 +130,15 @@ const context={Date,encodeURIComponent};
 const script=current['22'].replaceAll('${widgy.latitude}','31.8').replaceAll('${widgy.Longitude}','34.65').replaceAll('${widgy.City}','Ashdod');
 vm.runInNewContext(script+'; result=main();',context);
 const url=new URL(context.result);
-assert.equal(url.pathname,'/api/night-map');assert.equal(url.searchParams.get('lat'),'31.8');assert(!url.searchParams.has('at'));
-current['2']=original['2'];current['22']=original['22'];widget['3']=base['3'];
+assert.equal(url.pathname,'/api/night-map');assert.equal(url.searchParams.get('width'),'3306');assert.equal(url.searchParams.get('lat'),'31.8');assert(!url.searchParams.has('at'));
+current['2']=original['2'];current['22']=original['22'];widget['3']=base['3'];widget['4']=base['4'];
 assert.deepEqual(widget,base,'unrelated native widget settings changed');
+const diagnostic=JSON.parse(readFileSync('tools/widgy-day-night-light-test.json'));
+const diagnosticMap=mapLayer(diagnostic);assert(diagnosticMap['22'].includes('width=1653'));
+diagnosticMap['2']=original['2'];diagnosticMap['22']=original['22'];diagnostic['3']=base['3'];diagnostic['4']=base['4'];
+assert.deepEqual(diagnostic,base,'diagnostic widget changed unrelated layers');
 
-const report={passed:true,sourceHashes,sourceDimensions:[WIDTH,HEIGHT],projection:{west:-180,east:180,north:85,south:-61},
+const report={passed:true,approvedF50PixelMatch:true,seasonalDayAndNightPreservation:true,widgetOutput:[3306,1558],diagnosticOutput:[1653,779],sourceHashes,sourceDimensions:[WIDTH,HEIGHT],projection:{west:-180,east:180,north:85,south:-61},
   referenceDate:dates[0],referenceSolarPosition:refSun,referenceArcMinimumLatitude:southTurningLatitude,
   sourcePixelsUnchanged:true,alphaOnlyLightMask:true,utcAndCacheChecks:true,widgetOtherLayersUnchanged:true,
   pngBytes:png.length,renderMs:Math.round(renderMs),deviceTested:false};

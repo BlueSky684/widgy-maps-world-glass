@@ -11,12 +11,13 @@
 </head>
 <body><main>
   <h1>מפת יום ולילה</h1>
-  <p>גרסת בדיקה עם תאורת ערים לילית והצללה שמתעדכנת לאורך היום.</p>
+  <p>גרסת F המאושרת עם חריטה ב־50%, במפת PNG מלאה ואיכותית בגודל 3306×1558. תאורת הלילה מתעדכנת לאורך היום.</p>
   <p>העתק וייבא כווידג׳ט נוסף ב־Widgy. לאחר השיוך למסך הבית, בדוק את נראות הגבול ואת הרענון.</p>
   <button id="copy" disabled>טוען את הווידג׳ט…</button>
   <div id="status" role="status" aria-live="polite"></div>
   <a id="download" hidden download="World Map Glass Day Night.json">הורדת הקובץ לייבוא</a>
-  <p class="secondary"><a href="../api/night-map" target="_blank" rel="noopener">פתיחת המפה המעודכנת</a></p>
+  <p class="secondary"><a href="../api/night-map?width=3306" target="_blank" rel="noopener">פתיחת המפה המעודכנת</a></p>
+  <p class="secondary"><a href="?loading-test=1">גרסת אבחון טעינה בחצי רזולוציה</a></p>
   <small>מומלץ לפתוח ב־Safari. העדכון מתבצע בעת רענון הווידג׳ט.</small>
 </main>
 <script>
@@ -39,10 +40,11 @@ button.addEventListener('click',()=>{
 });
 (async()=>{
   try{
-    const response=await fetch('./widgy-day-night.json',{cache:'no-store'});
+    const light=new URLSearchParams(location.search).get('loading-test')==='1';
+    const response=await fetch(light?'./widgy-day-night-light-test.json':'./widgy-day-night.json',{cache:'no-store'});
     if(!response.ok)throw new Error('Widget load failed');
     const widget=await response.json();
-    if(widget['3']!=='Widgy Home Day Night Test')throw new Error('Unexpected widget');
+    if(widget['3']!==(light?'Widgy Home F50 Loading Test':'Widgy Home F50 Test'))throw new Error('Unexpected widget');
     // The copy belongs to this deployed build, including preview deployments.
     let count=0;
     function adapt(value){
@@ -51,6 +53,7 @@ button.addEventListener('click',()=>{
       for(const child of Object.values(value))adapt(child);
     }
     adapt(widget);if(count!==1)throw new Error('Missing map layer');
+    if(light){document.querySelector('h1').textContent='אבחון טעינת המפה';document.querySelector('main p').textContent='לבדיקת טעינה בלבד: מפת 1653×779. הגרסה הסופית נשארת ברזולוציה המלאה 3306×1558.';}
     payload=JSON.stringify(widget);
     download.href=URL.createObjectURL(new Blob([payload],{type:'application/json'}));download.hidden=false;
     button.disabled=false;button.textContent='העתקת הווידג׳ט';

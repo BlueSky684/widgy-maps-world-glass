@@ -17,11 +17,14 @@ export default async function handler(req, res) {
   const date = fixed === null ? new Date() : new Date(fixed);
   if (!validISO || !Number.isFinite(date.getTime()) || date.getUTCFullYear() < 1900 || date.getUTCFullYear() > 2100)
     return res.status(400).json({error: 'at must be an ISO instant with a timezone, between 1900 and 2100'});
+  const width=Number(url.searchParams.get('width') || 3306);
+  if(![3306,1653,1102].includes(width))return res.status(400).json({error:'Unsupported image width'});
   const location = resolveLocation(url, req.headers);
   try {
-    const png = await renderHomeMap({date, location});
+    const png = await renderHomeMap({date, location, width});
     res.setHeader('Content-Type', 'image/png');
     res.setHeader('X-Map-Revision', REVISION);
+    res.setHeader('X-Map-Width', String(width));
     res.setHeader('X-Map-Time-Mode', fixed === null ? 'server-now' : 'fixed-test');
     res.setHeader('X-Map-Rendered-At', date.toISOString());
     res.setHeader('X-Map-Location-Source', location?.source || 'unavailable');
