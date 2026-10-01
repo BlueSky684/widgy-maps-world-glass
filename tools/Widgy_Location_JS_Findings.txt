@@ -160,3 +160,18 @@ the prepared phone-side async lookup. The disabled Review export and original
 dashboard remain available. The active export script passed a simulated
 provider-to-map-URL check; complete phone execution still needs verification.
 No provider calls were made from this workspace.
+
+DEVICE RESULT: ASYNC CITY MAP DID NOT LOAD (2026-10-01)
+IMG_9649 shows the active JS City copy in the widget overview, outside the
+editor, with an entirely blank map. Other live fields and chrome render.
+This does NOT establish whether the provider request ran or returned a city.
+The map URL was produced by an async variable consumed by an image; only
+direct async text completion and ordinary synchronous URL variables had been
+verified on the phone. Local tests did not emulate Widgy's evaluation lifecycle.
+
+The failed import action is withdrawn. The existing recovery import remains
+unchanged. Widgy_Fetch_Image_Check isolates direct async fetch text from
+async URL variables: immediate, Promise-only and fetch-backed. A controlled
+JSON endpoint has CORS enabled and contains no location. One direct text-layer
+request uses current Max 5 coordinates with the already authorized provider.
+This is a diagnostic, not a claimed city fix; screenshot results are pending.
