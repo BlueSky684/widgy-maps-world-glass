@@ -152,3 +152,11 @@ existing coarse map inputs. The production dashboard is unchanged.
 Provider documentation:
 https://www.bigdatacloud.com/free-api/free-reverse-geocode-to-city-api
 https://www.bigdatacloud.com/docs/article/fair-use-policy-for-free-client-side-reverse-geocoding-api
+
+ACTIVATION APPROVED (2026-10-01)
+The user explicitly approved sending current precise device coordinates to
+BigDataCloud for city identification. Widgy_Home_Glass_JS_City.json now enables
+the prepared phone-side async lookup. The disabled Review export and original
+dashboard remain available. The active export script passed a simulated
+provider-to-map-URL check; complete phone execution still needs verification.
+No provider calls were made from this workspace.
