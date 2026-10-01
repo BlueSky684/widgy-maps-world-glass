@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Widgy · Location Check</title>
+  <style>
+    :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;min-height:100dvh;display:grid;place-items:center;background:#121417;color:#f4f7fa;font:16px/1.65 -apple-system,BlinkMacSystemFont,Arial,sans-serif;padding:24px}main{max-width:400px;text-align:center}h1{font-size:25px;line-height:1.3}p,small{color:#b9c1cd}button{border:0;border-radius:14px;background:#c5ff0a;color:#111;font:600 17px -apple-system,BlinkMacSystemFont,Arial,sans-serif;padding:16px 24px;min-height:54px;cursor:pointer;touch-action:manipulation}button:disabled{opacity:.45}a{color:#d7e5fc}#status{min-height:54px;margin:18px 0;font-size:14px}small{display:block;font-size:13px;margin-top:20px}
+  </style>
+</head>
+<body><main>
+  <h1>Widgy · Location Check</h1>
+  <p>עותק בדיקה נפרד לאיתור היעלמות שם העיר. תופיע טבלת בדיקה מעל המפה ושורת SERVER בתוכה.</p>
+  <p>ייבא כעותק נוסף, צא מהעורך ושלח צילום מלא של תצוגת הווידג׳ט מחוץ לעורך.</p>
+  <button id="copy" disabled>טוען את הווידג׳ט…</button>
+  <div id="status" role="status" aria-live="polite"></div>
+  <a id="download" hidden download="Widgy_Location_Check.json">הורדת הקובץ לייבוא</a>
+  <small>פתח ב־Safari, העתק ועבור ל־Widgy לייבוא מהלוח כעותק נוסף. הנתונים משתנים עם רענון הווידג׳ט.</small>
+  <small>זהו כלי אבחון זמני. הוא אינו מחליף את הווידג׳ט הרגיל.</small>
+</main>
+<script>
+'use strict';
+const button=document.getElementById('copy'),status=document.getElementById('status'),download=document.getElementById('download');
+let payload='';
+function success(){button.textContent='הועתק ✓';status.textContent='אפשר לעבור ל־Widgy ולייבא מהלוח כעותק נוסף.';}
+function legacyCopy(){
+  const field=document.createElement('textarea');field.value=payload;field.readOnly=true;
+  field.style.cssText='position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none;font-size:16px';
+  document.body.appendChild(field);let ok=false;
+  try{field.focus({preventScroll:true});field.select();field.setSelectionRange(0,field.value.length);ok=document.execCommand('copy');}
+  catch{}finally{field.remove();button.focus({preventScroll:true});}
+  if(ok)success();else status.textContent='אפשר להוריד את הקובץ מהקישור ולייבא אותו ב־Widgy.';
+}
+button.addEventListener('click',()=>{
+  if(!payload)return;
+  if(!window.isSecureContext||!navigator.clipboard){legacyCopy();return;}
+  navigator.clipboard.writeText(payload).then(success,legacyCopy);
+});
+(async()=>{
+  try{
+    const response=await fetch('./Widgy_Location_Check.json',{cache:'no-store'});
+    if(!response.ok)throw new Error('Widget load failed');
+    const widget=await response.json();
+    if(widget['3']!=='Widgy Location Check')throw new Error('Unexpected widget');
+    payload=JSON.stringify(widget);
+    download.href=URL.createObjectURL(new Blob([payload],{type:'application/json'}));download.hidden=false;
+    button.disabled=false;button.textContent='העתקת הווידג׳ט';
+    status.textContent='מוכן לייבוא כעותק נוסף.';
+  }catch{status.textContent='הטעינה נכשלה. נסה לפתוח מחדש ב־Safari.';}
+})();
+</script>
+</body></html>

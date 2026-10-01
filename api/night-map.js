@@ -22,7 +22,8 @@ export default async function handler(req, res) {
   const location = resolveLocation(url, req.headers);
   const presentation = url.searchParams.get('presentation') === 'glass' ? 'glass' : 'default';
   try {
-    const png = await renderHomeMap({date, location, width, presentation});
+    const diagnostic = url.searchParams.get('diagnostic') === 'location';
+    const png = await renderHomeMap({date, location, width, presentation, diagnostic});
     res.setHeader('Content-Type', 'image/png');
     res.setHeader('X-Map-Revision', REVISION);
     res.setHeader('X-Map-Width', String(width));
