@@ -1,0 +1,10 @@
+import sharp from 'sharp';
+import {writeFileSync,mkdirSync} from 'node:fs';
+import {chromeSVG,REFERENCE} from './home_glass_design.mjs';
+const out=new URL('../assets/home-glass/',import.meta.url);
+mkdirSync(out,{recursive:true});
+const svg=chromeSVG();
+writeFileSync(new URL('Home_Glass_Chrome.svg',out),svg);
+const width=3306,height=Math.round(width*REFERENCE.height/REFERENCE.width);
+await sharp(Buffer.from(svg)).resize(width,height).withIccProfile('srgb').png({compressionLevel:9}).toFile(new URL('Home_Glass_Chrome.png',out).pathname);
+console.log(JSON.stringify({chrome:[width,height],liveContentEmbedded:false}));

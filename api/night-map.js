@@ -20,8 +20,9 @@ export default async function handler(req, res) {
   const width=Number(url.searchParams.get('width') || 3306);
   if(![3306,1653,1102].includes(width))return res.status(400).json({error:'Unsupported image width'});
   const location = resolveLocation(url, req.headers);
+  const presentation = url.searchParams.get('presentation') === 'glass' ? 'glass' : 'default';
   try {
-    const png = await renderHomeMap({date, location, width});
+    const png = await renderHomeMap({date, location, width, presentation});
     res.setHeader('Content-Type', 'image/png');
     res.setHeader('X-Map-Revision', REVISION);
     res.setHeader('X-Map-Width', String(width));
