@@ -198,3 +198,9 @@ verify immediate native request kickoff and input-before-consumer ordering.
 Visual layers, approved map assets, short display and recovery are unchanged.
 R2 full dashboard phone result is pending. No live provider requests were made
 from this workspace.
+
+DEVICE RESULT: R2 FULL DASHBOARD PASSES (2026-10-01, 16:49)
+IMG_9651 shows the complete dashboard outside the editor: map loaded, city
+beside marker, short one-decimal coordinates. This confirms the combined
+phone-side JS lookup and map image path on this device. Which individual R2
+change resolved R1 remains unproven; do not change this working integration.
