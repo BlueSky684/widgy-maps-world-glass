@@ -5,6 +5,8 @@ import vm from 'node:vm';
 // IMG_9640: native DMS, direction, Longitude and Location Name work outside
 // the editor, while the matching synchronous JS inputs are empty.
 // IMG_9641 confirms Javascript / Async + No main() as a separate source.
+// IMG_9643 outside editor confirms this Async source executes (RAN), but
+// City, DMS, hemisphere and full Longitude remain empty; Decimal resolves.
 // Use the established Javascript code field (10) with that exact source
 // name (6). The constant control verifies this import on the device; local
 // JS tests cannot verify Widgy's source selection or substitution timing.
