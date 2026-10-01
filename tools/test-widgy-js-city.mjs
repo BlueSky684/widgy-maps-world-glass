@@ -8,9 +8,9 @@ import {resolveLocation} from '../lib/home-map-day-night.js';
 const endpoint = 'https://example.test/api/night-map?mode=live&width=3306&presentation=glass';
 const inputs = {map_latitude_max5:'12.34567', map_longitude_max5:'-123.45678', Latitude:'12.3', Longitude:'-123.5'};
 const data = {latitude:12.34567, longitude:-123.45678, lookupSource:'coordinates', city:'Test City'};
-async function run({enabled = true, replacements = {}, fetchImpl = async () => ({ok:true,status:200,json:async()=>({...data})})} = {}) {
+async function run({enabled = true, source, replacements = {}, fetchImpl = async () => ({ok:true,status:200,json:async()=>({...data})})} = {}) {
   const values = {...inputs, ...replacements}, requests = [], outputs = [];
-  const code = buildCityMapScript(endpoint, {enabled}).replace(/"\$\{widgy\.([^}]+)\}"/g, (_, name) => JSON.stringify(values[name]));
+  const code = (source || buildCityMapScript(endpoint, {enabled})).replace(/"\$\{widgy\.([^}]+)\}"/g, (_, name) => JSON.stringify(values[name]));
   let done;
   const completed = new Promise(resolve => {done = resolve;});
   vm.runInNewContext(code, {
@@ -82,4 +82,17 @@ for(const name of ['map_latitude_max5','map_longitude_max5']) {
   assert.equal(variable['3']['28'].a[0].a,11);
   assert(variable['3']['66'].every(e=>e['5']==='Location'));
 }
-console.log(`${count} simulated runtime cases passed. Source precision, one completion, no IP city, failure fallback, URL escaping and disabled lookup verified. Phone network and async-image integration remain unverified.`);
+const active=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_JS_City.json',import.meta.url)));
+assert.deepEqual(active['1'],original['1']);
+assert.deepEqual(active['2'],original['2']);
+const activeScript=active['36'].find(v=>v['1']==='map_request')['3']['66'][0];
+assert.equal(activeScript['6'],'Async + No main()');
+const exported=await run({source:activeScript['10']});
+assert.equal(exported.requests.length,1);
+assert.equal(exported.url.searchParams.get('city'),data.city);
+assert.equal(exported.url.searchParams.get('lat'),inputs.map_latitude_max5);
+assert.equal(exported.url.searchParams.get('presentation'),'glass');
+assert.equal(exported.url.searchParams.get('width'),'3306');
+assert.equal(exported.url.hostname,'widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app');
+count++;
+console.log(`${count} simulated runtime cases passed, including the actual enabled widget script. Source precision, one completion, no IP city, failure fallback, URL escaping and disabled review copy verified. Phone network and async-image integration remain unverified.`);
