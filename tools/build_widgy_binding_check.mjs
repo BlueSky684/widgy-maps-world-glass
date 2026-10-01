@@ -73,8 +73,8 @@ layers.push(text('Legend', [custom('Green = resolved  /  Amber = wrong value')],
 layers.push(text('Legend blank', [custom('Blank = image did not load')], [70,1460,1460,65]));
 background.d0 = nextId++; layers.push(background);
 
-const widget = {};
-for (const key of ['0','9','10','20','21','28']) widget[key] = base[key];
+// Preserve the native export's root settings as well as its layer schema.
+const widget = structuredClone(base);
 Object.assign(widget, {'1':layers, '2':[], '3':'Widgy Binding Check',
   '4':'Isolated runtime diagnostic. Six small synthetic image controls; native City is displayed locally only. The dashboard and map are not modified. This is not a city fix.',
   '5':base['5'], '6':0, '7':[], '36':variables, '38':[], '39':{'System Regular':1}, a2:nextId});
