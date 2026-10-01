@@ -32,6 +32,10 @@ Object.assign(get(6122),structuredClone(known.get(6122)));
 
 // Both dynamic strings use one common center, independent of word length.
 for(const id of [6103,6104])get(id)['2']={a:[{a:1,b:168}],b:0};
+// Center each live solar time within its own slot, with a shared baseline.
+for(const [id,box]of [[6121,[109,720,100,50]],[6124,[941,720,98,50]]]){
+ frame(get(id),box);get(id)['2']={a:[{a:1,b:168}],b:0};
+}
 // Keep the native temperature/unit source. A modestly smaller cap height and
 // 4px left shift reserve ~30px of clear space before the card's divider.
 frame(get(6131),[219,849,123,99]);
@@ -56,7 +60,7 @@ assert.deepEqual(widget['36'].filter(v=>v['1']!=='day_progress'),r3['36'].filter
 writeFileSync(new URL('./Widgy_Home_Glass_JS_City_R5.json',import.meta.url),JSON.stringify(widget));
 const page=read('./widgy-home-js-city-r3.html')
  .replaceAll('JS City R3','JS City R5').replaceAll('JS_City_R3','JS_City_R5')
- .replace('אייקון FITNESS עודכן לדמות רצה. טבעת הצעדים עודכנה לקשת רציפה עם קצוות מעוגלים ומרכז כהה, בהתאם לרפרנס המאושר.','חזרה לגופנים שעבדו, DAY PROGRESS בשורה אחת ובחישוב מחצות עד חצות, מרכוז היום והחודש, ומרווח נוסף ליד הטמפרטורה. הטבעת הדקה והיעד היומי נשמרו.')
+ .replace('אייקון FITNESS עודכן לדמות רצה. טבעת הצעדים עודכנה לקשת רציפה עם קצוות מעוגלים ומרכז כהה, בהתאם לרפרנס המאושר.','חזרה לגופנים שעבדו, DAY PROGRESS בשורה אחת ובחישוב מחצות עד חצות, מרכוז התאריך ושעות הזריחה והשקיעה, ומרווח נוסף ליד הטמפרטורה. הטבעת הדקה והיעד היומי נשמרו.')
  .replace('מבוסס על R2 שהציגה את המפה ושם העיר מחוץ לעורך.','משתמש בגופנים המקוריים של R3.');
 writeFileSync(new URL('./widgy-home-js-city-r5.html',import.meta.url),page);
 // Withdraw the broken importer; its previously shared URL leads to the repair.
