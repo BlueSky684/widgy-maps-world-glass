@@ -175,3 +175,26 @@ async URL variables: immediate, Promise-only and fetch-backed. A controlled
 JSON endpoint has CORS enabled and contains no location. One direct text-layer
 request uses current Max 5 coordinates with the already authorized provider.
 This is a diagnostic, not a claimed city fix; screenshot results are pending.
+
+DEVICE RESULT: DIRECT REVERSE GEOCODING AND ASYNC IMAGE CONTROLS PASS
+IMG_9650, outside editor, 2026-10-01:
+- fetch, XMLHttpRequest and sendToWidgy are functions in the async source.
+- Direct controlled fetch returned the expected JSON.
+- Direct BigDataCloud fetch returned HTTP 200, lookupSource coordinates,
+  a populated city matching native City, and matching request/response GPS.
+- All four image controls passed: direct URL, immediate async variable,
+  Promise-completed async variable, and fetch-backed async URL variable.
+
+This confirms the direct phone-side reverse-geocoding path and refutes a
+general claim that async variables cannot feed images. It does not yet prove
+the combination in the full dashboard. No extra native City-binding test is
+needed; the external lookup successfully bypasses that missing text input.
+
+R2 changes only integration differences: start fetch immediately as in the
+successful direct test, put native Max 5 inputs before the URL consumer, and
+copy the variable body from the successful fetch-backed image control. The
+initial cause of R1's blank map remains unproven. R2's 27 simulated cases also
+verify immediate native request kickoff and input-before-consumer ordering.
+Visual layers, approved map assets, short display and recovery are unchanged.
+R2 full dashboard phone result is pending. No live provider requests were made
+from this workspace.
