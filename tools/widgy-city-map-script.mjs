@@ -28,9 +28,10 @@ export function cityMapRuntime(latitude, longitude, endpoint, enabled, fallbackL
   }
   var lookup = 'https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=' +
     encodeURIComponent(lat) + '&longitude=' + encodeURIComponent(lon) + '&localityLanguage=en';
-  Promise.resolve().then(function () {
-    return fetch(lookup);
-  }).then(function (response) {
+  // Match the direct fetch kickoff which completed on the phone in IMG_9650.
+  // Start the native request during initial evaluation, not in a Promise job.
+  try {
+  fetch(lookup).then(function (response) {
     if (!response || response.ok === false ||
         (typeof response.status === 'number' && (response.status < 200 || response.status >= 300))) {
       throw new Error('City lookup failed');
@@ -53,6 +54,9 @@ export function cityMapRuntime(latitude, longitude, endpoint, enabled, fallbackL
     // never settles is still subject to Widgy's own execution/network timeout.
     finish(mapURL(''));
   });
+  } catch (error) {
+    finish(mapURL(''));
+  }
 }
 
 export function buildCityMapScript(endpoint, {enabled = false} = {}) {
