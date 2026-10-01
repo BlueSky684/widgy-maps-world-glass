@@ -19,7 +19,7 @@ export const BOXES = {
 
 // Technical production asset: glass, rims and static ornaments only.
 // All live text, weather artwork, time, progress and navigation remain native.
-export function chromeSVG() {
+export function chromeSVG({stepsRing = STEPS_RING} = {}) {
   const {width:w,height:h}=REFERENCE;
   const horizon=(cx,cy)=>`<g transform="translate(${cx} ${cy})" fill="${COLORS.lime}" stroke="${COLORS.lime}" stroke-width="4" stroke-linecap="round">
     <path d="M-12 3 A12 12 0 0 1 12 3Z" stroke="none"/>
@@ -42,7 +42,7 @@ export function chromeSVG() {
     <rect x="577" y="808" width="535" height="221" rx="30" fill="${COLORS.card}" stroke="${COLORS.rim}" stroke-width="1.8"/>
     <g stroke="#44525e" stroke-width="1.5" opacity=".75"><path d="M31 793H1102M25 1049H1108M358 855V989M942 855V989M270 1077V1148M563 1077V1148M854 1077V1148"/></g>
     <rect x="214" y="759" width="707" height="8" rx="4" fill="#44535f"/>
-    <circle cx="674" cy="920" r="63" fill="none" stroke="url(#ring)" stroke-width="16"/>
+    <circle cx="674" cy="920" r="${stepsRing.radius}" fill="none" stroke="url(#ring)" stroke-width="${stepsRing.stroke}"/>
     ${horizon(64,749)}${horizon(1069,749)}${arrow(410,889,1)}${arrow(410,954,-1)}
   </g>
   <rect x="22" y="154" width="1090" height="540" rx="30" fill="none" stroke="#465763" stroke-width="2"/>
