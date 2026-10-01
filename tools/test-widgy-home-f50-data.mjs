@@ -67,7 +67,7 @@ assert.deepEqual(map,oldMap,'Map changes beyond the existing importer origin ada
 const home=after['1'].find(n=>n.d0===245)['1'];
 for(const id of [80070,80083,80096]) assert(home.findIndex(n=>n.d0===id)<home.findIndex(n=>n.d0===6160),'Weather aliases must be in front of the card and background');
 assert.deepEqual(lookup.get(6143)['66'],[{'5':'Pedometer','6':'Distance'}]);
-assert.deepEqual(lookup.get(6144)['66'],[{'5':'Health','6':'Active Energy Burned'}]);
+assert.deepEqual(lookup.get(6144)['66'],[{'5':'Health (Daily)','6':'Active Energy Burned'}]);
 assert.equal(after['36'].length,before['36'].length+2);
 assert(after.a2>Math.max(...fixed.map(n=>n.d0)));
 const progressVariable=after['36'].find(v=>v['1']==='day_progress');

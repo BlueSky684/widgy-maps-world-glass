@@ -13,7 +13,9 @@ const source = (category, field) => ({'5':category,'6':field});
 // Native source names copied from the user's exports: Pedometer/Distance,
 // Sun And Moon/Sunrise/Sunset and Weather (Now)/Max./Min. Temperature Today.
 layer(6143)['66'] = [source('Pedometer', 'Distance')];
-layer(6144)['66'] = [source('Health', 'Active Energy Burned')];
+// The user's current Widgy source picker (IMG_9624.jpeg) exposes Health (Daily),
+// not the legacy Health category. Use the daily total for active calories.
+layer(6144)['66'] = [source('Health (Daily)', 'Active Energy Burned')];
 // Keep the original number + native Steps unit. The caption gives its period.
 layer(6142)['66'] = [text('today')];
 layer(6133)['66'] = [text('↑ '), source('Weather (Now)', 'Max. Temperature Today')];
@@ -68,7 +70,7 @@ const map = layer(6170);
 for (const key of ['2','22']) map[key] = map[key].replaceAll('https://widgy-maps-world-glass.vercel.app', parsed.origin);
 
 widget['3'] = 'Widgy Home F50 Data';
-widget['4'] = 'Revision 2: native percentage text binding shares the daylight variable directly with the fill. Approved F50 map and artwork preserved. Daylight progress uses today’s native sunrise/sunset and the device’s current local time zone, including daylight saving; 0% before sunrise, 100% after sunset, unavailable if no rise/set data. Live Pedometer distance, Health active energy and today’s weather high/low. Weather alias layer order repaired. Active energy remains unverified on device when the source returns no data; never substitute estimated or demo calories. Requires normal Widgy location, motion and Health permissions. Calendar demo content remains unchanged.';
+widget['4'] = 'Revision 3: active calories use Health (Daily) instead of the legacy Health category, matching the current on-device source picker. Native percentage text shares the daylight variable directly with the fill; confirmed working on device. Approved F50 map and artwork preserved. Daylight progress uses today’s native sunrise/sunset and the device’s current local time zone, including daylight saving; 0% before sunrise, 100% after sunset, unavailable if no rise/set data. Live Pedometer distance and today’s weather high/low. Weather alias layer order repaired. Active calorie output still requires on-device confirmation with available Health data and read permission; never substitute estimated or demo calories. Calendar demo content remains unchanged.';
 
 writeFileSync(new URL('./widgy-home-f50-data.json', import.meta.url), JSON.stringify(widget));
 console.log(JSON.stringify({name:widget['3'], mapOrigin:parsed.origin, bytes:Buffer.byteLength(JSON.stringify(widget))}));
