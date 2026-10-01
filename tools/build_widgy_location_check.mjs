@@ -19,45 +19,33 @@ function row(name,entries,y) {
 }
 const request=widget['36'].find(v=>v['1']==='map_request');
 assert(request);
-// Keep the known map binding. The failed native URL is DISPLAYED as text only.
+// IMG_9630 confirms native City is present, JS City is empty, and the
+// recovered map_request still loads the image. Test appending native City
+// directly in the image Web URL field, outside JavaScript and map_request.
 const mapScript=request['3']['66'][0]['10'];
 assert(mapScript);
 request['3']['66'][0]['10']=mapScript.replace("return url + '&t='", "return url + '&diagnostic=location&t='");
 assert(request['3']['66'][0]['10'].includes('&diagnostic=location'));
-const endpoint=mapScript.match(/var url = '([^']+)'/)[1];
-const nativeEntries=[
-  custom(endpoint+'&binding=native4&t='),
-  {'5':'Date And Time','6':'Custom','11':'yyyyMMddHHmmssZ'},
-  custom('&lat='),native('Latitude (Decimal)'),
-  custom('&lon='),native('Longitude (Decimal)'),
-  custom('&city_text='),native('City'),
-];
-const probe=structuredClone(request);
-probe['0']='AD5D21AF-E1F3-486C-A001-000000000006';probe['1']='native4_query_probe';
-probe['3']['66']=structuredClone(nativeEntries);
-probe['3']['66'][0]['25']='binding=native4&t=';
-probe['3'].s='Variable: native4_query_probe';widget['36'].push(probe);
-const fullProbe=structuredClone(probe);fullProbe['0']='AD5D21AF-E1F3-486C-A001-000000000007';fullProbe['1']='native4_url_probe';
-fullProbe['3']['66']=nativeEntries;fullProbe['3'].s='Variable: native4_url_probe';widget['36'].push(fullProbe);
+const map=layer(6170);
+assert.equal(map['1'],'Web URL');assert.equal(map['2'],'${widgy.map_request}');
+map['2']='${widgy.map_request}&binding=direct-city&city_text=${widgy.City}';
 const rows=[
   row('Check 1 · Native City',[custom('1 CITY SOURCE: ['),native('City'),custom(']')],181),
   row('Check 2 · Variable City',[custom('2 CITY VARIABLE: [${widgy.City}]')],220),
-  row('Check 3 · JS City',[custom('3 JS CITY: ['),{'5':'Javascript','6':'Script','10':`function main() { return String("${'${widgy.City}'}").trim(); }`},custom(']')],259),
-  row('Check 4 · Coordinates',[custom('4 COORDINATES: [${widgy.Latitude}] / [${widgy.Longitude}]')],298),
-  row('Check 5 · Native query',[custom('5 NATIVE QUERY: [${widgy.native4_query_probe}]')],337),
-  row('Check 6 · Native full URL',[custom('6 NATIVE URL: [${widgy.native4_url_probe}]')],376),
-  row('Check 7 · Bound URL',[custom('7 MAP URL: [${widgy.map_request}]')],415),
+  row('Check 3 · Direct city URL',[custom('3 IMAGE URL: ['+map['2']+']')],259),
+  row('Check 4 · Single-quoted JS City',[custom('4 JS SINGLE QUOTE: ['),{'5':'Javascript','6':'Script','10':`function main() { return String('${'${widgy.City}'}').trim(); }`},custom(']')],337),
 ];
+frame(rows[2],[54,259,1020,75]);
 const bg=structuredClone(layer(5001));bg.d0=widget.a2++;bg.s='Location Check · Panel';bg.g='uicol_black-100';delete bg.a;delete bg.o1;
-frame(bg,[40,177,1050,281]);
+frame(bg,[40,177,1050,205]);
 home['1'].unshift(...rows,bg);
 widget['3']='Widgy Location Check';
-widget['4']='Location diagnostic 2 uses the recovered Glass 3 map binding. Rows 5-6 DISPLAY the failed Glass 4 native URL/query as text only; they never load the image. Row 7 displays the bound map_request as native text, without a JavaScript inspector. Row 3 separately tests the City value inside JavaScript. The SERVER stamp reports actual received location. No fixed location or geocoding. City delivery remains unresolved.';
+widget['4']='Location diagnostic 3: IMG_9630 confirms native City is available but JavaScript City is empty. Retain the recovered map_request script and append native City directly in the image Web URL field using terminal city_text. No replacement of the main recovery widget. The on-map SERVER stamp reports the actual received city. This binding still requires outside-editor device confirmation.';
 writeFileSync(new URL('./Widgy_Location_Check.json',import.meta.url),JSON.stringify(widget));
 
 let page=readFileSync(new URL('./widgy-home-glass.html',import.meta.url),'utf8');
 page=page.replace(/Widgy Home · Glass(?: \d+| — Recovery)?/g,'Widgy · Location Check')
-  .replace(/<p>העיצוב[\s\S]*?<button/, '<p>בדיקה 2: המפה משתמשת במנגנון המשוחזר. הכתובת שנכשלה מוצגת כטקסט בלבד בשורות 5–6, והכתובת של המפה בשורה 7. שורת SERVER מציגה מה שהשרת קיבל בפועל.</p>\n  <p>ייבא כעותק נוסף, צא מהעורך ושלח צילום מלא של תצוגת הווידג׳ט מחוץ לעורך.</p>\n  <button')
+  .replace(/<p>העיצוב[\s\S]*?<button/, '<p>בדיקה 3: שם העיר נוסף ישירות לכתובת המפה בשדה Web URL, מחוץ ל־JavaScript. שורת SERVER תראה אם העיר התקבלה בפועל. גרסת השחזור הרגילה נשארת זמינה ללא שינוי.</p>\n  <p>ייבא כעותק נוסף, צא מהעורך ושלח צילום מלא של תצוגת הווידג׳ט מחוץ לעורך.</p>\n  <button')
   .replaceAll('Widgy_Home_Glass.json','Widgy_Location_Check.json')
   .replace("widget['3']!=='Widgy Home Glass'", "widget['3']!=='Widgy Location Check'")
   .replace(/<small>יעד הטבעת[\s\S]*?<\/small>/,'<small>זהו כלי אבחון זמני. הוא אינו מחליף את הווידג׳ט הרגיל.</small>');
