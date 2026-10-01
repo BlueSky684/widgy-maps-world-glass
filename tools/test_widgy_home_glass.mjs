@@ -40,6 +40,12 @@ for(const [steps,goal,expected] of [[0,10000,0],[99,10000,0],[100,10000,1],[2493
  const shown=ring.filter(n=>result>=Number(n.o1['2']));assert.equal(shown.length,Math.max(0,expected));
 }
 const fills=home.filter(n=>n.s?.startsWith('Day Progress Fill'));
+const label=after['36'].find(v=>v['1']==='steps_label')['3']['66'][0]['10'];
+for(const [input,expected] of [['0','0'],['999','999'],['2535','2,535'],['10,000','10,000'],['100000','100,000'],['','—'],['${widgy.steps_today}','—']]) {
+ const result=vm.runInNewContext(label.replaceAll('${widgy.steps_today}',input)+'\nmain()');
+ assert.equal(result,expected);
+}
+assert.equal(get(6141)['66'][0]['25'],'${widgy.steps_label}');
 assert.equal(fills.length,100);
 for(const n of fills){
  const p=Number(n.o1['2']);assert(Math.abs(val(n,'d')*REFERENCE.width/1600-DAY_BAR.width*p/100)<.001);
@@ -66,4 +72,4 @@ const alpha=(x,y)=>data[(Math.round(y*info.height/REFERENCE.height)*info.width+M
 assert.equal(alpha(700,400),0,'Map opening must stay transparent');
 assert.equal(alpha(500,70),255);assert.equal(alpha(400,900),255);
 console.log(`PASS: ${all.length} unique native layers; measured frames; original live sources, tabs and weather masters; daylight binding; step goals and missing data; global location; transparent 3306 x 3449 lossless chrome.`);
-console.log('Exact native font fitting and new variables require the next iPhone screenshot.');
+console.log('Native step ring and prior variables confirmed in IMG_9626; revised spacing and formatted steps require the next iPhone screenshot.');
