@@ -38,18 +38,16 @@ assert.deepEqual(widget['2'], original['2']);
 assert.equal(widget['36'].length, original['36'].length + 2);
 writeFileSync(new URL('./Widgy_Home_Glass_JS_City.json', import.meta.url), JSON.stringify(widget));
 
-let page = readFileSync(new URL('./widgy-home-glass.html', import.meta.url), 'utf8');
-page = page.replaceAll('Widgy Home · Glass', 'Widgy Home · JS City')
-  .replace(' — Recovery', '')
-  .replace('העיצוב לפי הרפרנס המאושר: מסגרת זכוכית, כרטיסים מעוגלים וטבעת צעדים דינמית. המפה המאושרת נשארה ב־50%.',
-    'זיהוי העיר דרך JavaScript לפי המיקום הנוכחי. הקואורדינטות שעל המפה מוצגות עם ספרה אחת אחרי הנקודה.')
-  .replace('החזרת טעינת המפה למנגנון של Glass 3, שבו המפה הופיעה במכשיר. גרסה 4 הוסרה בעקבות כשל בטעינה. שם העיר עדיין בבדיקה; זו גרסת שחזור, ללא שורות אבחון.',
-    'ייבא כעותק נוסף, צא מהעורך ורענן פעם אחת. שלח צילום מלא של הווידג׳ט מחוץ לעורך כדי לוודא שהעיר והמפה נטענות יחד.')
-  .replace('פס ההתקדמות עוקב אחר שעות האור במיקום הנוכחי, לפי השעון המקומי ושעון קיץ או חורף.',
-    'זיהוי העיר פעיל: הווידג׳ט שולח את המיקום המדויק מהאייפון ל־BigDataCloud. שם העיר והקואורדינטות מועברים לשרת המפה הקיים.')
-  .replaceAll('Widgy_Home_Glass.json', 'Widgy_Home_Glass_JS_City.json')
-  .replace("widget['3']!=='Widgy Home Glass'", "widget['3']!=='Widgy Home Glass JS City'")
-  .replace('יעד הטבעת הוא 10,000 צעדים. אפשר לשנות אותו ב־Variables ← steps_goal. פרטי היומן עדיין נתוני דוגמה.',
-    'בדיקות הקוד המקומיות עברו; הפעולה המלאה באייפון עדיין דורשת אימות. פרטי היומן נשארו נתוני דוגמה.');
+// IMG_9649 shows this async-variable-to-image experiment blank outside the
+// editor. Retain its export for reproduction, but withdraw the import action.
+let page = readFileSync(new URL('./widgy-home-glass.html', import.meta.url), 'utf8').split('<body>')[0];
+page = page.replaceAll('Widgy Home · Glass', 'Widgy Home · Map Recovery') + `<body><main>
+  <h1>החזרת המפה ובדיקת זיהוי העיר</h1>
+  <p>בגרסת JS City המפה לא נטענה במכשיר. קישור הייבוא של הגרסה הזו הוסר עד לבירור.</p>
+  <p><a href="./widgy-home-glass.html?v=recovery5">ייבוא גרסת המפה שעבדה</a></p>
+  <p>זיהוי העיר דרך JavaScript עדיין בבדיקה. הבדיקה הבאה מפרידה בין בקשת הרשת לבין העברת תוצאה אסינכרונית לתמונה.</p>
+  <p><a href="./widgy-fetch-image-check.html">פתיחת בדיקת הרשת והתמונה</a></p>
+  <small>ייבא את הבדיקה כעותק נוסף ושלח צילום מלא מחוץ לעורך.</small>
+</main></body></html>`;
 writeFileSync(new URL('./widgy-home-js-city.html', import.meta.url), page);
-console.log('Built JS City widget and importer; external lookup ON with permission; original dashboard and all visual layers unchanged.');
+console.log('Preserved failed JS City export for reproduction; importer now links to the known recovery and isolated fetch/image check.');
