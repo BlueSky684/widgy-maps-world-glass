@@ -1,6 +1,6 @@
 import {readFileSync, writeFileSync} from 'node:fs';
 import assert from 'node:assert/strict';
-import {daylightScript, daylightLabelScript} from './widgy-daylight-logic.mjs';
+import {daylightScript} from './widgy-daylight-logic.mjs';
 
 const read = name => JSON.parse(readFileSync(new URL(name, import.meta.url), 'utf8'));
 const before = read('./widgy-day-night.json');
@@ -44,7 +44,19 @@ variables.splice(progressIndex, 0,
 variables.find(v => v['1'] === 'day_progress')['3']['66'] = [
   {'5':'Javascript','6':'Script','10':daylightScript}
 ];
-layer(6123)['66'] = [{'5':'Javascript','6':'Script','10':daylightLabelScript}];
+// Use Widgy's native variable text binding, as in the original working label.
+// A second JavaScript layer can execute before variable resolution, turn an
+// empty string into Number('') === 0 and cache 0% while the fill is already 21%.
+const progressId = variables.find(v => v['1'] === 'day_progress')['0'];
+const percentage = layer(6123);
+percentage['66'] = [text('${widgy.day_progress}%')];
+percentage.o1 = {'0':progressId,'1':5,'2':'0'};
+const unavailable = structuredClone(percentage);
+unavailable.d0 = widget.a2++;
+unavailable.s = 'Day Progress Unavailable';
+unavailable['66'] = [text('—')];
+unavailable.o1 = {'0':progressId,'1':0,'2':'-1'};
+home['1'].splice(home['1'].findIndex(n => n.d0 === 6123),0,unavailable);
 
 // A downloaded JSON must preserve the F50 host selected by the existing import
 // page. This is the same origin as the verified public F50 page, not a new map.
@@ -56,7 +68,7 @@ const map = layer(6170);
 for (const key of ['2','22']) map[key] = map[key].replaceAll('https://widgy-maps-world-glass.vercel.app', parsed.origin);
 
 widget['3'] = 'Widgy Home F50 Data';
-widget['4'] = 'Approved F50 map and artwork preserved. Daylight progress uses today’s native sunrise/sunset and the device’s current local time zone, including daylight saving; 0% before sunrise, 100% after sunset, unavailable if no rise/set data. Live Pedometer distance, Health active energy and today’s weather high/low. Weather alias layer order repaired. Requires normal Widgy location, motion and Health permissions. Calendar demo content remains unchanged. Verify native data and rendering on iPhone after import.';
+widget['4'] = 'Revision 2: native percentage text binding shares the daylight variable directly with the fill. Approved F50 map and artwork preserved. Daylight progress uses today’s native sunrise/sunset and the device’s current local time zone, including daylight saving; 0% before sunrise, 100% after sunset, unavailable if no rise/set data. Live Pedometer distance, Health active energy and today’s weather high/low. Weather alias layer order repaired. Active energy remains unverified on device when the source returns no data; never substitute estimated or demo calories. Requires normal Widgy location, motion and Health permissions. Calendar demo content remains unchanged.';
 
 writeFileSync(new URL('./widgy-home-f50-data.json', import.meta.url), JSON.stringify(widget));
 console.log(JSON.stringify({name:widget['3'], mapOrigin:parsed.origin, bytes:Buffer.byteLength(JSON.stringify(widget))}));

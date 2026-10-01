@@ -39,4 +39,3 @@ export function daylightPercent(now, sunrise, sunset) {
 }
 
 export const daylightScript = `${localSolarTime.toString()}\n${daylightPercent.toString()}\nfunction main() {\n  return daylightPercent(new Date(), '\${widgy.sunrise_today}', '\${widgy.sunset_today}');\n}`;
-export const daylightLabelScript = `function main() {\n  var value = Number('\${widgy.day_progress}');\n  return isFinite(value) && value >= 0 && value <= 100 ? value + '%' : '—';\n}`;
