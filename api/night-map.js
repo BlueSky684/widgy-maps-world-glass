@@ -22,11 +22,13 @@ export default async function handler(req, res) {
   if(![3306,1653,1102].includes(width))return res.status(400).json({error:'Unsupported image width'});
   const location = resolveLocation(url, req.headers);
   const presentation = url.searchParams.get('presentation') === 'glass' ? 'glass' : 'default';
+  const atlas = url.searchParams.get('atlas') === 'r6' ? 'r6' : 'f50';
   try {
     const diagnostic = url.searchParams.get('diagnostic') === 'location';
-    const png = await renderHomeMap({date, location, width, presentation, diagnostic});
+    const png = await renderHomeMap({date, location, width, presentation, diagnostic, atlas});
     res.setHeader('Content-Type', 'image/png');
     res.setHeader('X-Map-Revision', REVISION);
+    res.setHeader('X-Map-Atlas', atlas);
     res.setHeader('X-Map-Width', String(width));
     res.setHeader('X-Map-Time-Mode', fixed === null ? 'server-now' : 'fixed-test');
     res.setHeader('X-Map-Rendered-At', date.toISOString());
