@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
 const read=n=>JSON.parse(readFileSync(new URL(n,import.meta.url)));
 const r3=read('./Widgy_Home_Glass_JS_City_R3.json'),r4=read('./Widgy_Home_Glass_JS_City_R4.json'),r5=read('./Widgy_Home_Glass_JS_City_R5.json');
 const all=w=>w['1'].flatMap(function walk(n){return [n,...(n.z==='13'?n['1'].flatMap(walk):[])];});
@@ -8,7 +9,12 @@ const old4=new Map(all(r4).map(n=>[n.d0,n]));
 const nodes=all(r5),get=id=>nodes.find(n=>n.d0===id);
 assert.equal(new Set(nodes.map(n=>n.d0)).size,nodes.length);
 assert(r5.a2>Math.max(...nodes.map(n=>n.d0)));
-assert.deepEqual(r5['36'],r3['36']);
+assert.deepEqual(r5['36'].filter(v=>v['1']!=='day_progress'),r3['36'].filter(v=>v['1']!=='day_progress'));
+const progress=r5['36'].find(v=>v['1']==='day_progress')['3']['66'][0]['10'];
+for(const [h,m,s,expected]of [[0,0,0,0],[6,0,0,25],[12,0,0,50],[18,26,0,76],[21,2,0,87],[23,59,59,99],[0,0,0,0]]){
+ class LocalDate{getHours(){return h;}getMinutes(){return m;}getSeconds(){return s;}}
+ assert.equal(vm.runInNewContext(progress+'\nmain()',{Date:LocalDate}),expected,'Calendar-day progress and midnight reset');
+}
 assert.deepEqual(get(6122),originals.get(6122),'Restore the complete one-line label verified on phone');
 for(const n of nodes){
  if(n.z==='1'&&originals.has(n.d0))assert.equal(n['1'],originals.get(n.d0)['1'],'No unverified font on '+n.s);
