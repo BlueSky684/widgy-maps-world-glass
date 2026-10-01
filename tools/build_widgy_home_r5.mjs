@@ -1,10 +1,15 @@
 import {readFileSync,writeFileSync} from 'node:fs';
 import assert from 'node:assert/strict';
+import {dayPercentScript} from './widgy-time-logic.mjs';
 
 const read=name=>readFileSync(new URL(name,import.meta.url),'utf8');
 const r3=JSON.parse(read('./Widgy_Home_Glass_JS_City_R3.json'));
 const r4=JSON.parse(read('./Widgy_Home_Glass_JS_City_R4.json'));
 const widget=structuredClone(r4);
+// DAY PROGRESS is the local calendar day, not the sunrise-to-sunset interval.
+// Restore the established native script: completed whole percentages, reset
+// at local midnight. Sunrise/sunset labels remain independent live data.
+widget['36'].find(v=>v['1']==='day_progress')['3']['66'][0]['10']=dayPercentScript;
 const all=w=>w['1'].flatMap(function walk(n){return [n,...(n.z==='13'?n['1'].flatMap(walk):[])];});
 const known=new Map(all(r3).map(n=>[n.d0,n]));
 const layers=all(widget);
@@ -46,12 +51,12 @@ for(const offset of [-.75,.75]){
 }
 
 widget['3']='Widgy Home Glass JS City R5';
-widget['4']='R5 repairs the R4 missing-font regression shown in IMG_9659/IMG_9660. Every existing text layer uses its exact R3 font; DAY PROGRESS restores the complete proven one-line layer. Weekday and month share a native center. Native centered date restores Phenomena Bold and original height with subtle overlapping native text offsets for weight. Temperature is inset and reduced to clear the divider. R4 thin 13px ring, 10,000-step goal, compact frames and calendar icon retained. Live data, weather/map artwork and actions unchanged. Calendar content remains demo data.';
-assert.deepEqual(widget['36'],r3['36']);
+widget['4']='R5 repairs the R4 missing-font regression shown in IMG_9659/IMG_9660. Every existing text layer uses its exact R3 font; DAY PROGRESS restores the proven one-line layer and calculates the complete local day from midnight to midnight, not daylight. Weekday and month share a native center. Native centered date restores Phenomena Bold and original height with subtle overlapping native text offsets for weight. Temperature is inset and reduced to clear the divider. R4 thin 13px ring, 10,000-step goal, compact frames and calendar icon retained. Other live data, weather/map artwork and actions unchanged. Calendar content remains demo data.';
+assert.deepEqual(widget['36'].filter(v=>v['1']!=='day_progress'),r3['36'].filter(v=>v['1']!=='day_progress'));
 writeFileSync(new URL('./Widgy_Home_Glass_JS_City_R5.json',import.meta.url),JSON.stringify(widget));
 const page=read('./widgy-home-js-city-r3.html')
  .replaceAll('JS City R3','JS City R5').replaceAll('JS_City_R3','JS_City_R5')
- .replace('אייקון FITNESS עודכן לדמות רצה. טבעת הצעדים עודכנה לקשת רציפה עם קצוות מעוגלים ומרכז כהה, בהתאם לרפרנס המאושר.','חזרה לגופנים שעבדו, כותרת DAY PROGRESS בשורה אחת, מרכוז היום והחודש, ומרווח נוסף ליד הטמפרטורה. הטבעת הדקה והיעד היומי נשמרו.')
+ .replace('אייקון FITNESS עודכן לדמות רצה. טבעת הצעדים עודכנה לקשת רציפה עם קצוות מעוגלים ומרכז כהה, בהתאם לרפרנס המאושר.','חזרה לגופנים שעבדו, DAY PROGRESS בשורה אחת ובחישוב מחצות עד חצות, מרכוז היום והחודש, ומרווח נוסף ליד הטמפרטורה. הטבעת הדקה והיעד היומי נשמרו.')
  .replace('מבוסס על R2 שהציגה את המפה ושם העיר מחוץ לעורך.','משתמש בגופנים המקוריים של R3.');
 writeFileSync(new URL('./widgy-home-js-city-r5.html',import.meta.url),page);
 // Withdraw the broken importer; its previously shared URL leads to the repair.
