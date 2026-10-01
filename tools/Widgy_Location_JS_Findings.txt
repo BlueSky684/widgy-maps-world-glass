@@ -1,4 +1,4 @@
-Widgy 27.0.1: Location variables are empty in both sync and async JavaScript outside the editor
+Widgy 27.0.1: City and several Location fields are empty in JavaScript outside the editor
 Investigation date: 2026-10-01
 Status: reproducible on the tested iPhone; internal cause and workaround unconfirmed
 
@@ -59,9 +59,10 @@ typeof fetch = function. sendToWidgy successfully delivers the results.
 This does not establish what other runtime APIs might be supported.
 
 EDITOR COMPARISON
-Earlier synchronous probes of City, Country, Location Name, DMS and full
-Longitude populate inside the editor. The latest async probe has a confirmed
-outside-editor result; an inside-editor async comparison has not been supplied.
+Synchronous probes of City, Country, Location Name, DMS and full Longitude
+populate inside the editor. IMG_9644 also confirms that the async City,
+Promise City, DMS and full Longitude populate inside the editor, while
+IMG_9643 shows these fields empty outside it.
 
 OTHER CONTROLS
 - Static text variables reach synchronous JavaScript correctly.
@@ -119,3 +120,35 @@ native variables, Auto JS, Max 5 Text/Real Number variables in JS, Async and
 consumer-only formatting. All scripts are local text only. The native-proven
 property is copied exactly; applying it to variable bodies is UNVERIFIED
 until a screenshot outside the editor is received. No City fix is claimed.
+
+FOLLOW-UP RESULT: MAX 5 REACHES JAVASCRIPT (2026-10-01)
+IMG_9648 shows the comparison OUTSIDE the editor:
+1 Native Max 5: five decimal places in both coordinates.
+2 Native Max 5 variables: same values as row 1.
+3 JS with Auto variables: one decimal place.
+4 JS with Max 5 Text variables: identical to row 1.
+5 Async with Max 5 Text variables: identical to row 1.
+6 JS with Max 5 Real Number variables: identical to row 1.
+7 Max 5 only on the output layer: still one decimal place.
+8 JS short label: one decimal place and correct hemisphere labels.
+
+The variable-body setting is now CONFIRMED for this device. Apply Max 5
+before JavaScript, not merely to the output layer. The City binding bug is
+still present; obtaining a city through reverse geocoding is a separate path.
+
+PREPARED ALTERNATIVE (NOT ENABLED OR PHONE-VERIFIED)
+tools/widgy-city-map-script.mjs prepares one phone-side async request to
+BigDataCloud using current native Max 5 coordinates, followed by a map URL
+with city and coordinates. No native City input or city variable chain.
+IP-derived, mismatched or empty city responses fall back to the coordinate
+map URL. Tests use synthetic local responses only; no location was submitted
+to the provider. A request that never settles is subject to Widgy timeout.
+The provider permits calls only from the device whose current location is
+used, not from this workspace or the Vercel map server.
+
+The review widget keeps lookup disabled until permission to share current
+precise coordinates with BigDataCloud is given. While disabled it uses the
+existing coarse map inputs. The production dashboard is unchanged.
+Provider documentation:
+https://www.bigdatacloud.com/free-api/free-reverse-geocode-to-city-api
+https://www.bigdatacloud.com/docs/article/fair-use-policy-for-free-client-side-reverse-geocoding-api
