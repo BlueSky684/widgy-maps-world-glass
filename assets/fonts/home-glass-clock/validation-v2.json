@@ -5,8 +5,8 @@
   "source": "user-uploaded BarlowCondensed-Light(1).otf, version 1.422",
   "source_url": "https://raw.githubusercontent.com/jpt/barlow/1.422/fonts/otf/BarlowCondensed-Light.otf",
   "source_sha256": "0dd27baa26aeca7bcf194fd32f4aafccb1779a499e5d1ec478923ff6685090e9",
-  "output_sha256": "ee01731d6d7de13cb8dcab04eeb5e0066ebeeb0657aea07cdf285e6ce5f32bea",
-  "postscript_name": "HomeGlassClock2-Light",
+  "output_sha256": "85eb55c5fb54de6e8f09194bdc6b1a7aef9640739ad7bcfb449fb512cce5be87",
+  "postscript_name": "HomeGlassTime-Light",
   "changed_glyphs": [
     "colon"
   ],
