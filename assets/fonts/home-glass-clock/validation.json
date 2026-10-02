@@ -1,0 +1,16 @@
+{
+  "status": "prepared locally; custom-font import and live timer need iPhone verification",
+  "source": "user-uploaded BarlowCondensed-Light(1).otf, version 1.422",
+  "source_url": "https://raw.githubusercontent.com/jpt/barlow/1.422/fonts/otf/BarlowCondensed-Light.otf",
+  "source_sha256": "0dd27baa26aeca7bcf194fd32f4aafccb1779a499e5d1ec478923ff6685090e9",
+  "output_sha256": "727c8b47249332c46604b887ab9ff33475b52bfbef7d1aad1e9ea45db772b876",
+  "postscript_name": "HomeGlassClock-Light",
+  "changed_glyphs": [
+    "colon"
+  ],
+  "vertical_shift_font_units": 126,
+  "colon_center_before": 224,
+  "colon_center_after": 350,
+  "all_1440_time_widths_unchanged": true,
+  "zero_outline_unchanged": true
+}
