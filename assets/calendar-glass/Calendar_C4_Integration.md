@@ -38,4 +38,7 @@ unique layer IDs, and unchanged Home/Agenda/date headers/weekday labels/chrome.
 Native event-indicator appearance and nested group navigation still require
 on-device review. No local test is presented as iPhone rendering validation.
 
-C4 importer preserves C3's visible selectable JSON and manual-copy fallback.
+The C4 importer restores the original R12/C2 one-tap copy handler: Clipboard
+API first, then the original temporary-textarea fallback. Its script is
+identical to C2's after substituting only the C4 widget name and file path.
+This restoration changes no widget JSON or native Calendar settings.

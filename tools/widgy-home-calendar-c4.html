@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow">
   <title>Widgy Home · Calendar C4</title>
   <style>
-    :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;min-height:100dvh;display:grid;place-items:center;background:#121417;color:#f4f7fa;font:16px/1.65 -apple-system,BlinkMacSystemFont,Arial,sans-serif;padding:24px}main{width:100%;max-width:400px;text-align:center}h1{font-size:25px;line-height:1.3}p,small{color:#b9c1cd}button{border:0;border-radius:14px;background:#c5ff0a;color:#111;font:600 17px -apple-system,BlinkMacSystemFont,Arial,sans-serif;padding:16px 24px;min-height:54px;cursor:pointer;touch-action:manipulation}button:disabled{opacity:.45}a{color:#d7e5fc}#status{min-height:54px;margin:18px 0;font-size:14px}small{display:block;font-size:13px;margin-top:20px}textarea{display:block;box-sizing:border-box;width:100%;height:110px;margin:12px 0;border:1px solid #48525e;border-radius:10px;padding:12px;background:#091218;color:#f4f7fa;font:16px/1.4 monospace;direction:ltr;text-align:left;resize:vertical;-webkit-user-select:text;user-select:text}.secondary{background:#293442;color:#f4f7fa;font-size:15px;padding:10px 18px}#manual[hidden]{display:none}
+    :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;min-height:100dvh;display:grid;place-items:center;background:#121417;color:#f4f7fa;font:16px/1.65 -apple-system,BlinkMacSystemFont,Arial,sans-serif;padding:24px}main{width:100%;max-width:400px;text-align:center}h1{font-size:25px;line-height:1.3}p,small{color:#b9c1cd}button{border:0;border-radius:14px;background:#c5ff0a;color:#111;font:600 17px -apple-system,BlinkMacSystemFont,Arial,sans-serif;padding:16px 24px;min-height:54px;cursor:pointer;touch-action:manipulation}button:disabled{opacity:.45}a{color:#d7e5fc}#status{min-height:54px;margin:18px 0;font-size:14px}small{display:block;font-size:13px;margin-top:20px}
   </style>
 </head>
 <body><main>
@@ -16,12 +16,6 @@
   <p>לחיצה על כותרת החודש מחזירה לחודש הנוכחי. רשימת TODAY מציגה תמיד את אירועי היום; לחיצה על הלוח פותחת את אפליקציית היומן.</p>
   <button id="copy" disabled>טוען את הווידג׳ט…</button>
   <div id="status" role="status" aria-live="polite"></div>
-  <section id="manual" hidden>
-    <label for="widget-code">קוד הווידג׳ט המלא</label>
-    <textarea id="widget-code" readonly spellcheck="false" autocorrect="off" autocapitalize="off"></textarea>
-    <button id="select" class="secondary" type="button">בחירת כל הקוד להעתקה ידנית</button>
-    <small>אם ההעתקה האוטומטית לא עוברת: בחר את כל הקוד והקש „העתק” בתפריט של האייפון.</small>
-  </section>
   <p><a id="download" href="./Widgy_Home_Glass_Calendar_C4.json" download="Widgy_Home_Glass_Calendar_C4.json">הורדת הקובץ לייבוא</a></p>
   <small>פתח ב־Safari, העתק ועבור ל־Widgy לייבוא מהלוח כעותק נוסף. הנתונים משתנים עם רענון הווידג׳ט.</small>
   <small>Home R12 נשמר במדויק, כולל השעון המאושר וטבעת הצעדים עם יעד 10,000. נתוני האירועים בלשונית Calendar נלקחים מהמכשיר בעת הרענון.</small>
@@ -29,36 +23,30 @@
 </main>
 <script>
 'use strict';
-const button=document.getElementById('copy'),status=document.getElementById('status');
-const manual=document.getElementById('manual'),field=document.getElementById('widget-code'),selectButton=document.getElementById('select');
+const button=document.getElementById('copy'),status=document.getElementById('status'),download=document.getElementById('download');
 let payload='';
-function success(){button.textContent='כל הקוד נבחר ✓';status.textContent='אם אין טקסט בהדבקה ב־Widgy: הקש לחיצה ארוכה על הקוד המסומן ובחר „העתק” בתפריט האייפון.';}
-function selectPayload(){
-  manual.hidden=false;
-  field.focus({preventScroll:true});field.select();field.setSelectionRange(0,field.value.length);
+function success(){button.textContent='הועתק ✓';status.textContent='אפשר לעבור ל־Widgy ולייבא מהלוח כעותק נוסף.';}
+function legacyCopy(){
+  const field=document.createElement('textarea');field.value=payload;field.readOnly=true;
+  field.style.cssText='position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none;font-size:16px';
+  document.body.appendChild(field);let ok=false;
+  try{field.focus({preventScroll:true});field.select();field.setSelectionRange(0,field.value.length);ok=document.execCommand('copy');}
+  catch{}finally{field.remove();button.focus({preventScroll:true});}
+  if(ok)success();else status.textContent='אפשר להוריד את הקובץ מהקישור ולייבא אותו ב־Widgy.';
 }
-function manualCopy(){selectPayload();status.textContent='כל הקוד נבחר. הקש „העתק” בתפריט האייפון, או הורד את הקובץ מהקישור.';}
-selectButton.addEventListener('click',manualCopy);
 button.addEventListener('click',()=>{
   if(!payload)return;
-  // Copy the fully loaded, visibly selectable text during the original tap.
-  // A failed asynchronous clipboard request must not consume the gesture before
-  // the selection-based copy attempt, particularly in iOS embedded browsers.
-  selectPayload();let copied=false;
-  try{copied=document.execCommand('copy');}catch{}
-  if(copied){success();return;}
-  if(window.isSecureContext&&navigator.clipboard?.writeText){
-    navigator.clipboard.writeText(payload).then(success,manualCopy);
-  }else manualCopy();
+  if(!window.isSecureContext||!navigator.clipboard){legacyCopy();return;}
+  navigator.clipboard.writeText(payload).then(success,legacyCopy);
 });
 (async()=>{
   try{
-    const response=await fetch('./Widgy_Home_Glass_Calendar_C4.json?copy=1',{cache:'no-store'});
+    const response=await fetch('./Widgy_Home_Glass_Calendar_C4.json',{cache:'no-store'});
     if(!response.ok)throw new Error('Widget load failed');
     const widget=await response.json();
     if(widget['3']!=='Widgy Home Glass Calendar C4')throw new Error('Unexpected widget');
     payload=JSON.stringify(widget);
-    field.value=payload;
+    download.href=URL.createObjectURL(new Blob([payload],{type:'application/json'}));download.hidden=false;
     button.disabled=false;button.textContent='העתקת הווידג׳ט';
     status.textContent='מוכן לייבוא כעותק נוסף.';
   }catch{status.textContent='הטעינה נכשלה. נסה לפתוח מחדש ב־Safari.';}
