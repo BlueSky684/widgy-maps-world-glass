@@ -1,0 +1,35 @@
+{
+  "note": "Public synthetic unavailable-location request from execution host; NOT phone tap latency. No user GPS or geocoder requests. One sequence, not a statistical benchmark.",
+  "requests": [
+    {
+      "case": "first",
+      "status": 200,
+      "headersMs": 5082,
+      "totalMs": 5328,
+      "bodyBytes": 3903246,
+      "cache": "MISS",
+      "cacheControl": "private, max-age=38, must-revalidate",
+      "server": "cle1::iad1::4xlgx-1790941937120-49d6e63e99db"
+    },
+    {
+      "case": "repeat",
+      "status": 200,
+      "headersMs": 364,
+      "totalMs": 586,
+      "bodyBytes": 3903246,
+      "cache": "HIT",
+      "cacheControl": "private, max-age=37, must-revalidate",
+      "server": "cle1::iad1::gdxcx-1790941942476-8aed920250e6"
+    },
+    {
+      "case": "conditional",
+      "status": 304,
+      "headersMs": 389,
+      "totalMs": 390,
+      "bodyBytes": 0,
+      "cache": null,
+      "cacheControl": "private, max-age=36, must-revalidate",
+      "server": "cle1::iad1::9zrdv-1790941943047-ab0e3552d6ce"
+    }
+  ]
+}
