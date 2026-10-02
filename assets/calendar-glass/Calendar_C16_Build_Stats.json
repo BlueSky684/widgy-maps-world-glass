@@ -1,0 +1,33 @@
+{
+  "version": "C16",
+  "screenshot": "IMG_9707.jpeg",
+  "reference": "Calendar_Technical_Preview_R2",
+  "measuredDateInkHeightPx": 27,
+  "dateWeightOffsetPx": 0.55,
+  "dateWeightLayers": 190,
+  "hebrewTitles": 108,
+  "separators": 3,
+  "compactTitles": 4,
+  "details": 4,
+  "icons": 96,
+  "layers": 2002,
+  "accentHeightPx": 79,
+  "separatorOffsetPx": 115,
+  "accentClearancePx": {
+    "firstRow": [
+      40,
+      36
+    ],
+    "subsequentRows": [
+      34,
+      36
+    ]
+  },
+  "titleColumnX": 803,
+  "hebrewShiftPx": {
+    "x": -28,
+    "y": -4
+  },
+  "otherValuesPreserved": true,
+  "requiresDeviceVerification": true
+}
