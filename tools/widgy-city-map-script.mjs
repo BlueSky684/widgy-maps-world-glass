@@ -1,7 +1,7 @@
 // Runs on the phone, never on the map server. The public client API permits
 // only the calling device's current native location, with user permission.
 // Do not call this provider from tests or replay screenshot coordinates.
-export function cityMapRuntime(latitude, longitude, endpoint, enabled, fallbackLatitude, fallbackLongitude) {
+export function cityMapRuntime(latitude, longitude, endpoint, enabled, fallbackLatitude, fallbackLongitude, reuseSeconds) {
   var finished = false;
   function finish(url) {
     if (finished) return;
@@ -20,7 +20,9 @@ export function cityMapRuntime(latitude, longitude, endpoint, enabled, fallbackL
   var base = endpoint + '&lat=' + (lat === null ? '' : encodeURIComponent(lat)) +
     '&lon=' + (lon === null ? '' : encodeURIComponent(lon));
   function mapURL(city) {
-    return base + (city ? '&city=' + encodeURIComponent(city) : '') + '&t=' + Date.now();
+    var instant = Date.now();
+    var stamp = reuseSeconds === 60 ? Math.floor(instant / 60000) * 60000 : instant;
+    return base + (city ? '&city=' + encodeURIComponent(city) : '') + '&t=' + stamp;
   }
   if (!enabled || lat === null || lon === null) {
     finish(mapURL(''));
@@ -59,11 +61,13 @@ export function cityMapRuntime(latitude, longitude, endpoint, enabled, fallbackL
   }
 }
 
-export function buildCityMapScript(endpoint, {enabled = false} = {}) {
+export function buildCityMapScript(endpoint, {enabled = false, reuseSeconds = 0} = {}) {
   const url = new URL(endpoint);
   if (url.protocol !== 'https:' || url.pathname !== '/api/night-map') throw Error('Unexpected map endpoint');
+  if (![0, 60].includes(reuseSeconds)) throw Error('Unsupported map reuse interval');
+  if (reuseSeconds === 60) { url.searchParams.set('reuse', '60'); endpoint = url.href; }
   const token = name => JSON.stringify('${widgy.' + name + '}');
   return cityMapRuntime.toString() + '\ncityMapRuntime(' +
     [token('map_latitude_max5'), token('map_longitude_max5'), JSON.stringify(endpoint),
-      JSON.stringify(enabled), token('Latitude'), token('Longitude')].join(',') + ');';
+      JSON.stringify(enabled), token('Latitude'), token('Longitude'), JSON.stringify(reuseSeconds)].join(',') + ');';
 }

@@ -1,5 +1,8 @@
 import {renderHomeMap, resolveLocation, REVISION} from '../lib/home-map-day-night.js';
 import {parseMapRequest} from '../lib/native-map-request.js';
+import {createMapRenderCache} from '../lib/map-render-cache.js';
+
+const cachedRender = createMapRenderCache();
 
 // This route is opt-in. Existing widget endpoints retain their behavior.
 export default async function handler(req, res) {
@@ -25,15 +28,34 @@ export default async function handler(req, res) {
   const atlas = url.searchParams.get('atlas') === 'r6' ? 'r6' : 'f50';
   try {
     const diagnostic = url.searchParams.get('diagnostic') === 'location';
-    const png = await renderHomeMap({date, location, width, presentation, diagnostic, atlas});
+    // C6 opt-in only. Explicit coordinates (including empty/unavailable values)
+    // make the URL self-contained; IP-derived locations must never be browser-cached.
+    const reuse = url.searchParams.get('reuse') === '60' && fixed === null &&
+      url.searchParams.has('lat') && url.searchParams.has('lon');
+    const minute = Math.floor(date.getTime() / 60000);
+    const render = () => renderHomeMap({date, location, width, presentation, diagnostic, atlas});
+    const result = reuse ? await cachedRender(
+      JSON.stringify([REVISION, minute, width, presentation, atlas, diagnostic, location]),
+      {expiresAt: (minute + 1) * 60000, renderedAt: date.toISOString(), render}
+    ) : {entry: {png: await render(), renderedAt: date.toISOString()}, state: 'BYPASS'};
+    const {entry} = result;
+    if (reuse) {
+      // Do not extend freshness on a cache hit or after a slow render.
+      const remaining = Math.max(0, Math.floor((entry.expiresAt - Date.now()) / 1000));
+      res.setHeader('Cache-Control', `private, max-age=${remaining}, must-revalidate`);
+      res.setHeader('ETag', entry.etag);
+    }
     res.setHeader('Content-Type', 'image/png');
+    res.setHeader('X-Map-Cache', result.state);
     res.setHeader('X-Map-Revision', REVISION);
     res.setHeader('X-Map-Atlas', atlas);
     res.setHeader('X-Map-Width', String(width));
     res.setHeader('X-Map-Time-Mode', fixed === null ? 'server-now' : 'fixed-test');
-    res.setHeader('X-Map-Rendered-At', date.toISOString());
+    res.setHeader('X-Map-Rendered-At', entry.renderedAt);
     res.setHeader('X-Map-Location-Source', location?.source || 'unavailable');
-    return req.method === 'HEAD' ? res.status(200).end() : res.status(200).send(png);
+    const tags = String(req.headers?.['if-none-match'] || '').split(',').map(s => s.trim().replace(/^W\//, ''));
+    if (reuse && (tags.includes(entry.etag) || tags.includes('*'))) return res.status(304).end();
+    return req.method === 'HEAD' ? res.status(200).end() : res.status(200).send(entry.png);
   } catch (error) {
     console.error('Day/night render failed:', error.message);
     return res.status(500).json({error: 'Map rendering unavailable'});
