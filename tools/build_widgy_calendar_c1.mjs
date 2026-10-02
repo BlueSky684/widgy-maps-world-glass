@@ -1,4 +1,4 @@
-import {readFileSync,writeFileSync,mkdirSync,existsSync} from 'node:fs';
+import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import assert from 'node:assert/strict';
 import {CANVAS,PALETTE,calendarChromeSVG} from './calendar_glass_design.mjs';
 
@@ -78,21 +78,44 @@ for(let i=1;i<=4;i++){
 const emptyLabel=text('Agenda · Empty','No more events today',694,450,380,30,'Phenomena-Regular',colors.muted);emptyLabel.o1=empty;layers.push(emptyLabel);
 // Template gate: native calendar parameters must come from the installed app,
 // not guessed integer keys. No draft with a missing grid is published as final.
-const templateFile=process.argv[2];
+const templateFile=process.argv[2] || new URL('../assets/calendar-glass/Native_Calendar_Template.json',import.meta.url);
 let calendarTemplate=null;
 function walk(n){if(n&&typeof n==='object'){if(n.z==='10'&&!calendarTemplate)calendarTemplate=n;for(const v of Object.values(n))if(typeof v==='object')walk(v);}}
 if(templateFile){walk(JSON.parse(readFileSync(templateFile,'utf8')));assert(calendarTemplate,'Export must contain a native Calendar layer (z=10)');}
-if(calendarTemplate){const n=copy(calendarTemplate,'Calendar · Native Month');delete n.a;frame(n,[48,423,554,560]);n['1']='HomeGlassTime-Light';layers.push(n);}
+if(calendarTemplate){
+ const rows=variable('calendar_month_rows',js(`function main(){var d=new Date(),y=d.getFullYear(),m=d.getMonth();return Math.ceil((new Date(y,m,1).getDay()+new Date(y,m+1,0).getDate())/7);}`));
+ for(const count of [4,5,6]){
+  const n=copy(calendarTemplate,`Calendar · Native Month · ${count} Weeks`);delete n.a;
+  // Native Calendar reserves one weekday-header row. Keep the date area at
+  // y=423..983 for every month length, using separate approved weekday labels.
+  const rowHeight=560/count;
+  frame(n,[48,423-rowHeight,554,560+rowHeight]);n['1']='HomeGlassTime-Light';n.f=colors.white;
+  // Color/font slots are present in previously shared native Calendar exports.
+  // Explicit colors prevent dark system-default weekend text on this panel.
+  n['6']=colors.white;n['10']=colors.lime;
+  n['14']='BarlowCondensed-Light';n['15']='uicol_clear-100';n['17']=colors.white;
+  const children=[n];
+  for(let line=1;line<count;line++)children.push(shape(`Calendar · Week Separator ${line}`,[48,423+line*rowHeight,554,.7],colors.week));
+  layers.push({d0:id(),z:'13',s:`Calendar · ${count} Week Layout`,'1':children,o1:{'0':rows,'1':0,'2':String(count)}});
+ }
+ layers.unshift(tap('Open Calendar · Month',[45,423,560,560],'calshow://','Calendar'));
+}
 else {layers.push(text('Integration Pending · Native Calendar','Native Calendar source pending',60,690,530,27,'Phenomena-Regular',colors.muted));}
 const chrome=copy(at(80309),'Calendar R2 · Static Chrome');
 const url='https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/assets/calendar-glass/Calendar_Glass_Chrome_C1.png';
 chrome['2']=url;chrome['22']=`function main(){return '${url}';}`;layers.push(chrome);
 cal['1']=layers;widget.a2=next;
 widget['3']='Widgy Home Glass Calendar C1 Draft';
-widget['4']='Integration draft: approved Calendar R2 presentation, original R12 header/navigation and native Agenda Today bindings. Native monthly calendar settings and agenda data require the source check from the installed Widgy version. Not a final import. Home R12, Weather and Fitness groups are unchanged.';
+widget['4']='Integration draft of approved Calendar R2 with the on-device native Calendar template and verified Agenda Today sources. Native rendering requires device review. Event indicators and in-widget month navigation remain incomplete. Home R12 is preserved.';
 assert.deepEqual(widget['1'].filter(n=>n.d0!==247),baseline['1'].filter(n=>n.d0!==247));
 assert.deepEqual(widget['36'].slice(0,baseline['36'].length),baseline['36']);
 writeFileSync(new URL('./Widgy_Home_Glass_Calendar_C1_Draft.json',import.meta.url),JSON.stringify(widget));
+if(calendarTemplate){
+ const candidate=structuredClone(widget);
+ candidate['3']='Widgy Home Glass Calendar C1';
+ candidate['4']='First device-review build of Calendar R2. Native monthly Calendar and live Agenda Today data. Home R12 is preserved. Event indicators and in-widget month navigation are not yet enabled; tapping the month opens Apple Calendar. Native typography/spacing still requires device visual review.';
+ writeFileSync(new URL('./Widgy_Home_Glass_Calendar_C1.json',import.meta.url),JSON.stringify(candidate));
+}
 
 // Small native probe, entirely separate from the installed Home widget.
 const probe=structuredClone(baseline);probe['1']=[];probe['36']=[];probe['3']='Widgy Calendar Native Source Check';probe['4']='Native Calendar and Agenda source-format check. Enable Calendar event indicators, then export JSON for integration. No user event values are embedded in this file.';
