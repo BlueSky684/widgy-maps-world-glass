@@ -1,0 +1,18 @@
+{
+  "status": "user-approved preview V2; font geometry verified; iPhone installation pending",
+  "approved_colon_rise": 112,
+  "preview_reference": "Clock_Colon_Position_Preview_V2.png / lower panel",
+  "source": "user-uploaded BarlowCondensed-Light(1).otf, version 1.422",
+  "source_url": "https://raw.githubusercontent.com/jpt/barlow/1.422/fonts/otf/BarlowCondensed-Light.otf",
+  "source_sha256": "0dd27baa26aeca7bcf194fd32f4aafccb1779a499e5d1ec478923ff6685090e9",
+  "output_sha256": "ee01731d6d7de13cb8dcab04eeb5e0066ebeeb0657aea07cdf285e6ce5f32bea",
+  "postscript_name": "HomeGlassClock2-Light",
+  "changed_glyphs": [
+    "colon"
+  ],
+  "vertical_shift_font_units": 112,
+  "colon_center_before": 224,
+  "colon_center_after": 336,
+  "all_1440_time_widths_unchanged": true,
+  "zero_outline_unchanged": true
+}
