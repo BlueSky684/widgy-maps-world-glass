@@ -1,0 +1,22 @@
+{
+  "sourceScreenshot": "IMG_9706.jpeg",
+  "measuredSelectedInk": {
+    "top": 537,
+    "bottomExclusive": 568,
+    "height": 31,
+    "centerY": 552.5
+  },
+  "measuredOrdinaryInk": {
+    "top": 548,
+    "bottomExclusive": 575,
+    "height": 27,
+    "centerY": 561.5
+  },
+  "dateSizeRatio": 0.8709677419354839,
+  "dateFrameCenterShiftPx": 9,
+  "discCenterShiftPx": 6,
+  "dateLayersChanged": 95,
+  "discLayersChanged": 95,
+  "allOtherValuesPreserved": true,
+  "requiresDeviceVerification": true
+}
