@@ -1,4 +1,4 @@
-"""Build the user-approved Home Glass Clock 2 font from original Barlow 1.422.
+"""Build the user-approved Home Glass Time font from original Barlow 1.422.
 
 This does not publish a widget or change R8. Requires fonttools and Pillow.
 """
@@ -14,7 +14,7 @@ from PIL import ImageFont
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets/fonts/home-glass-clock"
 SOURCE = ASSETS / "BarlowCondensed-Light.otf"
-OUTPUT = ASSETS / "HomeGlassClock2-Light.otf"
+OUTPUT = ASSETS / "HomeGlassTime-Light.otf"
 SHIFT = 112  # Approved preview V2: 14 units below the initial +126 proposal.
 
 
@@ -34,15 +34,15 @@ def build():
     # All relative curve commands, widths and subroutines stay identical.
     colon.program[1] += SHIFT
     colon.program[10] += SHIFT
-    cff.fontNames = ["HomeGlassClock2-Light"]
-    top.FullName = "Home Glass Clock 2 Light"
-    top.FamilyName = "Home Glass Clock 2"
+    cff.fontNames = ["HomeGlassTime-Light"]
+    top.FullName = "Home Glass Time Light"
+    top.FamilyName = "Home Glass Time"
     top.version = "001.422.2"
     renamed = {
-        1: "Home Glass Clock 2 Light", 2: "Regular",
-        3: "1.422.2;HomeGlass;HomeGlassClock2-Light",
-        4: "Home Glass Clock 2 Light", 5: "Version 1.422.2",
-        6: "HomeGlassClock2-Light", 16: "Home Glass Clock 2", 17: "Light",
+        1: "Home Glass Time Light", 2: "Regular",
+        3: "1.422.2;HomeGlass;HomeGlassTime-Light",
+        4: "Home Glass Time Light", 5: "Version 1.422.2",
+        6: "HomeGlassTime-Light", 16: "Home Glass Time", 17: "Light",
     }
     for record in font["name"].names:
         if record.nameID in renamed:
@@ -94,7 +94,7 @@ def build():
         "source_url": "https://raw.githubusercontent.com/jpt/barlow/1.422/fonts/otf/BarlowCondensed-Light.otf",
         "source_sha256": sha256(SOURCE.read_bytes()).hexdigest(),
         "output_sha256": sha256(OUTPUT.read_bytes()).hexdigest(),
-        "postscript_name": "HomeGlassClock2-Light",
+        "postscript_name": "HomeGlassTime-Light",
         "changed_glyphs": changed, "vertical_shift_font_units": SHIFT,
         "colon_center_before": 224, "colon_center_after": 336,
         "all_1440_time_widths_unchanged": True,
