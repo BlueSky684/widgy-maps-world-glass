@@ -1,5 +1,13 @@
 # Calendar C7 — performance audit, 2026-10-02
 
+> **Superseded by C8.** The user found a steps-ring regression in C7.
+> Claim 1 below is incorrect for the ring: R3 had replaced the original full
+> arc shapes with short convex segments. They must accumulate with `>=`.
+> C7's equality check displayed only the endpoint segment. Its tests checked
+> selection counts without checking the selected geometry. C8 restores the
+> exact C6 ring and raster-checks all 101 states using exported conditions.
+> Equality remains correct for the cumulative day-progress bar contours.
+
 The user reports a small improvement with C6, asks for a deeper investigation,
 and requests event dots below the day numbers with clearance from Today's disc.
 

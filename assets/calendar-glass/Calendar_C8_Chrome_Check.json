@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Home",
+    "comparisonPixels": [
+      1134,
+      1182
+    ],
+    "background": "#000",
+    "meanAbsoluteChannelDifference": 0.13810304677948973,
+    "PSNR": 51.32714760305515,
+    "maxDifference": 30,
+    "channelsOver8Percent": 0.06866171088769321
+  },
+  {
+    "name": "Calendar",
+    "comparisonPixels": [
+      1134,
+      1182
+    ],
+    "background": "#000",
+    "meanAbsoluteChannelDifference": 0.11082661637277166,
+    "PSNR": 53.67855203900661,
+    "maxDifference": 14,
+    "channelsOver8Percent": 0.0017407894828462603
+  }
+]
