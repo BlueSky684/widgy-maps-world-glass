@@ -1,0 +1,17 @@
+{
+  "layers": 1617,
+  "selectedDateFramesChanged": 95,
+  "selectedDateCapHeightPx": 28,
+  "hebrewTitleFramesChanged": 108,
+  "hebrewCenteredInColumn": [
+    803,
+    1083
+  ],
+  "hebrewRaisedPx": 10,
+  "eventBarsChanged": 4,
+  "eventBarHeightPx": 79,
+  "dynamicCitySource": "map_request city parameter",
+  "additionalNetworkRequests": 0,
+  "unrelatedDataAndActionsUnchanged": true,
+  "requiresIPhoneVerification": true
+}
