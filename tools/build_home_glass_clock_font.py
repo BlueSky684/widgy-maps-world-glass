@@ -1,0 +1,124 @@
+"""Prepare a colon-centred Barlow derivative for an iPhone import trial.
+
+This does not publish a widget or change R8. Requires fonttools and Pillow.
+"""
+from pathlib import Path
+from hashlib import sha256
+import json
+
+from fontTools.ttLib import TTFont
+from fontTools.pens.recordingPen import RecordingPen
+from fontTools.pens.transformPen import TransformPen
+from PIL import Image, ImageDraw, ImageFont
+
+ROOT = Path(__file__).resolve().parents[1]
+ASSETS = ROOT / "assets/fonts/home-glass-clock"
+SOURCE = ASSETS / "BarlowCondensed-Light.otf"
+OUTPUT = ASSETS / "HomeGlassClock-Light.otf"
+SHIFT = 126  # Uploaded 1.422: colon centre 224 -> numeral cap centre 350.
+
+
+def build():
+    assert sha256(SOURCE.read_bytes()).hexdigest() == "0dd27baa26aeca7bcf194fd32f4aafccb1779a499e5d1ec478923ff6685090e9"
+    original = TTFont(SOURCE, recalcTimestamp=False)
+    font = TTFont(SOURCE, recalcTimestamp=False)
+    assert font["head"].unitsPerEm == 1000
+    cff = font["CFF "].cff
+    top = cff.topDictIndex[0]
+    colon = top.CharStrings["colon"]
+    colon.decompile()
+    assert colon.program[:12] == [
+        -175, 5, 100, 238, 100, 'hstem', 47, 101, 'vstem', 98, 343, 'rmoveto'
+    ]
+    # Translate both horizontal hints and the initial contour origin.
+    # All relative curve commands, widths and subroutines stay identical.
+    colon.program[1] += SHIFT
+    colon.program[10] += SHIFT
+    cff.fontNames = ["HomeGlassClock-Light"]
+    top.FullName = "Home Glass Clock Light"
+    top.FamilyName = "Home Glass Clock"
+    top.version = "001.422.1"
+    renamed = {
+        1: "Home Glass Clock Light", 2: "Regular",
+        3: "1.422.1;HomeGlass;HomeGlassClock-Light",
+        4: "Home Glass Clock Light", 5: "Version 1.422.1",
+        6: "HomeGlassClock-Light", 16: "Home Glass Clock", 17: "Light",
+    }
+    for record in font["name"].names:
+        if record.nameID in renamed:
+            record.string = renamed[record.nameID].encode(record.getEncoding())
+    description = ("Modified from user-supplied Barlow Condensed Light 1.422 under SIL OFL 1.1. "
+                   "Only the colon is raised 126 font units, with matching hint offsets. "
+                   "Numerals, spacing and all other outlines are unchanged.")
+    for platform, encoding, language in ((3, 1, 0x409), (1, 0, 0)):
+        font["name"].setName(description, 10, platform, encoding, language)
+    if "DSIG" in font:
+        del font["DSIG"]
+    font.save(OUTPUT)
+
+    saved = TTFont(OUTPUT, recalcTimestamp=False)
+    assert saved.getGlyphOrder() == original.getGlyphOrder()
+    old_cs = original["CFF "].cff.topDictIndex[0].CharStrings
+    new_cs = saved["CFF "].cff.topDictIndex[0].CharStrings
+    changed = []
+    for name in original.getGlyphOrder():
+        old_cs[name].decompile()
+        new_cs[name].decompile()
+        if old_cs[name].program != new_cs[name].program:
+            changed.append(name)
+    assert changed == ["colon"], changed
+    for table in ("hmtx", "hhea", "OS/2", "cmap", "GPOS", "GSUB"):
+        assert original[table].compile(original) == saved[table].compile(saved), table
+    # Compare every actual outline, including any subroutine references.
+    old_glyphs, new_glyphs = original.getGlyphSet(), saved.getGlyphSet()
+    for name in original.getGlyphOrder():
+        before, after = RecordingPen(), RecordingPen()
+        pen = TransformPen(before, (1, 0, 0, 1, 0, SHIFT)) if name == "colon" else before
+        old_glyphs[name].draw(pen)
+        new_glyphs[name].draw(after)
+        assert before.value == after.value, name
+
+    # Exhaust all 1,440 HH:mm strings: every advance width is identical.
+    a = ImageFont.truetype(str(SOURCE), 120)
+    b = ImageFont.truetype(str(OUTPUT), 120)
+    for hour in range(24):
+        for minute in range(60):
+            value = f"{hour:02}:{minute:02}"
+            assert a.getlength(value) == b.getlength(value), value
+
+    report = {
+        "status": "prepared locally; custom-font import and live timer need iPhone verification",
+        "source": "user-uploaded BarlowCondensed-Light(1).otf, version 1.422",
+        "source_url": "https://raw.githubusercontent.com/jpt/barlow/1.422/fonts/otf/BarlowCondensed-Light.otf",
+        "source_sha256": sha256(SOURCE.read_bytes()).hexdigest(),
+        "output_sha256": sha256(OUTPUT.read_bytes()).hexdigest(),
+        "postscript_name": "HomeGlassClock-Light",
+        "changed_glyphs": changed, "vertical_shift_font_units": SHIFT,
+        "colon_center_before": 224, "colon_center_after": 350,
+        "all_1440_time_widths_unchanged": True,
+        "zero_outline_unchanged": True,
+    }
+    (ASSETS / "validation.json").write_text(json.dumps(report, indent=2) + "\n")
+    specimen(a, b)
+    print(json.dumps(report, indent=2))
+
+
+def specimen(before, after):
+    # Exact font specimen, not an edited widget screenshot or generative mock-up.
+    image = Image.new("RGB", (1050, 440), "#0b151b")
+    draw = ImageDraw.Draw(image)
+    label = ImageFont.truetype("DejaVuSans.ttf", 19)
+    small = ImageFont.truetype("DejaVuSans.ttf", 15)
+    for title, y, font, baseline in (("UPLOADED FONT / ORIGINAL", 28, before, 162),
+                                      ("PROPOSED / CENTERED COLON", 242, after, 374)):
+        draw.text((32, y), title, font=label, fill="#c5ff0a")
+        for x, value in zip((32, 378, 724), ("22:01", "10:00", "00:08")):
+            draw.text((x, baseline), value, anchor="ls", font=font, fill="#f4f7fa")
+    draw.line((32, 207, 1018, 207), fill="#35434d", width=1)
+    draw.text((32, 410), "Same numerals and spacing. Only the colon moves upward.",
+              font=small, fill="#acb6c4")
+    image.save(ASSETS / "colon-comparison.png")
+
+
+if __name__ == "__main__":
+    build()
