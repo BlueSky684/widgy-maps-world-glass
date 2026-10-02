@@ -1,0 +1,173 @@
+{
+  "version": "C13",
+  "deviceEvidence": "IMG_9703.jpeg",
+  "reference": "Calendar Technical Preview R2",
+  "layers": 1808,
+  "city": {
+    "source": "Same GPS/English resolver as map; direct Async + No main()",
+    "fallback": "Native City/Country; Ashqelon normalized only when current City matches",
+    "additionalLookupPerRefresh": "At most one extra city lookup, best-effort 60s runtime reuse",
+    "requiresDeviceReview": true
+  },
+  "selectedDate": {
+    "source": "Exact approved Phenomena Bold outlines, 31px cap height, 4x lossless transparent PNG",
+    "dateDynamic": true,
+    "days": 31,
+    "badgeOffsetFromGridCenterPx": -4,
+    "requiresDeviceReview": true
+  },
+  "icons": {
+    "rules": [
+      [
+        "zoom.us",
+        "video.fill"
+      ],
+      [
+        "Zoom",
+        "video.fill"
+      ],
+      [
+        "zoom",
+        "video.fill"
+      ],
+      [
+        "ZOOM",
+        "video.fill"
+      ],
+      [
+        "teams.microsoft",
+        "video.fill"
+      ],
+      [
+        "Teams",
+        "video.fill"
+      ],
+      [
+        "teams",
+        "video.fill"
+      ],
+      [
+        "TEAMS",
+        "video.fill"
+      ],
+      [
+        "Skype",
+        "video.fill"
+      ],
+      [
+        "skype",
+        "video.fill"
+      ],
+      [
+        "SKYPE",
+        "video.fill"
+      ],
+      [
+        "meet.google",
+        "video.fill"
+      ],
+      [
+        "Google Meet",
+        "video.fill"
+      ],
+      [
+        "Conference",
+        "person.2.fill"
+      ],
+      [
+        "Room",
+        "person.2.fill"
+      ],
+      [
+        "room",
+        "person.2.fill"
+      ],
+      [
+        "חדר",
+        "person.2.fill"
+      ],
+      [
+        "tel:",
+        "phone.fill"
+      ],
+      [
+        "Phone",
+        "phone.fill"
+      ],
+      [
+        "phone",
+        "phone.fill"
+      ],
+      [
+        "טלפון",
+        "phone.fill"
+      ],
+      [
+        "Notes",
+        "doc.text.fill"
+      ],
+      [
+        "Updates",
+        "doc.text.fill"
+      ]
+    ],
+    "source": "Event Location only; native conditions",
+    "missingLocation": "Hidden",
+    "directMeetingJoin": false
+  },
+  "remainingGaps": [
+    {
+      "item": "Event colors",
+      "status": "Fixed blue/purple/amber/green by row, not calendar-account colors; needs native dynamic-color export"
+    },
+    {
+      "item": "Month dots",
+      "status": "One native cyan presence indicator, not multiple colored event dots"
+    },
+    {
+      "item": "Ordinary date typography",
+      "status": "Native Calendar auto-sizing appears about 27-28px on phone vs approved 31px; exact font-scale setting needs device export"
+    },
+    {
+      "item": "Overflow dates",
+      "status": "Native faded gray differs from approved slate gray"
+    },
+    {
+      "item": "Agenda secondary line",
+      "status": "Lowered to allow two-line titles; short-title rows differ from R2"
+    },
+    {
+      "item": "Agenda separators",
+      "status": "129px below row top vs 115px in R2 to allow two-line title/details"
+    },
+    {
+      "item": "Reminders",
+      "status": "Live count and app shortcut only; no reminder rows or completion control"
+    },
+    {
+      "item": "Agenda navigation",
+      "status": "Up to four current-day entries; browsing month does not select a day or change TODAY list"
+    },
+    {
+      "item": "Event taps",
+      "status": "Open Calendar, not specific event or meeting join URL"
+    },
+    {
+      "item": "All-day detection",
+      "status": "Display rule for observed 0:00–23:59, not a native all-day boolean"
+    },
+    {
+      "item": "Four/six-week layouts",
+      "status": "Spacing modeled; phone verification remains pending"
+    }
+  ],
+  "preserved": {
+    "home": true,
+    "weather": true,
+    "fitness": true,
+    "navigation": true,
+    "dotOffset": true,
+    "hebrewC12": true
+  },
+  "nativeCapabilitiesEvidence": "Widgy developer App Store release notes confirm Calendar/Reminder dynamic colors and Agenda Smart Symbols; exact serialized field names not present in supplied exports."
+}
