@@ -32,7 +32,7 @@
 const button=document.getElementById('copy'),status=document.getElementById('status');
 const manual=document.getElementById('manual'),field=document.getElementById('widget-code'),selectButton=document.getElementById('select');
 let payload='';
-function success(){button.textContent='הועתק ✓';status.textContent='אפשר לעבור ל־Widgy ולייבא מהלוח כעותק נוסף.';}
+function success(){button.textContent='כל הקוד נבחר ✓';status.textContent='אם אין טקסט בהדבקה ב־Widgy: הקש לחיצה ארוכה על הקוד המסומן ובחר „העתק” בתפריט האייפון.';}
 function selectPayload(){
   manual.hidden=false;
   field.focus({preventScroll:true});field.select();field.setSelectionRange(0,field.value.length);
