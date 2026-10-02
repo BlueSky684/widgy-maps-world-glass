@@ -52,7 +52,9 @@ for(let i=1;i<=4;i++){
 const indexCode='function main(){var d=new Date();return new Date(d.getFullYear(),d.getMonth(),1).getDay()+d.getDate()-1;}';
 const todayIndex=variable('calendar_today_cell',{'5':'Javascript','6':'Script','10':indexCode},2);
 const circleId='CA1E0000-0000-4000-C003-000000000001';
-const circleData=Buffer.from(JSON.stringify({items:[{id:circleId,name:'Calendar Today Disc',shape:{rounding:0,points:Array.from({length:96},(_,i)=>({x:.5+.5*Math.cos(i*Math.PI/48),y:.5+.5*Math.sin(i*Math.PI/48)}))}}]})).toString('base64');
+// 48 rounded vertices deviate from the 62px circle by less than 0.07px and
+// substantially reduce the clipboard payload repeated across conditional cells.
+const circleData=Buffer.from(JSON.stringify({items:[{id:circleId,name:'Calendar Today Disc',shape:{rounding:0,points:Array.from({length:48},(_,i)=>({x:+(.5+.5*Math.cos(i*Math.PI/24)).toFixed(6),y:+(.5+.5*Math.sin(i*Math.PI/24)).toFixed(6)}))}}]})).toString('base64');
 const shapeTemplate=home['1'].find(n=>n.d0===245)['1'].find(n=>n.z==='2'&&n['2']&&n['3']);
 assert(shapeTemplate);
 for(const layout of cal['1'].filter(n=>/^Calendar · [456] Week Layout$/.test(n.s??''))){
