@@ -1,0 +1,18 @@
+{
+  "layers": 1617,
+  "hebrewTitleFramesChanged": 108,
+  "nativeCalendarOffsetsChanged": 75,
+  "ordinaryDateFontsAndTodayBadgeUnchanged": true,
+  "allSourcesActionsAndOtherLayersUnchanged": true,
+  "eventDotPositionChanged": true,
+  "offsetsByWeekRows": {
+    "4": 60,
+    "5": 75,
+    "6": 90
+  },
+  "dotCenterOffsetPx": 42,
+  "measuredProbeDotDiameterPx": 6,
+  "observedFiveWeekProbe": true,
+  "fourAndSixWeekSpacingModelRequiresPhoneReview": true,
+  "hebrewSizeRequiresPhoneReview": true
+}
