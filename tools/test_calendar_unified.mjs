@@ -6,11 +6,12 @@ import sharp from 'sharp';
 import {DateTime} from 'luxon';
 import {COLORS,dayDots,googleEvents,icalEvents,monthWindow} from '../lib/calendar-bridge/dots.js';
 import {widgetSnapshot,sourceDiagnostics} from '../lib/calendar-bridge/widget-data.js';
+import {widgyFields} from '../lib/calendar-bridge/widgy-fields.js';
 import {ORIGIN,seal,setSession,unseal} from '../lib/calendar-bridge/security.js';
 import bridge from '../api/calendar-bridge.js';
 import widgetHandler,{clientMaxAge} from '../api/calendar-widget.js';
 import {personalizedWidget} from './calendar-connect-widget.js';
-import {fieldCode,snapshotCode,homeFieldCode} from './calendar-connect-today.js';
+import {fieldCode,snapshotCode,homeFieldCode,nativeHomeFieldCode} from './calendar-connect-today.js';
 
 process.env.CALENDAR_SEAL_KEY='2'.repeat(64);
 process.env.CALENDAR_SETUP_KEY='test-only-'.repeat(6);
@@ -27,9 +28,9 @@ function response(){return {headers:{},statusCode:200,setHeader(k,v){this.header
 async function get(token,query='',method='GET'){
   const res=response();await widgetHandler({method,url:`/api/calendar-widget?token=${encodeURIComponent(token)}${query}`},res);return res;
 }
-function evaluate(code,snapshot){
+function evaluate(code,snapshot,instant=now){
   const text=code.replaceAll('${widgy.calendar_bridge_snapshot}',encodeURIComponent(JSON.stringify(snapshot)));
-  class TestDate extends Date {static now(){return now.getTime();}}
+  class TestDate extends Date {static now(){return instant.getTime();}}
   return vm.runInNewContext(text+';main()',{Date:TestDate});
 }
 
@@ -166,7 +167,7 @@ test('Home fields await their own response without a shared variable, preserve t
   }
 });
 
-test('Home combines status and 24-hour time beneath complete event titles',async()=>{
+test('Home combines status and 24-hour time without altering complete event titles',async()=>{
   const snapshot=widgetSnapshot(events,window,now);
   for(const title of ['בדיקת תצוגה — טיסה לאתונה עם המשפחה','Flight to Athens with family','Team Sync']){
     snapshot.home={...snapshot.home,title,time:'21:00 – 21:15',label:'NOW',compact:1};
@@ -255,12 +256,21 @@ test('new capability returns matching TODAY/PNG, reuses provider read and reject
     assert.equal(today.data.rows[0].title,'בדיקה');assert(!JSON.stringify(today.data).includes('synthetic-refresh'));
     assert.match(today.headers['cache-control'],/^private, (?:max-age=\d+, must-revalidate|no-store, max-age=0)$/);
     assert.equal(today.headers['cdn-cache-control'],'no-store');
+    const native=await get(token,'&format=widgy&render=perf-2');
+    assert.equal(native.statusCode,200);assert.equal(reads,1);
+    const decoded=JSON.parse(decodeURIComponent(native.data.encoded));
+    assert.deepEqual(decoded.rows,today.data.rows);assert.equal(evaluate(nativeHomeFieldCode('count'),decoded,new Date(decoded.generatedAt)),'1');
+    assert.equal(evaluate(nativeHomeFieldCode('title'),decoded,new Date(decoded.generatedAt)),today.data.home.title);
     const dots=await get(token,'&view=dots&offset=0');assert.equal(dots.statusCode,200);assert.equal(dots.headers['content-type'],'image/png');
     assert.equal((await sharp(dots.data).metadata()).width,2270);assert.equal(reads,1);
     const refreshed=await get(token,'&view=dots&offset=0&render=refresh-1&refresh=12345');
     assert.equal(refreshed.statusCode,200);assert.deepEqual(refreshed.data,dots.data);assert.equal(reads,1);
     const unauthorized=await get(await seal(state,'calendar-render'));
     assert.equal(unauthorized.statusCode,401);assert.match(unauthorized.headers['cache-control'],/no-store/);
+    const nativeUnauthorized=await get(await seal(state,'calendar-render'),'&format=widgy');
+    assert.equal(nativeUnauthorized.statusCode,401);assert.match(nativeUnauthorized.headers['cache-control'],/no-store/);
+    assert.equal(evaluate(nativeHomeFieldCode('title'),JSON.parse(decodeURIComponent(nativeUnauthorized.data.encoded))),'Calendar unavailable');
+    assert.equal(evaluate(fieldCode('total'),JSON.parse(decodeURIComponent(nativeUnauthorized.data.encoded))),-1);
     assert.equal((await get(token,'&offset=1')).statusCode,400);
     assert.equal((await get(token,'&view=dots&offset=13')).statusCode,400);
     assert.equal((await get(token,'','POST')).statusCode,405);
@@ -319,7 +329,7 @@ test('unified template preserves other tabs and row geometry while removing nati
   const variableIDs=copy['36'].map(v=>v['0']);assert.equal(variableIDs.length,new Set(variableIDs).size);
 });
 
-test('Home uses a full-width name above metadata inside the original area with C16 fonts',()=>{
+test('Home restores reference status above the full-width name with exact original vertical frames and fonts',()=>{
   const original=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
   const copy=personalizedWidget(original,`${ORIGIN}/api/calendar-dots?token=synthetic`,`${ORIGIN}/api/calendar-widget?token=synthetic-v2`);
   const home=copy['1'].find(n=>n.s==='HOME'),base=original['1'].find(n=>n.s==='HOME');
@@ -335,17 +345,49 @@ test('Home uses a full-width name above metadata inside the original area with C
   const oldTitle=base['1'].find(n=>n.s==='Next Event Title'),oldMeta=base['1'].find(n=>n.s==='Next Event Label');
   const oldTime=base['1'].find(n=>n.s==='Next Event Time');
   assert.equal(home['1'].length,base['1'].length-1);
-  assert.equal(title.c.a[0].a,oldMeta.c.a[0].a);
-  assert.equal(title.c.a[0].a+title.e.a[0].a,meta.c.a[0].a);
-  assert.equal(meta.c.a[0].a+meta.e.a[0].a,oldTitle.c.a[0].a+oldTitle.e.a[0].a);
+  for(const key of ['c','e','1','f','2']){
+    assert.deepEqual(title[key],oldTitle[key]);assert.deepEqual(meta[key],oldMeta[key]);
+  }
+  assert(meta.c.a[0].a<title.c.a[0].a);
   assert.equal(title.d.a[0].a,oldTime.b.a[0].a+oldTime.d.a[0].a-oldTitle.b.a[0].a);
   assert.deepEqual(meta.b,title.b);assert.deepEqual(meta.d,title.d);
   assert.equal(meta['66'][0]['25'],'${widgy.calendar_home_meta}');
   assert(!JSON.stringify(home).includes('Team Sync'));assert(!JSON.stringify(home).includes('2:00 PM – 2:30 PM'));
   assert.deepEqual(home['1'].find(n=>n.s==='Events Summary · 3')['66'],[{'5':'Agenda (Today)','6':'Reminder Events Today'}]);
   const variables=copy['36'].filter(v=>v['1'].startsWith('calendar_home_'));
-  assert.equal(variables.length,4);assert(variables.every(v=>v['3']['66'][0]['6']==='Async + No main()'));
-  assert(variables.every(v=>!v['3']['66'][0]['10'].includes('${widgy.calendar_bridge_snapshot}')));
+  assert.equal(variables.length,4);assert(variables.every(v=>v['3']['66'][0]['6']==='Script'));
+  assert(variables.every(v=>!v['3']['66'][0]['10'].includes('fetch(')));
+});
+
+test('one native calendar request serves all local fields and preserves freshness, safety and Home content',()=>{
+  const original=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
+  const copy=personalizedWidget(original,`${ORIGIN}/api/calendar-dots?token=synthetic`,`${ORIGIN}/api/calendar-widget?token=synthetic-v2`);
+  const urlVar=copy['36'].find(v=>v['1']==='calendar_data_url');
+  const sources=copy['36'].flatMap(v=>v['3']['66']).filter(s=>s['5']==='JSON Endpoint');
+  assert.equal(sources.length,1);
+  assert.equal(new Set(sources.map(s=>s['18'])).size,1);
+  assert(sources.every(s=>s['18']==='${widgy.calendar_data_url}' && s['19']==='GET'));
+  const run=instant=>vm.runInNewContext(urlVar['3']['66'][0]['10']+';main()',{Date:class extends Date{static now(){return instant;}}});
+  const first=run(now.getTime()),next=run(now.getTime()+60000);
+  assert.equal(first,run(now.getTime()+1000));assert.notEqual(first,next);
+  const url=new URL(first);assert.equal(url.origin,ORIGIN);assert.equal(url.searchParams.get('format'),'widgy');
+  const calendarVars=copy['36'].filter(v=>/^calendar_(bridge|home|event|remaining|data|dots)/.test(v['1']));
+  assert(!calendarVars.some(v=>v['3']['66'].some(s=>s['6']==='Async + No main()')));
+  const snapshot=widgetSnapshot(events,window,now);
+  snapshot.home.title='"; throw Error("injected"); // ${widgy.other} פגישה';
+  for(const fixture of [snapshot,widgetSnapshot([],window,now),widgetSnapshot([events[0]],window,now)]){
+    const native=widgyFields(fixture);
+    assert.deepEqual(JSON.parse(decodeURIComponent(native.encoded)),fixture);
+    assert.equal(evaluate(nativeHomeFieldCode('count'),fixture),String(fixture.total));
+    assert.equal(evaluate(nativeHomeFieldCode('event_word'),fixture),fixture.total===1?'event •':'events •');
+    assert.equal(evaluate(nativeHomeFieldCode('title'),fixture),fixture.home.title);
+    assert.equal(evaluate(nativeHomeFieldCode('meta'),fixture),fixture.home.label+(fixture.home.time?' · '+fixture.home.time:''));
+    for(const source of sources)assert.equal(typeof native[source['23'][0]],'string');
+  }
+  assert.equal(evaluate(nativeHomeFieldCode('count'),{version:2,ok:false}),'—');
+  assert.equal(evaluate(nativeHomeFieldCode('title'),{...snapshot,home:{...snapshot.home,validUntil:now.getTime()}}),'Updating…');
+  assert.equal(evaluate(nativeHomeFieldCode('title'),{...snapshot,generatedAt:'2026-10-02T12:00:00Z'}),'Calendar unavailable');
+  assert.equal(evaluate(fieldCode('ready'),JSON.parse(decodeURIComponent(widgyFields(null).encoded))),0);
 });
 
 test('long Hebrew agenda titles align right within the existing Hebrew column and retain extra height',()=>{

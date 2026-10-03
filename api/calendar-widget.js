@@ -3,6 +3,7 @@ import {BridgeError,origin,privateHeaders,unseal} from '../lib/calendar-bridge/s
 import {monthWindow,renderDots} from '../lib/calendar-bridge/dots.js';
 import {readEvents} from '../lib/calendar-bridge/providers.js';
 import {widgetSnapshot} from '../lib/calendar-bridge/widget-data.js';
+import {widgyFields} from '../lib/calendar-bridge/widgy-fields.js';
 
 const cache=new Map();
 export function clientMaxAge(snapshot,providerUntil,instant=Date.now()){
@@ -13,9 +14,11 @@ export function clientMaxAge(snapshot,providerUntil,instant=Date.now()){
 }
 export default async function handler(req,res) {
   privateHeaders(res);
+  let nativeFields=false;
   try {
     if (req.method!=='GET' && req.method!=='HEAD') throw new BridgeError('method_not_allowed',405);
     const url=new URL(req.url,origin()),token=url.searchParams.get('token');
+    nativeFields=url.searchParams.get('format')==='widgy';
     // Older dots-only links must never grant access to titles or locations.
     const state=await unseal(token,'calendar-widget');
     if (!state?.sources?.length || state.sources.length>6) throw new BridgeError('unauthorized',401);
@@ -38,7 +41,7 @@ export default async function handler(req,res) {
       const maxAge=clientMaxAge(snapshot,entry.until);
       if(maxAge>0)res.setHeader('Cache-Control',`private, max-age=${maxAge}, must-revalidate`);
       res.setHeader('Content-Type','application/json; charset=utf-8');
-      return req.method==='HEAD'?res.status(200).end():res.status(200).json(snapshot);
+      return req.method==='HEAD'?res.status(200).end():res.status(200).json(nativeFields?widgyFields(snapshot):snapshot);
     }
     if(!entry.png)entry.png=renderDots(events,window);
     const png=await entry.png;
@@ -46,6 +49,7 @@ export default async function handler(req,res) {
     res.setHeader('X-Calendar-Generated-For',window.month.toFormat('yyyy-MM'));
     return req.method==='HEAD'?res.status(200).end():res.status(200).send(png);
   } catch(error) {
-    return res.status(error instanceof BridgeError?error.status:502).json({error:error instanceof BridgeError?error.code:'calendar_read_failed'});
+    return res.status(error instanceof BridgeError?error.status:502).json({
+      ...(nativeFields?widgyFields(null):{}),error:error instanceof BridgeError?error.code:'calendar_read_failed'});
   }
 }
