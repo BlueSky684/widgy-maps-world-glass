@@ -7,9 +7,10 @@
     "After delivery of Map-City-Off, user reports that switching to Home is still slower than switching to Calendar. No numeric timings or explicit before/after city-off comparison were supplied.",
     "User reports no improvement with Home Native-Data-Off; still no numeric device timing supplied.",
     "User reports improvement with Clock-Off (fixed 12:34), and confirms initially not trying Minimal.",
-    "User subsequently tests Home Minimal and reports an additional significant improvement. No numerical timing measurements."
+    "User subsequently tests Home Minimal and reports an additional significant improvement. No numerical timing measurements.",
+    "2026-10-04 Asia/Jerusalem: user directly compares the full widget with the old Live Timer and the new HH:mm clock and reports no perceived loading-time difference. No minute-update or appearance result supplied."
   ],
-  "conclusionLimit": "Controlled Clock-Off comparison implicates the Live Timer source/rendering path as a contributor. Minimal Home is faster still, implicating additional Home content/evaluation. Neither test identifies every remaining cost or establishes quantitative latency.",
+  "conclusionLimit": "A static literal clock improved the already stripped diagnostic, but replacing Live Timer with native HH:mm in the full widget showed no perceived loading improvement. The clock replacement is not an established fix and will not be promoted. Minimal Home improved further, supporting isolation of additional Home content/evaluation. No test identifies every remaining cost or establishes quantitative latency.",
   "sourceAudit": {
     "homeTapActions": "All four HOME Tap actions are button_245-247,246,195: show Home and hide Calendar, Weather and Fitness. No explicit additional refresh action is configured.",
     "remainingCustomAsyncScriptInMapOff": "calendar_city_prefix performs its own client-only reverse-geocode request. It can wait for Widgy's runtime/network timeout if the request never settles. Its globalThis cache is best-effort; persistence on the phone is unverified.",
@@ -133,7 +134,7 @@
     "baseline": "Current full normal export, including repaired cumulative steps ring",
     "onlyFunctionalChange": "Hero Time source: Date And Time / Live Timer (24 hours, No Seconds) -> Date And Time / HH:mm",
     "preserved": "Full map and all real data, all 81 variables, 39 calendar JSON fields, all layers and actions, approved HomeGlassTime-Light font, frames and colors. No diagnostic removals or sample values.",
-    "status": "Prepared; phone validation pending",
+    "status": "Phone comparison: no perceived loading improvement versus full widget with old clock. Do not promote. Automatic minute updates and appearance remain unreported.",
     "validationOnPhone": [
       "Home transition speed with all content restored",
       "two automatic minute changes without tapping the widget",
@@ -147,5 +148,14 @@
       "limitation": "Historical documentation supports trying the native date/time path, not a guarantee for the current iOS beta or this widget."
     },
     "regularExportPromoted": false
+  },
+  "progressArtworkComparison": {
+    "name": "Widgy Home Progress-Off Diagnostic",
+    "baseline": "Full regular export with original approved Live Timer and repaired cumulative steps ring; no legacy diagnostic baseline transform",
+    "onlyFunctionalChange": "Remove 100 Steps Goal Ring shape nodes and 100 Day Progress Fill shape nodes from Home, reducing its descendants from 389 to 189.",
+    "preserved": "All 81 variables and their sources, map/geocoders, real data, original clock, numeric steps/day values, remaining artwork, actions and other tabs.",
+    "caution": "Both drawing groups are removed together. A speed difference implicates this group of 200 conditional shapes, not a specific group, renderer, or data provider. Layer count is not a runtime measurement. Missing graph fills are diagnostic only; no approved design change is promoted.",
+    "deviceResult": "Pending",
+    "validation": "Exact full-export delta, 200 removed nodes, original unchanged, all remaining tap targets valid, reject malformed/legacy baseline, six diagnostic copy-page modes verified with synthetic private endpoints."
   }
 }
