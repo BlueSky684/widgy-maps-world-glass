@@ -16,12 +16,12 @@
     ol{padding-inline-start:22px;color:#b9c6d3;line-height:1.8}li{margin:8px 0}.note{font-size:14px}.settings{font-size:15px}
     [hidden]{display:none!important}:focus-visible{outline:3px solid #9ddeff;outline-offset:4px}
   </style>
-  <script type="module" src="./widgy-home-map-diagnostic.js?v=map-off-1"></script>
+  <script type="module" src="./widgy-home-map-diagnostic.js?v=city-off-1"></script>
 </head>
 <body><main>
   <div class="eyebrow" dir="ltr">WIDGY · HOME TEST</div>
-  <h1>בדיקת Home ללא המפה.</h1>
-  <p>עותק אבחון נפרד של perf-5. אזור המפה יהיה ריק, כי טעינת המפה וקריאת העיר שלה כבויות. שם העיר של Calendar ממשיך לפעול כרגיל. שאר הנתונים, העיצוב והכפתורים נשארים זהים.</p>
+  <h1 id="heading">בדיקת Home ללא המפה.</h1>
+  <p id="explanation">עותק אבחון נפרד של perf-5. אזור המפה יהיה ריק, כי טעינת המפה וקריאת העיר שלה כבויות. שם העיר של Calendar ממשיך לפעול כרגיל. שאר הנתונים, העיצוב והכפתורים נשארים זהים.</p>
   <section aria-label="העתקת הווידג׳ט">
     <p id="status" role="status" aria-live="polite">מכין את העותק האישי…</p>
     <button id="copy" type="button" disabled>העתקת עותק האבחון</button>
@@ -29,10 +29,10 @@
     <button id="retry" type="button" hidden>ניסיון נוסף</button>
   </section>
   <ol>
-    <li>לחץ על <b>העתקת הווידג׳ט</b>.</li>
+    <li>לחץ על <b>העתקת עותק האבחון</b>.</li>
     <li>ב־Widgy פתח <b dir="ltr">Import → Import URL Or JSON</b>.</li>
     <li>הדבק וייבא כעותק נוסף. שייך זמנית לאותו סלוט שבו בדקת את perf-5.</li>
-    <li>לאחר הטעינה הראשונה, עבור שלוש פעמים <b dir="ltr">Home → Calendar → Home</b> באותו חיבור רשת. האם החזרה ל־Home מהירה משמעותית?</li>
+    <li id="comparison">לאחר הטעינה הראשונה, עבור שלוש פעמים <b dir="ltr">Home → Calendar → Home</b> באותו חיבור רשת. האם החזרה ל־Home מהירה משמעותית?</li>
     <li>לאחר הבדיקה חזור לווידג׳ט הרגיל שלך.</li>
   </ol>
   <p class="note">העותק כולל את החיבור הפרטי ליומנים שלך. שמור אותו לעצמך.</p>

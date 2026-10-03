@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {personalizedWidget} from './calendar-connect-widget.js';
-import {withoutHomeMap} from './widget-home-map-diagnostic.js';
+import {withoutHomeMap,withoutHomeMapAndCityLookup} from './widget-home-map-diagnostic.js';
 const template=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
 const original=personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic');
 const unchanged=structuredClone(original),diagnostic=withoutHomeMap(original);
@@ -22,3 +22,30 @@ assert.throws(()=>withoutHomeMap(missing),/unexpected_template/);
 const dangling=structuredClone(original);dangling['1'][1].s='${widgy.map_request}';
 assert.throws(()=>withoutHomeMap(dangling),/unexpected_template/);
 console.log('Passed: only one image and one map variable removed; all other nodes, data, controls and metadata preserved; original not mutated; independent Calendar city lookup retained, map pipeline removed.');
+
+const cityOff=withoutHomeMapAndCityLookup(original),expectedCityOff=structuredClone(diagnostic);
+const literal=[{'5':'Custom Text','6':'Text','25':'TEST, '}];
+expectedCityOff['36'].find(v=>v['1']==='calendar_city_prefix')['3']['66']=literal;
+expectedCityOff['3']=cityOff['3'];expectedCityOff['4']=cityOff['4'];
+assert.deepEqual(cityOff,expectedCityOff);
+assert.deepEqual(original,unchanged);
+assert.deepEqual(cityOff['1'],diagnostic['1']);
+assert.equal(cityOff['36'].length,diagnostic['36'].length);
+const city=cityOff['36'].find(v=>v['1']==='calendar_city_prefix');
+assert.equal(city['0'],original['36'].find(v=>v['1']==='calendar_city_prefix')['0']);
+const cal=cityOff['1'].find(n=>n.s==='CALENDAR');
+assert.deepEqual(cal['1'].find(n=>n.s==='Calendar Location').o1,{'0':city['0'],'1':1,'2':''});
+assert.deepEqual(cal['1'].find(n=>n.s==='Calendar Location · Pending Lookup').o1,{'0':city['0'],'1':0,'2':''});
+assert.notEqual(literal[0]['25'],''); // Do not activate the native-city fallback.
+assert(!JSON.stringify(cityOff['36']).includes('reverse-geocode-client'));
+assert(!cityOff['36'].some(v=>v['3']['66']?.some(s=>s['6']==='Async + No main()')));
+const jsonFields=w=>w['36'].flatMap(v=>v['3']['66']||[]).filter(s=>s['5']==='JSON Endpoint');
+assert.equal(jsonFields(cityOff).length,39);
+assert.deepEqual(jsonFields(cityOff),jsonFields(diagnostic));
+for(const name of ['Latitude','Longitude','map_latitude_max5','map_longitude_max5','calendar_native_city']){
+  assert.deepEqual(cityOff['36'].find(v=>v['1']===name),diagnostic['36'].find(v=>v['1']===name));
+}
+const badCity=structuredClone(original);
+badCity['36'].find(v=>v['1']==='calendar_city_prefix')['3']['66']=literal;
+assert.throws(()=>withoutHomeMapAndCityLookup(badCity),/unexpected_template/);
+console.log('Passed: City-Off differs from Map-Off only in one source plus diagnostic metadata; unchanged layers, taps, GPS inputs and 39 native JSON bindings; no custom asynchronous geocoder remains; fallback visibility stays on the nonempty-city path.');
