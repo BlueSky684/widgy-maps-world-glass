@@ -35,10 +35,8 @@ export function personalizedWidget(original, endpoint, widgetEndpoint) {
   }
   function visit(nodes) {
     for (const n of nodes) {
-      // Each path already describes the complete arc for its integer percent.
-      // >= painted every shorter arc underneath it (up to 100 overlapping
-      // shapes). steps_progress is an integer clamped to 0..100.
-      if (widgetEndpoint && /^Steps Goal Ring · \d+%$/.test(n.s || '') && n.o1?.['1']===5) n.o1['1']=0;
+      // Keep C16's cumulative steps-ring conditions: each shape is a short
+      // convex segment, so every segment up to the current percent is needed.
       if (n.z==='10' && /^Calendar · Native Month · [456] Weeks$/.test(n.s || '')) {
         delete n['53']; delete n['54']; native++;
       }

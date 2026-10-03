@@ -80,5 +80,5 @@
     "perf-5 city reuse and invalidation cases",
     "full personalized export equality except map_request source"
   ],
-  "deviceResult": "Pending user import and Home/Calendar transitions"
+  "deviceResult": "User reports no perceived improvement between perf-4 and perf-5. Later Map-Off, Map-City-Off and Home Native-Data-Off diagnostics did not resolve the reported Home delay; see home-transition-audit.json for exact observations and limits."
 }
