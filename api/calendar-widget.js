@@ -45,6 +45,10 @@ export default async function handler(req,res) {
     }
     if(!entry.png)entry.png=renderDots(events,window);
     const png=await entry.png;
+    // Reuse month dots on the device within the same provider freshness window.
+    // privateHeaders continues to forbid shared/CDN caching of private calendars.
+    const remaining=Math.max(0,Math.floor((entry.until-Date.now())/1000));
+    res.setHeader('Cache-Control',`private, max-age=${Math.min(30,remaining)}, must-revalidate`);
     res.setHeader('Content-Type','image/png');
     res.setHeader('X-Calendar-Generated-For',window.month.toFormat('yyyy-MM'));
     return req.method==='HEAD'?res.status(200).end():res.status(200).send(png);

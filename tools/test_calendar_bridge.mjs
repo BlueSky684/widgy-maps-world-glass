@@ -171,10 +171,11 @@ test('iCloud discovery and expanded REPORT pass through the real DAV parser with
   const originalFetch=globalThis.fetch;
   const multi=(href,props)=>new Response(`<?xml version="1.0"?><d:multistatus xmlns:d="DAV:" xmlns:c="urn:ietf:params:xml:ns:caldav"><d:response><d:href>${href}</d:href><d:propstat><d:prop>${props}</d:prop><d:status>HTTP/1.1 200 OK</d:status></d:propstat></d:response></d:multistatus>`,{status:207,headers:{'content-type':'application/xml'}});
   const data=ics(vevent(['UID:dav-test','RECURRENCE-ID:20261003T090000Z','DTSTART:20261003T090000Z','DTEND:20261003T100000Z']));
-  let reports=0;
+  let reports=0,discoveryComplete=false;
   try{
     globalThis.fetch=async(input,init)=>{
       assert(['GET','PROPFIND','REPORT'].includes(init.method));
+      if(discoveryComplete){assert.equal(init.method,'REPORT');assert.equal(new URL(input).href,source.id);}
       const url=new URL(input),body=String(init.body || '');
       if(url.pathname.includes('.well-known'))return new Response('',{status:301,headers:{location:'https://p01-caldav.icloud.com/'}});
       if(body.includes('current-user-principal'))return multi('/','<d:current-user-principal><d:href>/test/principal/</d:href></d:current-user-principal>');
@@ -188,6 +189,7 @@ test('iCloud discovery and expanded REPORT pass through the real DAV parser with
     };
     const credentials={username:'example@example.test',password:'abcd-efgh-ijkl-mnop'};
     const calendars=await iCloudCalendars(credentials);assert.equal(calendars.length,1);assert.equal(calendars[0].id,source.id);
+    discoveryComplete=true;
     const events=await readEvents({icloud:credentials,sources:[source]},october);
     assert.equal(events.length,1);assert.equal(reports,1);assert.equal(dayDots(events,october).find(d=>d.date==='2026-10-03').dots[0],1);
   }finally{globalThis.fetch=originalFetch;}

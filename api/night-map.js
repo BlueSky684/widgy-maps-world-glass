@@ -1,6 +1,7 @@
 import {renderHomeMap, resolveLocation, REVISION} from '../lib/home-map-day-night.js';
 import {parseMapRequest} from '../lib/native-map-request.js';
 import {createMapRenderCache} from '../lib/map-render-cache.js';
+import {precomputedState} from '../lib/map-precomputed.js';
 
 const cachedRender = createMapRenderCache();
 
@@ -47,6 +48,7 @@ export default async function handler(req, res) {
     }
     res.setHeader('Content-Type', 'image/png');
     res.setHeader('X-Map-Cache', result.state);
+    res.setHeader('X-Map-Precomputed',precomputedState());
     res.setHeader('X-Map-Revision', REVISION);
     res.setHeader('X-Map-Atlas', atlas);
     res.setHeader('X-Map-Width', String(width));
