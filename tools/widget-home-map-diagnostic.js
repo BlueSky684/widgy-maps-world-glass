@@ -107,3 +107,32 @@ export function withMinimalHome(original){
   widget['4']='Temporary minimal-Home control based on Clock-Off. Home keeps only its original solid background, four tap areas and ten navigation drawings/labels. All variables, other tabs, their data and navigation are retained. The otherwise empty Home is intentional and not the approved design or a release. A faster result implicates the removed Home content/evaluation; it does not identify a particular layer. Keep this private export private.';
   return widget;
 }
+
+// Start from the FULL, repaired normal export, not the earlier stripped probes.
+// Leave every data source active: isolate the two sets of conditional drawings.
+export function withoutHomeProgressArtwork(original){
+  if(original['3']!=='Widgy Calendar Unified')throw Error('unexpected_template');
+  const widget=structuredClone(original);
+  const home=widget['1'].find(n=>n.s==='HOME');
+  if(!home)throw Error('unexpected_template');
+  const removed=new Set();
+  for(const [prefix,variable,operator] of [
+    ['Steps Goal Ring','steps_progress',5],
+    ['Day Progress Fill','day_progress',0]
+  ]){
+    const vars=widget['36'].filter(v=>v['1']===variable);
+    const nodes=home['1'].filter(n=>n.s?.startsWith(prefix+' · '));
+    if(vars.length!==1 || nodes.length!==100)throw Error('unexpected_template');
+    for(let p=1;p<=100;p++){
+      const matches=nodes.filter(n=>n.s===`${prefix} · ${p}%`);
+      const n=matches[0];
+      if(matches.length!==1 || n.z!=='2' || n.o1?.['0']!==vars[0]['0'] ||
+          n.o1['1']!==operator || n.o1['2']!==String(p))throw Error('unexpected_template');
+      removed.add(n);
+    }
+  }
+  home['1']=home['1'].filter(n=>!removed.has(n));
+  widget['3']='Widgy Home Progress-Off Diagnostic';
+  widget['4']='Temporary comparison against the FULL regular widget, including its original approved live clock. Only 100 Steps Goal Ring drawings and 100 Day Progress Fill drawings are removed. Their empty tracks, labels and numeric values remain. The map, real weather/fitness/calendar data, all variables, conditions on other layers, actions, other tabs and remaining artwork are identical to the regular export. No static test data, map/city removal, native-clock replacement or legacy ring transform. A faster result implicates these two drawing groups, not a particular group or proven optimization. Restore the normal widget after testing. Keep this private calendar export private.';
+  return widget;
+}

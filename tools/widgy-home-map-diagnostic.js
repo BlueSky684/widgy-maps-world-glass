@@ -1,12 +1,19 @@
-import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome} from './widget-home-map-diagnostic.js?v=home-render-1';
+import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withoutHomeProgressArtwork} from './widget-home-map-diagnostic.js?v=home-progress-1';
 import {prepareWidget} from './calendar-widget-export.js?v=perf-5-ringfix-1';
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(window.location.search);
+const progressOff=params.get('home')==='progress-off';
 const minimalHome=params.get('home')==='minimal';
 const clockOff=minimalHome || params.get('home')==='clock-off';
 const nativeDataOff=clockOff || params.get('home')==='data-off';
 const cityOff=nativeDataOff || params.get('city')==='off';
-if(minimalHome){
+if(progressOff){
+  document.title='בדיקת הגרפים של Home';
+  $('heading').textContent='בדיקת טבעת הצעדים ופס היום.';
+  $('explanation').textContent='עותק של הווידג׳ט המלא עם השעון הישן והנתונים האמיתיים. הוסרו זמנית רק המילוי של טבעת הצעדים ופס התקדמות היום: 200 שכבות. מספר הצעדים, אחוז היום, המסגרות, המפה וכל שאר התוכן נשמרים. זו בדיקת אבחון; הגרפים החסרים מכוונים.';
+  $('comparison').textContent='השווה לווידג׳ט המלא עם השעון הישן, באותו סלוט וחיבור רשת. לאחר שהמפה והנתונים נטענו, עבור שלוש פעמים Calendar → Home. האם ההמתנה התקצרה באופן מורגש?';
+  $('download').download='Widgy_Home_Progress_Off_Diagnostic.json';
+}else if(minimalHome){
   document.title='בדיקת Home מינימלי';
   $('heading').textContent='בדיקה ב׳: Home מינימלי.';
   $('explanation').textContent='בדיקת אבחון: Home יהיה כמעט ריק, עם רקע ופס הניווט בלבד. Calendar ושאר הכרטיסיות נשמרים. כל המשתנים נשמרים כמו בבדיקה א׳. העותק הזה בודק אם ההמתנה נשארת גם לאחר הסרת תוכן Home.';
@@ -49,10 +56,11 @@ async function prepare(){
   try{
     const result=await prepareWidget();
     const transform=minimalHome ? withMinimalHome : clockOff ? withoutHomeLiveClock : nativeDataOff ? withoutHomeNativeData : cityOff ? withoutHomeMapAndCityLookup : withoutHomeMap;
-    payload=JSON.stringify(transform(perf5DiagnosticBaseline(JSON.parse(result.payload))));
+    const original=JSON.parse(result.payload);
+    payload=JSON.stringify(progressOff ? withoutHomeProgressArtwork(original) : transform(perf5DiagnosticBaseline(original)));
     downloadURL=URL.createObjectURL(new Blob([payload],{type:'application/json'}));
     $('download').href=downloadURL;$('download').hidden=false;$('copy').disabled=false;
-    status(minimalHome ? 'עותק Home Minimal מוכן. Home יהיה כמעט ריק, עם פס הניווט.' : clockOff ? 'עותק Clock-Off מוכן. השעון ב־Home יישאר זמנית על 12:34.' : nativeDataOff ? 'עותק Native-Data-Off מוכן. נתוני הדוגמה ב־Home מסומנים TEST DATA. זהו עותק אבחון זמני.' : cityOff ? 'עותק Map-City-Off מוכן. המפה ריקה ושם העיר הוא TEST. זהו עותק אבחון זמני.' : 'עותק האבחון מוכן. אזור המפה יהיה ריק; שאר הווידג׳ט נשאר זהה.');
+    status(progressOff ? 'עותק Progress-Off מוכן. המפה והשעון הישן פעילים; רק מילוי טבעת הצעדים ופס היום חסרים זמנית.' : minimalHome ? 'עותק Home Minimal מוכן. Home יהיה כמעט ריק, עם פס הניווט.' : clockOff ? 'עותק Clock-Off מוכן. השעון ב־Home יישאר זמנית על 12:34.' : nativeDataOff ? 'עותק Native-Data-Off מוכן. נתוני הדוגמה ב־Home מסומנים TEST DATA. זהו עותק אבחון זמני.' : cityOff ? 'עותק Map-City-Off מוכן. המפה ריקה ושם העיר הוא TEST. זהו עותק אבחון זמני.' : 'עותק האבחון מוכן. אזור המפה יהיה ריק; שאר הווידג׳ט נשאר זהה.');
   }catch(error){
     status(messages[error.message] || 'לא ניתן להכין את העותק כרגע. נסה שוב; אם הבעיה נמשכת, בדוק את חיבור היומנים בהגדרות למטה.',true);
     $('retry').hidden=false;

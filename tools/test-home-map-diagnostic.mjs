@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
 import {personalizedWidget} from './calendar-connect-widget.js';
-import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome} from './widget-home-map-diagnostic.js';
+import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withoutHomeProgressArtwork} from './widget-home-map-diagnostic.js';
 const template=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
 const normal=personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic');
 const original=perf5DiagnosticBaseline(normal);
@@ -103,3 +104,55 @@ const ids=new Set([...walk(minimal['1'])].map(n=>n.d0));
 for(const n of walk(minimal['1']))if(n['1a'])for(const id of n['1a'].slice(7).split(/[-,]/).map(Number))assert(ids.has(id),'Dangling tap target '+id);
 assert.deepEqual(original,unchanged);
 console.log('Passed: Clock-Off changes only one source beyond Native-Data-Off; Minimal removes exactly 373 Home nodes and keeps all variables, other tabs and valid navigation.');
+
+const normalUnchanged=structuredClone(normal);
+const progressOff=withoutHomeProgressArtwork(normal),expectedProgress=structuredClone(normal);
+expectedProgress['1'].find(n=>n.s==='HOME')['1']=expectedProgress['1'].find(n=>n.s==='HOME')['1']
+  .filter(n=>!/^Steps Goal Ring · \d+%$/.test(n.s)&&!/^Day Progress Fill · \d+%$/.test(n.s));
+expectedProgress['3']=progressOff['3'];expectedProgress['4']=progressOff['4'];
+assert.deepEqual(progressOff,expectedProgress);
+assert.deepEqual(normal,normalUnchanged);
+assert.equal(count(normal['1'])-count(progressOff['1']),200);
+assert.equal(count(progressOff['1'].find(n=>n.s==='HOME')['1']),189);
+assert.deepEqual(progressOff['36'],normal['36']);
+assert.throws(()=>withoutHomeProgressArtwork(original),/unexpected_template/); // Reject legacy equality-ring baseline.
+const duplicate=structuredClone(normal),duplicateHome=duplicate['1'].find(n=>n.s==='HOME');
+duplicateHome['1'].find(n=>n.s==='Day Progress Fill · 2%').s='Day Progress Fill · 1%';
+assert.throws(()=>withoutHomeProgressArtwork(duplicate),/unexpected_template/);
+const remainingIDs=new Set([...walk(progressOff['1'])].map(n=>n.d0));
+for(const n of walk(progressOff['1']))if(n['1a'])for(const id of n['1a'].slice(7).split(/[-,]/).map(Number))assert(remainingIDs.has(id),'Dangling tap target '+id);
+console.log('Passed: Progress-Off removes exactly 200 drawing layers from full regular Home (389 to 189); all data sources, map, original clock, other layers and valid navigation retained.');
+
+// Test what each actual copy-page URL exports, including clipboard handling.
+const html=readFileSync(new URL('./widgy-home-map-diagnostic.html',import.meta.url),'utf8');
+assert(html.includes('./widgy-home-map-diagnostic.js?v=home-progress-1'));
+const source=readFileSync(new URL('./widgy-home-map-diagnostic.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
+const elementIDs=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
+for(const [query,expectedExport] of [
+  ['',diagnostic],['?city=off',cityOff],['?home=data-off',nativeOff],
+  ['?home=clock-off',clockOff],['?home=minimal',minimal],['?home=progress-off',progressOff]
+]){
+  const elements=Object.fromEntries(elementIDs.map(id=>[id,{textContent:'',hidden:true,classList:{toggle(){}},handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}]));
+  let payload='',copied='';
+  const context=vm.createContext({
+    document:{getElementById:id=>{assert(elements[id],id);return elements[id];}},
+    window:{location:{search:query},addEventListener(){}},URLSearchParams,
+    URL:{createObjectURL:b=>{payload=b.parts[0];return 'blob:synthetic';},revokeObjectURL(){}},
+    Blob:class{constructor(parts){this.parts=parts;}},
+    navigator:{clipboard:{writeText:async value=>{copied=value;}}},
+    prepareWidget:async()=>({payload:JSON.stringify(normal)}),
+    perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,
+    withoutHomeLiveClock,withMinimalHome,withoutHomeProgressArtwork
+  });
+  await new vm.Script(source).runInContext(context);
+  assert.deepEqual(JSON.parse(payload),expectedExport,query);
+  assert.equal(elements.copy.disabled,false);
+  await elements.copy.handlers.click();
+  assert.equal(copied,payload);
+  if(query==='?home=progress-off'){
+    assert.equal(elements.download.download,'Widgy_Home_Progress_Off_Diagnostic.json');
+    assert(elements.explanation.textContent.includes('200'));
+    assert(elements.comparison.textContent.includes('השעון הישן'));
+  }
+}
+console.log('Passed: all six existing/new diagnostic URLs export and copy the intended comparison; Progress-Off uses full regular baseline, not legacy diagnostic removals.');
