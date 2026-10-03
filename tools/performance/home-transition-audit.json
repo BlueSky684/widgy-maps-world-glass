@@ -5,9 +5,11 @@
     "User reports no perceived improvement between perf-4 and perf-5.",
     "User reports that the Map-Off diagnostic is still relatively slow. No numeric device timing was collected.",
     "After delivery of Map-City-Off, user reports that switching to Home is still slower than switching to Calendar. No numeric timings or explicit before/after city-off comparison were supplied.",
-    "User reports no improvement with Home Native-Data-Off; still no numeric device timing supplied."
+    "User reports no improvement with Home Native-Data-Off; still no numeric device timing supplied.",
+    "User reports improvement with Clock-Off (fixed 12:34), and confirms initially not trying Minimal.",
+    "User subsequently tests Home Minimal and reports an additional significant improvement. No numerical timing measurements."
   ],
-  "conclusionLimit": "The map pipeline alone does not explain the remaining delay. This does not establish that the map has zero cost or identify the remaining bottleneck.",
+  "conclusionLimit": "Controlled Clock-Off comparison implicates the Live Timer source/rendering path as a contributor. Minimal Home is faster still, implicating additional Home content/evaluation. Neither test identifies every remaining cost or establishes quantitative latency.",
   "sourceAudit": {
     "homeTapActions": "All four HOME Tap actions are button_245-247,246,195: show Home and hide Calendar, Weather and Fitness. No explicit additional refresh action is configured.",
     "remainingCustomAsyncScriptInMapOff": "calendar_city_prefix performs its own client-only reverse-geocode request. It can wait for Widgy's runtime/network timeout if the request never settles. Its globalThis cache is best-effort; persistence on the phone is unverified.",
@@ -109,13 +111,13 @@
       "name": "Clock-Off",
       "baseline": "Home Native-Data-Off",
       "onlyAdditionalChange": "Hero Time source becomes literal 12:34; same font, frame, layers and variables.",
-      "deviceResult": "Pending"
+      "deviceResult": "Improvement reported by user; Clock-Off explicitly confirmed."
     },
     {
       "name": "Home Minimal",
       "baseline": "Clock-Off",
       "onlyAdditionalChange": "Remove 373 Home nodes, retaining the original background, four taps and ten navigation drawings/labels. All global variables and other tabs remain.",
-      "deviceResult": "Pending",
+      "deviceResult": "Additional significant improvement reported by user after testing Minimal.",
       "interpretationLimit": "A faster result implicates removed Home content/evaluation, not a particular renderer or layer. No speed-up would strengthen investigation of Widgy transition behavior and remaining global work."
     }
   ],
@@ -125,5 +127,25 @@
     "same-clock-style one-source comparison",
     "minimal Home has 15 retained nodes and no dangling tap targets",
     "101 ring percentage states plus perf-5 geometry defect reproduction"
-  ]
+  ],
+  "nativeClockCandidate": {
+    "name": "Widgy Calendar Native Clock Trial",
+    "baseline": "Current full normal export, including repaired cumulative steps ring",
+    "onlyFunctionalChange": "Hero Time source: Date And Time / Live Timer (24 hours, No Seconds) -> Date And Time / HH:mm",
+    "preserved": "Full map and all real data, all 81 variables, 39 calendar JSON fields, all layers and actions, approved HomeGlassTime-Light font, frames and colors. No diagnostic removals or sample values.",
+    "status": "Prepared; phone validation pending",
+    "validationOnPhone": [
+      "Home transition speed with all content restored",
+      "two automatic minute changes without tapping the widget",
+      "actual clock appearance and time accuracy"
+    ],
+    "documentation": {
+      "url": "https://www.reddit.com/r/widgy/comments/v3jslo/widgywatchy_faq_and_feature_requests_megathread/",
+      "author": "duke4e (Widgy developer)",
+      "published": "2022",
+      "statement": "Widget display can update every minute, separately from fetching data.",
+      "limitation": "Historical documentation supports trying the native date/time path, not a guarantee for the current iOS beta or this widget."
+    },
+    "regularExportPromoted": false
+  }
 }
