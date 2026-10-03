@@ -129,18 +129,41 @@ test('Home falls back to English-first all-day events and distinguishes empty fr
   assert.equal(dst.home.label,'NOW');assert.equal(dst.home.validUntil,Date.parse('2026-10-25T01:45:00+02:00'));
 });
 
-test('Home reads the existing encoded snapshot without networking and suppresses expired next-event details',()=>{
+async function evaluateHome(field,snapshot,fetcher){
+  class TestDate extends Date {static now(){return now.getTime();}}
+  const code=homeFieldCode(field,'https://example.test/api/calendar-widget?token=synthetic');
+  assert(!code.includes('${widgy.calendar_bridge_snapshot}'));
+  let requests=0;
+  const result=await new Promise(resolve=>vm.runInNewContext(code,{
+    Date:TestDate,sendToWidgy:resolve,
+    fetch:async url=>{
+      requests++;
+      assert.equal(new URL(url).searchParams.get('view'),'today');
+      assert.equal(new URL(url).searchParams.get('refresh'),String(Math.floor(now.getTime()/60000)));
+      if(fetcher)return fetcher();
+      await Promise.resolve();
+      return {ok:true,status:200,json:async()=>snapshot};
+    }
+  }));
+  assert.equal(requests,1);return result;
+}
+
+test('Home fields await their own response without a shared variable, preserve titles and reject stale data',async()=>{
   const snapshot=widgetSnapshot(events,window,now);
   snapshot.home.title='"; throw Error("injected"); // ${widgy.other} פגישה';
-  assert.equal(evaluate(homeFieldCode('title'),snapshot),snapshot.home.title);
-  assert.equal(evaluate(homeFieldCode('count'),snapshot),'4');
-  assert.equal(evaluate(homeFieldCode('count'),widgetSnapshot([],window,now)),'0');
-  assert.equal(evaluate(homeFieldCode('event_word'),widgetSnapshot([events[0]],window,now)),'event •');
+  assert.equal(await evaluateHome('title',snapshot),snapshot.home.title);
+  assert.equal(await evaluateHome('count',snapshot),'4');
+  assert.equal(await evaluateHome('count',widgetSnapshot([],window,now)),'0');
+  assert.equal(await evaluateHome('event_word',widgetSnapshot([events[0]],window,now)),'event •');
   const expired={...snapshot,home:{...snapshot.home,validUntil:now.getTime()}};
-  assert.equal(evaluate(homeFieldCode('title'),expired),'Updating…');
-  assert.equal(evaluate(homeFieldCode('compact'),expired),0);assert.equal(evaluate(homeFieldCode('time'),expired),'');
-  assert.equal(evaluate(homeFieldCode('count'),{version:2,ok:false}),'—');
-  assert.equal(evaluate(homeFieldCode('title'),{...snapshot,generatedAt:'2026-10-02T12:00:00Z'}),'Calendar unavailable');
+  assert.equal(await evaluateHome('title',expired),'Updating…');
+  assert.equal(await evaluateHome('compact',expired),0);assert.equal(await evaluateHome('time',expired),'');
+  assert.equal(await evaluateHome('count',{version:2,ok:false}),'—');
+  assert.equal(await evaluateHome('title',{...snapshot,generatedAt:'2026-10-02T12:00:00Z'}),'Calendar unavailable');
+  for(const fetcher of [()=>{throw Error('offline');},async()=>({ok:false,status:401}),async()=>({ok:true,status:200,json:async()=>({})})]){
+    assert.equal(await evaluateHome('count',null,fetcher),'—');
+    assert.equal(await evaluateHome('title',null,fetcher),'Calendar unavailable');
+  }
 });
 
 test('one Widgy network request supplies every field safely, including quotes and code-like event titles',async()=>{
@@ -239,7 +262,7 @@ test('unified template preserves other tabs and row geometry while removing nati
   const variableIDs=copy['36'].map(v=>v['0']);assert.equal(variableIDs.length,new Set(variableIDs).size);
 });
 
-test('Home replaces sample data, shares one snapshot, and preserves C16 fonts, timed frames and unrelated layers',()=>{
+test('Home replaces sample data with independent async fields and preserves C16 fonts, timed frames and unrelated layers',()=>{
   const original=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
   const copy=personalizedWidget(original,`${ORIGIN}/api/calendar-dots?token=synthetic`,`${ORIGIN}/api/calendar-widget?token=synthetic-v2`);
   const home=copy['1'].find(n=>n.s==='HOME'),base=original['1'].find(n=>n.s==='HOME');
@@ -260,7 +283,8 @@ test('Home replaces sample data, shares one snapshot, and preserves C16 fonts, t
   assert(!JSON.stringify(home).includes('Team Sync'));assert(!JSON.stringify(home).includes('2:00 PM – 2:30 PM'));
   assert.deepEqual(home['1'].find(n=>n.s==='Events Summary · 3')['66'],[{'5':'Agenda (Today)','6':'Reminder Events Today'}]);
   const variables=copy['36'].filter(v=>v['1'].startsWith('calendar_home_'));
-  assert.equal(variables.length,6);assert(variables.every(v=>!v['3']['66'][0]['10'].includes('fetch(')));
+  assert.equal(variables.length,6);assert(variables.every(v=>v['3']['66'][0]['6']==='Async + No main()'));
+  assert(variables.every(v=>!v['3']['66'][0]['10'].includes('${widgy.calendar_bridge_snapshot}')));
   assert.equal(copy['36'].filter(v=>v['1']==='calendar_bridge_snapshot').length,1);
 });
 

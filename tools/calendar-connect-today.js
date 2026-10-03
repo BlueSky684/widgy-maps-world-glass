@@ -36,18 +36,36 @@ export function fieldCode(field,index=null){
   return `${readSnapshot.toString()}\nfunction main(){var data=readSnapshot("${encoded}");${value}}`;
 }
 
-export function homeFieldCode(field){
-  const encoded='${widgy.calendar_bridge_snapshot}';
-  const values={
-    count:'return data ? String(data.total) : "—";',
-    event_word:'return data && data.total===1 ? "event •" : "events •";',
-    label:'return home ? home.label : "NEXT EVENT";',
-    title:'return home ? home.title : (data && data.home ? "Updating…" : "Calendar unavailable");',
-    time:'return home ? home.time : "";',
-    compact:'return home ? home.compact : 0;'
-  };
-  if(!(field in values))throw Error('invalid_home_field');
-  return `${readSnapshot.toString()}\nfunction main(){var data=readSnapshot("${encoded}");var home=data && data.home && Date.now()<data.home.validUntil ? data.home : null;${values[field]}}`;
+function homeValue(data,field){
+  var home=data && data.home && Date.now()<data.home.validUntil ? data.home : null;
+  if(field==='count')return data ? String(data.total) : '—';
+  if(field==='event_word')return data && data.total===1 ? 'event •' : 'events •';
+  if(field==='label')return home ? home.label : 'NEXT EVENT';
+  if(field==='title')return home ? home.title : (data && data.home ? 'Updating…' : 'Calendar unavailable');
+  if(field==='time')return home ? home.time : '';
+  return home ? home.compact : 0;
+}
+function loadHomeField(endpoint,field){
+  var completed=false;
+  function finish(data){
+    if(completed)return;completed=true;
+    sendToWidgy(homeValue(data,field));
+  }
+  try{
+    // A direct async source avoids depending on another async Widgy variable
+    // having completed before this field is evaluated on the Home tab.
+    var url=endpoint+'&view=today&render=home-2&refresh='+Math.floor(Date.now()/60000);
+    fetch(url).then(function(response){
+      if(!response || response.ok===false || (typeof response.status==='number' && response.status!==200))throw Error('calendar_unavailable');
+      return response.json();
+    }).then(function(data){
+      finish(readSnapshot(encodeURIComponent(JSON.stringify(data))));
+    }).catch(function(){finish(null);});
+  }catch(error){finish(null);}
+}
+export function homeFieldCode(field,endpoint){
+  if(!['count','event_word','label','title','time','compact'].includes(field))throw Error('invalid_home_field');
+  return `${readSnapshot.toString()}\n${homeValue.toString()}\n${loadHomeField.toString()}\nloadHomeField(${JSON.stringify(endpoint)},${JSON.stringify(field)});`;
 }
 
 export function connectToday(widget,endpoint,nextID){
@@ -110,7 +128,7 @@ export function connectToday(widget,endpoint,nextID){
   if(!home)throw Error('unexpected_template');
   const homeFields={};
   for(const field of ['count','event_word','label','title','time','compact']){
-    homeFields[field]=variable(`calendar_home_${field}`,homeFieldCode(field),field==='compact');
+    homeFields[field]=variable(`calendar_home_${field}`,homeFieldCode(field,endpoint),field==='compact',true);
   }
   const homeNode=name=>{
     const node=home['1'].find(n=>n.s===name);
