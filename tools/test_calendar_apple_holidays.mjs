@@ -31,10 +31,10 @@ test('Apple plain and gzip feeds preserve both Hebrew holidays and their matchin
     const combined=[...events,{provider:'google',source:'google-holidays',uid:'different-publisher',color:2,
       title:'Shemini Atzeret / Simchat Torah',start:'2026-10-03',end:'2026-10-04',allDay:true}];
     const today=widgetSnapshot(combined,window,now);
-    assert.deepEqual(today.rows.map(r=>r.title),['שמחת תורה','שמיני עצרת','Shemini Atzeret / Simchat Torah']);
+    assert.deepEqual(today.rows.map(r=>r.title),['Shemini Atzeret / Simchat Torah','שמחת תורה','שמיני עצרת']);
     assert.equal(today.total,3);
-    assert.deepEqual(today.rows.map(r=>r.color),[0,0,2]);
-    assert.deepEqual(dayDots(combined,window).find(d=>d.date==='2026-10-03').dots,[0,0,2]);
+    assert.deepEqual(today.rows.map(r=>r.color),[2,0,0]);
+    assert.deepEqual(dayDots(combined,window).find(d=>d.date==='2026-10-03').dots,[2,0,0]);
     assert.equal(dayDots(combined,window).find(d=>d.date==='2026-10-04').count,0);
   }
 });
