@@ -3,7 +3,8 @@
   "branch": "f50-widget-test",
   "userDeviceObservations": [
     "User reports no perceived improvement between perf-4 and perf-5.",
-    "User reports that the Map-Off diagnostic is still relatively slow. No numeric device timing was collected."
+    "User reports that the Map-Off diagnostic is still relatively slow. No numeric device timing was collected.",
+    "After delivery of Map-City-Off, user reports that switching to Home is still slower than switching to Calendar. No numeric timings or explicit before/after city-off comparison were supplied."
   ],
   "conclusionLimit": "The map pipeline alone does not explain the remaining delay. This does not establish that the map has zero cost or identify the remaining bottleneck.",
   "sourceAudit": {
@@ -15,17 +16,90 @@
     "calendarDotImageBindings": 25,
     "calendarNativeGridAlternatives": 75,
     "calendarMonthPanes": 25,
-    "nativeSourcesStillPresent": ["location", "weather", "health", "pedometer", "reminders", "sunrise/sunset"],
-    "renderCaution": "Layer/source counts alone do not prove runtime cost. Hidden month states implement navigation and alternative layouts."
+    "nativeSourcesStillPresent": [
+      "location",
+      "weather",
+      "health",
+      "pedometer",
+      "reminders",
+      "sunrise/sunset"
+    ],
+    "renderCaution": "Layer/source counts alone do not prove runtime cost. Hidden month states implement navigation and alternative layouts.",
+    "homeWithoutMap": {
+      "descendants": 388,
+      "nativeSourcesToProbe": [
+        "weather",
+        "pedometer",
+        "active energy",
+        "reminder count",
+        "sunrise/sunset"
+      ],
+      "retainedClock": "Live Timer (24 hours, No Seconds)",
+      "retainedCalendarHomeFields": 4
+    },
+    "staticChrome": {
+      "homePNGBytes": 61975,
+      "calendarPNGBytes": 41327,
+      "bothDimensions": [
+        1320,
+        1377
+      ],
+      "decodedRGBABytesEach": 7270560,
+      "caution": "No actual device decode or network timings. The two backdrops have equal dimensions; size alone does not explain the asymmetry."
+    }
   },
-  "nextControlledComparison": {
+  "normalPerf5Changed": false,
+  "cityLookupComparison": {
     "name": "Map-City-Off",
     "baseline": "Map-Off",
     "onlyAdditionalFunctionalChange": "Replace calendar_city_prefix source with the literal TEST, while retaining its variable ID and every layer, condition, tap action, GPS input, calendar endpoint and other source.",
     "nonemptyLabelReason": "Avoid activating the native-city fallback and introducing a different visibility/source path.",
-    "deviceResult": "Pending",
+    "deviceResult": "User still reports a Home/Calendar asymmetry after receiving this diagnostic; no quantitative delta versus Map-Off.",
     "ifClearlyFaster": "The custom city lookup/evaluation path contributes to the observed delay; quantify and investigate before choosing a permanent replacement.",
     "ifSimilar": "Continue isolating Calendar remote data and local render/source costs; neither the map nor custom city lookup alone explains the remaining delay."
   },
-  "normalPerf5Changed": false
+  "nextControlledComparison": {
+    "name": "Home Native-Data-Off",
+    "baseline": "Map-City-Off",
+    "changes": {
+      "variables": [
+        "wx_status",
+        "wx_wind_speed",
+        "steps_today"
+      ],
+      "homeTextSources": [
+        "Events Summary · 3",
+        "Sunrise Time",
+        "Sunset Time",
+        "Weather Temp",
+        "Weather Status",
+        "Weather High",
+        "Weather Low",
+        "Distance Value",
+        "Calories Value"
+      ]
+    },
+    "preserved": [
+      "all nodes, shapes, conditions, fonts, frames and actions",
+      "all 39 calendar JSON fields",
+      "Calendar and other tabs",
+      "live clock and date/progress scripts",
+      "GPS inputs and static chrome"
+    ],
+    "caution": "Synthetic inputs can select different existing weather and ring states. This broad probe tests a source/visibility group, not a single provider or pure network cost. Other tabs can still use native data.",
+    "deviceResult": "Pending"
+  },
+  "separateCorrectnessIssue": {
+    "status": "Reproduced; repair pending, kept separate to preserve the current diagnostic baseline",
+    "file": "tools/calendar-connect-widget.js",
+    "issue": "The personalization pass changes the steps ring conditions from >= to ==, assuming complete arcs. C16 actually uses short cumulative convex segments. At 34%, the approved C16 shows 34 segments; current perf-5 shows only segment 34.",
+    "localGeometryReproduction": {
+      "percent": 34,
+      "sampleAngleDegrees": 45,
+      "approvedAlpha": 255,
+      "perf5Alpha": 0
+    },
+    "nextAction": "Restore cumulative conditions and verify the actual personalized output against the approved geometry at all 101 progress states; do not claim this is a latency fix."
+  },
+  "cleanupAfterFinalValidation": "Inventory and remove temporary test pages/deployments after choosing and validating the final widget, preserving active links and private exports."
 }

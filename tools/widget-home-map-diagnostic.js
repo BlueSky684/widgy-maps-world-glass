@@ -33,3 +33,41 @@ export function withoutHomeMapAndCityLookup(original){
   widget['4']='Separate diagnostic copy based on the Map-Off test. The only additional change is replacing calendar_city_prefix with the literal TEST, so no custom reverse-geocoder runs. The nonempty label preserves the successful-lookup visibility path. All GPS inputs, native location/weather/health sources, Calendar endpoints, layers, conditions and tap actions remain unchanged. The map area is intentionally empty and the Calendar city reads TEST. This is a temporary comparison, not a speed fix or a daily-use release. Keep this private calendar export private.';
   return widget;
 }
+
+// A broad source-group probe, not a release or proof of one slow provider.
+export function withoutHomeNativeData(original){
+  const widget=withoutHomeMapAndCityLookup(original);
+  const literal=value=>[{'5':'Custom Text','6':'Text','25':value}];
+  const variables=[
+    ['wx_status','Weather (Now)','Status (Full)','Clear'],
+    ['wx_wind_speed','Weather (Now)','Wind Speed','0'],
+    ['steps_today','Pedometer','Steps','100']
+  ];
+  for(const [name,provider,field,value] of variables){
+    const matches=widget['36'].filter(v=>v['1']===name);
+    const source=matches[0]?.['3']['66'];
+    if(matches.length!==1 || source?.length!==1 || source[0]['5']!==provider || source[0]['6']!==field)throw Error('unexpected_template');
+    matches[0]['3']['66']=literal(value);
+  }
+  const home=widget['1'].find(n=>n.s==='HOME');
+  const fields=[
+    ['Events Summary · 3','Agenda (Today)','Reminder Events Today','0'],
+    ['Sunrise Time','Sun And Moon','Sunrise','06:00'],
+    ['Sunset Time','Sun And Moon','Sunset','18:00'],
+    ['Weather Temp','Weather (Now)','Temperature','20°'],
+    ['Weather Status','Weather (Now)','Status (Simple)','TEST DATA'],
+    ['Weather High','Weather (Now)','Max. Temperature Today','25°'],
+    ['Weather Low','Weather (Now)','Min. Temperature Today','15°'],
+    ['Distance Value','Pedometer','Distance','0.1 km'],
+    ['Calories Value','Health (Daily)','Active Energy Burned','10 kcal']
+  ];
+  for(const [name,provider,field,value] of fields){
+    const matches=home['1'].filter(n=>n.s===name);
+    const source=matches[0]?.['66'];
+    if(matches.length!==1 || source?.length!==1 || source[0]['5']!==provider || source[0]['6']!==field)throw Error('unexpected_template');
+    matches[0]['66']=literal(value);
+  }
+  widget['3']='Widgy Home Native-Data-Off Diagnostic';
+  widget['4']='Temporary diagnostic based on Map-City-Off. Nine Home text sources and three variables use synthetic TEST DATA instead of weather, pedometer, active energy, reminder count, sunrise and sunset. Every layer, shape, condition, font, frame and tap action is retained; Calendar endpoints, the live clock, date calculations, GPS inputs and static artwork remain. Sample inputs may select different existing weather/ring states, so a faster result implicates this source/visibility group, not any single provider. Keep private; restore the normal widget after testing.';
+  return widget;
+}

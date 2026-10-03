@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {personalizedWidget} from './calendar-connect-widget.js';
-import {withoutHomeMap,withoutHomeMapAndCityLookup} from './widget-home-map-diagnostic.js';
+import {withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData} from './widget-home-map-diagnostic.js';
 const template=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
 const original=personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic');
 const unchanged=structuredClone(original),diagnostic=withoutHomeMap(original);
@@ -49,3 +49,37 @@ const badCity=structuredClone(original);
 badCity['36'].find(v=>v['1']==='calendar_city_prefix')['3']['66']=literal;
 assert.throws(()=>withoutHomeMapAndCityLookup(badCity),/unexpected_template/);
 console.log('Passed: City-Off differs from Map-Off only in one source plus diagnostic metadata; unchanged layers, taps, GPS inputs and 39 native JSON bindings; no custom asynchronous geocoder remains; fallback visibility stays on the nonempty-city path.');
+
+const nativeOff=withoutHomeNativeData(original);
+const fieldNames=['Events Summary · 3','Sunrise Time','Sunset Time','Weather Temp','Weather Status','Weather High','Weather Low','Distance Value','Calories Value'];
+const variableNames=['wx_status','wx_wind_speed','steps_today'];
+const restored=structuredClone(nativeOff);
+for(const name of variableNames){
+  const v=restored['36'].find(v=>v['1']===name);
+  assert.equal(v['3']['66'][0]['5'],'Custom Text');
+  v['3']['66']=structuredClone(cityOff['36'].find(v=>v['1']===name)['3']['66']);
+}
+const restoredHome=restored['1'].find(n=>n.s==='HOME'),baselineHome=cityOff['1'].find(n=>n.s==='HOME');
+for(const name of fieldNames){
+  const n=restoredHome['1'].find(n=>n.s===name);
+  assert.equal(n['66'][0]['5'],'Custom Text');
+  n['66']=structuredClone(baselineHome['1'].find(n=>n.s===name)['66']);
+}
+restored['3']=cityOff['3'];restored['4']=cityOff['4'];
+assert.deepEqual(restored,cityOff); // No changes outside the 12 sources + metadata.
+assert.deepEqual(original,unchanged);
+assert.deepEqual(jsonFields(nativeOff),jsonFields(cityOff));
+const nativeHome=nativeOff['1'].find(n=>n.s==='HOME');
+assert.equal(count(nativeOff['1']),count(cityOff['1']));
+assert.deepEqual(nativeHome['1'].find(n=>n.s==='Hero Time'),baselineHome['1'].find(n=>n.s==='Hero Time'));
+assert(!nativeHome['1'].flatMap(n=>n['66']||[]).some(s=>['Weather (Now)','Pedometer','Health (Daily)','Sun And Moon','Agenda (Today)'].includes(s['5'])));
+assert.deepEqual(nativeOff['1'].filter(n=>n.s!=='HOME'),cityOff['1'].filter(n=>n.s!=='HOME'));
+for(const name of variableNames){
+  const id=nativeOff['36'].find(v=>v['1']===name)['0'];
+  const unrelated=JSON.stringify(nativeOff['1'].filter(n=>n.s!=='HOME'));
+  assert(!unrelated.includes(id));assert(!unrelated.includes('${widgy.'+name+'}'));
+}
+const missingSource=structuredClone(original);
+missingSource['1'].find(n=>n.s==='HOME')['1'].find(n=>n.s==='Calories Value')['66']=literal;
+assert.throws(()=>withoutHomeNativeData(missingSource),/unexpected_template/);
+console.log('Passed: Home native-data diagnostic changes exactly nine text sources and three variables beyond City-Off; every node, condition, action, clock, Calendar source and other tab preserved.');

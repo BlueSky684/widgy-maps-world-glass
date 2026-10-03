@@ -1,8 +1,16 @@
-import {withoutHomeMap,withoutHomeMapAndCityLookup} from './widget-home-map-diagnostic.js?v=city-off-1';
+import {withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData} from './widget-home-map-diagnostic.js?v=home-data-off-1';
 import {prepareWidget} from './calendar-widget-export.js?v=perf-5';
 const $=id=>document.getElementById(id);
-const cityOff=new URLSearchParams(window.location.search).get('city')==='off';
-if(cityOff){
+const params=new URLSearchParams(window.location.search);
+const nativeDataOff=params.get('home')==='data-off';
+const cityOff=nativeDataOff || params.get('city')==='off';
+if(nativeDataOff){
+  document.title='בדיקת מקורות הנתונים של Home';
+  $('heading').textContent='בדיקת הנתונים של Home.';
+  $('explanation').textContent='עותק בדיקה המבוסס על Map-City-Off. נתוני מזג האוויר, הצעדים, המרחק, הקלוריות, מספר התזכורות ושעות הזריחה והשקיעה ב־Home מוחלפים זמנית בנתוני דוגמה. יופיע TEST DATA. המפה עדיין ריקה והעיר TEST; השעון והיומנים ממשיכים לפעול. כל השכבות והכפתורים נשמרים.';
+  $('comparison').textContent='לאחר הטעינה הראשונה, עבור שלוש פעמים Calendar → Home. השווה לעותק Map-City-Off האחרון באותו סלוט וחיבור רשת: האם ההמתנה ל־Home התקצרה? האם עדיין יש פער מול הכניסה ל־Calendar?';
+  $('download').download='Widgy_Home_Native_Data_Off_Diagnostic.json';
+}else if(cityOff){
   document.title='בדיקת Home ללא המפה וקריאת העיר';
   $('heading').textContent='בדיקת Home ללא קריאת העיר.';
   $('explanation').textContent='בהשוואה לעותק ללא המפה שכבר בדקת, כאן כבויה גם קריאת העיר החיצונית של Calendar. שם העיר יופיע זמנית כ־TEST. נתוני היומנים, יתר מקורות הנתונים, השכבות והכפתורים נשארים זהים לעותק הקודם.';
@@ -25,11 +33,11 @@ async function prepare(){
   status('קורא את היומנים ומכין את העותק האישי…');
   try{
     const result=await prepareWidget();
-    const transform=cityOff ? withoutHomeMapAndCityLookup : withoutHomeMap;
+    const transform=nativeDataOff ? withoutHomeNativeData : cityOff ? withoutHomeMapAndCityLookup : withoutHomeMap;
     payload=JSON.stringify(transform(JSON.parse(result.payload)));
     downloadURL=URL.createObjectURL(new Blob([payload],{type:'application/json'}));
     $('download').href=downloadURL;$('download').hidden=false;$('copy').disabled=false;
-    status(cityOff ? 'עותק Map-City-Off מוכן. המפה ריקה ושם העיר הוא TEST. זהו עותק אבחון זמני.' : 'עותק האבחון מוכן. אזור המפה יהיה ריק; שאר הווידג׳ט נשאר זהה.');
+    status(nativeDataOff ? 'עותק Native-Data-Off מוכן. נתוני הדוגמה ב־Home מסומנים TEST DATA. זהו עותק אבחון זמני.' : cityOff ? 'עותק Map-City-Off מוכן. המפה ריקה ושם העיר הוא TEST. זהו עותק אבחון זמני.' : 'עותק האבחון מוכן. אזור המפה יהיה ריק; שאר הווידג׳ט נשאר זהה.');
   }catch(error){
     status(messages[error.message] || 'לא ניתן להכין את העותק כרגע. נסה שוב; אם הבעיה נמשכת, בדוק את חיבור היומנים בהגדרות למטה.',true);
     $('retry').hidden=false;
