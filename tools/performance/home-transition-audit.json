@@ -8,9 +8,10 @@
     "User reports no improvement with Home Native-Data-Off; still no numeric device timing supplied.",
     "User reports improvement with Clock-Off (fixed 12:34), and confirms initially not trying Minimal.",
     "User subsequently tests Home Minimal and reports an additional significant improvement. No numerical timing measurements.",
-    "2026-10-04 Asia/Jerusalem: user directly compares the full widget with the old Live Timer and the new HH:mm clock and reports no perceived loading-time difference. No minute-update or appearance result supplied."
+    "2026-10-04 Asia/Jerusalem: user directly compares the full widget with the old Live Timer and the new HH:mm clock and reports no perceived loading-time difference. No minute-update or appearance result supplied.",
+    "2026-10-04 Asia/Jerusalem: Progress-Off user result: no noticeable wait reduction, possibly very slight but not perceptible. User requests exactly one final test tonight."
   ],
-  "conclusionLimit": "A static literal clock improved the already stripped diagnostic, but replacing Live Timer with native HH:mm in the full widget showed no perceived loading improvement. The clock replacement is not an established fix and will not be promoted. Minimal Home improved further, supporting isolation of additional Home content/evaluation. No test identifies every remaining cost or establishes quantitative latency.",
+  "conclusionLimit": "A static literal clock improved the already stripped diagnostic, but replacing Live Timer with native HH:mm in the full widget showed no perceived loading improvement. The clock replacement is not an established fix and will not be promoted. Minimal Home improved further, supporting isolation of additional Home content/evaluation. No test identifies every remaining cost or establishes quantitative latency. Removing the 200 progress drawings from the full widget did not produce a noticeable improvement; this does not prove zero cost or rule out interactions.",
   "sourceAudit": {
     "homeTapActions": "All four HOME Tap actions are button_245-247,246,195: show Home and hide Calendar, Weather and Fitness. No explicit additional refresh action is configured.",
     "remainingCustomAsyncScriptInMapOff": "calendar_city_prefix performs its own client-only reverse-geocode request. It can wait for Widgy's runtime/network timeout if the request never settles. Its globalThis cache is best-effort; persistence on the phone is unverified.",
@@ -155,7 +156,17 @@
     "onlyFunctionalChange": "Remove 100 Steps Goal Ring shape nodes and 100 Day Progress Fill shape nodes from Home, reducing its descendants from 389 to 189.",
     "preserved": "All 81 variables and their sources, map/geocoders, real data, original clock, numeric steps/day values, remaining artwork, actions and other tabs.",
     "caution": "Both drawing groups are removed together. A speed difference implicates this group of 200 conditional shapes, not a specific group, renderer, or data provider. Layer count is not a runtime measurement. Missing graph fills are diagnostic only; no approved design change is promoted.",
-    "deviceResult": "Pending",
+    "deviceResult": "No noticeable improvement reported; possibly very slight but not perceptible. No numerical timings. Do not remove these approved graphics from the normal export.",
     "validation": "Exact full-export delta, 200 removed nodes, original unchanged, all remaining tap targets valid, reject malformed/legacy baseline, six diagnostic copy-page modes verified with synthetic private endpoints."
+  },
+  "weatherArtworkComparison": {
+    "name": "Widgy Home Weather-Art-Off Diagnostic",
+    "baseline": "Progress-Off, the immediately preceding phone test",
+    "onlyAdditionalFunctionalChange": "Remove the 14 Home weather-icon alternatives: 91 conditional groups plus 46 graphic nodes, totaling 137 nodes. Home now has 52 descendants.",
+    "preserved": "All 81 variables and actual sources, all temperatures/weather text, map, approved Live Timer, remaining artwork, Calendar and other tabs. Progress drawings stay absent as in preceding baseline.",
+    "caution": "This tests the conditional weather-icon artwork, not removal of the weather provider. Earlier Native-Data-Off replaced weather inputs but retained these groups. Counts alone do not establish latency.",
+    "sourceAudit": "Nested groups repeat exclusions for Thunder, Snow, Sleet, Rain, Fog, Cloudy, Fair, Night and wind threshold. No permanent consolidation attempted before this phone comparison.",
+    "deviceResult": "Pending; final requested test for tonight",
+    "validation": "Exact export delta against Progress-Off; 137 nodes removed; all other data/structure preserved; no dangling tap references; all seven copy-page routes verified with synthetic endpoints."
   }
 }
