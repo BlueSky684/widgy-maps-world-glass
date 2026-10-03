@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+  <title>חיבור היומנים ל־Widgy</title>
+  <link rel="stylesheet" href="./calendar-connect.css">
+  <script type="module" src="./calendar-connect.js"></script>
+</head>
+<body><main>
+  <p class="eyebrow" dir="ltr">WIDGY · CALENDAR</p>
+  <h1>היומנים שלך,<br>בצבעים שבחרת.</h1>
+  <p class="intro">חיבור Google ו־iCloud דרך הדפדפן, כדי להציג נקודות אירועים בצבעי ההדמיה. אין צורך להתקין אפליקציה נוספת.</p>
+  <div id="status" role="status" aria-live="polite">בודק את החיבור…</div>
+  <section id="configuration" hidden>
+    <h2>נדרשת הגדרה חד־פעמית של האתר</h2>
+    <p>דף החיבור כבר קיים. כדי להתחבר לחשבונות, יש להגדיר תחילה מפתחות פרטיים בשירות האחסון. אין לשלוח סיסמאות או מפתחות בצ׳אט.</p>
+    <details>
+      <summary>הוראות לבעל האתר</summary>
+      <ol>
+        <li>בפרויקט <b dir="ltr">widgy-maps-world-glass</b> ב־<a href="https://vercel.com/dashboard" target="_blank" rel="noreferrer">Vercel</a>, פתח <b dir="ltr">Settings → Environment Variables</b>.</li>
+        <li>צור את שני המפתחות כאן והוסף כל אחד תחת השם שמופיע מעליו. בחר בסביבת <b dir="ltr">Preview</b> לענף <b dir="ltr">f50-widget-test</b>. שמור את מפתח הכניסה במנהל הסיסמאות שלך.</li>
+      </ol>
+      <button id="generate-keys" type="button">יצירת שני מפתחות בדפדפן</button>
+      <div id="generated-keys" hidden>
+        <label dir="ltr">CALENDAR_SEAL_KEY<input id="seal-key" dir="ltr" readonly autocomplete="off"></label>
+        <label dir="ltr">CALENDAR_SETUP_KEY<input id="setup-key" dir="ltr" readonly autocomplete="off"></label>
+        <p>המפתחות נוצרים במכשיר שלך. הם לא נשלחים לאתר בלחיצה הזו. לאחר שתעזוב את הדף לא נוכל לשחזר אותם.</p>
+      </div>
+      <ol start="3">
+        <li>לחיבור Google, פתח פרויקט ב־<a href="https://console.cloud.google.com/" target="_blank" rel="noreferrer">Google Cloud</a>, הפעל <b dir="ltr">Google Calendar API</b>, והגדר לקוח OAuth מסוג <b dir="ltr">Web application</b> במסך <b dir="ltr">Google Auth Platform</b>.</li>
+        <li>הוסף את כתובת ההחזרה הבאה בדיוק, כולל סימן השאלה:</li>
+      </ol>
+      <code id="callback" dir="ltr"></code>
+      <p>הוסף ב־Vercel את מזהה הלקוח תחת <b dir="ltr">CALENDAR_GOOGLE_CLIENT_ID</b> ואת הסוד תחת <b dir="ltr">CALENDAR_GOOGLE_CLIENT_SECRET</b>. במצב Testing יש להוסיף את החשבון שלך כמשתמש בדיקה; הרשאת הרענון עשויה לפוג כעבור שבעה ימים, כך שחיבור קבוע דורש טיפול בהגדרת הפרסום של Google.</p>
+      <p>פרוס מחדש את הענף כדי שהמשתנים ייטענו. לאחר מכן רענן את הדף. אפשר להתחיל ב־iCloud גם לפני השלמת ההגדרה של Google.</p>
+    </details>
+    <button id="refresh" type="button">בדיקה מחדש</button>
+  </section>
+  <section id="login-section" hidden>
+    <h2>כניסה פרטית</h2>
+    <p>הזן את מפתח הכניסה של האתר, <span dir="ltr">CALENDAR_SETUP_KEY</span>.</p>
+    <form id="login-form"><label>מפתח כניסה<input id="login-key" type="password" required autocomplete="current-password" dir="ltr"></label><button>כניסה</button></form>
+  </section>
+  <div id="workspace" hidden>
+    <section>
+      <h2>1 · חיבור החשבונות</h2>
+      <div class="provider"><div><h3>Google Calendar</h3><p id="google-state"></p></div><button id="google-connect" type="button">חיבור Google</button></div>
+      <p class="muted">נבקש לקרוא את רשימת היומנים ואת האירועים. אפליקציית המייל שבה אתה משתמש אינה משפיעה על החיבור.</p>
+      <div class="provider"><div><h3>iCloud</h3><p id="icloud-state"></p></div></div>
+      <details id="icloud-details"><summary>חיבור יומני iCloud</summary>
+        <p>ב־<a href="https://account.apple.com/" target="_blank" rel="noreferrer">חשבון Apple</a> צור סיסמה ייעודית ליישום: כניסה ואבטחה → סיסמאות ייעודיות ליישומים. נדרש אימות דו־שלבי בחשבון. הזן כאן רק את הסיסמה הייעודית, לא את סיסמת Apple הרגילה.</p>
+        <form id="icloud-form">
+          <label>כתובת חשבון Apple<input id="apple-id" type="email" required autocomplete="username" dir="ltr"></label>
+          <label>סיסמה ייעודית ליישום<input id="apple-password" type="password" required autocomplete="off" placeholder="xxxx-xxxx-xxxx-xxxx" dir="ltr"></label>
+          <p class="muted">הקוד באתר מבצע קריאה בלבד. הסיסמה הייעודית של Apple עצמה אינה מוגבלת להרשאת קריאה, וניתן לבטל אותה בחשבון Apple.</p>
+          <button>חיבור iCloud</button>
+        </form>
+      </details>
+    </section>
+    <section id="sources-section" hidden>
+      <h2>2 · בחירת יומנים וצבעים</h2>
+      <p>בחר עד שישה יומנים. הצבעים קבועים מתוך ההדמיה; השיוך לכל יומן הוא לבחירתך. אם מופיעים שני יומני ״חגים בישראל״, בחר תחילה אחד מהם.</p>
+      <form id="sources-form"><div id="sources"></div>
+        <label>אזור זמן<input id="zone" value="Asia/Jerusalem" dir="ltr" required></label>
+        <button>שמירת הבחירה ובדיקת החיבור</button>
+      </form>
+      <p class="muted">תזכורות, הצעות Siri וימי הולדת מקומיים אינם מחוברים דרך מסך זה.</p>
+    </section>
+    <section id="export-section" hidden>
+      <h2>3 · עותק לבדיקה ב־Widgy</h2>
+      <p>העותק מוסיף ללוח עד ארבע נקודות ביום לפי היומנים שנבחרו. רשימת TODAY עדיין מגיעה מהאייפון ומשתמשת בצבעי השורות הקיימים. נבדוק באייפון את היישור והרענון לפני חיבור מלא של שני החלקים.</p>
+      <button id="build-widget" type="button">הכנת קובץ אישי</button>
+      <div id="download-section" hidden>
+        <p id="read-result"></p>
+        <button id="copy-widget" type="button">העתקת הווידג׳ט</button>
+        <a id="download-widget" download="Widgy_Calendar_Browser_Test.json">הורדת קובץ לייבוא</a>
+        <p>ב־Widgy בחר ייבוא מהלוח או מהקובץ, כעותק נוסף. פתח את לשונית Calendar והשווה את תאריכי האירועים ליומן.</p>
+        <p class="muted">הקובץ מכיל קישור אישי לציור הנקודות. שמור אותו פרטי. הקישור תקף לשנה לכל היותר; הרשאת החשבון עשויה לפוג לפני כן. שינוי בחירת היומנים דורש יצירת קובץ חדש. קצב הרענון תלוי גם ב־Widgy וב־iOS.</p>
+      </div>
+    </section>
+    <details class="privacy"><summary>שמירה וביטול גישה</summary><p>פרטי החיבור מוצפנים בעוגיית כניסה ובקישור הציור. הקישור אינו מציג כותרות אירועים או סיסמאות, אך מי שמחזיק בו יכול לצפות בנקודות הפעילות. הקובץ האישי נוצר בדפדפן ואינו מתפרסם במאגר הקוד.</p><p>לביטול הגישה יש לבטל את הרשאת האתר בחשבון Google ואת הסיסמה הייעודית בחשבון Apple. בעל האתר יכול לבטל את כל קישורי הציור הקיימים באמצעות שינוי <span dir="ltr">CALENDAR_TOKEN_VERSION</span> ופריסה מחדש.</p></details>
+  </div>
+</main></body></html>
