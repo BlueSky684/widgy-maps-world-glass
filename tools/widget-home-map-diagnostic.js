@@ -136,3 +136,21 @@ export function withoutHomeProgressArtwork(original){
   widget['4']='Temporary comparison against the FULL regular widget, including its original approved live clock. Only 100 Steps Goal Ring drawings and 100 Day Progress Fill drawings are removed. Their empty tracks, labels and numeric values remain. The map, real weather/fitness/calendar data, all variables, conditions on other layers, actions, other tabs and remaining artwork are identical to the regular export. No static test data, map/city removal, native-clock replacement or legacy ring transform. A faster result implicates these two drawing groups, not a particular group or proven optimization. Restore the normal widget after testing. Keep this private calendar export private.';
   return widget;
 }
+
+// Compare directly with the last Progress-Off copy. Weather data stays live;
+// only the conditional icon artwork is removed from Home.
+export function withoutHomeWeatherArtwork(original){
+  const widget=withoutHomeProgressArtwork(original);
+  const home=widget['1'].find(n=>n.s==='HOME');
+  const groups=home['1'].filter(n=>n.z==='13' && n.s?.startsWith('WX · '));
+  const walk=ns=>ns.flatMap(n=>[n,...(n.z==='13'?walk(n['1']):[])]);
+  const nodes=walk(groups);
+  if(groups.length!==14 || nodes.length!==137 ||
+      nodes.filter(n=>n.z==='13' && n.o1).length!==91 ||
+      nodes.some(n=>!['2','4','13'].includes(n.z)))throw Error('unexpected_template');
+  const removed=new Set(groups);
+  home['1']=home['1'].filter(n=>!removed.has(n));
+  widget['3']='Widgy Home Weather-Art-Off Diagnostic';
+  widget['4']='Final overnight comparison against Progress-Off: additionally remove only the 14 Home weather-icon alternatives, containing 91 conditional groups and 46 graphic layers (137 nodes). Weather text, temperatures, all actual data sources and variables, original live clock, map, remaining artwork and other tabs are unchanged. The two progress fills remain absent exactly as in Progress-Off. This isolates weather-icon artwork/evaluation, not the weather provider, and does not change the approved regular export. Keep private; restore the regular widget after testing.';
+  return widget;
+}

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {personalizedWidget} from './calendar-connect-widget.js';
-import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withoutHomeProgressArtwork} from './widget-home-map-diagnostic.js';
+import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
 const template=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
 const normal=personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic');
 const original=perf5DiagnosticBaseline(normal);
@@ -124,13 +124,29 @@ for(const n of walk(progressOff['1']))if(n['1a'])for(const id of n['1a'].slice(7
 console.log('Passed: Progress-Off removes exactly 200 drawing layers from full regular Home (389 to 189); all data sources, map, original clock, other layers and valid navigation retained.');
 
 // Test what each actual copy-page URL exports, including clipboard handling.
+const weatherArtOff=withoutHomeWeatherArtwork(normal),expectedWeather=structuredClone(progressOff);
+const weatherIDs=new Set([80000,80001,80002,80003,80004,80005,80006,80007,80008,80009,80010,80070,80083,80096]);
+expectedWeather['1'].find(n=>n.s==='HOME')['1']=expectedWeather['1'].find(n=>n.s==='HOME')['1'].filter(n=>!weatherIDs.has(n.d0));
+expectedWeather['3']=weatherArtOff['3'];expectedWeather['4']=weatherArtOff['4'];
+assert.deepEqual(weatherArtOff,expectedWeather);
+assert.deepEqual(normal,normalUnchanged);
+assert.equal(count(progressOff['1'])-count(weatherArtOff['1']),137);
+assert.equal(count(weatherArtOff['1'].find(n=>n.s==='HOME')['1']),52);
+const weatherRemainingIDs=new Set([...walk(weatherArtOff['1'])].map(n=>n.d0));
+for(const n of walk(weatherArtOff['1']))if(n['1a'])for(const id of n['1a'].slice(7).split(/[-,]/).map(Number))assert(weatherRemainingIDs.has(id),'Dangling tap target '+id);
+const badWeather=structuredClone(normal);
+badWeather['1'].find(n=>n.s==='HOME')['1'].find(n=>n.d0===80000).s='Unknown';
+assert.throws(()=>withoutHomeWeatherArtwork(badWeather),/unexpected_template/);
+console.log('Passed: Weather-Art-Off removes only 14 weather-icon alternatives (137 nodes) beyond Progress-Off; all actual data, approved clock, map, weather text, other artwork and navigation unchanged.');
+
 const html=readFileSync(new URL('./widgy-home-map-diagnostic.html',import.meta.url),'utf8');
-assert(html.includes('./widgy-home-map-diagnostic.js?v=home-progress-1'));
+assert(html.includes('./widgy-home-map-diagnostic.js?v=home-weather-art-1'));
 const source=readFileSync(new URL('./widgy-home-map-diagnostic.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
 const elementIDs=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
 for(const [query,expectedExport] of [
   ['',diagnostic],['?city=off',cityOff],['?home=data-off',nativeOff],
-  ['?home=clock-off',clockOff],['?home=minimal',minimal],['?home=progress-off',progressOff]
+  ['?home=clock-off',clockOff],['?home=minimal',minimal],['?home=progress-off',progressOff],
+  ['?home=weather-art-off',weatherArtOff]
 ]){
   const elements=Object.fromEntries(elementIDs.map(id=>[id,{textContent:'',hidden:true,classList:{toggle(){}},handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}]));
   let payload='',copied='';
@@ -142,7 +158,7 @@ for(const [query,expectedExport] of [
     navigator:{clipboard:{writeText:async value=>{copied=value;}}},
     prepareWidget:async()=>({payload:JSON.stringify(normal)}),
     perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,
-    withoutHomeLiveClock,withMinimalHome,withoutHomeProgressArtwork
+    withoutHomeLiveClock,withMinimalHome,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
   });
   await new vm.Script(source).runInContext(context);
   assert.deepEqual(JSON.parse(payload),expectedExport,query);
@@ -154,5 +170,10 @@ for(const [query,expectedExport] of [
     assert(elements.explanation.textContent.includes('200'));
     assert(elements.comparison.textContent.includes('השעון הישן'));
   }
+  if(query==='?home=weather-art-off'){
+    assert.equal(elements.download.download,'Widgy_Home_Weather_Art_Off_Diagnostic.json');
+    assert(elements.comparison.textContent.includes('Progress-Off'));
+    assert.equal(elements['next-test'].hidden,true);
+  }
 }
-console.log('Passed: all six existing/new diagnostic URLs export and copy the intended comparison; Progress-Off uses full regular baseline, not legacy diagnostic removals.');
+console.log('Passed: all seven diagnostic URLs export and copy the intended comparison; new artwork tests retain the full real-data baseline.');
