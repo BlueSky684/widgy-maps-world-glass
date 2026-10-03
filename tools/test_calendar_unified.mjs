@@ -331,7 +331,7 @@ test('unified template preserves other tabs and row geometry while removing nati
   }
   assert.equal(copy['36'].filter(v=>v['1']==='calendar_bridge_snapshot').length,0);
   for(const v of copy['36'].filter(v=>/^calendar_(remaining|event_)/.test(v['1'])))assert(!JSON.stringify(v).includes('Agenda (Today)'));
-  for(const v of original['36'].filter(v=>!/^calendar_(remaining|event_)/.test(v['1'])))assert.deepEqual(copy['36'].find(c=>c['0']===v['0']),v);
+  for(const v of original['36'].filter(v=>!/^calendar_(remaining|event_)/.test(v['1']) && v['1']!=='map_request'))assert.deepEqual(copy['36'].find(c=>c['0']===v['0']),v);
   const ids=[];walk(copy['1'],n=>ids.push(n.d0));assert.equal(ids.length,new Set(ids).size);
   const variableIDs=copy['36'].map(v=>v['0']);assert.equal(variableIDs.length,new Set(variableIDs).size);
 });

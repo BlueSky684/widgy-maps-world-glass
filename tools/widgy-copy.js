@@ -1,4 +1,4 @@
-import {prepareWidget} from './calendar-widget-export.js?v=perf-4';
+import {prepareWidget} from './calendar-widget-export.js?v=perf-5';
 const $=id=>document.getElementById(id);
 let payload='',downloadURL='',busy=false;
 const messages={
