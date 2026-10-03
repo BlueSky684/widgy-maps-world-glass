@@ -36,6 +36,20 @@ export function fieldCode(field,index=null){
   return `${readSnapshot.toString()}\nfunction main(){var data=readSnapshot("${encoded}");${value}}`;
 }
 
+export function homeFieldCode(field){
+  const encoded='${widgy.calendar_bridge_snapshot}';
+  const values={
+    count:'return data ? String(data.total) : "—";',
+    event_word:'return data && data.total===1 ? "event •" : "events •";',
+    label:'return home ? home.label : "NEXT EVENT";',
+    title:'return home ? home.title : (data && data.home ? "Updating…" : "Calendar unavailable");',
+    time:'return home ? home.time : "";',
+    compact:'return home ? home.compact : 0;'
+  };
+  if(!(field in values))throw Error('invalid_home_field');
+  return `${readSnapshot.toString()}\nfunction main(){var data=readSnapshot("${encoded}");var home=data && data.home && Date.now()<data.home.validUntil ? data.home : null;${values[field]}}`;
+}
+
 export function connectToday(widget,endpoint,nextID){
   let next=nextID,serial=1;
   const scalar=a=>({a:[{a,b:168,c:0,d:168}],b:0});
@@ -92,5 +106,31 @@ export function connectToday(widget,endpoint,nextID){
   const failure={...structuredClone(empty),d0:next++,s:'Agenda · Connection Status',
     o1:{'0':ready['0'],'1':0,'2':'0'},'66':[{'5':'Custom Text','6':'Text','25':'Calendar unavailable'}]};
   cal['1'].unshift(failure);
+  const home=widget['1'].find(n=>n.s==='HOME');
+  if(!home)throw Error('unexpected_template');
+  const homeFields={};
+  for(const field of ['count','event_word','label','title','time','compact']){
+    homeFields[field]=variable(`calendar_home_${field}`,homeFieldCode(field),field==='compact');
+  }
+  const homeNode=name=>{
+    const node=home['1'].find(n=>n.s===name);
+    if(!node || node.z!=='1')throw Error('unexpected_template');
+    return node;
+  };
+  const bind=(name,field)=>{
+    const node=homeNode(name);
+    node['66']=[{'5':'Custom Text','6':'Text','25':'${widgy.calendar_home_'+field+'}'}];return node;
+  };
+  bind('Events Summary · 1','count');bind('Events Summary · 2','event_word');
+  homeNode('Events Summary · 3')['66']=[{'5':'Agenda (Today)','6':'Reminder Events Today'}];
+  bind('Next Event Label','label');
+  const title=bind('Next Event Title','title'),time=bind('Next Event Time','time');
+  const compact=value=>({'0':homeFields.compact['0'],'1':0,'2':String(value)});
+  title.o1=compact(1);time.o1=compact(1);
+  // All-day/empty/error messages can use the full existing event row, since
+  // there is no time range beside them. Preserve the approved timed layout.
+  const fullTitle={...structuredClone(title),d0:next++,s:'Next Event Title · Full Row',o1:compact(0)};
+  fullTitle.d=scalar(time.b.a[0].a+time.d.a[0].a-title.b.a[0].a);
+  home['1'].splice(home['1'].indexOf(title)+1,0,fullTitle);
   return next;
 }

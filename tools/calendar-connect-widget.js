@@ -1,5 +1,5 @@
 // Runs only in the owner's browser. The private export is never uploaded to the repository.
-import {connectToday} from './calendar-connect-today.js';
+import {connectToday} from './calendar-connect-today.js?v=home-1';
 export function personalizedWidget(original, endpoint, widgetEndpoint) {
   if (original['3'] !== 'Widgy Home Glass Calendar C16') throw new Error('unexpected_template');
   const url=new URL(endpoint);
@@ -49,7 +49,7 @@ export function personalizedWidget(original, endpoint, widgetEndpoint) {
   widget['4']='Private test copy based on C16. Calendar dots read selected Google/iCloud calendars through an encrypted render link and use a fixed four-color palette. Up to four dots per day. Native TODAY rows still use their existing device sources and row colors. Import separately; on-device alignment and refresh require verification. Keep this file private. Renew the link within one year or after provider access changes.';
   if(widgetEndpoint){
     widget['3']='Widgy Calendar Unified';
-    widget['4']='Private C16-based calendar. Month dots and TODAY read the same selected Google/iCloud calendars, duplicate rules and source colors. Up to four events per day are displayed, with the full daily total in TODAY. All of today’s events remain visible after their end time. Reminders remain a separate iPhone count. The private link grants event titles, times and locations; keep this export private. Renew within one year or after provider access changes. Verify refresh on the device.';
+    widget['4']='Private C16-based calendar. Month dots, TODAY and Home read the same selected calendars. TODAY keeps all daily events, with up to four rows and dots. Home shows the full daily total and the active or next timed event today, falling back to an all-day event. Reminders use the separate iPhone count. The private link grants event titles, times and locations; keep this export private. Renew within one year or after provider access changes. Verify refresh on the device.';
   }
   return widget;
 }
