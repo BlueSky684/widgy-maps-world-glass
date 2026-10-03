@@ -11,6 +11,18 @@ export function personalizedWidget(original, endpoint, widgetEndpoint) {
   const widget=structuredClone(original);
   const scalar=a=>({a:[{a,b:168,c:0,d:168}],b:0});
   let next=widget.a2, panes=0, native=0;
+  function imageVariable(imageURL,offset){
+    const name=`calendar_dots_url_${offset<0?'m':'p'}${Math.abs(offset)}`;
+    const id=`CA1E0000-0000-4000-D003-${String(offset+13).padStart(12,'0')}`;
+    if(widget['36'].some(v=>v['0']===id || v['1']===name))throw Error('unexpected_template');
+    // Match the map's dynamic full-URL binding. The minute bucket prevents a
+    // previous PNG being reused indefinitely without requesting on every read.
+    imageURL.searchParams.set('render','refresh-1');
+    const code=`function main(){return ${JSON.stringify(imageURL.href)} + "&refresh=" + Math.floor(Date.now()/60000);}`;
+    widget['36'].push({'0':id,'1':name,'2':0,'3':{z:'1',s:`Variable: ${name}`,d:scalar(800),e:scalar(200),
+      '66':[{'5':'Javascript','6':'Script','10':code}]}});
+    return '${widgy.'+name+'}';
+  }
   function visit(nodes) {
     for (const n of nodes) {
       if (n.z==='10' && /^Calendar · Native Month · [456] Weeks$/.test(n.s || '')) {
@@ -22,7 +34,7 @@ export function personalizedWidget(original, endpoint, widgetEndpoint) {
         if (match) {
           const imageURL=new URL(widgetEndpoint || endpoint); imageURL.searchParams.set('offset',match[1]);
           if(widgetEndpoint)imageURL.searchParams.set('view','dots');
-          n['1'].unshift({z:'5','1':'Web URL','2':imageURL.href,'3':true,d0:next++,
+          n['1'].unshift({z:'5','1':'Web URL','2':imageVariable(imageURL,Number(match[1])),'3':true,d0:next++,
             s:'Calendar · Browser Event Dots',b:scalar(0),c:scalar(0),d:scalar(1600),e:scalar(1600)});
           panes++;
         }

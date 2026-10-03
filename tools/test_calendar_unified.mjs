@@ -137,6 +137,8 @@ test('new capability returns matching TODAY/PNG, reuses provider read and reject
     assert.match(today.headers['cache-control'],/no-store/);
     const dots=await get(token,'&view=dots&offset=0');assert.equal(dots.statusCode,200);assert.equal(dots.headers['content-type'],'image/png');
     assert.equal((await sharp(dots.data).metadata()).width,2270);assert.equal(reads,1);
+    const refreshed=await get(token,'&view=dots&offset=0&render=refresh-1&refresh=12345');
+    assert.equal(refreshed.statusCode,200);assert.deepEqual(refreshed.data,dots.data);assert.equal(reads,1);
     assert.equal((await get(await seal(state,'calendar-render'))).statusCode,401);
     assert.equal((await get(token,'&offset=1')).statusCode,400);
     assert.equal((await get(token,'&view=dots&offset=13')).statusCode,400);
@@ -160,7 +162,12 @@ test('unified template preserves other tabs and row geometry while removing nati
   const byID=new Map();walk(base['1'],n=>byID.set(n.d0,n));
   let overlays=0,bars=0;
   walk(cal['1'],n=>{
-    if(n.s==='Calendar · Browser Event Dots'){overlays++;assert.equal(new URL(n['2']).pathname,'/api/calendar-widget');}
+    if(n.s==='Calendar · Browser Event Dots'){
+      overlays++;
+      const name=n['2'].match(/^\$\{widgy\.(calendar_dots_url_[mp]\d+)\}$/)?.[1];
+      const variable=copy['36'].find(v=>v['1']===name);assert(variable);
+      assert.equal(new URL(vm.runInNewContext(variable['3']['66'][0]['10']+';main()')).pathname,'/api/calendar-widget');
+    }
     if(/Source Color [0-3]$/.test(n.s || '')){
       bars++;const rank=Number(n.s.match(/Event (\d)/)[1]);
       let originalBar;walk(base['1'],b=>{if(b.s===`Event ${rank} · Accent`)originalBar=b;});
@@ -179,4 +186,29 @@ test('unified template preserves other tabs and row geometry while removing nati
   for(const v of original['36'].filter(v=>!/^calendar_(remaining|event_)/.test(v['1'])))assert.deepEqual(copy['36'].find(c=>c['0']===v['0']),v);
   const ids=[];walk(copy['1'],n=>ids.push(n.d0));assert.equal(ids.length,new Set(ids).size);
   const variableIDs=copy['36'].map(v=>v['0']);assert.equal(variableIDs.length,new Set(variableIDs).size);
+});
+
+test('every month image gets a new URL on the next minute while retaining its private token and offset',()=>{
+  const original=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
+  for(const unified of [false,true]){
+    const copy=personalizedWidget(original,`${ORIGIN}/api/calendar-dots?token=synthetic`,
+      unified ? `${ORIGIN}/api/calendar-widget?token=synthetic-v2` : undefined);
+    const variables=copy['36'].filter(v=>/^calendar_dots_url_/.test(v['1']));
+    assert.equal(variables.length,25);
+    const offsets=[];
+    for(const variable of variables){
+      const code=variable['3']['66'][0]['10'];
+      const run=instant=>vm.runInNewContext(code+';main()',{Date:class extends Date {static now(){return instant;}}});
+      const first=run(now.getTime()),sameMinute=run(now.getTime()+30000),nextMinute=run(now.getTime()+60000);
+      assert.equal(first,sameMinute);assert.notEqual(first,nextMinute);
+      const url=new URL(first),nextURL=new URL(nextMinute);
+      assert.equal(url.origin,ORIGIN);assert.equal(url.pathname,unified?'/api/calendar-widget':'/api/calendar-dots');
+      assert.equal(url.searchParams.get('token'),unified?'synthetic-v2':'synthetic');
+      assert.equal(url.searchParams.get('view'),unified?'dots':null);
+      assert.equal(Number(nextURL.searchParams.get('refresh')),Number(url.searchParams.get('refresh'))+1);
+      offsets.push(Number(url.searchParams.get('offset')));
+      url.searchParams.delete('refresh');nextURL.searchParams.delete('refresh');assert.equal(url.href,nextURL.href);
+    }
+    assert.deepEqual(offsets.sort((a,b)=>a-b),Array.from({length:25},(_,i)=>i-12));
+  }
 });

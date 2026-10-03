@@ -193,13 +193,14 @@ test('iCloud discovery and expanded REPORT pass through the real DAV parser with
   }finally{globalThis.fetch=originalFetch;}
 });
 
-test('personalization changes only 25 image overlays, 75 indicator sources and descriptive metadata',()=>{
+test('personalization changes only 25 image overlays/URL variables, 75 indicator sources and descriptive metadata',()=>{
   const original=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
   const widget=personalizedWidget(original,`${ORIGIN}/api/calendar-dots?token=synthetic-test-token`);
   const originals=new Map();function walk(nodes,fn){for(const n of nodes){fn(n);if(n.z==='13')walk(n['1'],fn);}}
   walk(original['1'],n=>originals.set(n.d0,n));
   const images=[];walk(widget['1'],n=>{if(n.s==='Calendar · Browser Event Dots')images.push(n);});
-  assert.equal(images.length,25);assert.equal(new Set(images.map(n=>new URL(n['2']).searchParams.get('offset'))).size,25);
+  assert.equal(images.length,25);assert.equal(new Set(images.map(n=>n['2'])).size,25);
+  assert.equal(widget['36'].filter(v=>/^calendar_dots_url_/.test(v['1'])).length,25);
   let native=0;
   function restore(nodes){return nodes.filter(n=>n.s!=='Calendar · Browser Event Dots').map(n=>{
     if(n.z==='13')n['1']=restore(n['1']);
@@ -207,5 +208,6 @@ test('personalization changes only 25 image overlays, 75 indicator sources and d
     return n;
   });}
   const restored=structuredClone(widget);restored['1']=restore(restored['1']);for(const k of ['3','4','a2'])restored[k]=original[k];
+  restored['36']=restored['36'].filter(v=>!/^calendar_dots_url_/.test(v['1']));
   assert.equal(native,75);assert.deepEqual(restored,original);
 });

@@ -1,4 +1,4 @@
-import {personalizedWidget} from './calendar-connect-widget.js';
+import {personalizedWidget} from './calendar-connect-widget.js?v=dots-refresh-1';
 const $=id=>document.getElementById(id);
 let state, listing=[], payload='', downloadURL='';
 const messages={
