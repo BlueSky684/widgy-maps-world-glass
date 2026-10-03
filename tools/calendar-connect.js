@@ -1,4 +1,4 @@
-import {personalizedWidget} from './calendar-connect-widget.js?v=dots-refresh-1';
+import {personalizedWidget} from './calendar-connect-widget.js?v=home-1';
 const $=id=>document.getElementById(id);
 let state, listing=[], payload='', downloadURL='';
 const messages={
@@ -109,6 +109,11 @@ $('build-widget').addEventListener('click',event=>run(event.currentTarget,async(
   const heading=document.createElement('p');heading.textContent=`TODAY והנקודות משתמשים באותם ${data.today.total} אירועים של היום. מוצגים עד ארבעה.`;details.append(heading);
   for(const row of data.today.rows){
     const line=document.createElement('p');line.textContent=`${row.allDay?'כל היום':row.start+'–'+row.end} · ${row.title} · ${['כחול','סגול','זהב','ירוק'][row.color]}`;details.append(line);
+  }
+  if(data.today.home){
+    const line=document.createElement('p');
+    line.textContent=`Home: ${data.today.total} אירועים היום · ${data.today.home.label} · ${data.today.home.title}${data.today.home.time?' · '+data.today.home.time:''}`;
+    details.append(line);
   }
   $('download-section').hidden=false;status('הקובץ מוכן. ייבא אותו ב־Widgy כעותק נוסף לבדיקה.');
 }));

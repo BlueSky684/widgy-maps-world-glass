@@ -10,7 +10,7 @@ import {ORIGIN,seal,setSession,unseal} from '../lib/calendar-bridge/security.js'
 import bridge from '../api/calendar-bridge.js';
 import widgetHandler from '../api/calendar-widget.js';
 import {personalizedWidget} from './calendar-connect-widget.js';
-import {fieldCode,snapshotCode} from './calendar-connect-today.js';
+import {fieldCode,snapshotCode,homeFieldCode} from './calendar-connect-today.js';
 
 process.env.CALENDAR_SEAL_KEY='2'.repeat(64);
 process.env.CALENDAR_SETUP_KEY='test-only-'.repeat(6);
@@ -92,6 +92,57 @@ test('source diagnostics distinguish an empty selected calendar from a missing p
   assert.deepEqual(result.map(s=>s.todayEvents),[1,1,1,1,0]);assert.equal(result[4].daysWithEvents,0);
 });
 
+test('Home counts the full day and selects active/upcoming timed events chronologically beyond the four TODAY rows',()=>{
+  const at=new Date('2026-10-03T09:00:00Z'); // 12:00 in Jerusalem
+  const timed=(uid,title,start,end)=>({uid,title,start:`2026-10-03T${start}+03:00`,end:`2026-10-03T${end}+03:00`,color:0,source:uid,allDay:false});
+  const input=[
+    timed('finished','Finished meeting','09:00:00','10:00:00'),
+    timed('late','English later','17:00:00','18:00:00'),
+    timed('early','פגישה מוקדמת','13:00:00','14:00:00'),
+    ...Array.from({length:4},(_,i)=>({...events[0],uid:'holiday-'+i,title:'All-day '+i}))
+  ];
+  let snapshot=widgetSnapshot(input,window,at);
+  assert.equal(snapshot.total,7);assert(!snapshot.rows.some(row=>row.title==='פגישה מוקדמת'));
+  assert.equal(snapshot.home.title,'פגישה מוקדמת');assert.equal(snapshot.home.label,'NEXT EVENT');
+  assert.equal(snapshot.home.time,'1:00 PM – 2:00 PM');assert.equal(snapshot.home.compact,1);
+  assert.equal(snapshot.home.validUntil,Date.parse('2026-10-03T13:00:00+03:00'));
+  const active=timed('active','Current meeting','11:30:00','12:30:00');
+  snapshot=widgetSnapshot([...input,active],window,at);
+  assert.equal(snapshot.home.title,'Current meeting');assert.equal(snapshot.home.label,'NOW');
+  assert.equal(snapshot.home.validUntil,Date.parse('2026-10-03T12:30:00+03:00'));
+  assert.equal(widgetSnapshot([...input,active],window,new Date('2026-10-03T09:30:00Z')).home.title,'פגישה מוקדמת');
+  assert.equal(widgetSnapshot(input,window,new Date('2026-10-03T10:00:00Z')).home.label,'NOW');
+});
+
+test('Home falls back to English-first all-day events and distinguishes empty from finished days in the chosen timezone',()=>{
+  const english={...events[0],uid:'english',title:'English holiday'};
+  const snapshot=widgetSnapshot([events[0],english],window,now);
+  assert.equal(snapshot.home.title,'English holiday');assert.equal(snapshot.home.label,'TODAY · ALL DAY');
+  assert.equal(snapshot.home.time,'');assert.equal(snapshot.home.compact,0);
+  assert.equal(snapshot.home.validUntil,snapshot.validUntil);
+  assert.equal(widgetSnapshot([],window,now).home.title,'No events today');
+  assert.equal(widgetSnapshot([events[2]],window,now).home.title,'No more events today');
+  const afterMidnight=new Date('2026-10-03T21:01:00Z');
+  const tomorrow=widgetSnapshot([english],window,afterMidnight);
+  assert.equal(tomorrow.date,'2026-10-04');assert.equal(tomorrow.total,0);assert.equal(tomorrow.home.title,'No events today');
+  const dst=widgetSnapshot([{...events[2],start:'2026-10-25T01:15:00+03:00',end:'2026-10-25T01:45:00+02:00'}],window,new Date('2026-10-24T23:20:00Z'));
+  assert.equal(dst.home.label,'NOW');assert.equal(dst.home.validUntil,Date.parse('2026-10-25T01:45:00+02:00'));
+});
+
+test('Home reads the existing encoded snapshot without networking and suppresses expired next-event details',()=>{
+  const snapshot=widgetSnapshot(events,window,now);
+  snapshot.home.title='"; throw Error("injected"); // ${widgy.other} פגישה';
+  assert.equal(evaluate(homeFieldCode('title'),snapshot),snapshot.home.title);
+  assert.equal(evaluate(homeFieldCode('count'),snapshot),'4');
+  assert.equal(evaluate(homeFieldCode('count'),widgetSnapshot([],window,now)),'0');
+  assert.equal(evaluate(homeFieldCode('event_word'),widgetSnapshot([events[0]],window,now)),'event •');
+  const expired={...snapshot,home:{...snapshot.home,validUntil:now.getTime()}};
+  assert.equal(evaluate(homeFieldCode('title'),expired),'Updating…');
+  assert.equal(evaluate(homeFieldCode('compact'),expired),0);assert.equal(evaluate(homeFieldCode('time'),expired),'');
+  assert.equal(evaluate(homeFieldCode('count'),{version:2,ok:false}),'—');
+  assert.equal(evaluate(homeFieldCode('title'),{...snapshot,generatedAt:'2026-10-02T12:00:00Z'}),'Calendar unavailable');
+});
+
 test('one Widgy network request supplies every field safely, including quotes and code-like event titles',async()=>{
   const snapshot=widgetSnapshot(events,window,now);
   snapshot.rows[0].title='"; throw Error("injected"); // ${widgy.other} \\ שלום\nMeeting';
@@ -157,7 +208,7 @@ test('unified template preserves other tabs and row geometry while removing nati
   const copy=personalizedWidget(original,`${ORIGIN}/api/calendar-dots?token=synthetic`,`${ORIGIN}/api/calendar-widget?token=synthetic-v2`);
   const walk=(nodes,fn)=>nodes.forEach(n=>{fn(n);if(n.z==='13')walk(n['1'],fn);});
   const cal=copy['1'].find(n=>n.s==='CALENDAR'),base=original['1'].find(n=>n.s==='CALENDAR');
-  for(const n of copy['1'].filter(n=>n!==cal))assert.deepEqual(n,original['1'].find(b=>b.d0===n.d0));
+  for(const n of copy['1'].filter(n=>n!==cal && n.s!=='HOME'))assert.deepEqual(n,original['1'].find(b=>b.d0===n.d0));
   for(const k of Object.keys(original).filter(k=>!['1','3','4','36','a2'].includes(k)))assert.deepEqual(copy[k],original[k]);
   const byID=new Map();walk(base['1'],n=>byID.set(n.d0,n));
   let overlays=0,bars=0;
@@ -186,6 +237,31 @@ test('unified template preserves other tabs and row geometry while removing nati
   for(const v of original['36'].filter(v=>!/^calendar_(remaining|event_)/.test(v['1'])))assert.deepEqual(copy['36'].find(c=>c['0']===v['0']),v);
   const ids=[];walk(copy['1'],n=>ids.push(n.d0));assert.equal(ids.length,new Set(ids).size);
   const variableIDs=copy['36'].map(v=>v['0']);assert.equal(variableIDs.length,new Set(variableIDs).size);
+});
+
+test('Home replaces sample data, shares one snapshot, and preserves C16 fonts, timed frames and unrelated layers',()=>{
+  const original=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
+  const copy=personalizedWidget(original,`${ORIGIN}/api/calendar-dots?token=synthetic`,`${ORIGIN}/api/calendar-widget?token=synthetic-v2`);
+  const home=copy['1'].find(n=>n.s==='HOME'),base=original['1'].find(n=>n.s==='HOME');
+  const changed=new Set(['Events Summary · 1','Events Summary · 2','Events Summary · 3','Next Event Label','Next Event Title','Next Event Time']);
+  for(const node of base['1']){
+    const actual=home['1'].find(n=>n.d0===node.d0);assert(actual);
+    if(!changed.has(node.s)){assert.deepEqual(actual,node);continue;}
+    for(const key of new Set([...Object.keys(node),...Object.keys(actual)])){
+      if(!['66','o1'].includes(key))assert.deepEqual(actual[key],node[key],node.s+' '+key);
+    }
+  }
+  assert.equal(home['1'].length,base['1'].length+1);
+  const full=home['1'].find(n=>n.s==='Next Event Title · Full Row');
+  const title=home['1'].find(n=>n.s==='Next Event Title'),time=home['1'].find(n=>n.s==='Next Event Time');
+  assert.equal(full.d.a[0].a,time.b.a[0].a+time.d.a[0].a-title.b.a[0].a);
+  assert.equal(full['1'],title['1']);assert.deepEqual(full.c,title.c);assert.deepEqual(full.e,title.e);
+  assert.equal(full.o1['2'],'0');assert.equal(title.o1['2'],'1');assert.equal(time.o1['2'],'1');
+  assert(!JSON.stringify(home).includes('Team Sync'));assert(!JSON.stringify(home).includes('2:00 PM – 2:30 PM'));
+  assert.deepEqual(home['1'].find(n=>n.s==='Events Summary · 3')['66'],[{'5':'Agenda (Today)','6':'Reminder Events Today'}]);
+  const variables=copy['36'].filter(v=>v['1'].startsWith('calendar_home_'));
+  assert.equal(variables.length,6);assert(variables.every(v=>!v['3']['66'][0]['10'].includes('fetch(')));
+  assert.equal(copy['36'].filter(v=>v['1']==='calendar_bridge_snapshot').length,1);
 });
 
 test('every month image gets a new URL on the next minute while retaining its private token and offset',()=>{
