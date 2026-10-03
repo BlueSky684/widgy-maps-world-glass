@@ -346,6 +346,7 @@ test('long Hebrew agenda titles gain width and height without moving short names
     const expanded=row['1'].find(n=>n.s===`Event ${rank} · Expanded Hebrew Title Layout`);
     assert.equal(normal.o1['2'],'0');assert.equal(expanded.o1['2'],'1');
     const small=normal['1'][0],large=expanded['1'][0],withDetail=expanded['1'][1];
+    assert.equal(large['2'].a[0].a,2);assert.equal(withDetail['2'].a[0].a,2);
     assert.equal(large['1'],'System Medium');assert.equal(large.f,small.f);assert.deepEqual(large['66'],small['66']);
     assert(large.d.a[0].a>small.d.a[0].a*1.24);
     assert(large.e.a[0].a>small.e.a[0].a*1.6);

@@ -59,7 +59,7 @@ function loadHomeField(endpoint,field){
   try{
     // A direct async source avoids depending on another async Widgy variable
     // having completed before this field is evaluated on the Home tab.
-    var url=endpoint+'&view=today&render=home-4&refresh='+Math.floor(Date.now()/60000);
+    var url=endpoint+'&view=today&render=home-5&refresh='+Math.floor(Date.now()/60000);
     fetch(url).then(function(response){
       if(!response || response.ok===false || (typeof response.status==='number' && response.status!==200))throw Error('calendar_unavailable');
       return response.json();
@@ -126,10 +126,10 @@ export function connectToday(widget,endpoint,nextID){
     const normalTitles={z:'13',d0:next++,s:`Event ${rank} · Original Title Layout`,
       o1:{'0':longHebrew[index]['0'],'1':0,'2':'0'},'1':[hebrew,otherTitles]};
     const expanded={...structuredClone(hebrew),d0:next++,s:`Event ${rank} · Long Hebrew Title`,
-      o1:{'0':location['0'],'1':0,'2':''}};
+      '2':scalar(2),o1:{'0':location['0'],'1':0,'2':''}};
     for(const key of ['b','c','d','e'])expanded[key]=structuredClone(latin[key]);
     const withDetail={...structuredClone(hebrew),d0:next++,s:`Event ${rank} · Long Hebrew Title With Detail`,
-      d:structuredClone(latin.d),o1:{'0':location['0'],'1':1,'2':''}};
+      '2':scalar(2),d:structuredClone(latin.d),o1:{'0':location['0'],'1':1,'2':''}};
     const expandedTitles={z:'13',d0:next++,s:`Event ${rank} · Expanded Hebrew Title Layout`,
       o1:{'0':longHebrew[index]['0'],'1':0,'2':'1'},'1':[expanded,withDetail]};
     const insertAt=row['1'].indexOf(hebrew);
