@@ -1,5 +1,5 @@
-// Widgy's existing Async + No main() source supports fetch and sendToWidgy.
-// One shared variable fetches all TODAY fields; field bindings do no networking.
+// Legacy async source helpers remain available for compatibility tests.
+// New exports use Widgy's native JSON Endpoint source for shared data loading.
 function loadSnapshot(endpoint) {
   var completed=false;
   function finish(data){
@@ -78,6 +78,10 @@ export function homeFieldCode(field,endpoint){
   if(!['count','event_word','label','title','time','compact','meta'].includes(field))throw Error('invalid_home_field');
   return `${readSnapshot.toString()}\n${homeValue.toString()}\n${loadHomeField.toString()}\nloadHomeField(${JSON.stringify(endpoint)},${JSON.stringify(field)});`;
 }
+export function nativeHomeFieldCode(field){
+  if(!['count','event_word','title','meta'].includes(field))throw Error('invalid_home_field');
+  return `${readSnapshot.toString()}\n${homeValue.toString()}\nfunction main(){return homeValue(readSnapshot("\${widgy.calendar_bridge_snapshot}"),${JSON.stringify(field)});}`;
+}
 
 export function connectToday(widget,endpoint,nextID){
   let next=nextID,serial=1;
@@ -91,8 +95,15 @@ export function connectToday(widget,endpoint,nextID){
       '66':[{'5':'Javascript','6':async?'Async + No main()':'Script','10':code}]}};
     widget['36'].push(result);return result;
   }
-  const snapshot=variable('calendar_bridge_snapshot',snapshotCode(endpoint),false,true);
-  widget['36']=widget['36'].filter(v=>v!==snapshot);widget['36'].unshift(snapshot);
+  // One native JSON Endpoint provides the shared snapshot. The previous
+  // five independent Async + No main() fetches were observed arriving serially
+  // on the phone even when HTTP private caching was enabled.
+  const nativeURL=endpoint+'&view=today&format=widgy&render=perf-2';
+  const requestURL=variable('calendar_data_url',`function main(){return ${JSON.stringify(nativeURL)} + "&refresh=" + Math.floor(Date.now()/60000);}`);
+  const jsonSource=key=>({'5':'JSON Endpoint','6':'Endpoint','18':'${widgy.calendar_data_url}','19':'GET','23':[key]});
+  const snapshot=variable('calendar_bridge_snapshot','');
+  snapshot['3']['66']=[jsonSource('encoded')];
+  widget['36']=widget['36'].filter(v=>v!==snapshot && v!==requestURL);widget['36'].unshift(requestURL,snapshot);
   const ready=variable('calendar_bridge_ready',fieldCode('ready'),true);
   variable('calendar_bridge_count',fieldCode('count'));
   const colors=[],allDays=[],titleLayouts=[];
@@ -205,7 +216,7 @@ export function connectToday(widget,endpoint,nextID){
   if(!home)throw Error('unexpected_template');
   const homeFields={};
   for(const field of ['count','event_word','title','meta']){
-    homeFields[field]=variable(`calendar_home_${field}`,homeFieldCode(field,endpoint),field==='compact',true);
+    homeFields[field]=variable(`calendar_home_${field}`,nativeHomeFieldCode(field));
   }
   const homeNode=name=>{
     const node=home['1'].find(n=>n.s===name);
@@ -220,15 +231,11 @@ export function connectToday(widget,endpoint,nextID){
   homeNode('Events Summary · 3')['66']=[{'5':'Agenda (Today)','6':'Reminder Events Today'}];
   const label=bind('Next Event Label','meta');
   const title=bind('Next Event Title','title'),time=homeNode('Next Event Time');
-  // One stable hierarchy: full-width event name, then status and 24-hour time
-  // together beneath it. Stay inside the original event area and keep fonts.
-  const top=label.c.a[0].a;
-  const bottom=title.c.a[0].a+title.e.a[0].a;
+  // Restore the approved reference: original-size grey status above the lime
+  // event title. Keep both original vertical frames and font properties.
   const width=time.b.a[0].a+time.d.a[0].a-title.b.a[0].a;
-  title.c=scalar(top);title.d=scalar(width);
+  title.d=scalar(width);
   label.b=structuredClone(title.b);label.d=scalar(width);
-  label.c=scalar(top+title.e.a[0].a);
-  label.e=scalar(bottom-label.c.a[0].a);
   home['1']=home['1'].filter(n=>n!==time);
   return next;
 }
