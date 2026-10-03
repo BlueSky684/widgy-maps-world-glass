@@ -1,4 +1,4 @@
-import {personalizedWidget} from './calendar-connect-widget.js?v=home-1';
+import {prepareWidget} from './calendar-widget-export.js?v=home-2';
 const $=id=>document.getElementById(id);
 let state, listing=[], payload='', downloadURL='';
 const messages={
@@ -93,10 +93,7 @@ $('sources-form').addEventListener('submit',event=>{event.preventDefault();run(e
 });});
 $('build-widget').addEventListener('click',event=>run(event.currentTarget,async()=>{
   status('קורא את האירועים ומכין את הקובץ האישי…');invalidateExport();
-  const data=await api('export',{version:2});
-  const template=await fetch('./Widgy_Home_Glass_Calendar_C16.json',{cache:'no-store'});if(!template.ok)throw new Error('unexpected_template');
-  if(!data.widgetEndpoint)throw new Error('connection_failed');
-  payload=JSON.stringify(personalizedWidget(await template.json(),data.endpoint,data.widgetEndpoint));
+  const prepared=await prepareWidget(),data=prepared.data;payload=prepared.payload;
   downloadURL=URL.createObjectURL(new Blob([payload],{type:'application/json'}));$('download-widget').href=downloadURL;
   $('read-result').textContent=`הקריאה הצליחה: נמצאו אירועים ב־${data.daysWithEvents} ימים בטווח המוצג של ${data.month}.`;
   const details=$('read-details');details.replaceChildren();
