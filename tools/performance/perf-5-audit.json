@@ -1,0 +1,48 @@
+{
+  "baseline": "a0207d29000db182700d57e341f6b0300190dbf2",
+  "branch": "f50-widget-test",
+  "layerAudit": {
+    "nodesIncludingGroups": 1671,
+    "groups": 319,
+    "variables": 81,
+    "homeDescendants": 389,
+    "calendarDescendants": 1230,
+    "weatherDescendants": 24,
+    "fitnessDescendants": 24,
+    "mapImageLayers": 1,
+    "exactSiblingDuplicatesIgnoringNamesAndIDs": 0,
+    "emptyGroups": 0,
+    "unreferencedVariables": 0,
+    "caution": "Alternative visibility states are functional, not necessarily redundant. Counts do not establish device render time."
+  },
+  "criticalPath": ["native GPS inputs", "client-only reverse geocoder unless context city cache hits", "map URL", "private map cache or full render", "3306x1558 PNG transfer and device decode"],
+  "localBenchmark": {
+    "location": "synthetic or none, no external geocoder calls",
+    "baselineRenderMs": [752.84,529.09,518.17],
+    "examplePNGBytes": 4306122,
+    "notAnIPhoneOrVercelBenchmark": true
+  },
+  "rejectedExperiments": [
+    "PNG adaptive filtering: about 0.6 percent smaller at level 6, but materially slower encoding",
+    "PNG level 9: about 1.6 percent smaller, roughly doubled encoding time",
+    "WebP: different format and some configurations changed decoded transparent pixels; not adopted",
+    "Raster overlay cache: exact bytes but inconsistent or worse render times; reverted"
+  ],
+  "remoteBaselineNoLocation": {
+    "route": "/api/night-map?mode=live&width=3306&presentation=glass&atlas=r6&reuse=60&lat=&lon=",
+    "cacheStates": ["MISS","HIT","HIT"],
+    "ttfbSeconds": [6.819,6.515,4.851],
+    "totalSeconds": [9.316,7.222,5.487],
+    "originRegion": "fra1",
+    "measurementIngress": "cle1",
+    "caution": "Includes the execution environment network/proxy, not Israel or the user's phone. Do not extrapolate these timings to the device."
+  },
+  "changes": [
+    "City name may be reused for 3600 seconds only in a surviving JS context and only for identical coordinates; any GPS change, expiry or clock rollback rechecks. Fresh contexts retain existing behavior.",
+    "Full map response may be reused for up to 60 seconds from its actual render rather than expiring at every wall-clock minute boundary. Private cache only; location/style/size are keyed.",
+    "Server-Timing and X-Map-Performance headers expose server-side map timing for future measurement."
+  ],
+  "preserved": ["all visual layers and interaction actions", "3306x1558 lossless PNG", "renderer and approved source masters", "60-second solar URL refresh", "GPS precision", "calendar data flow", "fra1 region", "production branch"],
+  "validation": ["33 calendar/provider tests", "27 simulated city runtime cases", "map cache expiry, boundary, isolation and conditional requests", "perf-5 city reuse and invalidation cases", "full personalized export equality except map_request source"],
+  "deviceResult": "Pending user import and Home/Calendar transitions"
+}

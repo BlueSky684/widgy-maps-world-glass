@@ -94,6 +94,7 @@ export function resolveLocation(url,headers){
  if(lat===''||lon===''||lat==null||lon==null)return null;
  return {latitude:Number(lat),longitude:Number(lon),city:url.searchParams.get('city')||'',source:explicit?'coordinates':'ip-approximate'};
 }`);
+  writeFileSync(join(dir,'lib/map-precomputed.js'),"export const precomputedState=()=> 'HIT';");
   globalThis.Date=FixedDate;
   clock=Date.UTC(2026,9,2,12,0,10);
   const {default:handler}=await import(pathToFileURL(join(dir,'api/night-map.js')));
@@ -107,11 +108,17 @@ export function resolveLocation(url,headers){
   clock+=5000;
   const b=await request(query+'&t=anything');assert.equal(b.headers['X-Map-Cache'],'HIT');assert.deepEqual(b.body,a.body);
   assert.equal(b.headers['X-Map-Rendered-At'],a.headers['X-Map-Rendered-At']);
-  assert.equal(b.headers['Cache-Control'],'private, max-age=45, must-revalidate');
+  assert.equal(b.headers['Cache-Control'],'private, max-age=55, must-revalidate');
   assert.equal(b.headers['CDN-Cache-Control'],'no-store');assert.equal(b.headers['Vercel-CDN-Cache-Control'],'no-store');
   assert.equal(renderer.count,1);
   const unchanged=await request(query,{'if-none-match':'W/'+a.headers.ETag});assert.equal(unchanged.code,304);assert.equal(unchanged.body,undefined);
   const head=await request(query,{},'HEAD');assert.equal(head.code,200);assert.equal(head.body,undefined);assert.equal(renderer.count,1);
+  clock+=45000; // New wall-clock minute, but original image is only 50 seconds old.
+  const crossed=await request(query+'&t=next-minute');
+  assert.equal(crossed.headers['X-Map-Cache'],'HIT');
+  assert.equal(crossed.headers['Cache-Control'],'private, max-age=10, must-revalidate');
+  assert.deepEqual(crossed.body,a.body);
+  assert.match(crossed.headers['Server-Timing'],/^map;dur=/);
   for (const [field,value] of [['lat','0.00001'],['lon','0.00001'],['city','Other'],['atlas','f50'],['width','1653'],['presentation','default'],['diagnostic','location']]) {
     const params=new URLSearchParams(query);params.set(field,value);
     assert.equal((await request(params.toString())).headers['X-Map-Cache'],'MISS',field);

@@ -28,16 +28,18 @@ export default async function handler(req, res) {
   const presentation = url.searchParams.get('presentation') === 'glass' ? 'glass' : 'default';
   const atlas = url.searchParams.get('atlas') === 'r6' ? 'r6' : 'f50';
   try {
+    const started=performance.now();
     const diagnostic = url.searchParams.get('diagnostic') === 'location';
     // C6 opt-in only. Explicit coordinates (including empty/unavailable values)
     // make the URL self-contained; IP-derived locations must never be browser-cached.
     const reuse = url.searchParams.get('reuse') === '60' && fixed === null &&
       url.searchParams.has('lat') && url.searchParams.has('lon');
-    const minute = Math.floor(date.getTime() / 60000);
+    // Reuse for at most 60 seconds from the actual render, even across a
+    // wall-clock minute boundary. GPS, city, style and size still key the cache.
     const render = () => renderHomeMap({date, location, width, presentation, diagnostic, atlas});
     const result = reuse ? await cachedRender(
-      JSON.stringify([REVISION, minute, width, presentation, atlas, diagnostic, location]),
-      {expiresAt: (minute + 1) * 60000, renderedAt: date.toISOString(), render}
+      JSON.stringify([REVISION, width, presentation, atlas, diagnostic, location]),
+      {expiresAt: date.getTime() + 60000, renderedAt: date.toISOString(), render}
     ) : {entry: {png: await render(), renderedAt: date.toISOString()}, state: 'BYPASS'};
     const {entry} = result;
     if (reuse) {
@@ -48,6 +50,8 @@ export default async function handler(req, res) {
     }
     res.setHeader('Content-Type', 'image/png');
     res.setHeader('X-Map-Cache', result.state);
+    res.setHeader('Server-Timing', `map;dur=${(performance.now()-started).toFixed(1)}`);
+    res.setHeader('X-Map-Performance', 'perf-5');
     res.setHeader('X-Map-Precomputed',precomputedState());
     res.setHeader('X-Map-Revision', REVISION);
     res.setHeader('X-Map-Atlas', atlas);

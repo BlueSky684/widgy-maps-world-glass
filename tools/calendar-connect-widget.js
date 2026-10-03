@@ -1,5 +1,6 @@
+import {buildCityMapScript} from './widgy-city-map-script.mjs?v=perf-5';
 // Runs only in the owner's browser. The private export is never uploaded to the repository.
-import {connectToday} from './calendar-connect-today.js?v=perf-4';
+import {connectToday} from './calendar-connect-today.js?v=perf-5';
 export function personalizedWidget(original, endpoint, widgetEndpoint) {
   if (original['3'] !== 'Widgy Home Glass Calendar C16') throw new Error('unexpected_template');
   const url=new URL(endpoint);
@@ -9,6 +10,15 @@ export function personalizedWidget(original, endpoint, widgetEndpoint) {
     if(target.origin!==url.origin || target.pathname!=='/api/calendar-widget' || !target.searchParams.get('token'))throw Error('invalid_endpoint');
   }
   const widget=structuredClone(original);
+  if(widgetEndpoint){
+    const map=widget['36'].find(v=>v['1']==='map_request');
+    if(!map)throw Error('unexpected_template');
+    const mapEndpoint=new URL('/api/night-map?mode=live&width=3306&presentation=glass&atlas=r6&reuse=60',url.origin);
+    // A city name does not change every minute at identical coordinates.
+    // The solar image keeps its 60-second refresh; any GPS change rechecks city.
+    map['3']['66']=[{'5':'Javascript','6':'Async + No main()',
+      '10':buildCityMapScript(mapEndpoint.href,{enabled:true,reuseSeconds:60,cityReuseSeconds:3600})}];
+  }
   const scalar=a=>({a:[{a,b:168,c:0,d:168}],b:0});
   let next=widget.a2, panes=0, native=0;
   function imageVariable(imageURL,offset){

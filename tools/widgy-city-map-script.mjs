@@ -32,11 +32,11 @@ export function cityMapRuntime(latitude, longitude, endpoint, enabled, fallbackL
   // or timer is assumed. A fresh/unsupported context follows the usual fetch.
   var memory = null;
   try {
-    if (cityReuseSeconds === 60 && typeof globalThis === 'object' && globalThis) memory = globalThis;
+    if (cityReuseSeconds > 0 && typeof globalThis === 'object' && globalThis) memory = globalThis;
     var saved = memory && memory.__homeGlassCityV1;
     var age = saved ? Date.now() - saved.time : -1;
     if (saved && saved.latitude === lat && saved.longitude === lon &&
-        age >= 0 && age < 60000 && typeof saved.city === 'string') {
+        age >= 0 && age < cityReuseSeconds * 1000 && typeof saved.city === 'string') {
       finish(mapURL(saved.city));
       return;
     }
@@ -81,7 +81,7 @@ export function buildCityMapScript(endpoint, {enabled = false, reuseSeconds = 0,
   const url = new URL(endpoint);
   if (url.protocol !== 'https:' || url.pathname !== '/api/night-map') throw Error('Unexpected map endpoint');
   if (![0, 60].includes(reuseSeconds)) throw Error('Unsupported map reuse interval');
-  if (![0, 60].includes(cityReuseSeconds)) throw Error('Unsupported city reuse interval');
+  if (![0, 60, 3600].includes(cityReuseSeconds)) throw Error('Unsupported city reuse interval');
   if (reuseSeconds === 60) { url.searchParams.set('reuse', '60'); endpoint = url.href; }
   const token = name => JSON.stringify('${widgy.' + name + '}');
   return cityMapRuntime.toString() + '\ncityMapRuntime(' +
