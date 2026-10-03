@@ -38,11 +38,6 @@ export function fieldCode(field,index=null){
   return `${readSnapshot.toString()}\nfunction main(){var data=readSnapshot("${encoded}");${value}}`;
 }
 
-function detailIconCode(index,cases,fallback){
-  const encoded='${widgy.calendar_bridge_snapshot}';
-  return `${readSnapshot.toString()}\nfunction main(){var data=readSnapshot("${encoded}"),row=data && data.rows[${index}];if(!row)return -1;var text=String(row.location || ''),cases=${JSON.stringify(cases)};for(var i=0;i<cases.length;i++)if(text.indexOf(cases[i][0])!==-1)return cases[i][1];return ${fallback};}`;
-}
-
 function homeValue(data,field){
   var home=data && data.home && Date.now()<data.home.validUntil ? data.home : null;
   if(field==='count')return data ? String(data.total) : '—';
@@ -87,36 +82,32 @@ export function connectToday(widget,endpoint,nextID){
   let next=nextID,serial=1;
   const scalar=a=>({a:[{a,b:168,c:0,d:168}],b:0});
   const uuid=()=>`CA1E0000-0000-4000-D002-${String(serial++).padStart(12,'0')}`;
-  const scriptSource=code=>({'5':'Javascript','6':'Script','10':code});
-  function variable(name,code,numeric=false,async=false){
+  // Every field uses the same literal native endpoint. There is no Javascript
+  // URL -> JSON snapshot -> Javascript field chain to race on tab changes.
+  // Native refresh and private HTTP caching govern updates, not a per-minute
+  // Javascript URL that invalidates the response while its consumers run.
+  const nativeURL=endpoint+'&view=today&format=widgy&render=perf-3';
+  const jsonSource=key=>({'5':'JSON Endpoint','6':'Endpoint','18':nativeURL,'19':'GET','23':[key]});
+  function variable(name,numeric=false){
     const id=uuid();
     if(widget['36'].some(v=>v['0']===id || v['1']===name))throw Error('unexpected_template');
     const result={'0':id,'1':name,'2':numeric?2:0,'3':{z:'1',s:`Variable: ${name}`,d:scalar(800),e:scalar(200),
-      '66':[{'5':'Javascript','6':async?'Async + No main()':'Script','10':code}]}};
+      '66':[jsonSource(name)]}};
     widget['36'].push(result);return result;
   }
-  // One native JSON Endpoint provides the shared snapshot. The previous
-  // five independent Async + No main() fetches were observed arriving serially
-  // on the phone even when HTTP private caching was enabled.
-  const nativeURL=endpoint+'&view=today&format=widgy&render=perf-2';
-  const requestURL=variable('calendar_data_url',`function main(){return ${JSON.stringify(nativeURL)} + "&refresh=" + Math.floor(Date.now()/60000);}`);
-  const jsonSource=key=>({'5':'JSON Endpoint','6':'Endpoint','18':'${widgy.calendar_data_url}','19':'GET','23':[key]});
-  const snapshot=variable('calendar_bridge_snapshot','');
-  snapshot['3']['66']=[jsonSource('encoded')];
-  widget['36']=widget['36'].filter(v=>v!==snapshot && v!==requestURL);widget['36'].unshift(requestURL,snapshot);
-  const ready=variable('calendar_bridge_ready',fieldCode('ready'),true);
-  variable('calendar_bridge_count',fieldCode('count'));
+  const ready=variable('calendar_bridge_ready',true);
+  variable('calendar_bridge_count');
   const colors=[],allDays=[],titleLayouts=[];
   for(let index=0;index<4;index++){
-    colors.push(variable(`calendar_event_${index+1}_color`,fieldCode('color',index),true));
-    allDays.push(variable(`calendar_event_${index+1}_all_day`,fieldCode('allDay',index),true));
-    titleLayouts.push(variable(`calendar_event_${index+1}_title_layout`,fieldCode('title_layout',index),true));
+    colors.push(variable(`calendar_event_${index+1}_color`,true));
+    allDays.push(variable(`calendar_event_${index+1}_all_day`,true));
+    titleLayouts.push(variable(`calendar_event_${index+1}_title_layout`,true));
   }
   let replaced=0;
   for(const v of widget['36']){
-    if(v['1']==='calendar_remaining_today'){v['3']['66']=[scriptSource(fieldCode('total'))];replaced++;}
+    if(v['1']==='calendar_remaining_today'){v['3']['66']=[jsonSource(v['1'])];replaced++;}
     const m=/^calendar_event_([1-4])_(title|location|start|end)$/.exec(v['1']);
-    if(m){v['3']['66']=[scriptSource(fieldCode(m[2],Number(m[1])-1))];replaced++;}
+    if(m){v['3']['66']=[jsonSource(v['1'])];replaced++;}
   }
   if(replaced!==17)throw Error('unexpected_template');
   const cal=widget['1'].find(n=>n.s==='CALENDAR');
@@ -178,7 +169,7 @@ export function connectToday(widget,endpoint,nextID){
     }
     collectIcons(details['1']);
     if(fallback<0)throw Error('unexpected_template');
-    const detailKind=variable(`calendar_event_${rank}_detail_icon`,detailIconCode(index,cases,fallback),true);
+    const detailKind=variable(`calendar_event_${rank}_detail_icon`,true);
     details['1']=icons.map((node,kind)=>({...node,o1:{'0':detailKind['0'],'1':0,'2':String(kind)}}));
     const accent=row['1'].find(n=>n.s===`Event ${rank} · Accent`);
     if(!accent || accent.z!=='2')throw Error('unexpected_template');
@@ -216,7 +207,7 @@ export function connectToday(widget,endpoint,nextID){
   if(!home)throw Error('unexpected_template');
   const homeFields={};
   for(const field of ['count','event_word','title','meta']){
-    homeFields[field]=variable(`calendar_home_${field}`,nativeHomeFieldCode(field));
+    homeFields[field]=variable(`calendar_home_${field}`);
   }
   const homeNode=name=>{
     const node=home['1'].find(n=>n.s===name);

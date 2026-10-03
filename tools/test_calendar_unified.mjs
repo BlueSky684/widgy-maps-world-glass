@@ -258,6 +258,9 @@ test('new capability returns matching TODAY/PNG, reuses provider read and reject
     assert.equal(today.headers['cdn-cache-control'],'no-store');
     const native=await get(token,'&format=widgy&render=perf-2');
     assert.equal(native.statusCode,200);assert.equal(reads,1);
+    assert.equal(native.data.calendar_home_count,'1');
+    assert.equal(native.data.calendar_home_title,today.data.home.title);
+    assert.equal(native.data.calendar_event_1_title,today.data.rows[0].title);
     const decoded=JSON.parse(decodeURIComponent(native.data.encoded));
     assert.deepEqual(decoded.rows,today.data.rows);assert.equal(evaluate(nativeHomeFieldCode('count'),decoded,new Date(decoded.generatedAt)),'1');
     assert.equal(evaluate(nativeHomeFieldCode('title'),decoded,new Date(decoded.generatedAt)),today.data.home.title);
@@ -269,6 +272,8 @@ test('new capability returns matching TODAY/PNG, reuses provider read and reject
     assert.equal(unauthorized.statusCode,401);assert.match(unauthorized.headers['cache-control'],/no-store/);
     const nativeUnauthorized=await get(await seal(state,'calendar-render'),'&format=widgy');
     assert.equal(nativeUnauthorized.statusCode,401);assert.match(nativeUnauthorized.headers['cache-control'],/no-store/);
+    assert.equal(nativeUnauthorized.data.calendar_bridge_ready,0);
+    assert.equal(nativeUnauthorized.data.calendar_home_title,'Calendar unavailable');
     assert.equal(evaluate(nativeHomeFieldCode('title'),JSON.parse(decodeURIComponent(nativeUnauthorized.data.encoded))),'Calendar unavailable');
     assert.equal(evaluate(fieldCode('total'),JSON.parse(decodeURIComponent(nativeUnauthorized.data.encoded))),-1);
     assert.equal((await get(token,'&offset=1')).statusCode,400);
@@ -322,7 +327,7 @@ test('unified template preserves other tabs and row geometry while removing nati
     assert.equal(separator.e.a[0].a,1.621622);
     assert.deepEqual(separator.o1,following.o1);
   }
-  assert.equal(copy['36'].filter(v=>v['1']==='calendar_bridge_snapshot').length,1);
+  assert.equal(copy['36'].filter(v=>v['1']==='calendar_bridge_snapshot').length,0);
   for(const v of copy['36'].filter(v=>/^calendar_(remaining|event_)/.test(v['1'])))assert(!JSON.stringify(v).includes('Agenda (Today)'));
   for(const v of original['36'].filter(v=>!/^calendar_(remaining|event_)/.test(v['1'])))assert.deepEqual(copy['36'].find(c=>c['0']===v['0']),v);
   const ids=[];walk(copy['1'],n=>ids.push(n.d0));assert.equal(ids.length,new Set(ids).size);
@@ -355,39 +360,59 @@ test('Home restores reference status above the full-width name with exact origin
   assert(!JSON.stringify(home).includes('Team Sync'));assert(!JSON.stringify(home).includes('2:00 PM – 2:30 PM'));
   assert.deepEqual(home['1'].find(n=>n.s==='Events Summary · 3')['66'],[{'5':'Agenda (Today)','6':'Reminder Events Today'}]);
   const variables=copy['36'].filter(v=>v['1'].startsWith('calendar_home_'));
-  assert.equal(variables.length,4);assert(variables.every(v=>v['3']['66'][0]['6']==='Script'));
-  assert(variables.every(v=>!v['3']['66'][0]['10'].includes('fetch(')));
+  assert.equal(variables.length,4);assert(variables.every(v=>v['3']['66'][0]['5']==='JSON Endpoint'));
+  assert(variables.every(v=>!JSON.stringify(v).includes('fetch(')));
 });
 
-test('one native calendar request serves all local fields and preserves freshness, safety and Home content',()=>{
+test('native calendar fields do not depend on intermediate variables or Javascript evaluation order',()=>{
   const original=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
   const copy=personalizedWidget(original,`${ORIGIN}/api/calendar-dots?token=synthetic`,`${ORIGIN}/api/calendar-widget?token=synthetic-v2`);
-  const urlVar=copy['36'].find(v=>v['1']==='calendar_data_url');
-  const sources=copy['36'].flatMap(v=>v['3']['66']).filter(s=>s['5']==='JSON Endpoint');
-  assert.equal(sources.length,1);
+  const variables=copy['36'].filter(v=>/^calendar_(bridge|home|event|remaining|data)/.test(v['1']));
+  assert.equal(variables.length,39);
+  assert(!copy['36'].some(v=>['calendar_bridge_snapshot','calendar_data_url'].includes(v['1'])));
+  const sources=variables.flatMap(v=>v['3']['66']);
+  assert(sources.every(s=>s['5']==='JSON Endpoint' && s['19']==='GET'));
   assert.equal(new Set(sources.map(s=>s['18'])).size,1);
-  assert(sources.every(s=>s['18']==='${widgy.calendar_data_url}' && s['19']==='GET'));
-  const run=instant=>vm.runInNewContext(urlVar['3']['66'][0]['10']+';main()',{Date:class extends Date{static now(){return instant;}}});
-  const first=run(now.getTime()),next=run(now.getTime()+60000);
-  assert.equal(first,run(now.getTime()+1000));assert.notEqual(first,next);
-  const url=new URL(first);assert.equal(url.origin,ORIGIN);assert.equal(url.searchParams.get('format'),'widgy');
-  const calendarVars=copy['36'].filter(v=>/^calendar_(bridge|home|event|remaining|data|dots)/.test(v['1']));
-  assert(!calendarVars.some(v=>v['3']['66'].some(s=>s['6']==='Async + No main()')));
+  for(const source of sources){
+    assert(!JSON.stringify(source).includes('${widgy.'));
+    const url=new URL(source['18']);
+    assert.equal(url.origin,ORIGIN);assert.equal(url.pathname,'/api/calendar-widget');
+    assert.equal(url.searchParams.get('format'),'widgy');assert.equal(url.searchParams.get('render'),'perf-3');
+    assert.equal(url.searchParams.get('token'),'synthetic-v2');
+  }
   const snapshot=widgetSnapshot(events,window,now);
   snapshot.home.title='"; throw Error("injected"); // ${widgy.other} פגישה';
+  snapshot.rows[0].title=snapshot.home.title;
   for(const fixture of [snapshot,widgetSnapshot([],window,now),widgetSnapshot([events[0]],window,now)]){
     const native=widgyFields(fixture);
-    assert.deepEqual(JSON.parse(decodeURIComponent(native.encoded)),fixture);
-    assert.equal(evaluate(nativeHomeFieldCode('count'),fixture),String(fixture.total));
-    assert.equal(evaluate(nativeHomeFieldCode('event_word'),fixture),fixture.total===1?'event •':'events •');
-    assert.equal(evaluate(nativeHomeFieldCode('title'),fixture),fixture.home.title);
-    assert.equal(evaluate(nativeHomeFieldCode('meta'),fixture),fixture.home.label+(fixture.home.time?' · '+fixture.home.time:''));
-    for(const source of sources)assert.equal(typeof native[source['23'][0]],'string');
+    assert.deepEqual(JSON.parse(decodeURIComponent(native.encoded)),fixture); // installed perf-2 copies
+    assert.equal(native.calendar_home_count,String(fixture.total));
+    assert.equal(native.calendar_home_event_word,fixture.total===1?'event •':'events •');
+    assert.equal(native.calendar_home_title,fixture.home.title);
+    assert.equal(native.calendar_home_meta,fixture.home.label+(fixture.home.time?' · '+fixture.home.time:''));
+    // Native extraction works in either order with no previous field results,
+    // pending snapshot, JS context, fetch implementation or clock substitution.
+    for(const order of [variables,[...variables].reverse()]){
+      for(const variable of order){
+        const source=variable['3']['66'][0],key=source['23'][0];
+        assert.equal(key,variable['1']);assert(Object.hasOwn(native,key));
+        assert.equal(typeof native[key],variable['2']===2?'number':'string');
+      }
+    }
+    for(let index=0;index<4;index++){
+      const row=fixture.rows[index],prefix=`calendar_event_${index+1}_`;
+      for(const field of ['title','location','start','end'])assert.equal(native[prefix+field],row?row[field]:'');
+      assert.equal(native[prefix+'color'],row?row.color:-1);
+      assert.equal(native[prefix+'all_day'],row?row.allDay:-1);
+    }
   }
-  assert.equal(evaluate(nativeHomeFieldCode('count'),{version:2,ok:false}),'—');
-  assert.equal(evaluate(nativeHomeFieldCode('title'),{...snapshot,home:{...snapshot.home,validUntil:now.getTime()}}),'Updating…');
-  assert.equal(evaluate(nativeHomeFieldCode('title'),{...snapshot,generatedAt:'2026-10-02T12:00:00Z'}),'Calendar unavailable');
-  assert.equal(evaluate(fieldCode('ready'),JSON.parse(decodeURIComponent(widgyFields(null).encoded))),0);
+  const failed=widgyFields(null);
+  assert.equal(failed.calendar_bridge_ready,0);assert.equal(failed.calendar_remaining_today,-1);
+  assert.equal(failed.calendar_home_count,'—');assert.equal(failed.calendar_home_title,'Calendar unavailable');
+  assert.equal(failed.calendar_home_meta,'');assert.equal(failed.calendar_event_1_title,'');
+  const empty=widgyFields(widgetSnapshot([],window,now));
+  assert.equal(empty.calendar_bridge_ready,1);assert.equal(empty.calendar_remaining_today,0);
+  assert.equal(empty.calendar_home_title,'No events today');
 });
 
 test('long Hebrew agenda titles align right within the existing Hebrew column and retain extra height',()=>{
@@ -432,7 +457,7 @@ test('flattened title and detail choices preserve every language branch and exis
     const locations=['','Office','zoom.us','Zoom','zoom','ZOOM','teams.microsoft','Teams','teams','TEAMS','Skype','skype','SKYPE','meet.google','Google Meet','Conference','Room','room','חדר','tel:','Phone','phone','טלפון','Notes','Updates','Room with Zoom and Phone','Notes Updates','zoom.us and teams.microsoft'];
     for(const text of locations){
       const snapshot=widgetSnapshot(events,window,now);snapshot.rows[rank-1].location=text;
-      const kind=evaluate(choice['3']['66'][0]['10'],snapshot);
+      const kind=widgyFields(snapshot)[choice['3']['66'][0]['23'][0]];
       assert.deepEqual(visible([newDetails],{[location['0']]:text,[choice['0']]:kind}).map(drawing),
         visible([oldDetails],{[location['0']]:text}).map(drawing),text);
     }
@@ -440,7 +465,7 @@ test('flattened title and detail choices preserve every language branch and exis
     const groups=row['1'].filter(n=>/Title Layout$/.test(n.s));
     for(const title of titles){
       const snapshot=widgetSnapshot(events,window,now);snapshot.rows[rank-1].title=title;snapshot.rows[rank-1].location='';
-      const kind=evaluate(layout['3']['66'][0]['10'],snapshot);
+      const kind=widgyFields(snapshot)[layout['3']['66'][0]['23'][0]];
       const selected=visible(groups,{[layout['0']]:kind,[location['0']]:''});
       assert.equal(selected.length,1,title);
       assert.equal(selected[0]['1'],/[\u0590-\u05ff]/.test(title)?'System Medium':'Phenomena-Bold');

@@ -1,5 +1,5 @@
 // Runs only in the owner's browser. The private export is never uploaded to the repository.
-import {connectToday} from './calendar-connect-today.js?v=perf-2';
+import {connectToday} from './calendar-connect-today.js?v=perf-3';
 export function personalizedWidget(original, endpoint, widgetEndpoint) {
   if (original['3'] !== 'Widgy Home Glass Calendar C16') throw new Error('unexpected_template');
   const url=new URL(endpoint);
