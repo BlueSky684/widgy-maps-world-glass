@@ -336,7 +336,7 @@ test('Home uses a full-width name above metadata inside the original area with C
   assert(variables.every(v=>!v['3']['66'][0]['10'].includes('${widgy.calendar_bridge_snapshot}')));
 });
 
-test('long Hebrew agenda titles gain width and height without moving short names or detail lines',()=>{
+test('long Hebrew agenda titles align right within the existing Hebrew column and retain extra height',()=>{
   const original=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
   const copy=personalizedWidget(original,`${ORIGIN}/api/calendar-dots?token=synthetic`,`${ORIGIN}/api/calendar-widget?token=synthetic-v2`);
   const cal=copy['1'].find(n=>n.s==='CALENDAR');
@@ -348,7 +348,9 @@ test('long Hebrew agenda titles gain width and height without moving short names
     const small=normal['1'][0],large=expanded['1'][0],withDetail=expanded['1'][1];
     assert.equal(large['2'].a[0].a,2);assert.equal(withDetail['2'].a[0].a,2);
     assert.equal(large['1'],'System Medium');assert.equal(large.f,small.f);assert.deepEqual(large['66'],small['66']);
-    assert(large.d.a[0].a>small.d.a[0].a*1.24);
+    for(const key of ['b','d']){
+      assert.deepEqual(large[key],small[key]);assert.deepEqual(withDetail[key],small[key]);
+    }
     assert(large.e.a[0].a>small.e.a[0].a*1.6);
     assert.equal(large.o1['1'],0);assert.equal(withDetail.o1['1'],1);
     assert.deepEqual(withDetail.c,small.c);assert.deepEqual(withDetail.e,small.e);

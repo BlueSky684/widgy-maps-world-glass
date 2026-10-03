@@ -59,7 +59,7 @@ function loadHomeField(endpoint,field){
   try{
     // A direct async source avoids depending on another async Widgy variable
     // having completed before this field is evaluated on the Home tab.
-    var url=endpoint+'&view=today&render=home-5&refresh='+Math.floor(Date.now()/60000);
+    var url=endpoint+'&view=today&render=home-6&refresh='+Math.floor(Date.now()/60000);
     fetch(url).then(function(response){
       if(!response || response.ok===false || (typeof response.status==='number' && response.status!==200))throw Error('calendar_unavailable');
       return response.json();
@@ -120,16 +120,16 @@ export function connectToday(widget,endpoint,nextID){
     const latin=findTitle(row['1']);
     const location=widget['36'].find(v=>v['1']===`calendar_event_${rank}_location`);
     if(!hebrew || !otherTitles || !latin || !location)throw Error('unexpected_template');
-    // Preserve the approved short Hebrew names. Long names without a location
-    // get the same full two-line area as Latin names, instead of the smaller
-    // Hebrew frame (315 x 86). Keep the proven System Medium Hebrew font.
+    // Keep Hebrew titles in the same horizontal column as the short names.
+    // Long names retain the taller area, with right alignment inside that
+    // column rather than at the far edge of the wider Latin title frame.
     const normalTitles={z:'13',d0:next++,s:`Event ${rank} · Original Title Layout`,
       o1:{'0':longHebrew[index]['0'],'1':0,'2':'0'},'1':[hebrew,otherTitles]};
     const expanded={...structuredClone(hebrew),d0:next++,s:`Event ${rank} · Long Hebrew Title`,
       '2':scalar(2),o1:{'0':location['0'],'1':0,'2':''}};
-    for(const key of ['b','c','d','e'])expanded[key]=structuredClone(latin[key]);
+    for(const key of ['c','e'])expanded[key]=structuredClone(latin[key]);
     const withDetail={...structuredClone(hebrew),d0:next++,s:`Event ${rank} · Long Hebrew Title With Detail`,
-      '2':scalar(2),d:structuredClone(latin.d),o1:{'0':location['0'],'1':1,'2':''}};
+      '2':scalar(2),o1:{'0':location['0'],'1':1,'2':''}};
     const expandedTitles={z:'13',d0:next++,s:`Event ${rank} · Expanded Hebrew Title Layout`,
       o1:{'0':longHebrew[index]['0'],'1':0,'2':'1'},'1':[expanded,withDetail]};
     const insertAt=row['1'].indexOf(hebrew);
