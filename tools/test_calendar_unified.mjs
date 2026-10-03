@@ -37,13 +37,31 @@ test('TODAY and dots share the exact four events/colors; finished events stay fo
   const list=[...events,{...events[0],source:'holiday-copy'}];
   const today=widgetSnapshot(list,window,now),day=dayDots(list,window).find(d=>d.date===today.date);
   assert.equal(today.total,4);assert.deepEqual(today.rows.map(r=>r.color),day.dots);
-  assert.deepEqual(day.dots,[2,1,0,3]);assert.equal(today.rows[2].title,events[2].title);
-  assert.equal(today.rows[0].allDay,1);assert.equal(today.rows[1].allDay,0);
-  assert.equal(today.rows[1].start,'0:00');assert.equal(today.rows[1].end,'23:59');
+  assert.deepEqual(day.dots,[0,3,2,1]);assert.equal(today.rows[0].title,events[2].title);
+  assert.equal(today.rows[2].allDay,1);assert.equal(today.rows[3].allDay,0);
+  assert.equal(today.rows[3].start,'0:00');assert.equal(today.rows[3].end,'23:59');
   const extra={...events[3],uid:'fifth',start:'2026-10-03T20:00:00+03:00',end:'2026-10-03T21:00:00+03:00'};
   const crowded=widgetSnapshot([...list,extra],window,now);
   assert.equal(crowded.total,5);assert.equal(crowded.rows.length,4);
   assert.deepEqual(crowded.rows.map(r=>r.color),dayDots([...list,extra],window).find(d=>d.date===today.date).dots);
+});
+
+test('English titles precede Hebrew, retain time order within each group and match the four dots',()=>{
+  const item=(uid,title,color,start,end,allDay=false)=>({uid,title,color,start,end,allDay,source:uid,provider:'icloud'});
+  const fixtures=[
+    item('english-late','✈️ 123 Flight לתל אביב',0,'2026-10-03T20:00:00+03:00','2026-10-03T21:00:00+03:00'),
+    item('hebrew-late','✈️ טיסה to London',2,'2026-10-03T09:00:00+03:00','2026-10-03T10:00:00+03:00'),
+    item('hebrew-early','שמחת תורה',1,'2026-10-03','2026-10-04',true),
+    item('other','123 🎉',3,'2026-10-03','2026-10-04',true),
+    item('english-early','(Meeting)',3,'2026-10-03T08:00:00+03:00','2026-10-03T09:00:00+03:00')
+  ];
+  const input=[...fixtures,{...fixtures[0],source:'duplicate-invitation'}];
+  const today=widgetSnapshot(input,window,now);
+  assert.equal(today.total,5);
+  assert.deepEqual(today.rows.map(row=>row.title),['(Meeting)','✈️ 123 Flight לתל אביב','שמחת תורה','✈️ טיסה to London']);
+  assert.deepEqual(today.rows.map(row=>row.color),[3,0,1,2]);
+  assert.deepEqual(dayDots(input,window).find(day=>day.date===today.date).dots,[3,0,1,2]);
+  assert.deepEqual(widgetSnapshot([...input].reverse(),window,now),today);
 });
 
 test('overnight, exclusive all-day ends and DST use the same local day in both panels',()=>{
@@ -87,7 +105,7 @@ test('one Widgy network request supplies every field safely, including quotes an
   assert.deepEqual(JSON.parse(decodeURIComponent(encoded)),snapshot);assert.equal(requests,1);
   assert.equal(evaluate(fieldCode('title',0),snapshot),snapshot.rows[0].title);
   assert.equal(evaluate(fieldCode('total'),snapshot),4);assert.equal(evaluate(fieldCode('count'),snapshot),'4 events today');
-  assert.equal(evaluate(fieldCode('ready'),snapshot),1);assert.equal(evaluate(fieldCode('color',2),snapshot),0);
+  assert.equal(evaluate(fieldCode('ready'),snapshot),1);assert.equal(evaluate(fieldCode('color',0),snapshot),0);
   for(const bad of [{version:2,ok:false},{...snapshot,generatedAt:'2026-10-02T12:00:00Z'},{...snapshot,validUntil:now.getTime()-1}]){
     assert.equal(evaluate(fieldCode('ready'),bad),0);assert.equal(evaluate(fieldCode('total'),bad),-1);
     assert.equal(evaluate(fieldCode('title',0),bad),'');
