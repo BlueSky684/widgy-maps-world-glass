@@ -32,6 +32,7 @@ export function fieldCode(field,index=null){
   if(field==='ready')value='return data ? 1 : 0;';
   else if(field==='total')value='return data ? data.total : -1;';
   else if(field==='count')value='return data ? data.total + (data.total===1 ? " event today" : " events today") : "— events today";';
+  else if(field==='long_hebrew')value=`var row=data && data.rows[${Number(index)}];return row && /[\\u0590-\\u05ff]/.test(row.title) && (Array.from(row.title).length>18 || /[\\r\\n]/.test(row.title)) ? 1 : 0;`;
   else value=`var row=data && data.rows[${Number(index)}];return row ? row[${JSON.stringify(field)}] : ${['color','allDay'].includes(field)?'-1':'""'};`;
   return `${readSnapshot.toString()}\nfunction main(){var data=readSnapshot("${encoded}");${value}}`;
 }
@@ -43,6 +44,7 @@ function homeValue(data,field){
   if(field==='label')return home ? home.label : 'NEXT EVENT';
   if(field==='title')return home ? home.title : (data && data.home ? 'Updating…' : 'Calendar unavailable');
   if(field==='time')return home ? home.time : '';
+  if(field==='meta')return home ? home.label+(home.time ? ' · '+home.time : '') : '';
   if(!home || !home.compact)return 0;
   // The original side-by-side title frame only fits short names comfortably.
   // Keep that C16 layout for short names; give longer names the full row.
@@ -57,7 +59,7 @@ function loadHomeField(endpoint,field){
   try{
     // A direct async source avoids depending on another async Widgy variable
     // having completed before this field is evaluated on the Home tab.
-    var url=endpoint+'&view=today&render=home-3&refresh='+Math.floor(Date.now()/60000);
+    var url=endpoint+'&view=today&render=home-4&refresh='+Math.floor(Date.now()/60000);
     fetch(url).then(function(response){
       if(!response || response.ok===false || (typeof response.status==='number' && response.status!==200))throw Error('calendar_unavailable');
       return response.json();
@@ -67,7 +69,7 @@ function loadHomeField(endpoint,field){
   }catch(error){finish(null);}
 }
 export function homeFieldCode(field,endpoint){
-  if(!['count','event_word','label','title','time','compact'].includes(field))throw Error('invalid_home_field');
+  if(!['count','event_word','label','title','time','compact','meta'].includes(field))throw Error('invalid_home_field');
   return `${readSnapshot.toString()}\n${homeValue.toString()}\n${loadHomeField.toString()}\nloadHomeField(${JSON.stringify(endpoint)},${JSON.stringify(field)});`;
 }
 
@@ -87,10 +89,11 @@ export function connectToday(widget,endpoint,nextID){
   widget['36']=widget['36'].filter(v=>v!==snapshot);widget['36'].unshift(snapshot);
   const ready=variable('calendar_bridge_ready',fieldCode('ready'),true);
   variable('calendar_bridge_count',fieldCode('count'));
-  const colors=[],allDays=[];
+  const colors=[],allDays=[],longHebrew=[];
   for(let index=0;index<4;index++){
     colors.push(variable(`calendar_event_${index+1}_color`,fieldCode('color',index),true));
     allDays.push(variable(`calendar_event_${index+1}_all_day`,fieldCode('allDay',index),true));
+    longHebrew.push(variable(`calendar_event_${index+1}_long_hebrew`,fieldCode('long_hebrew',index),true));
   }
   let replaced=0;
   for(const v of widget['36']){
@@ -106,6 +109,32 @@ export function connectToday(widget,endpoint,nextID){
   for(let index=0;index<4;index++){
     const rank=index+1,row=cal['1'].find(n=>n.s===`Agenda · Row ${rank}`);
     if(!row)throw Error('unexpected_template');
+    const hebrew=row['1'].find(n=>n.s===`Event ${rank} · Hebrew Title`);
+    const otherTitles=row['1'].find(n=>n.s===`Event ${rank} · Without א`);
+    const findTitle=nodes=>{
+      for(const node of nodes){
+        if(node.s===`Event ${rank} · Title`)return node;
+        if(node.z==='13'){const found=findTitle(node['1']);if(found)return found;}
+      }
+    };
+    const latin=findTitle(row['1']);
+    const location=widget['36'].find(v=>v['1']===`calendar_event_${rank}_location`);
+    if(!hebrew || !otherTitles || !latin || !location)throw Error('unexpected_template');
+    // Preserve the approved short Hebrew names. Long names without a location
+    // get the same full two-line area as Latin names, instead of the smaller
+    // Hebrew frame (315 x 86). Keep the proven System Medium Hebrew font.
+    const normalTitles={z:'13',d0:next++,s:`Event ${rank} · Original Title Layout`,
+      o1:{'0':longHebrew[index]['0'],'1':0,'2':'0'},'1':[hebrew,otherTitles]};
+    const expanded={...structuredClone(hebrew),d0:next++,s:`Event ${rank} · Long Hebrew Title`,
+      o1:{'0':location['0'],'1':0,'2':''}};
+    for(const key of ['b','c','d','e'])expanded[key]=structuredClone(latin[key]);
+    const withDetail={...structuredClone(hebrew),d0:next++,s:`Event ${rank} · Long Hebrew Title With Detail`,
+      d:structuredClone(latin.d),o1:{'0':location['0'],'1':1,'2':''}};
+    const expandedTitles={z:'13',d0:next++,s:`Event ${rank} · Expanded Hebrew Title Layout`,
+      o1:{'0':longHebrew[index]['0'],'1':0,'2':'1'},'1':[expanded,withDetail]};
+    const insertAt=row['1'].indexOf(hebrew);
+    row['1']=row['1'].filter(n=>n!==hebrew && n!==otherTitles);
+    row['1'].splice(insertAt,0,normalTitles,expandedTitles);
     const accent=row['1'].find(n=>n.s===`Event ${rank} · Accent`);
     if(!accent || accent.z!=='2')throw Error('unexpected_template');
     const bars=[0,1,2,3].map(color=>({...structuredClone(accent),d0:next++,s:`Event ${rank} · Source Color ${color}`,
@@ -141,7 +170,7 @@ export function connectToday(widget,endpoint,nextID){
   const home=widget['1'].find(n=>n.s==='HOME');
   if(!home)throw Error('unexpected_template');
   const homeFields={};
-  for(const field of ['count','event_word','label','title','time','compact']){
+  for(const field of ['count','event_word','title','meta']){
     homeFields[field]=variable(`calendar_home_${field}`,homeFieldCode(field,endpoint),field==='compact',true);
   }
   const homeNode=name=>{
@@ -155,22 +184,17 @@ export function connectToday(widget,endpoint,nextID){
   };
   bind('Events Summary · 1','count');bind('Events Summary · 2','event_word');
   homeNode('Events Summary · 3')['66']=[{'5':'Agenda (Today)','6':'Reminder Events Today'}];
-  const label=bind('Next Event Label','label');
-  const title=bind('Next Event Title','title'),time=bind('Next Event Time','time');
-  const compact=value=>({'0':homeFields.compact['0'],'1':0,'2':String(value)});
-  title.o1=compact(1);time.o1=compact(1);
-  // All-day/empty/error messages use the full existing event row.
-  const fullTitle={...structuredClone(title),d0:next++,s:'Next Event Title · Full Row',o1:compact(0)};
-  fullTitle.d=scalar(time.b.a[0].a+time.d.a[0].a-title.b.a[0].a);
-  // For longer timed titles, move the time beside NEXT EVENT/NOW and use the
-  // same full title row. Fonts, colors and the surrounding C16 layout stay put.
-  const wideTitle={...structuredClone(fullTitle),d0:next++,s:'Next Event Title · Long Name',o1:compact(2)};
-  const upperTime={...structuredClone(time),d0:next++,s:'Next Event Time · Above Long Name',o1:compact(2)};
-  const timeX=label.b.a[0].a+label.d.a[0].a+12;
-  upperTime.b=scalar(timeX);
-  upperTime.c=structuredClone(label.c);
-  upperTime.d=scalar(time.b.a[0].a+time.d.a[0].a-timeX);
-  upperTime.e=structuredClone(label.e);
-  home['1'].splice(home['1'].indexOf(title)+1,0,fullTitle,wideTitle,upperTime);
+  const label=bind('Next Event Label','meta');
+  const title=bind('Next Event Title','title'),time=homeNode('Next Event Time');
+  // One stable hierarchy: full-width event name, then status and 24-hour time
+  // together beneath it. Stay inside the original event area and keep fonts.
+  const top=label.c.a[0].a;
+  const bottom=title.c.a[0].a+title.e.a[0].a;
+  const width=time.b.a[0].a+time.d.a[0].a-title.b.a[0].a;
+  title.c=scalar(top);title.d=scalar(width);
+  label.b=structuredClone(title.b);label.d=scalar(width);
+  label.c=scalar(top+title.e.a[0].a);
+  label.e=scalar(bottom-label.c.a[0].a);
+  home['1']=home['1'].filter(n=>n!==time);
   return next;
 }

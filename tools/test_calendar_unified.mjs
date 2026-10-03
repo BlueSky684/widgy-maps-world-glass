@@ -104,7 +104,7 @@ test('Home counts the full day and selects active/upcoming timed events chronolo
   let snapshot=widgetSnapshot(input,window,at);
   assert.equal(snapshot.total,7);assert(!snapshot.rows.some(row=>row.title==='פגישה מוקדמת'));
   assert.equal(snapshot.home.title,'פגישה מוקדמת');assert.equal(snapshot.home.label,'NEXT EVENT');
-  assert.equal(snapshot.home.time,'1:00 PM – 2:00 PM');assert.equal(snapshot.home.compact,1);
+  assert.equal(snapshot.home.time,'13:00 – 14:00');assert.equal(snapshot.home.compact,1);
   assert.equal(snapshot.home.validUntil,Date.parse('2026-10-03T13:00:00+03:00'));
   const active=timed('active','Current meeting','11:30:00','12:30:00');
   snapshot=widgetSnapshot([...input,active],window,at);
@@ -166,23 +166,39 @@ test('Home fields await their own response without a shared variable, preserve t
   }
 });
 
-test('long timed names get the full Home row without changing titles, times or all-day states',async()=>{
+test('Home combines status and 24-hour time beneath complete event titles',async()=>{
   const snapshot=widgetSnapshot(events,window,now);
-  for(const title of ['בדיקת תצוגה — טיסה לאתונה עם המשפחה','Flight to Athens with family','Line one\nTwo']){
-    snapshot.home={...snapshot.home,title,time:'9:00 PM – 9:15 PM',compact:1};
-    assert.equal(await evaluateHome('compact',snapshot),2);
+  for(const title of ['בדיקת תצוגה — טיסה לאתונה עם המשפחה','Flight to Athens with family','Team Sync']){
+    snapshot.home={...snapshot.home,title,time:'21:00 – 21:15',label:'NOW',compact:1};
     assert.equal(await evaluateHome('title',snapshot),title);
-    assert.equal(await evaluateHome('time',snapshot),'9:00 PM – 9:15 PM');
+    assert.equal(await evaluateHome('meta',snapshot),'NOW · 21:00 – 21:15');
   }
-  for(const title of ['Team Sync','טיסה','123456789012']){
-    snapshot.home.title=title;
-    assert.equal(await evaluateHome('compact',snapshot),1);
+  snapshot.home={...snapshot.home,label:'TODAY · ALL DAY',time:'',compact:0};
+  assert.equal(await evaluateHome('meta',snapshot),'TODAY · ALL DAY');
+  assert.equal(await evaluateHome('meta',{...snapshot,home:{...snapshot.home,validUntil:now.getTime()}}),'');
+  assert.equal(await evaluateHome('meta',null,async()=>({status:401})), '');
+});
+
+test('24-hour event ranges preserve Jerusalem morning, noon, evening and midnight',()=>{
+  for(const [start,end,expected] of [
+    ['2026-10-03T09:00:00+03:00','2026-10-03T09:15:00+03:00','09:00 – 09:15'],
+    ['2026-10-03T12:00:00+03:00','2026-10-03T12:15:00+03:00','12:00 – 12:15'],
+    ['2026-10-03T21:00:00+03:00','2026-10-03T21:15:00+03:00','21:00 – 21:15'],
+    ['2026-10-03T23:45:00+03:00','2026-10-04T00:15:00+03:00','23:45 – 00:15']
+  ]){
+    const event={...events[1],start,end};
+    const at=new Date(Date.parse(start)+1000);
+    assert.equal(widgetSnapshot([event],window,at).home.time,expected);
   }
-  snapshot.home.compact=0;
-  snapshot.home.title='Shemini Atzeret / Simchat Torah';
-  assert.equal(await evaluateHome('compact',snapshot),0);
-  assert.equal(await evaluateHome('compact',{...snapshot,home:{...snapshot.home,validUntil:now.getTime()}}),0);
-  assert.equal(await evaluateHome('compact',null,async()=>({status:401})),0);
+});
+
+test('only long Hebrew agenda names select the expanded frame',()=>{
+  const snapshot=widgetSnapshot(events,window,now);
+  for(const [title,expanded] of [['שמחת תורה',0],['בדיקת תצוגה — טיסה לאתונה עם המשפחה',1],['Shemini Atzeret / Simchat Torah',0]]){
+    snapshot.rows[0].title=title;
+    assert.equal(evaluate(fieldCode('long_hebrew',0),snapshot),expanded);
+  }
+  assert.equal(evaluate(fieldCode('long_hebrew',0),{version:2,ok:false}),0);
 });
 
 test('one Widgy network request supplies every field safely, including quotes and code-like event titles',async()=>{
@@ -291,44 +307,53 @@ test('unified template preserves other tabs and row geometry while removing nati
   const variableIDs=copy['36'].map(v=>v['0']);assert.equal(variableIDs.length,new Set(variableIDs).size);
 });
 
-test('Home replaces sample data with independent async fields and preserves C16 fonts, timed frames and unrelated layers',()=>{
+test('Home uses a full-width name above metadata inside the original area with C16 fonts',()=>{
   const original=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
   const copy=personalizedWidget(original,`${ORIGIN}/api/calendar-dots?token=synthetic`,`${ORIGIN}/api/calendar-widget?token=synthetic-v2`);
   const home=copy['1'].find(n=>n.s==='HOME'),base=original['1'].find(n=>n.s==='HOME');
-  const changed=new Set(['Events Summary · 1','Events Summary · 2','Events Summary · 3','Next Event Label','Next Event Title','Next Event Time']);
+  const changed=new Set(['Events Summary · 1','Events Summary · 2','Events Summary · 3','Next Event Label','Next Event Title']);
   for(const node of base['1']){
-    const actual=home['1'].find(n=>n.d0===node.d0);assert(actual);
+    const actual=home['1'].find(n=>n.d0===node.d0);
+    if(node.s==='Next Event Time'){assert.equal(actual,undefined);continue;}
+    assert(actual);
     if(!changed.has(node.s)){assert.deepEqual(actual,node);continue;}
-    for(const key of new Set([...Object.keys(node),...Object.keys(actual)])){
-      if(!['66','o1'].includes(key))assert.deepEqual(actual[key],node[key],node.s+' '+key);
-    }
+    for(const key of ['1','f','2'])assert.deepEqual(actual[key],node[key]);
   }
-  assert.equal(home['1'].length,base['1'].length+3);
-  const full=home['1'].find(n=>n.s==='Next Event Title · Full Row');
-  const title=home['1'].find(n=>n.s==='Next Event Title'),time=home['1'].find(n=>n.s==='Next Event Time');
-  assert.equal(full.d.a[0].a,time.b.a[0].a+time.d.a[0].a-title.b.a[0].a);
-  assert.equal(full['1'],title['1']);assert.deepEqual(full.c,title.c);assert.deepEqual(full.e,title.e);
-  assert.equal(full.o1['2'],'0');assert.equal(title.o1['2'],'1');assert.equal(time.o1['2'],'1');
-  const wide=home['1'].find(n=>n.s==='Next Event Title · Long Name');
-  const upper=home['1'].find(n=>n.s==='Next Event Time · Above Long Name');
-  const label=home['1'].find(n=>n.s==='Next Event Label');
-  assert.equal(wide.o1['2'],'2');assert.equal(upper.o1['2'],'2');
-  for(const key of ['b','c','d','e','1','f','66'])assert.deepEqual(wide[key],full[key]);
-  for(const key of ['1','f','66'])assert.deepEqual(upper[key],time[key]);
-  assert.deepEqual(upper.c,label.c);assert.deepEqual(upper.e,label.e);
-  assert(upper.b.a[0].a>=label.b.a[0].a+label.d.a[0].a+12);
-  assert.equal(upper.b.a[0].a+upper.d.a[0].a,full.b.a[0].a+full.d.a[0].a);
-  for(const layout of [0,1,2]){
-    const visible=[title,full,wide,time,upper].filter(n=>n.o1['2']===String(layout));
-    assert.equal(visible.filter(n=>n.s.startsWith('Next Event Title')).length,1);
-    assert.equal(visible.filter(n=>n.s.startsWith('Next Event Time')).length,layout===0?0:1);
-  }
+  const title=home['1'].find(n=>n.s==='Next Event Title'),meta=home['1'].find(n=>n.s==='Next Event Label');
+  const oldTitle=base['1'].find(n=>n.s==='Next Event Title'),oldMeta=base['1'].find(n=>n.s==='Next Event Label');
+  const oldTime=base['1'].find(n=>n.s==='Next Event Time');
+  assert.equal(home['1'].length,base['1'].length-1);
+  assert.equal(title.c.a[0].a,oldMeta.c.a[0].a);
+  assert.equal(title.c.a[0].a+title.e.a[0].a,meta.c.a[0].a);
+  assert.equal(meta.c.a[0].a+meta.e.a[0].a,oldTitle.c.a[0].a+oldTitle.e.a[0].a);
+  assert.equal(title.d.a[0].a,oldTime.b.a[0].a+oldTime.d.a[0].a-oldTitle.b.a[0].a);
+  assert.deepEqual(meta.b,title.b);assert.deepEqual(meta.d,title.d);
+  assert.equal(meta['66'][0]['25'],'${widgy.calendar_home_meta}');
   assert(!JSON.stringify(home).includes('Team Sync'));assert(!JSON.stringify(home).includes('2:00 PM – 2:30 PM'));
   assert.deepEqual(home['1'].find(n=>n.s==='Events Summary · 3')['66'],[{'5':'Agenda (Today)','6':'Reminder Events Today'}]);
   const variables=copy['36'].filter(v=>v['1'].startsWith('calendar_home_'));
-  assert.equal(variables.length,6);assert(variables.every(v=>v['3']['66'][0]['6']==='Async + No main()'));
+  assert.equal(variables.length,4);assert(variables.every(v=>v['3']['66'][0]['6']==='Async + No main()'));
   assert(variables.every(v=>!v['3']['66'][0]['10'].includes('${widgy.calendar_bridge_snapshot}')));
-  assert.equal(copy['36'].filter(v=>v['1']==='calendar_bridge_snapshot').length,1);
+});
+
+test('long Hebrew agenda titles gain width and height without moving short names or detail lines',()=>{
+  const original=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
+  const copy=personalizedWidget(original,`${ORIGIN}/api/calendar-dots?token=synthetic`,`${ORIGIN}/api/calendar-widget?token=synthetic-v2`);
+  const cal=copy['1'].find(n=>n.s==='CALENDAR');
+  for(let rank=1;rank<=4;rank++){
+    const row=cal['1'].find(n=>n.s===`Agenda · Row ${rank}`);
+    const normal=row['1'].find(n=>n.s===`Event ${rank} · Original Title Layout`);
+    const expanded=row['1'].find(n=>n.s===`Event ${rank} · Expanded Hebrew Title Layout`);
+    assert.equal(normal.o1['2'],'0');assert.equal(expanded.o1['2'],'1');
+    const small=normal['1'][0],large=expanded['1'][0],withDetail=expanded['1'][1];
+    assert.equal(large['1'],'System Medium');assert.equal(large.f,small.f);assert.deepEqual(large['66'],small['66']);
+    assert(large.d.a[0].a>small.d.a[0].a*1.24);
+    assert(large.e.a[0].a>small.e.a[0].a*1.6);
+    assert.equal(large.o1['1'],0);assert.equal(withDetail.o1['1'],1);
+    assert.deepEqual(withDetail.c,small.c);assert.deepEqual(withDetail.e,small.e);
+    const location=row['1'].find(n=>n.s===`Event ${rank} · Location`);
+    assert(withDetail.c.a[0].a+withDetail.e.a[0].a<=location.c.a[0].a+2);
+  }
 });
 
 test('every month image gets a new URL on the next minute while retaining its private token and offset',()=>{
