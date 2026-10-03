@@ -43,7 +43,10 @@ function homeValue(data,field){
   if(field==='label')return home ? home.label : 'NEXT EVENT';
   if(field==='title')return home ? home.title : (data && data.home ? 'Updating…' : 'Calendar unavailable');
   if(field==='time')return home ? home.time : '';
-  return home ? home.compact : 0;
+  if(!home || !home.compact)return 0;
+  // The original side-by-side title frame only fits short names comfortably.
+  // Keep that C16 layout for short names; give longer names the full row.
+  return Array.from(home.title || '').length>12 || /[\r\n]/.test(home.title || '') ? 2 : 1;
 }
 function loadHomeField(endpoint,field){
   var completed=false;
@@ -54,7 +57,7 @@ function loadHomeField(endpoint,field){
   try{
     // A direct async source avoids depending on another async Widgy variable
     // having completed before this field is evaluated on the Home tab.
-    var url=endpoint+'&view=today&render=home-2&refresh='+Math.floor(Date.now()/60000);
+    var url=endpoint+'&view=today&render=home-3&refresh='+Math.floor(Date.now()/60000);
     fetch(url).then(function(response){
       if(!response || response.ok===false || (typeof response.status==='number' && response.status!==200))throw Error('calendar_unavailable');
       return response.json();
@@ -118,6 +121,17 @@ export function connectToday(widget,endpoint,nextID){
     timed.o1={'0':allDays[index]['0'],'1':0,'2':'0'};
     label.o1={'0':allDays[index]['0'],'1':0,'2':'1'};
     row['1'][row['1'].indexOf(midnight)]=label;
+    if(rank<4){
+      const separator=row['1'].find(n=>n.s===`Event ${rank} · Separator`);
+      const following=cal['1'].find(n=>n.s===`Agenda · Row ${rank+1}`);
+      if(!separator || !following)throw Error('unexpected_template');
+      row['1'].splice(row['1'].indexOf(separator),1);
+      // Keep hairlines outside row groups, above their contents. Match the
+      // calendar grid's visible rule thickness and show only between events.
+      separator.e=scalar(1.621622);
+      separator.o1=structuredClone(following.o1);
+      cal['1'].unshift(separator);
+    }
   }
   const empty=cal['1'].find(n=>n.s==='Agenda · Empty');
   empty['66']=[{'5':'Custom Text','6':'Text','25':'No events today'}];
@@ -141,14 +155,22 @@ export function connectToday(widget,endpoint,nextID){
   };
   bind('Events Summary · 1','count');bind('Events Summary · 2','event_word');
   homeNode('Events Summary · 3')['66']=[{'5':'Agenda (Today)','6':'Reminder Events Today'}];
-  bind('Next Event Label','label');
+  const label=bind('Next Event Label','label');
   const title=bind('Next Event Title','title'),time=bind('Next Event Time','time');
   const compact=value=>({'0':homeFields.compact['0'],'1':0,'2':String(value)});
   title.o1=compact(1);time.o1=compact(1);
-  // All-day/empty/error messages can use the full existing event row, since
-  // there is no time range beside them. Preserve the approved timed layout.
+  // All-day/empty/error messages use the full existing event row.
   const fullTitle={...structuredClone(title),d0:next++,s:'Next Event Title · Full Row',o1:compact(0)};
   fullTitle.d=scalar(time.b.a[0].a+time.d.a[0].a-title.b.a[0].a);
-  home['1'].splice(home['1'].indexOf(title)+1,0,fullTitle);
+  // For longer timed titles, move the time beside NEXT EVENT/NOW and use the
+  // same full title row. Fonts, colors and the surrounding C16 layout stay put.
+  const wideTitle={...structuredClone(fullTitle),d0:next++,s:'Next Event Title · Long Name',o1:compact(2)};
+  const upperTime={...structuredClone(time),d0:next++,s:'Next Event Time · Above Long Name',o1:compact(2)};
+  const timeX=label.b.a[0].a+label.d.a[0].a+12;
+  upperTime.b=scalar(timeX);
+  upperTime.c=structuredClone(label.c);
+  upperTime.d=scalar(time.b.a[0].a+time.d.a[0].a-timeX);
+  upperTime.e=structuredClone(label.e);
+  home['1'].splice(home['1'].indexOf(title)+1,0,fullTitle,wideTitle,upperTime);
   return next;
 }

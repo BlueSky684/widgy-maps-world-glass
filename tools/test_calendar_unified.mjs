@@ -166,6 +166,25 @@ test('Home fields await their own response without a shared variable, preserve t
   }
 });
 
+test('long timed names get the full Home row without changing titles, times or all-day states',async()=>{
+  const snapshot=widgetSnapshot(events,window,now);
+  for(const title of ['בדיקת תצוגה — טיסה לאתונה עם המשפחה','Flight to Athens with family','Line one\nTwo']){
+    snapshot.home={...snapshot.home,title,time:'9:00 PM – 9:15 PM',compact:1};
+    assert.equal(await evaluateHome('compact',snapshot),2);
+    assert.equal(await evaluateHome('title',snapshot),title);
+    assert.equal(await evaluateHome('time',snapshot),'9:00 PM – 9:15 PM');
+  }
+  for(const title of ['Team Sync','טיסה','123456789012']){
+    snapshot.home.title=title;
+    assert.equal(await evaluateHome('compact',snapshot),1);
+  }
+  snapshot.home.compact=0;
+  snapshot.home.title='Shemini Atzeret / Simchat Torah';
+  assert.equal(await evaluateHome('compact',snapshot),0);
+  assert.equal(await evaluateHome('compact',{...snapshot,home:{...snapshot.home,validUntil:now.getTime()}}),0);
+  assert.equal(await evaluateHome('compact',null,async()=>({status:401})),0);
+});
+
 test('one Widgy network request supplies every field safely, including quotes and code-like event titles',async()=>{
   const snapshot=widgetSnapshot(events,window,now);
   snapshot.rows[0].title='"; throw Error("injected"); // ${widgy.other} \\ שלום\nMeeting';
@@ -255,6 +274,16 @@ test('unified template preserves other tabs and row geometry while removing nati
     }
   });
   assert.equal(overlays,25);assert.equal(bars,16);
+  const separators=cal['1'].filter(n=>/^Event [1-3] · Separator$/.test(n.s || ''));
+  assert.equal(separators.length,3);
+  for(let index=0;index<3;index++){
+    const separator=separators.find(n=>n.s===`Event ${index+1} · Separator`);
+    const following=cal['1'].find(n=>n.s===`Agenda · Row ${index+2}`);
+    const originalRule=byID.get(separator.d0);
+    for(const key of ['b','c','d','g'])assert.deepEqual(separator[key],originalRule[key]);
+    assert.equal(separator.e.a[0].a,1.621622);
+    assert.deepEqual(separator.o1,following.o1);
+  }
   assert.equal(copy['36'].filter(v=>v['1']==='calendar_bridge_snapshot').length,1);
   for(const v of copy['36'].filter(v=>/^calendar_(remaining|event_)/.test(v['1'])))assert(!JSON.stringify(v).includes('Agenda (Today)'));
   for(const v of original['36'].filter(v=>!/^calendar_(remaining|event_)/.test(v['1'])))assert.deepEqual(copy['36'].find(c=>c['0']===v['0']),v);
@@ -274,12 +303,26 @@ test('Home replaces sample data with independent async fields and preserves C16 
       if(!['66','o1'].includes(key))assert.deepEqual(actual[key],node[key],node.s+' '+key);
     }
   }
-  assert.equal(home['1'].length,base['1'].length+1);
+  assert.equal(home['1'].length,base['1'].length+3);
   const full=home['1'].find(n=>n.s==='Next Event Title · Full Row');
   const title=home['1'].find(n=>n.s==='Next Event Title'),time=home['1'].find(n=>n.s==='Next Event Time');
   assert.equal(full.d.a[0].a,time.b.a[0].a+time.d.a[0].a-title.b.a[0].a);
   assert.equal(full['1'],title['1']);assert.deepEqual(full.c,title.c);assert.deepEqual(full.e,title.e);
   assert.equal(full.o1['2'],'0');assert.equal(title.o1['2'],'1');assert.equal(time.o1['2'],'1');
+  const wide=home['1'].find(n=>n.s==='Next Event Title · Long Name');
+  const upper=home['1'].find(n=>n.s==='Next Event Time · Above Long Name');
+  const label=home['1'].find(n=>n.s==='Next Event Label');
+  assert.equal(wide.o1['2'],'2');assert.equal(upper.o1['2'],'2');
+  for(const key of ['b','c','d','e','1','f','66'])assert.deepEqual(wide[key],full[key]);
+  for(const key of ['1','f','66'])assert.deepEqual(upper[key],time[key]);
+  assert.deepEqual(upper.c,label.c);assert.deepEqual(upper.e,label.e);
+  assert(upper.b.a[0].a>=label.b.a[0].a+label.d.a[0].a+12);
+  assert.equal(upper.b.a[0].a+upper.d.a[0].a,full.b.a[0].a+full.d.a[0].a);
+  for(const layout of [0,1,2]){
+    const visible=[title,full,wide,time,upper].filter(n=>n.o1['2']===String(layout));
+    assert.equal(visible.filter(n=>n.s.startsWith('Next Event Title')).length,1);
+    assert.equal(visible.filter(n=>n.s.startsWith('Next Event Time')).length,layout===0?0:1);
+  }
   assert(!JSON.stringify(home).includes('Team Sync'));assert(!JSON.stringify(home).includes('2:00 PM – 2:30 PM'));
   assert.deepEqual(home['1'].find(n=>n.s==='Events Summary · 3')['66'],[{'5':'Agenda (Today)','6':'Reminder Events Today'}]);
   const variables=copy['36'].filter(v=>v['1'].startsWith('calendar_home_'));
