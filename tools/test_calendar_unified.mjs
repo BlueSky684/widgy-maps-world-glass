@@ -266,6 +266,8 @@ test('new capability returns matching TODAY/PNG, reuses provider read and reject
     assert.equal(evaluate(nativeHomeFieldCode('title'),decoded,new Date(decoded.generatedAt)),today.data.home.title);
     const dots=await get(token,'&view=dots&offset=0');assert.equal(dots.statusCode,200);assert.equal(dots.headers['content-type'],'image/png');
     assert.equal((await sharp(dots.data).metadata()).width,2270);assert.equal(reads,1);
+    assert.match(dots.headers['cache-control'],/^private, max-age=\d+, must-revalidate$/);
+    assert.equal(dots.headers['cdn-cache-control'],'no-store');
     const refreshed=await get(token,'&view=dots&offset=0&render=refresh-1&refresh=12345');
     assert.equal(refreshed.statusCode,200);assert.deepEqual(refreshed.data,dots.data);assert.equal(reads,1);
     const unauthorized=await get(await seal(state,'calendar-render'));
@@ -343,6 +345,7 @@ test('Home restores reference status above the full-width name with exact origin
     const actual=home['1'].find(n=>n.d0===node.d0);
     if(node.s==='Next Event Time'){assert.equal(actual,undefined);continue;}
     assert(actual);
+    if(/^Steps Goal Ring · \d+%$/.test(node.s)){assert.deepEqual(actual,{...node,o1:{...node.o1,'1':0}});continue;}
     if(!changed.has(node.s)){assert.deepEqual(actual,node);continue;}
     for(const key of ['1','f','2'])assert.deepEqual(actual[key],node[key]);
   }
@@ -377,7 +380,7 @@ test('native calendar fields do not depend on intermediate variables or Javascri
     assert(!JSON.stringify(source).includes('${widgy.'));
     const url=new URL(source['18']);
     assert.equal(url.origin,ORIGIN);assert.equal(url.pathname,'/api/calendar-widget');
-    assert.equal(url.searchParams.get('format'),'widgy');assert.equal(url.searchParams.get('render'),'perf-3');
+    assert.equal(url.searchParams.get('format'),'widgy');assert.equal(url.searchParams.get('render'),'perf-4');
     assert.equal(url.searchParams.get('token'),'synthetic-v2');
   }
   const snapshot=widgetSnapshot(events,window,now);

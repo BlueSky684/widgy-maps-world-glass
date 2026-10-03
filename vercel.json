@@ -1,4 +1,6 @@
 {
+  "regions": ["fra1"],
+  "buildCommand": "node tools/build-map-cache.mjs",
   "functions": {
     "api/calendar-widget.js": {
       "maxDuration": 60

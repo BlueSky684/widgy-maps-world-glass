@@ -86,7 +86,7 @@ export function connectToday(widget,endpoint,nextID){
   // URL -> JSON snapshot -> Javascript field chain to race on tab changes.
   // Native refresh and private HTTP caching govern updates, not a per-minute
   // Javascript URL that invalidates the response while its consumers run.
-  const nativeURL=endpoint+'&view=today&format=widgy&render=perf-3';
+  const nativeURL=endpoint+'&view=today&format=widgy&render=perf-4';
   const jsonSource=key=>({'5':'JSON Endpoint','6':'Endpoint','18':nativeURL,'19':'GET','23':[key]});
   function variable(name,numeric=false){
     const id=uuid();
