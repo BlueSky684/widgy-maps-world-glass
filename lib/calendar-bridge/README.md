@@ -41,11 +41,15 @@ iCloud uses an Apple app-specific password with two-factor authentication. The a
 - A stolen setup key does not decrypt existing render links; the server encryption key is separate. Rotating the encryption key requires reconnection.
 - Never enable verbose provider/body logging in production.
 
+## Apple holiday subscription
+
+The separately selectable public source `apple-holidays:il_he` reads the pinned `https://calendars.icloud.com/holidays/il_he.ics` feed without credentials. Both Hebrew holidays on 2026-10-03 were verified in the live feed against the owner's screenshots. Existing selections and exports do not silently gain this source: select it and generate a new export. Transport rejects redirects/arbitrary URLs and bounds plain/gzip input. Feed failures are explicit. Events without DTEND retain the iCalendar one-day default for DATE values.
+
 ## Rendering behavior
 
 - Uses local month boundaries and Sunday-first grids with 4/5/6 weeks; supports offsets -12 through +12, matching C16.
 - Google expands recurring events server-side. CalDAV requests bounded expanded responses; ICS parsing also handles recurrence, EXDATE and overrides. All-day end dates are exclusive. Floating times use the chosen widget timezone.
-- Same UID and occurrence boundaries are deduplicated. Different holiday publishers may have distinct UIDs, so select one holidays source rather than deduplicating by title.
+- Same UID and occurrence boundaries are deduplicated. Different holiday publishers remain separate when both are selected; holidays are not deduplicated by title.
 - Up to four dots per day, in fixed blue, purple, amber and green. Color assignment is explicitly chosen by the owner; it is not inferred from native calendar colors.
 - Client-only personalization adds 25 transparent image layers and clears native indicators on 75 month layouts. Unified exports also bind TODAY titles, times, locations, total and row accents to the same selected calendars and occurrence ordering used by the dots. Other tabs, fonts, row frames and assets remain C16. The original C16 file is not modified.
 - One async Widgy variable fetches a URI-encoded snapshot. Field variables parse it locally without additional HTTP requests; event text is never interpolated as executable source. Four conditional fixed-palette accents replace rank-based colors. Provider all-day flags replace the old midnight-time heuristic.
@@ -56,7 +60,7 @@ iCloud uses an Apple app-specific password with two-factor authentication. The a
 
 ## Validation
 
-Run `node tools/test_calendar_bridge.mjs` and `node tools/test_calendar_unified.mjs` (20 tests). Tests use synthetic credentials and provider responses, including the actual DAV XML parser and final PNG renderer. They cover encryption/audience/expiry/revocation, missing configuration, origin checks, OAuth callback state, calendar selection, pagination, provider failures, CalDAV read restrictions, recurring/overnight/DST/all-day events, fixed-palette PNG pixels, unified TODAY/dots ordering, text-safe single-request bindings, stale/error handling, old-link isolation, and preservation of unrelated C16 fields and row geometry.
+Run `node tools/test_calendar_bridge.mjs`, `node tools/test_calendar_unified.mjs` and `node tools/test_calendar_apple_holidays.mjs` (23 tests). Tests use synthetic credentials and provider responses, including the actual DAV XML parser and final PNG renderer. They cover encryption/audience/expiry/revocation, missing configuration, origin checks, OAuth callback state, calendar selection, pagination, provider failures, CalDAV read restrictions, recurring/overnight/DST/all-day events, fixed-palette PNG pixels, unified TODAY/dots ordering, text-safe single-request bindings, stale/error handling, old-link isolation, and preservation of unrelated C16 fields and row geometry.
 
 The owner chose Google holidays=gold, personal Google=blue, iCloud Home=purple, iCloud Work=green. Still required for the unified version: actual event/date comparison; device verification of TODAY variable refresh, PNG alignment, caching and month navigation. Google remains in Testing and requires addressing its seven-day authorization expiry for sustained use.
 

@@ -11,6 +11,7 @@ const messages={
   google_read_failed:'לא הצלחנו לקרוא את יומני Google. בדוק את ההרשאה והתחבר שוב.',
   icloud_credentials_invalid:'יש להזין כתובת חשבון Apple וסיסמה ייעודית במבנה xxxx-xxxx-xxxx-xxxx.',
   icloud_connection_failed:'החיבור ל־iCloud נכשל. בדוק את כתובת החשבון ואת הסיסמה הייעודית.',
+  apple_holidays_read_failed:'יומן החגים הציבורי של Apple אינו זמין כרגע. נסה שוב בעוד רגע; אין צורך לשנות סיסמה.',
   provider_read_failed:'אחד החשבונות לא זמין כרגע. חבר אותו מחדש לפני שמירת הבחירה.',
   choose_calendars:'בחר בין יומן אחד לשישה יומנים.',
   selection_too_large:'הבחירה ארוכה מדי. נסה לבחור פחות יומנים.',
@@ -48,12 +49,12 @@ async function refresh(){
   $('icloud-state').textContent=state.connected.icloud?'מחובר':'טרם חובר';
   $('zone').value=state.zone;
   $('export-section').hidden=!state.sources.length;
-  if(state.connected.google||state.connected.icloud){
+  {
     status('טוען את היומנים הזמינים…');
     const result=await api('calendars');listing=result.calendars;
     drawSources();
     if(result.errors.length){status(`קריאת החשבון נכשלה: ${result.errors.join(', ')}. התחבר אליו מחדש.`,true);return;}
-  }else{$('sources-section').hidden=true;}
+  }
   status(state.sources.length?'בחירת היומנים נשמרה. אפשר להכין עותק אישי לבדיקה.':'חבר חשבון ובחר את היומנים שתרצה להציג.');
 }
 function drawSources(){
@@ -64,7 +65,7 @@ function drawSources(){
     const label=document.createElement('label');
     const check=document.createElement('input');check.type='checkbox';check.checked=Boolean(saved);check.dataset.index=index;
     const name=document.createElement('span');name.textContent=calendar.name;
-    const provider=document.createElement('small');provider.textContent=calendar.provider==='google'?'Google Calendar':'iCloud';name.append(provider);label.append(check,name);
+    const provider=document.createElement('small');provider.textContent={'google':'Google Calendar','icloud':'iCloud','apple-holidays':'Apple · חגים בעברית'}[calendar.provider];name.append(provider);label.append(check,name);
     const select=document.createElement('select');select.setAttribute('aria-label',`צבע עבור ${calendar.name}`);
     ['כחול','סגול','זהב','ירוק'].forEach((name,color)=>{const option=document.createElement('option');option.value=color;option.textContent=name;select.append(option);});
     select.value=saved?.color??0;
