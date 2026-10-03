@@ -33,8 +33,14 @@ export function fieldCode(field,index=null){
   else if(field==='total')value='return data ? data.total : -1;';
   else if(field==='count')value='return data ? data.total + (data.total===1 ? " event today" : " events today") : "— events today";';
   else if(field==='long_hebrew')value=`var row=data && data.rows[${Number(index)}];return row && /[\\u0590-\\u05ff]/.test(row.title) && (Array.from(row.title).length>18 || /[\\r\\n]/.test(row.title)) ? 1 : 0;`;
+  else if(field==='title_layout')value=`var row=data && data.rows[${Number(index)}];if(!row || !/[\\u0590-\\u05ff]/.test(row.title))return 0;return Array.from(row.title).length>18 || /[\\r\\n]/.test(row.title) ? 2 : 1;`;
   else value=`var row=data && data.rows[${Number(index)}];return row ? row[${JSON.stringify(field)}] : ${['color','allDay'].includes(field)?'-1':'""'};`;
   return `${readSnapshot.toString()}\nfunction main(){var data=readSnapshot("${encoded}");${value}}`;
+}
+
+function detailIconCode(index,cases,fallback){
+  const encoded='${widgy.calendar_bridge_snapshot}';
+  return `${readSnapshot.toString()}\nfunction main(){var data=readSnapshot("${encoded}"),row=data && data.rows[${index}];if(!row)return -1;var text=String(row.location || ''),cases=${JSON.stringify(cases)};for(var i=0;i<cases.length;i++)if(text.indexOf(cases[i][0])!==-1)return cases[i][1];return ${fallback};}`;
 }
 
 function homeValue(data,field){
@@ -59,7 +65,7 @@ function loadHomeField(endpoint,field){
   try{
     // A direct async source avoids depending on another async Widgy variable
     // having completed before this field is evaluated on the Home tab.
-    var url=endpoint+'&view=today&render=home-6&refresh='+Math.floor(Date.now()/60000);
+    var url=endpoint+'&view=today&render=perf-1&refresh='+Math.floor(Date.now()/60000);
     fetch(url).then(function(response){
       if(!response || response.ok===false || (typeof response.status==='number' && response.status!==200))throw Error('calendar_unavailable');
       return response.json();
@@ -89,11 +95,11 @@ export function connectToday(widget,endpoint,nextID){
   widget['36']=widget['36'].filter(v=>v!==snapshot);widget['36'].unshift(snapshot);
   const ready=variable('calendar_bridge_ready',fieldCode('ready'),true);
   variable('calendar_bridge_count',fieldCode('count'));
-  const colors=[],allDays=[],longHebrew=[];
+  const colors=[],allDays=[],titleLayouts=[];
   for(let index=0;index<4;index++){
     colors.push(variable(`calendar_event_${index+1}_color`,fieldCode('color',index),true));
     allDays.push(variable(`calendar_event_${index+1}_all_day`,fieldCode('allDay',index),true));
-    longHebrew.push(variable(`calendar_event_${index+1}_long_hebrew`,fieldCode('long_hebrew',index),true));
+    titleLayouts.push(variable(`calendar_event_${index+1}_title_layout`,fieldCode('title_layout',index),true));
   }
   let replaced=0;
   for(const v of widget['36']){
@@ -111,30 +117,58 @@ export function connectToday(widget,endpoint,nextID){
     if(!row)throw Error('unexpected_template');
     const hebrew=row['1'].find(n=>n.s===`Event ${rank} · Hebrew Title`);
     const otherTitles=row['1'].find(n=>n.s===`Event ${rank} · Without א`);
-    const findTitle=nodes=>{
+    const findTitle=(nodes,name)=>{
       for(const node of nodes){
-        if(node.s===`Event ${rank} · Title`)return node;
-        if(node.z==='13'){const found=findTitle(node['1']);if(found)return found;}
+        if(node.s===name)return node;
+        if(node.z==='13'){const found=findTitle(node['1'],name);if(found)return found;}
       }
     };
-    const latin=findTitle(row['1']);
+    const latin=findTitle(row['1'],`Event ${rank} · Title`);
+    const latinDetail=findTitle(row['1'],`Event ${rank} · Title With Detail`);
     const location=widget['36'].find(v=>v['1']===`calendar_event_${rank}_location`);
-    if(!hebrew || !otherTitles || !latin || !location)throw Error('unexpected_template');
+    if(!hebrew || !otherTitles || !latin || !latinDetail || !location)throw Error('unexpected_template');
     // Keep Hebrew titles in the same horizontal column as the short names.
     // Long names retain the taller area, with right alignment inside that
     // column rather than at the far edge of the wider Latin title frame.
+    // One classification replaces 27 copies and a deeply nested letter chain.
+    delete hebrew.o1;
     const normalTitles={z:'13',d0:next++,s:`Event ${rank} · Original Title Layout`,
-      o1:{'0':longHebrew[index]['0'],'1':0,'2':'0'},'1':[hebrew,otherTitles]};
+      o1:{'0':titleLayouts[index]['0'],'1':0,'2':'1'},'1':[hebrew]};
+    const latinTitles={z:'13',d0:next++,s:`Event ${rank} · Latin Title Layout`,
+      o1:{'0':titleLayouts[index]['0'],'1':0,'2':'0'},'1':[latinDetail,latin]};
     const expanded={...structuredClone(hebrew),d0:next++,s:`Event ${rank} · Long Hebrew Title`,
       '2':scalar(2),o1:{'0':location['0'],'1':0,'2':''}};
     for(const key of ['c','e'])expanded[key]=structuredClone(latin[key]);
     const withDetail={...structuredClone(hebrew),d0:next++,s:`Event ${rank} · Long Hebrew Title With Detail`,
       '2':scalar(2),o1:{'0':location['0'],'1':1,'2':''}};
     const expandedTitles={z:'13',d0:next++,s:`Event ${rank} · Expanded Hebrew Title Layout`,
-      o1:{'0':longHebrew[index]['0'],'1':0,'2':'1'},'1':[expanded,withDetail]};
+      o1:{'0':titleLayouts[index]['0'],'1':0,'2':'2'},'1':[expanded,withDetail]};
     const insertAt=row['1'].indexOf(hebrew);
     row['1']=row['1'].filter(n=>n!==hebrew && n!==otherTitles);
-    row['1'].splice(insertAt,0,normalTitles,expandedTitles);
+    row['1'].splice(insertAt,0,normalTitles,latinTitles,expandedTitles);
+    // Preserve the exact detail-icon matching order and drawings, but select
+    // one of the distinct icons instead of retaining a 24-level condition tree.
+    const details=row['1'].find(n=>n.s===`Event ${rank} · Dynamic Detail Icon`);
+    if(!details)throw Error('unexpected_template');
+    const icons=[],cases=[],signatures=new Map();let fallback=-1;
+    function collectIcons(nodes){
+      for(const node of nodes){
+        if(node.z==='13'){collectIcons(node['1']);continue;}
+        if(node.z!=='4')throw Error('unexpected_template');
+        const shape=Object.fromEntries(Object.entries(node).filter(([key])=>!['d0','s','o1'].includes(key)).sort(([a],[b])=>a.localeCompare(b)));
+        const signature=JSON.stringify(shape);
+        let kind=signatures.get(signature);
+        if(kind===undefined){kind=icons.length;signatures.set(signature,kind);icons.push(node);}
+        if(node.o1){
+          if(node.o1['0']!==location['0'] || node.o1['1']!==2)throw Error('unexpected_template');
+          cases.push([node.o1['2'],kind]);
+        }else fallback=kind;
+      }
+    }
+    collectIcons(details['1']);
+    if(fallback<0)throw Error('unexpected_template');
+    const detailKind=variable(`calendar_event_${rank}_detail_icon`,detailIconCode(index,cases,fallback),true);
+    details['1']=icons.map((node,kind)=>({...node,o1:{'0':detailKind['0'],'1':0,'2':String(kind)}}));
     const accent=row['1'].find(n=>n.s===`Event ${rank} · Accent`);
     if(!accent || accent.z!=='2')throw Error('unexpected_template');
     const bars=[0,1,2,3].map(color=>({...structuredClone(accent),d0:next++,s:`Event ${rank} · Source Color ${color}`,
