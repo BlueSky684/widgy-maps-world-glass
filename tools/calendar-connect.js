@@ -92,16 +92,28 @@ $('sources-form').addEventListener('submit',event=>{event.preventDefault();run(e
 });});
 $('build-widget').addEventListener('click',event=>run(event.currentTarget,async()=>{
   status('קורא את האירועים ומכין את הקובץ האישי…');invalidateExport();
-  const data=await api('export',{});
+  const data=await api('export',{version:2});
   const template=await fetch('./Widgy_Home_Glass_Calendar_C16.json',{cache:'no-store'});if(!template.ok)throw new Error('unexpected_template');
-  payload=JSON.stringify(personalizedWidget(await template.json(),data.endpoint));
+  if(!data.widgetEndpoint)throw new Error('connection_failed');
+  payload=JSON.stringify(personalizedWidget(await template.json(),data.endpoint,data.widgetEndpoint));
   downloadURL=URL.createObjectURL(new Blob([payload],{type:'application/json'}));$('download-widget').href=downloadURL;
   $('read-result').textContent=`הקריאה הצליחה: נמצאו אירועים ב־${data.daysWithEvents} ימים בטווח המוצג של ${data.month}.`;
+  const details=$('read-details');details.replaceChildren();
+  for(const source of data.sources){
+    const calendar=listing.find(c=>c.provider===source.provider && c.id===source.id);
+    const line=document.createElement('p');
+    line.textContent=`${calendar?.name || source.provider} — ${['כחול','סגול','זהב','ירוק'][source.color]}: ${source.daysWithEvents} ימים עם אירועים בטווח; ${source.todayEvents} אירועים היום.`;
+    details.append(line);
+  }
+  const heading=document.createElement('p');heading.textContent=`TODAY והנקודות משתמשים באותם ${data.today.total} אירועים של היום. מוצגים עד ארבעה.`;details.append(heading);
+  for(const row of data.today.rows){
+    const line=document.createElement('p');line.textContent=`${row.allDay?'כל היום':row.start+'–'+row.end} · ${row.title} · ${['כחול','סגול','זהב','ירוק'][row.color]}`;details.append(line);
+  }
   $('download-section').hidden=false;status('הקובץ מוכן. ייבא אותו ב־Widgy כעותק נוסף לבדיקה.');
 }));
 $('copy-widget').addEventListener('click',event=>run(event.currentTarget,async()=>{
   if(!payload)return;
-  try{await navigator.clipboard.writeText(payload);status('הועתק. עבור ל־Widgy וייבא מהלוח כעותק נוסף.');}
+  try{await navigator.clipboard.writeText(payload);status('הועתק. ב־Widgy בחר Import URL Or JSON, הדבק וייבא כעותק נוסף.');}
   catch{status('הדפדפן חסם את ההעתקה. השתמש בקישור להורדת הקובץ.');}
 }));
 $('generate-keys').addEventListener('click',()=>{
