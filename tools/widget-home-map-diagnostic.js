@@ -1,4 +1,16 @@
 // Transform only a private in-browser export; never publish user calendar data.
+// The normal export has a separate ring correctness fix. Keep existing
+// diagnostic comparisons on their measured perf-5 baseline until they finish.
+// This compatibility transform must never be used by the regular copy flow.
+export function perf5DiagnosticBaseline(original){
+  if(original['3']!=='Widgy Calendar Unified')throw Error('unexpected_template');
+  const widget=structuredClone(original);
+  const rings=widget['1'].find(n=>n.s==='HOME')?.['1'].filter(n=>/^Steps Goal Ring · \d+%$/.test(n.s));
+  if(rings?.length!==100 || rings.some(n=>![0,5].includes(n.o1?.['1'])))throw Error('unexpected_template');
+  for(const n of rings)n.o1['1']=0;
+  return widget;
+}
+
 export function withoutHomeMap(original){
   if(original['3']!=='Widgy Calendar Unified')throw Error('unexpected_template');
   const widget=structuredClone(original);
@@ -69,5 +81,29 @@ export function withoutHomeNativeData(original){
   }
   widget['3']='Widgy Home Native-Data-Off Diagnostic';
   widget['4']='Temporary diagnostic based on Map-City-Off. Nine Home text sources and three variables use synthetic TEST DATA instead of weather, pedometer, active energy, reminder count, sunrise and sunset. Every layer, shape, condition, font, frame and tap action is retained; Calendar endpoints, the live clock, date calculations, GPS inputs and static artwork remain. Sample inputs may select different existing weather/ring states, so a faster result implicates this source/visibility group, not any single provider. Keep private; restore the normal widget after testing.';
+  return widget;
+}
+
+export function withoutHomeLiveClock(original){
+  const widget=withoutHomeNativeData(original);
+  const clocks=widget['1'].find(n=>n.s==='HOME')['1'].filter(n=>n.s==='Hero Time');
+  const source=clocks[0]?.['66'];
+  if(clocks.length!==1 || source?.length!==1 || source[0]['5']!=='Date And Time' ||
+      source[0]['6']!=='Live Timer (24 hours, No Seconds)')throw Error('unexpected_template');
+  clocks[0]['66']=[{'5':'Custom Text','6':'Text','25':'12:34'}];
+  widget['3']='Widgy Home Clock-Off Diagnostic';
+  widget['4']='Compared with Native-Data-Off, only the Hero Time data source becomes the static literal 12:34. All layers, frames, fonts, conditions, actions and variables are retained. This tests the live-clock source/rendering path, not a proven fix. The map remains blank; Home sensor values are synthetic TEST DATA and Calendar city is TEST. Keep this private export private.';
+  return widget;
+}
+
+export function withMinimalHome(original){
+  const widget=withoutHomeLiveClock(original);
+  const home=widget['1'].find(n=>n.s==='HOME');
+  const retained=new Set([5021,5022,5023,5024,5012,5013,80310,80311,5015,5016,5017,5018,6195,5020,5001]);
+  home['1']=home['1'].filter(n=>retained.has(n.d0));
+  if(home['1'].length!==retained.size || home['1'].filter(n=>n.z==='11').length!==4 ||
+      home['1'].find(n=>n.d0===5001)?.s!=='Full Graphite Background')throw Error('unexpected_template');
+  widget['3']='Widgy Home Minimal Diagnostic';
+  widget['4']='Temporary minimal-Home control based on Clock-Off. Home keeps only its original solid background, four tap areas and ten navigation drawings/labels. All variables, other tabs, their data and navigation are retained. The otherwise empty Home is intentional and not the approved design or a release. A faster result implicates the removed Home content/evaluation; it does not identify a particular layer. Keep this private export private.';
   return widget;
 }

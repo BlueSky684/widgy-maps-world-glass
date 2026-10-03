@@ -345,7 +345,6 @@ test('Home restores reference status above the full-width name with exact origin
     const actual=home['1'].find(n=>n.d0===node.d0);
     if(node.s==='Next Event Time'){assert.equal(actual,undefined);continue;}
     assert(actual);
-    if(/^Steps Goal Ring · \d+%$/.test(node.s)){assert.deepEqual(actual,{...node,o1:{...node.o1,'1':0}});continue;}
     if(!changed.has(node.s)){assert.deepEqual(actual,node);continue;}
     for(const key of ['1','f','2'])assert.deepEqual(actual[key],node[key]);
   }

@@ -44,5 +44,5 @@
   ],
   "preserved": ["all visual layers and interaction actions", "3306x1558 lossless PNG", "renderer and approved source masters", "60-second solar URL refresh", "GPS precision", "calendar data flow", "fra1 region", "production branch"],
   "validation": ["33 calendar/provider tests", "27 simulated city runtime cases", "map cache expiry, boundary, isolation and conditional requests", "perf-5 city reuse and invalidation cases", "full personalized export equality except map_request source"],
-  "deviceResult": "Pending user import and Home/Calendar transitions"
+  "deviceResult": "User reports no perceived improvement between perf-4 and perf-5. Later Map-Off, Map-City-Off and Home Native-Data-Off diagnostics did not resolve the reported Home delay; see home-transition-audit.json for exact observations and limits."
 }

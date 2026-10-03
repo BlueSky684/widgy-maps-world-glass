@@ -4,7 +4,8 @@
   "userDeviceObservations": [
     "User reports no perceived improvement between perf-4 and perf-5.",
     "User reports that the Map-Off diagnostic is still relatively slow. No numeric device timing was collected.",
-    "After delivery of Map-City-Off, user reports that switching to Home is still slower than switching to Calendar. No numeric timings or explicit before/after city-off comparison were supplied."
+    "After delivery of Map-City-Off, user reports that switching to Home is still slower than switching to Calendar. No numeric timings or explicit before/after city-off comparison were supplied.",
+    "User reports no improvement with Home Native-Data-Off; still no numeric device timing supplied."
   ],
   "conclusionLimit": "The map pipeline alone does not explain the remaining delay. This does not establish that the map has zero cost or identify the remaining bottleneck.",
   "sourceAudit": {
@@ -48,7 +49,7 @@
       "caution": "No actual device decode or network timings. The two backdrops have equal dimensions; size alone does not explain the asymmetry."
     }
   },
-  "normalPerf5Changed": false,
+  "normalPerf5Changed": true,
   "cityLookupComparison": {
     "name": "Map-City-Off",
     "baseline": "Map-Off",
@@ -58,7 +59,21 @@
     "ifClearlyFaster": "The custom city lookup/evaluation path contributes to the observed delay; quantify and investigate before choosing a permanent replacement.",
     "ifSimilar": "Continue isolating Calendar remote data and local render/source costs; neither the map nor custom city lookup alone explains the remaining delay."
   },
-  "nextControlledComparison": {
+  "separateCorrectnessIssue": {
+    "status": "Fixed in regular export; test all 101 progress values against approved C16 geometry.",
+    "file": "tools/calendar-connect-widget.js",
+    "issue": "The personalization pass changes the steps ring conditions from >= to ==, assuming complete arcs. C16 actually uses short cumulative convex segments. At 34%, the approved C16 shows 34 segments; current perf-5 shows only segment 34.",
+    "localGeometryReproduction": {
+      "percent": 34,
+      "sampleAngleDegrees": 45,
+      "approvedAlpha": 255,
+      "perf5Alpha": 0
+    },
+    "nextAction": "Verify the restored ring on the phone when importing the regular widget. No latency improvement claimed.",
+    "diagnosticBaseline": "perf5DiagnosticBaseline is explicitly applied only by the temporary diagnostic page, keeping its prior ring conditions for a controlled timing comparison. Normal copy and Calendar setup flows never import this compatibility transform."
+  },
+  "cleanupAfterFinalValidation": "Inventory and remove temporary test pages/deployments after choosing and validating the final widget, preserving active links and private exports.",
+  "nativeDataComparison": {
     "name": "Home Native-Data-Off",
     "baseline": "Map-City-Off",
     "changes": {
@@ -87,19 +102,28 @@
       "GPS inputs and static chrome"
     ],
     "caution": "Synthetic inputs can select different existing weather and ring states. This broad probe tests a source/visibility group, not a single provider or pure network cost. Other tabs can still use native data.",
-    "deviceResult": "Pending"
+    "deviceResult": "No improvement reported by user."
   },
-  "separateCorrectnessIssue": {
-    "status": "Reproduced; repair pending, kept separate to preserve the current diagnostic baseline",
-    "file": "tools/calendar-connect-widget.js",
-    "issue": "The personalization pass changes the steps ring conditions from >= to ==, assuming complete arcs. C16 actually uses short cumulative convex segments. At 34%, the approved C16 shows 34 segments; current perf-5 shows only segment 34.",
-    "localGeometryReproduction": {
-      "percent": 34,
-      "sampleAngleDegrees": 45,
-      "approvedAlpha": 255,
-      "perf5Alpha": 0
+  "nextControlledComparisons": [
+    {
+      "name": "Clock-Off",
+      "baseline": "Home Native-Data-Off",
+      "onlyAdditionalChange": "Hero Time source becomes literal 12:34; same font, frame, layers and variables.",
+      "deviceResult": "Pending"
     },
-    "nextAction": "Restore cumulative conditions and verify the actual personalized output against the approved geometry at all 101 progress states; do not claim this is a latency fix."
-  },
-  "cleanupAfterFinalValidation": "Inventory and remove temporary test pages/deployments after choosing and validating the final widget, preserving active links and private exports."
+    {
+      "name": "Home Minimal",
+      "baseline": "Clock-Off",
+      "onlyAdditionalChange": "Remove 373 Home nodes, retaining the original background, four taps and ten navigation drawings/labels. All global variables and other tabs remain.",
+      "deviceResult": "Pending",
+      "interpretationLimit": "A faster result implicates removed Home content/evaluation, not a particular renderer or layer. No speed-up would strengthen investigation of Widgy transition behavior and remaining global work."
+    }
+  ],
+  "normalChangeScope": "Only restore the 100 original cumulative steps-ring conditions, with module cache-busting. No server, endpoint, font, shape or map changes.",
+  "validation": [
+    "five diagnostic transformations and copy-page modes",
+    "same-clock-style one-source comparison",
+    "minimal Home has 15 retained nodes and no dangling tap targets",
+    "101 ring percentage states plus perf-5 geometry defect reproduction"
+  ]
 }
