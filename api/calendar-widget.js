@@ -5,6 +5,12 @@ import {readEvents} from '../lib/calendar-bridge/providers.js';
 import {widgetSnapshot} from '../lib/calendar-bridge/widget-data.js';
 
 const cache=new Map();
+export function clientMaxAge(snapshot,providerUntil,instant=Date.now()){
+  // Reuse identical sequential Home field requests on the device only.
+  // Never keep a response beyond a provider refresh or an event transition.
+  return Math.max(0,Math.floor(Math.min(30000,providerUntil-instant,
+    snapshot.validUntil-instant,snapshot.home.validUntil-instant)/1000));
+}
 export default async function handler(req,res) {
   privateHeaders(res);
   try {
@@ -28,8 +34,11 @@ export default async function handler(req,res) {
     }
     const events=await entry.pending;
     if(view==='today'){
+      const snapshot=widgetSnapshot(events,window,new Date());
+      const maxAge=clientMaxAge(snapshot,entry.until);
+      if(maxAge>0)res.setHeader('Cache-Control',`private, max-age=${maxAge}, must-revalidate`);
       res.setHeader('Content-Type','application/json; charset=utf-8');
-      return req.method==='HEAD'?res.status(200).end():res.status(200).json(widgetSnapshot(events,window,now));
+      return req.method==='HEAD'?res.status(200).end():res.status(200).json(snapshot);
     }
     if(!entry.png)entry.png=renderDots(events,window);
     const png=await entry.png;

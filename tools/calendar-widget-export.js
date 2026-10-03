@@ -1,4 +1,4 @@
-import {personalizedWidget} from './calendar-connect-widget.js?v=home-6';
+import {personalizedWidget} from './calendar-connect-widget.js?v=perf-1';
 
 // Same-origin, existing owner session. Keep the personalized payload in memory.
 export async function prepareWidget(){

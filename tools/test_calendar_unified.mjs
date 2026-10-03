@@ -8,7 +8,7 @@ import {COLORS,dayDots,googleEvents,icalEvents,monthWindow} from '../lib/calenda
 import {widgetSnapshot,sourceDiagnostics} from '../lib/calendar-bridge/widget-data.js';
 import {ORIGIN,seal,setSession,unseal} from '../lib/calendar-bridge/security.js';
 import bridge from '../api/calendar-bridge.js';
-import widgetHandler from '../api/calendar-widget.js';
+import widgetHandler,{clientMaxAge} from '../api/calendar-widget.js';
 import {personalizedWidget} from './calendar-connect-widget.js';
 import {fieldCode,snapshotCode,homeFieldCode} from './calendar-connect-today.js';
 
@@ -229,6 +229,16 @@ test('snapshot fetch failure is explicit and never converted to a valid empty ca
   }
 });
 
+test('private device caching expires at event transitions and provider refresh, within 30 seconds',()=>{
+  const instant=now.getTime(),snapshot={validUntil:instant+3600000,home:{validUntil:instant+60000}};
+  assert.equal(clientMaxAge(snapshot,instant+60000,instant),30);
+  assert.equal(clientMaxAge(snapshot,instant+9500,instant),9);
+  assert.equal(clientMaxAge({...snapshot,home:{validUntil:instant+4500}},instant+60000,instant),4);
+  assert.equal(clientMaxAge({...snapshot,validUntil:instant+1500},instant+60000,instant),1);
+  assert.equal(clientMaxAge({...snapshot,home:{validUntil:instant}},instant+60000,instant),0);
+  assert.equal(clientMaxAge(snapshot,instant-1,instant),0);
+});
+
 test('new capability returns matching TODAY/PNG, reuses provider read and rejects old dots-only links',async()=>{
   const oldFetch=globalThis.fetch;
   let reads=0;
@@ -243,12 +253,14 @@ test('new capability returns matching TODAY/PNG, reuses provider read and reject
     };
     const today=await get(token);assert.equal(today.statusCode,200);assert.equal(today.data.total,1);assert.equal(today.data.rows[0].color,2);
     assert.equal(today.data.rows[0].title,'בדיקה');assert(!JSON.stringify(today.data).includes('synthetic-refresh'));
-    assert.match(today.headers['cache-control'],/no-store/);
+    assert.match(today.headers['cache-control'],/^private, (?:max-age=\d+, must-revalidate|no-store, max-age=0)$/);
+    assert.equal(today.headers['cdn-cache-control'],'no-store');
     const dots=await get(token,'&view=dots&offset=0');assert.equal(dots.statusCode,200);assert.equal(dots.headers['content-type'],'image/png');
     assert.equal((await sharp(dots.data).metadata()).width,2270);assert.equal(reads,1);
     const refreshed=await get(token,'&view=dots&offset=0&render=refresh-1&refresh=12345');
     assert.equal(refreshed.statusCode,200);assert.deepEqual(refreshed.data,dots.data);assert.equal(reads,1);
-    assert.equal((await get(await seal(state,'calendar-render'))).statusCode,401);
+    const unauthorized=await get(await seal(state,'calendar-render'));
+    assert.equal(unauthorized.statusCode,401);assert.match(unauthorized.headers['cache-control'],/no-store/);
     assert.equal((await get(token,'&offset=1')).statusCode,400);
     assert.equal((await get(token,'&view=dots&offset=13')).statusCode,400);
     assert.equal((await get(token,'','POST')).statusCode,405);
@@ -344,7 +356,7 @@ test('long Hebrew agenda titles align right within the existing Hebrew column an
     const row=cal['1'].find(n=>n.s===`Agenda · Row ${rank}`);
     const normal=row['1'].find(n=>n.s===`Event ${rank} · Original Title Layout`);
     const expanded=row['1'].find(n=>n.s===`Event ${rank} · Expanded Hebrew Title Layout`);
-    assert.equal(normal.o1['2'],'0');assert.equal(expanded.o1['2'],'1');
+    assert.equal(normal.o1['2'],'1');assert.equal(expanded.o1['2'],'2');
     const small=normal['1'][0],large=expanded['1'][0],withDetail=expanded['1'][1];
     assert.equal(large['2'].a[0].a,2);assert.equal(withDetail['2'].a[0].a,2);
     assert.equal(large['1'],'System Medium');assert.equal(large.f,small.f);assert.deepEqual(large['66'],small['66']);
@@ -356,6 +368,43 @@ test('long Hebrew agenda titles align right within the existing Hebrew column an
     assert.deepEqual(withDetail.c,small.c);assert.deepEqual(withDetail.e,small.e);
     const location=row['1'].find(n=>n.s===`Event ${rank} · Location`);
     assert(withDetail.c.a[0].a+withDetail.e.a[0].a<=location.c.a[0].a+2);
+  }
+});
+
+test('flattened title and detail choices preserve every language branch and existing icon priority',()=>{
+  const original=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
+  const copy=personalizedWidget(original,`${ORIGIN}/api/calendar-dots?token=synthetic`,`${ORIGIN}/api/calendar-widget?token=synthetic-v2`);
+  const originalCal=original['1'].find(n=>n.s==='CALENDAR'),cal=copy['1'].find(n=>n.s==='CALENDAR');
+  function passes(c,values){
+    if(!c)return true;const value=String(values[c['0']] ?? ''),expected=c['2'];
+    return c['1']===0?value===expected:c['1']===1?value!==expected:c['1']===2?value.includes(expected):!value.includes(expected);
+  }
+  function visible(nodes,values){return nodes.flatMap(n=>!passes(n.o1,values)?[]:n.z==='13'?visible(n['1'],values):[n]);}
+  const drawing=n=>Object.fromEntries(Object.entries(n).filter(([key])=>!['d0','s','o1'].includes(key)));
+  for(let rank=1;rank<=4;rank++){
+    const sourceRow=originalCal['1'].find(n=>n.s===`Agenda · Row ${rank}`),row=cal['1'].find(n=>n.s===`Agenda · Row ${rank}`);
+    const oldDetails=sourceRow['1'].find(n=>n.s===`Event ${rank} · Dynamic Detail Icon`),newDetails=row['1'].find(n=>n.s===oldDetails.s);
+    const location=copy['36'].find(v=>v['1']===`calendar_event_${rank}_location`);
+    const choice=copy['36'].find(v=>v['1']===`calendar_event_${rank}_detail_icon`);
+    const layout=copy['36'].find(v=>v['1']===`calendar_event_${rank}_title_layout`);
+    const locations=['','Office','zoom.us','Zoom','zoom','ZOOM','teams.microsoft','Teams','teams','TEAMS','Skype','skype','SKYPE','meet.google','Google Meet','Conference','Room','room','חדר','tel:','Phone','phone','טלפון','Notes','Updates','Room with Zoom and Phone','Notes Updates','zoom.us and teams.microsoft'];
+    for(const text of locations){
+      const snapshot=widgetSnapshot(events,window,now);snapshot.rows[rank-1].location=text;
+      const kind=evaluate(choice['3']['66'][0]['10'],snapshot);
+      assert.deepEqual(visible([newDetails],{[location['0']]:text,[choice['0']]:kind}).map(drawing),
+        visible([oldDetails],{[location['0']]:text}).map(drawing),text);
+    }
+    const titles=[...Array.from('אבגדהוזחטיךכלםמןנסעףפץצקרשת'),'שמחת תורה','Meeting','Mixed English עברית','בדיקת תצוגה — טיסה לאתונה עם המשפחה'];
+    const groups=row['1'].filter(n=>/Title Layout$/.test(n.s));
+    for(const title of titles){
+      const snapshot=widgetSnapshot(events,window,now);snapshot.rows[rank-1].title=title;snapshot.rows[rank-1].location='';
+      const kind=evaluate(layout['3']['66'][0]['10'],snapshot);
+      const selected=visible(groups,{[layout['0']]:kind,[location['0']]:''});
+      assert.equal(selected.length,1,title);
+      assert.equal(selected[0]['1'],/[\u0590-\u05ff]/.test(title)?'System Medium':'Phenomena-Bold');
+    }
+    assert(newDetails['1'].length<=6);assert(newDetails['1'].every(n=>n.z==='4'));
+    assert(!JSON.stringify(row).includes(' · Without '));
   }
 });
 
