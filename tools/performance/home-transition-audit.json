@@ -1,0 +1,31 @@
+{
+  "baselineCommit": "a1b97a6430bde1ce67ef01e4ccfadf563f3b017f",
+  "branch": "f50-widget-test",
+  "userDeviceObservations": [
+    "User reports no perceived improvement between perf-4 and perf-5.",
+    "User reports that the Map-Off diagnostic is still relatively slow. No numeric device timing was collected."
+  ],
+  "conclusionLimit": "The map pipeline alone does not explain the remaining delay. This does not establish that the map has zero cost or identify the remaining bottleneck.",
+  "sourceAudit": {
+    "homeTapActions": "All four HOME Tap actions are button_245-247,246,195: show Home and hide Calendar, Weather and Fitness. No explicit additional refresh action is configured.",
+    "remainingCustomAsyncScriptInMapOff": "calendar_city_prefix performs its own client-only reverse-geocode request. It can wait for Widgy's runtime/network timeout if the request never settles. Its globalThis cache is best-effort; persistence on the phone is unverified.",
+    "nativeJSONBindings": 39,
+    "uniqueLiteralJSONEndpoints": 1,
+    "jsonCaution": "39 bindings are not evidence of 39 network requests; native endpoint coalescing/caching and hidden-source evaluation require device evidence.",
+    "calendarDotImageBindings": 25,
+    "calendarNativeGridAlternatives": 75,
+    "calendarMonthPanes": 25,
+    "nativeSourcesStillPresent": ["location", "weather", "health", "pedometer", "reminders", "sunrise/sunset"],
+    "renderCaution": "Layer/source counts alone do not prove runtime cost. Hidden month states implement navigation and alternative layouts."
+  },
+  "nextControlledComparison": {
+    "name": "Map-City-Off",
+    "baseline": "Map-Off",
+    "onlyAdditionalFunctionalChange": "Replace calendar_city_prefix source with the literal TEST, while retaining its variable ID and every layer, condition, tap action, GPS input, calendar endpoint and other source.",
+    "nonemptyLabelReason": "Avoid activating the native-city fallback and introducing a different visibility/source path.",
+    "deviceResult": "Pending",
+    "ifClearlyFaster": "The custom city lookup/evaluation path contributes to the observed delay; quantify and investigate before choosing a permanent replacement.",
+    "ifSimilar": "Continue isolating Calendar remote data and local render/source costs; neither the map nor custom city lookup alone explains the remaining delay."
+  },
+  "normalPerf5Changed": false
+}
