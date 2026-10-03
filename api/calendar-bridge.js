@@ -75,7 +75,7 @@ export default async function handler(req,res) {
       const zone=typeof input.zone==='string' ? input.zone : DEFAULT_ZONE;
       monthWindow({zone});
       const sources=input.sources.map(s=>({provider:s.provider,id:s.id,color:s.color}));
-      if (sources.some(s=>!['google','icloud'].includes(s.provider)||typeof s.id!=='string'||!Number.isInteger(s.color)||!COLORS[s.color]) ||
+      if (sources.some(s=>!['google','icloud','apple-holidays'].includes(s.provider)||typeof s.id!=='string'||!Number.isInteger(s.color)||!COLORS[s.color]) ||
           new Set(sources.map(s=>`${s.provider}:${s.id}`)).size!==sources.length) throw new BridgeError('invalid_selection');
       const listing=await listCalendars(state);
       if (sources.some(s=>listing.errors.includes(s.provider))) throw new BridgeError('provider_read_failed',502);

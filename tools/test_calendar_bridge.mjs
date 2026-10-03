@@ -154,7 +154,7 @@ test('Google login → OAuth → selection → real renderer using synthetic pro
     const callback=response();await bridge({...request('google-callback',undefined,cookie),url:`/api/calendar-bridge?op=google-callback&code=fake&state=${authorization.searchParams.get('state')}`},callback);
     assert.equal(callback.statusCode,303);assert.equal(callback.headers.location,'/tools/calendar-connect.html#connected');
     cookie=callback.headers['set-cookie'].split(';')[0];
-    const listing=await call('calendars',undefined,cookie);assert.equal(listing.data.calendars.length,1);
+    const listing=await call('calendars',undefined,cookie);assert.equal(listing.data.calendars.filter(c=>c.provider==='google').length,1);
     result=await call('select',{zone:'Asia/Jerusalem',sources:[{provider:'google',id:'test@example.test',color:2}]},cookie);assert.equal(result.statusCode,200);
     cookie=result.headers['set-cookie'].split(';')[0];
     result=await call('export',{},cookie);assert.equal(result.statusCode,200);assert.equal(result.data.daysWithEvents,1);
