@@ -16,12 +16,12 @@
     ol{padding-inline-start:22px;color:#b9c6d3;line-height:1.8}li{margin:8px 0}.note{font-size:14px}.settings{font-size:15px}
     [hidden]{display:none!important}:focus-visible{outline:3px solid #9ddeff;outline-offset:4px}
   </style>
-  <script type="module" src="./widgy-copy.js?v=perf-5-ringfix-1"></script>
+  <script type="module" src="./widgy-copy.js?v=native-clock-1"></script>
 </head>
 <body><main>
   <div class="eyebrow" dir="ltr">WIDGY · COPY</div>
-  <h1>הווידג׳ט שלך, להעתקה.</h1>
-  <p>הגרסה העדכנית תתכונן אוטומטית עם היומנים והצבעים שכבר שמרת.</p>
+  <h1 id="heading">הווידג׳ט שלך, להעתקה.</h1>
+  <p id="explanation">הגרסה העדכנית תתכונן אוטומטית עם היומנים והצבעים שכבר שמרת.</p>
   <section aria-label="העתקת הווידג׳ט">
     <p id="status" role="status" aria-live="polite">מכין את העותק האישי…</p>
     <button id="copy" type="button" disabled>העתקת הווידג׳ט</button>
@@ -32,6 +32,8 @@
     <li>לחץ על <b>העתקת הווידג׳ט</b>.</li>
     <li>ב־Widgy פתח <b dir="ltr">Import → Import URL Or JSON</b>.</li>
     <li>הדבק וייבא כעותק נוסף. בדוק את מסך <b dir="ltr">Home</b>.</li>
+    <li id="clock-speed-check" hidden>שייך לאותו סלוט. לאחר הטעינה הראשונה, בדוק שלושה מעברי <b dir="ltr">Calendar → Home</b>.</li>
+    <li id="clock-minute-check" hidden>השאר את Home גלוי במשך שתי החלפות דקה, בלי ללחוץ על הווידג׳ט. ודא שהשעה תואמת לאייפון, שהדקה מתחלפת מעצמה ושהשעון נראה כפי שאושר.</li>
   </ol>
   <p class="note">העותק כולל את החיבור הפרטי ליומנים שלך. שמור אותו לעצמך.</p>
   <p class="settings"><a href="./calendar-connect.html">הגדרות היומנים והכניסה</a></p>
