@@ -1,6 +1,6 @@
 # Private calendar bridge
 
-Status: implementation and synthetic-provider tests complete; live Google/iCloud authorization and Widgy phone rendering have not yet been verified.
+Status: the owner connected Google and iCloud on the iPhone and verified a live dots-only export on 2026-10-03 (9 activity days). The unified TODAY export below passes automated checks; its native Widgy refresh and variable bindings still require on-device verification.
 
 Entry page: `/tools/calendar-connect.html`. All setup and account authorization happens in a browser. This adds a private test export based on C16; it does not replace C16 or publish the canceled dynamic-color C17.
 
@@ -33,7 +33,7 @@ iCloud uses an Apple app-specific password with two-factor authentication. The a
 - Account credentials live in encrypted JWE cookies and an independently scoped encrypted render capability. There is no calendar database and no public personalized JSON upload.
 - Setup cookie: Secure, HttpOnly, SameSite=Lax, 30 days. Writes additionally require the pinned Origin and JSON content type.
 - Google OAuth: state, 10-minute authorization window, PKCE S256, exact callback URI, granted-scope check and offline refresh token.
-- Render capability: separate audience, maximum 365 days, limited to day dots. It cannot access the setup API. Anyone holding a widget's link can see those activity dots; keep the export private. The encrypted URL can appear in infrastructure request logs, but never contains plaintext credentials or event titles.
+- Legacy render capability: separate `calendar-render` audience, maximum 365 days, limited to day dots. New unified exports use a separate `calendar-widget` audience and endpoint for dots plus today's event titles, times and locations. An old dots-only link cannot read these event details. Neither capability can access the setup API. Keep exports private: anyone holding the new link can read those details. URLs may appear in infrastructure request logs but contain no plaintext credentials or event titles.
 - Selected calendars are validated against the provider's calendar list. Up to six sources. Only selected providers' credentials are included in the export token.
 - Responses disable shared caching; bounded in-process PNG reuse lasts at most 60 seconds. Widgy/iOS may refresh at a different cadence.
 - Provider failures return an error, not a misleading transparent "no events" image. Widgy's display after a failed refresh must still be checked on-device.
@@ -47,14 +47,18 @@ iCloud uses an Apple app-specific password with two-factor authentication. The a
 - Google expands recurring events server-side. CalDAV requests bounded expanded responses; ICS parsing also handles recurrence, EXDATE and overrides. All-day end dates are exclusive. Floating times use the chosen widget timezone.
 - Same UID and occurrence boundaries are deduplicated. Different holiday publishers may have distinct UIDs, so select one holidays source rather than deduplicating by title.
 - Up to four dots per day, in fixed blue, purple, amber and green. Color assignment is explicitly chosen by the owner; it is not inferred from native calendar colors.
-- Client-only personalization adds 25 transparent image layers and clears native indicators on 75 month layouts. It preserves every other C16 value. Native TODAY rows still use device sources and rank-based colors; source-color parity with those rows is a later integration step.
+- Client-only personalization adds 25 transparent image layers and clears native indicators on 75 month layouts. Unified exports also bind TODAY titles, times, locations, total and row accents to the same selected calendars and occurrence ordering used by the dots. Other tabs, fonts, row frames and assets remain C16. The original C16 file is not modified.
+- One async Widgy variable fetches a URI-encoded snapshot. Field variables parse it locally without additional HTTP requests; event text is never interpolated as executable source. Four conditional fixed-palette accents replace rank-based colors. Provider all-day flags replace the old midnight-time heuristic.
+- TODAY keeps all events for the current day, including completed timed events, so its first four rows correspond to the day's first four dots. The full count is displayed even when more than four events exist. Shared occurrence logic handles duplicates, local-day overlap and sorting. Month navigation changes the grid while TODAY continues to show today.
+- A failed, older-than-15-minute or previous-day snapshot hides event rows and shows `Calendar unavailable`, rather than presenting a successful empty list. Widgy/iOS may retain an old rendered widget until their next refresh; real-device refresh behavior remains a required check.
+- The setup page reports activity-day and today-event counts by selected calendar, plus today's first four titles and assigned colors. A selected calendar with zero events is shown explicitly. Built-in/local holiday calendars visible on the phone may not be exposed by either connected provider and must not be fabricated from native row counts.
 - iPhone-local reminders, Siri suggestions and birthdays are not automatically included.
 
 ## Validation
 
-Run `node tools/test_calendar_bridge.mjs` (12 tests). Tests use synthetic credentials and provider responses, including the actual DAV XML parser and final PNG renderer. They cover encryption/audience/expiry/revocation, missing configuration, origin checks, OAuth callback state, calendar selection, pagination, provider failures, CalDAV read restrictions, recurring/overnight/DST/all-day events, fixed-palette PNG pixels, and exhaustive preservation of unrelated C16 fields.
+Run `node tools/test_calendar_bridge.mjs` and `node tools/test_calendar_unified.mjs` (20 tests). Tests use synthetic credentials and provider responses, including the actual DAV XML parser and final PNG renderer. They cover encryption/audience/expiry/revocation, missing configuration, origin checks, OAuth callback state, calendar selection, pagination, provider failures, CalDAV read restrictions, recurring/overnight/DST/all-day events, fixed-palette PNG pixels, unified TODAY/dots ordering, text-safe single-request bindings, stale/error handling, old-link isolation, and preservation of unrelated C16 fields and row geometry.
 
-Still required: live authorization for both accounts; actual event/date comparison; device verification of PNG alignment, caching, month navigation and refresh; agreement on the color assigned to each calendar.
+The owner chose Google holidays=gold, personal Google=blue, iCloud Home=purple, iCloud Work=green. Still required for the unified version: actual event/date comparison; device verification of TODAY variable refresh, PNG alignment, caching and month navigation. Google remains in Testing and requires addressing its seven-day authorization expiry for sustained use.
 
 References:
 

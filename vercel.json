@@ -1,5 +1,8 @@
 {
   "functions": {
+    "api/calendar-widget.js": {
+      "maxDuration": 60
+    },
     "api/calendar-bridge.js": {
       "maxDuration": 60
     },

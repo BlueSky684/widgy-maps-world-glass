@@ -1,6 +1,7 @@
 import {BridgeError,body,checkPost,origin,privateHeaders,randomKey,readiness,same,seal,session,setSession} from '../lib/calendar-bridge/security.js';
 import {callbackURL,googleAuthorizeURL,googleExchange,iCloudCalendars,listCalendars,readEvents} from '../lib/calendar-bridge/providers.js';
 import {COLORS,DEFAULT_ZONE,dayDots,monthWindow} from '../lib/calendar-bridge/dots.js';
+import {sourceDiagnostics,widgetSnapshot} from '../lib/calendar-bridge/widget-data.js';
 
 const PAGE = '/tools/calendar-connect.html';
 function publicState(state) {
@@ -95,8 +96,15 @@ export default async function handler(req,res) {
       const token=await seal(payload,'calendar-render','365d');
       if (token.length>5000) throw new BridgeError('selection_too_large');
       const endpoint=`${origin()}/api/calendar-dots?token=${encodeURIComponent(token)}`;
+      let details={};
+      if(input.version===2){
+        const widgetToken=await seal(payload,'calendar-widget','365d');
+        if(widgetToken.length>5000)throw new BridgeError('selection_too_large');
+        details={widgetEndpoint:`${origin()}/api/calendar-widget?token=${encodeURIComponent(widgetToken)}`,
+          today:widgetSnapshot(events,window),sources:sourceDiagnostics(events,window,state.sources)};
+      }
       return res.status(200).json({endpoint,daysWithEvents:days.filter(d=>d.count).length,
-        month:window.month.toFormat('yyyy-MM'),expires:new Date(Date.now()+365*86400000).toISOString()});
+        month:window.month.toFormat('yyyy-MM'),expires:new Date(Date.now()+365*86400000).toISOString(),...details});
     }
     throw new BridgeError('not_found',404);
   } catch (error) {
