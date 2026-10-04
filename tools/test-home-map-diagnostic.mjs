@@ -326,14 +326,19 @@ assert.deepEqual(normal,personalizedWidget(template,'https://example.test/api/ca
 console.log('Passed: Direct Live Map changes only the static literal URL; live rendering requested without map JS/interpolation, explicit empty coordinates block IP fallback, all other content unchanged.');
 
 const nativeLocationMap=withCompleteHomeNativeLocationMap(normal,backdropDataURL);
-const nativeMapURL=nativeLocationMap['1'].find(n=>n.s==='HOME')['1'].find(n=>n.s==='Home Hero World Map')['2'];
+const nativeImage=nativeLocationMap['1'].find(n=>n.s==='HOME')['1'].find(n=>n.s==='Home Hero World Map');
+const nativeSources=nativeLocationMap['36'].find(v=>v['1']==='map_request')['3']['66'];
 const nativeExpected=structuredClone(directLiveMap);
-nativeExpected['1'].find(n=>n.s==='HOME')['1'].find(n=>n.s==='Home Hero World Map')['2']=nativeMapURL;
+nativeExpected['36'].find(v=>v['1']==='map_request')['3']['66']=structuredClone(nativeSources);
 nativeExpected['3']=nativeLocationMap['3'];nativeExpected['4']=nativeLocationMap['4'];
-assert.deepEqual(nativeLocationMap,nativeExpected); // One image URL; preserve every variable source/frame/style.
-assert.deepEqual([...nativeMapURL.matchAll(/\$\{widgy\.([^}]+)\}/g)].map(m=>m[1]),['map_latitude_max5','map_longitude_max5','calendar_native_city']);
-assert(nativeMapURL.endsWith('&city_text=${widgy.calendar_native_city}'));
-const nativeRequest=(latitude,longitude,city)=>parseMapRequest(nativeMapURL.replace('${widgy.map_latitude_max5}',latitude).replace('${widgy.map_longitude_max5}',longitude).replace('${widgy.calendar_native_city}',city));
+assert.deepEqual(nativeLocationMap,nativeExpected); // One variable source list; every image/frame/style preserved.
+assert.equal(nativeImage['2'],'${widgy.map_request}');
+assert.equal(nativeSources.length,6);
+assert.deepEqual(nativeSources.filter(s=>s['5']==='Location').map(s=>s['6']),['Latitude (Decimal)','Longitude (Decimal)','City']);
+assert.equal(nativeSources[4]['25'],'&city_text=');
+assert(!JSON.stringify(nativeSources).includes('${'));assert(!JSON.stringify(nativeSources).includes('Javascript'));
+// Model native source values offline; actual Widgy concatenation is not simulated/proven.
+const nativeRequest=(latitude,longitude,city)=>parseMapRequest(nativeSources.map(s=>s['5']==='Custom Text'?s['25']:({'Latitude (Decimal)':latitude,'Longitude (Decimal)':longitude,'City':city})[s['6']]).join(''));
 for(const city of ['Example','עיר לדוגמה','A & B + C','Example&lat=90&lon=180']){
   const url=nativeRequest('42.125','-8.5',city);
   assert.deepEqual(resolveLocation(url),{latitude:42.125,longitude:-8.5,city,source:'coordinates'});
@@ -342,14 +347,14 @@ for(const city of ['Example','עיר לדוגמה','A & B + C','Example&lat=90&l
 }
 assert.equal(resolveLocation(nativeRequest('0','0','Example')).latitude,0);
 assert.equal(resolveLocation(nativeRequest('','','Example'),{'x-vercel-ip-latitude':'0','x-vercel-ip-longitude':'0'}),null);
-assert.equal(resolveLocation(parseMapRequest(nativeMapURL)),null);
+assert.equal(resolveLocation(nativeRequest('${widgy.Latitude}','${widgy.Longitude}','Example')),null);
 // Locale formatting is deliberately not normalized by this diagnostic; verify on device.
 assert.equal(resolveLocation(nativeRequest('42,125','−8.5','Example')),null);
 const brokenNativeCity=structuredClone(normal);
 brokenNativeCity['36'].find(v=>v['1']==='calendar_native_city')['3']['66'][0]['6']='Country';
 assert.throws(()=>withCompleteHomeNativeLocationMap(brokenNativeCity,backdropDataURL),/unexpected_template/);
 assert.deepEqual(normal,personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic'));
-console.log('Passed: Native Location Map changes one image URL, preserves all sources/layers; offline synthetic coordinates and city-tail parsing handle missing GPS and parameter-like city text safely. Device substitution/locale/refresh remain unverified.');
+console.log('Passed: Native Location Map 2 changes one source list, preserves all image bindings and other sources/layers; offline synthetic coordinates and city-tail parsing handle missing GPS and parameter-like city text safely. Device substitution/locale/refresh remain unverified.');
 
 const normalUnchanged=structuredClone(normal);
 const progressOff=withoutHomeProgressArtwork(normal),expectedProgress=structuredClone(normal);
@@ -386,7 +391,7 @@ assert.throws(()=>withoutHomeWeatherArtwork(badWeather),/unexpected_template/);
 console.log('Passed: Weather-Art-Off removes only 14 weather-icon alternatives (137 nodes) beyond Progress-Off; all actual data, approved clock, map, weather text, other artwork and navigation unchanged.');
 
 const html=readFileSync(new URL('./widgy-home-map-diagnostic.html',import.meta.url),'utf8');
-assert(html.includes('./widgy-home-map-diagnostic.js?v=native-location-map-1'));
+assert(html.includes('./widgy-home-map-diagnostic.js?v=native-location-map-2'));
 assert(html.includes('?home=minimal&amp;v=minimal-events-1'));
 const source=readFileSync(new URL('./widgy-home-map-diagnostic.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
 const elementIDs=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
@@ -437,8 +442,8 @@ for(const [query,expectedExport] of [
     assert.equal(elements['next-test'].hidden,true);
   }
   if(query==='?home=native-location-map'){
-    assert.equal(elements.download.download,'Widgy_Home_Native_Location_Map_Diagnostic.json');
-    assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=direct-live-map&v=native-location-map-1');
+    assert.equal(elements.download.download,'Widgy_Home_Native_Location_Map_2.json');
+    assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=direct-live-map&v=native-location-map-2');
     assert(elements.comparison.textContent.includes('ושם העיר הנכון מופיעים'));
     assert.equal(elements['next-test'].hidden,true);
   }

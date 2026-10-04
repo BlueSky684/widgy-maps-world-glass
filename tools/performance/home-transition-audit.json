@@ -336,7 +336,7 @@
     "onlyFunctionalExportChange": "One Home map image Web URL string consumes map_latitude_max5, map_longitude_max5 and calendar_native_city directly. No map JavaScript or custom external city lookup; existing city_text safe-tail parser, same live endpoint and full-resolution renderer.",
     "preserved": "All 81 variables/sources, all layers, frames, artwork, clock, embedded backdrop and navigation. Literal map_request remains unused. Calendar city stays TEST. Normal export unchanged.",
     "interpretationLimit": "Phone must confirm marker, correct native city, decimal-coordinate formatting and direct substitution before a speed comparison is valid. May change city spelling/language. Stable URL means automatic day/night refresh remains unverified. GPS/city freshness and synchrony not established. No runtime parser or renderer changes.",
-    "deviceResult": "Pending",
+    "deviceResult": "2026-10-04 10:17 Asia/Jerusalem: IMG_9842.jpeg explicitly identifies Native Location Map and shows a blank map in Widgy preview; IMG_9843.jpeg shows the same blank area on the Home Screen. First native-location trial failed appearance validation. Earlier IMG_9840.png showed a map/Ashdod but did not identify this diagnostic, so it is not confirmation of this trial. No valid speed result.",
     "validation": "Exact one-image-URL delta and input immutability, native provider guard; offline synthetic location/city-tail parsing and missing-location/IP-fallback behavior; nineteen private copy-page routes. No actual device GPS sent externally."
   },
   "storageAlert20261004": {
@@ -350,5 +350,14 @@
       "https://vercel.com/changelog/hobby-projects-now-retain-fewer-deployments-to-free-up-storage"
     ],
     "constraint": "No deployment/project deletion, retention change, region change or plan upgrade performed. Storage warning does not prove the Home transition cause."
+  },
+  "nativeLocationMapSourceCompositionComparison": {
+    "name": "Widgy Home Native Location Map 2",
+    "baseline": "Direct Live Map for controlled source delta; replaces the failed native-location-map copy route with version 2",
+    "onlyFunctionalExportChange": "Change only map_request source list from one literal URL to six concatenated native text sources: literal base, native latitude decimal, literal lon delimiter, native longitude decimal, final city_text delimiter, native city. Image retains the proven single ${widgy.map_request} binding. No nested interpolation, JavaScript or custom city fetch.",
+    "preserved": "All 81 variable identities and all remaining sources; all image/layer/frame/style/navigation definitions. Full map quality and renderer unchanged; Calendar city TEST and embedded backdrop retained.",
+    "interpretationLimit": "Synthetic source composition is not a Widgy runtime test. Native formatting, source concatenation/encoding, native city correctness and automatic day/night updates require phone verification. Direct native coordinates do not inherit the separate max5 variable formatting. Need visible map and correct marker/city before comparing speed.",
+    "deviceResult": "Pending",
+    "validation": "Exact one-source-list delta, immutable normal export, native provider guards, offline synthetic coordinate/city-tail parsing, all nineteen copy routes. Public live endpoint returned HTTP 200 PNG without location while investigating the blank map; no actual GPS replay. Offline invocation of the real night-map handler with synthetic 0,0 and Example returned a full-size 3306x1558 PNG with coordinates source, confirming the local marker/city renderer path."
   }
 }

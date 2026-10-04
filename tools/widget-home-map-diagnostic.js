@@ -334,19 +334,24 @@ export function withCompleteHomeDirectLiveMap(original,dataURL){
   return widget;
 }
 
-// Bind existing native sources in the image URL itself, not inside JavaScript
-// or a second interpolated variable. city_text must remain the complete tail.
+// Keep the proven single-variable image binding. Compose its URL using native
+// text sources, without JS or nested interpolation. city_text is the last part.
 export function withCompleteHomeNativeLocationMap(original,dataURL){
   const widget=withCompleteHomeDirectLiveMap(original,dataURL);
+  const native=[];
   for(const [name,field] of [['map_latitude_max5','Latitude (Decimal)'],['map_longitude_max5','Longitude (Decimal)'],['calendar_native_city','City']]){
     const matches=widget['36'].filter(v=>v['1']===name);
     const sources=matches[0]?.['3']?.['66'];
     if(matches.length!==1 || sources?.length!==1 || sources[0]['5']!=='Location' || sources[0]['6']!==field)throw Error('unexpected_template');
+    native.push(structuredClone(sources[0]));
   }
-  const map=widget['1'].find(n=>n.s==='HOME')['1'].find(n=>n.s==='Home Hero World Map');
-  map['2']='https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/api/night-map?mode=live&width=3306&presentation=glass&atlas=r6&reuse=60&lat=${widgy.map_latitude_max5}&lon=${widgy.map_longitude_max5}&city_text=${widgy.calendar_native_city}';
-  widget['3']='Widgy Home Native Location Map Diagnostic';
-  widget['4']='Compare with Direct Live Map: change only the image Web URL string to bind the existing native latitude, longitude and calendar_native_city sources directly. No map JavaScript or custom external city fetch. All 81 variables and their sources remain exactly as in Direct Live Map, including its now-unused literal map_request. Same full-resolution live renderer, artwork, clock, embedded backdrop and navigation. Calendar city remains TEST. city_text is last for the existing safe-tail parser. Native coordinate formatting, city language/spelling, GPS/city freshness, URL substitution and automatic day/night refresh require real-device verification. No timestamp is added; this is a diagnostic, not a finished refresh solution. Missing coordinates produce no marker rather than IP fallback. Confirm the actual marker and city before comparing repeated transitions; a missing marker invalidates the location comparison. Keep this private export private.';
+  const text=value=>({'5':'Custom Text','6':'Text','25':value});
+  widget['36'].find(v=>v['1']==='map_request')['3']['66']=[
+    text('https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/api/night-map?mode=live&width=3306&presentation=glass&atlas=r6&reuse=60&lat='),
+    native[0],text('&lon='),native[1],text('&city_text='),native[2]
+  ];
+  widget['3']='Widgy Home Native Location Map 2';
+  widget['4']='Second native-location trial after the first showed a blank map both in Widgy preview and on the Home Screen. Restore the unchanged image Web URL ${widgy.map_request}, the single-variable binding used by working controls. Relative to Direct Live Map, change only map_request sources: concatenate literal URL parts with native Location Latitude (Decimal), Longitude (Decimal) and City sources. No JavaScript, nested variable placeholders, custom external city fetch or timestamp. All 81 variable identities, remaining sources, all layers/frames, full-resolution renderer, artwork, clock, embedded backdrop and navigation remain unchanged. Calendar city stays TEST. Native coordinates use their own formatting; the separate max5 variables remain but their formatting is not applied to these new native source entries. city_text is last for the existing safe-tail parser. Device concatenation, URL encoding, coordinate format, city spelling/language, GPS/city synchrony and automatic day/night refresh remain unverified. Confirm the map, marker and correct city before testing speed; a missing map or marker invalidates the comparison. Keep this private export private.';
   return widget;
 }
 
