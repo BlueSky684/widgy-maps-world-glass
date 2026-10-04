@@ -4,7 +4,7 @@ import {personalizedWidget} from './calendar-connect-widget.js';
 import {consolidateWidget} from './widget-consolidation.js';
 import {compactCalendarDots} from './calendar-compact-dots.js';
 import vm from 'node:vm';
-import {replaceHomeStepsWithNativeRing,NATIVE_STEPS_RING} from './native-steps-ring.js';
+import {replaceHomeStepsWithNativeRing,NATIVE_STEPS_RING,thinNativeStepsRing} from './native-steps-ring.js';
 
 // Generic fields transcribed from the owner's native 20261004-202443 export.
 // No owner token, location, calendar data, or full private export is stored here.
@@ -20,6 +20,12 @@ const control=compactCalendarDots(consolidateWidget(personalizedWidget(template,
 const original=structuredClone(control),nativeOriginal=structuredClone(native);
 const result=replaceHomeStepsWithNativeRing(control,native);
 assert.deepEqual(result,replaceHomeStepsWithNativeRing(control));
+const thin=thinNativeStepsRing(control),thinRestored=structuredClone(thin);
+const thinRing=thinRestored['1'].find(n=>n.d0===245)['1'].find(n=>n.z==='9');
+assert.equal(thinRing['8'].a[0].a,8.5);assert.equal(thinRing['9'].a[0].a,8.5);
+thinRing['8'].a[0].a=30;thinRing['9'].a[0].a=30;
+thinRestored['3']=result['3'];thinRestored['4']=result['4'];
+assert.deepEqual(thinRestored,result,'Revision 2 changes only the two thickness values and metadata');
 assert.deepEqual(control,original);
 assert.deepEqual(native,nativeOriginal);
 const flat=nodes=>nodes.flatMap(n=>[n,...(n.z==='13'?flat(n['1']):[])]);
@@ -53,24 +59,26 @@ for(const mutate of [n=>n['1']='Health (Daily)',n=>n['2']='Walking Step Length (
 }
 const normal=personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic',
   'https://example.test/api/calendar-widget?token=synthetic');
+for(const [controller,expected] of [['widgy-native-steps-ring.js',result],['widgy-native-steps-ring-2.js',thin]]){
 const elements=new Map(),events={};let downloaded,copied,error;
 const element=id=>{
   if(!elements.has(id))elements.set(id,{events:{},classList:{toggle(){}},
     addEventListener(name,fn){this.events[name]=fn;},removeAttribute(name){delete this[name];}});
   return elements.get(id);
 };
-const context={document:{getElementById:element},Blob,consolidateWidget,compactCalendarDots,replaceHomeStepsWithNativeRing,
+const context={document:{getElementById:element},Blob,consolidateWidget,compactCalendarDots,replaceHomeStepsWithNativeRing,thinNativeStepsRing,
   URL:{createObjectURL(blob){downloaded=blob;return 'blob:synthetic';},revokeObjectURL(){}},
   navigator:{clipboard:{async writeText(value){copied=value;}}},window:{addEventListener(name,fn){events[name]=fn;}},
   async prepareWidget(){if(error)throw Error(error);return {payload:JSON.stringify(normal)};}};
-vm.runInNewContext(readFileSync(new URL('./widgy-native-steps-ring.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,''),context);
+vm.runInNewContext(readFileSync(new URL('./'+controller,import.meta.url),'utf8').replace(/^import .*;\n/gm,''),context);
 await new Promise(setImmediate);assert.equal(element('copy').disabled,false);
-assert.deepEqual(JSON.parse(await downloaded.text()),result);
-await element('copy').events.click();assert.deepEqual(JSON.parse(copied),result);
+assert.deepEqual(JSON.parse(await downloaded.text()),expected);
+await element('copy').events.click();assert.deepEqual(JSON.parse(copied),expected);
 error='unauthorized';await element('retry').events.click();assert.equal(element('copy').disabled,true);
 assert.equal(element('download').href,undefined);assert.equal(element('download').hidden,true);
 error=null;events.pageshow({persisted:true});await new Promise(setImmediate);assert.equal(element('copy').disabled,false);
 context.navigator.clipboard.writeText=async()=>{throw Error('blocked');};
 await element('copy').events.click();assert.equal(element('download').hidden,false);
+}
 assert(!JSON.stringify(NATIVE_STEPS_RING).includes('token'));
 console.log('PASS: all 100 manual ring layers removed; 1613 → 1514; native Pedometer/Steps and goal 10000; exact original frame/lime; all other properties unchanged except trial name/description. Copy/download, expired login and page restoration checked with synthetic data. Native thickness, edge cases and latency require phone verification.');
