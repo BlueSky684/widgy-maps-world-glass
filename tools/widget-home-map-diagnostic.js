@@ -181,6 +181,37 @@ export function withMinimalHomeTimeText(original){
   return widget;
 }
 
+// Restore the remaining native Home text sources to the measured fast control.
+// The three shared native variables also return to their original real sources.
+export function withMinimalHomeNativeData(original){
+  const widget=withMinimalHomeTimeText(original);
+  const originalHome=original['1'].find(n=>n.s==='HOME');
+  const home=widget['1'].find(n=>n.s==='HOME');
+  const layers=new Map(home['1'].map(n=>[n.d0,n]));
+  const restored=[
+    [80207,'Events Summary · 3'],[80208,'Events Summary · 4'],
+    [6121,'Sunrise Time'],[6124,'Sunset Time'],
+    [6131,'Weather Temp'],[6132,'Weather Status'],[6133,'Weather High'],[6134,'Weather Low'],
+    [6141,'Steps Value'],[6142,'Steps Label'],[6143,'Distance Value'],[6144,'Calories Value']
+  ];
+  for(const [id,name] of restored){
+    const matches=originalHome['1'].filter(n=>n.d0===id),n=matches[0];
+    if(matches.length!==1 || n.z!=='1' || n.s!==name || layers.has(id))throw Error('unexpected_template');
+    layers.set(id,structuredClone(n));
+  }
+  home['1']=originalHome['1'].filter(n=>layers.has(n.d0)).map(n=>layers.get(n.d0));
+  for(const name of ['wx_status','wx_wind_speed','steps_today']){
+    const source=original['36'].filter(v=>v['1']===name);
+    const target=widget['36'].filter(v=>v['1']===name);
+    if(source.length!==1 || target.length!==1 || source[0]['0']!==target[0]['0'])throw Error('unexpected_template');
+    target[0]['3']['66']=structuredClone(source[0]['3']['66']);
+  }
+  if(home['1'].length!==45)throw Error('unexpected_template');
+  widget['3']='Widgy Home Minimal Native Data Diagnostic';
+  widget['4']='Compared with the fast Minimal Time Text copy, restore 12 original Home text layers: reminder count and label, sunrise/sunset, four weather fields, steps and label, distance and calories. Also restore the original real wx_status, wx_wind_speed and steps_today variable sources; these shared variables may affect other tabs. All 80 variable identities, every other source, retained layer and tab structure, styles, conditions and drawing order remain unchanged. TEST city and absent map remain; no progress fills, weather-icon alternatives, decorative backdrop or static icons are restored. This broad source/display comparison tests a group and its interactions, not a single provider or proven optimization. Keep this private export private.';
+  return widget;
+}
+
 // Start from the FULL, repaired normal export, not the earlier stripped probes.
 // Leave every data source active: isolate the two sets of conditional drawings.
 export function withoutHomeProgressArtwork(original){
