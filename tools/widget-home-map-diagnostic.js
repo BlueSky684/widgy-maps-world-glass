@@ -306,6 +306,16 @@ export function withCompleteHomeStaticMap(original,dataURL){
   return widget;
 }
 
+// Approved only for a separate resolution diagnostic, not the regular export.
+export function withCompleteHomeStaticMap1653(original,dataURL){
+  const widget=withCompleteHomeStaticMap(original,dataURL);
+  const source=widget['36'].find(v=>v['1']==='map_request')['3']['66'][0];
+  source['25']=source['25'].replace('Home_Map_Static_3306x1558.png','Home_Map_Static_1653x779.png');
+  widget['3']='Widgy Home Static Map 1653 Diagnostic';
+  widget['4']='Resolution diagnostic authorized only for testing on 2026-10-04. Compare with Static Map (option A): only the literal map image URL changes to a 1653x779 Lanczos3 resize of the exact existing 3306x1558 public static PNG. Same fixed time, no location/city, same image provider/binding/frame, 81 variables, other data sources, artwork, clock, tabs and navigation. PNG encoding is lossless but resizing removes detail; this is not pixel-identical to the master. Tests image-size-related transfer, decoding, scaling and memory costs together, not a measured decoder or memory bottleneck alone. After the complete image appears, compare three Calendar-to-Home transitions in the same slot/network against option A; also report visible quality and Widgy Images counter. Approved masters, normal full-resolution export and live endpoint defaults are unchanged. Do not promote without explicit approval. Keep this private export private.';
+  return widget;
+}
+
 // A byte-identical static PNG control, carried inside the private export.
 // Keep the image/variable binding and all other fields. This changes transport
 // and data-URL handling together, not the renderer or the pixel workload.

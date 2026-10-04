@@ -27,7 +27,10 @@
     "2026-10-04 12:53:20 Asia/Jerusalem: Stable Native City trial does not load the map. No speed result is valid for this copy.",
     "2026-10-04 13:21:26 Asia/Jerusalem: IMG_9855.png confirms map and actual-location marker/short coordinates are visible after recovery to Stable Map URL. Native city remains absent. Screenshot confirms appearance only, not transition speed or automatic update cadence.",
     "2026-10-04 13:23:28 Asia/Jerusalem: user reports recovered no-city map is still slow, only slightly faster than the map with the city-display mechanism. Removing that mechanism did not resolve the dominant perceived wait. No numerical timing.",
-    "2026-10-04 13:40-13:41 Asia/Jerusalem: user reports option B (Embedded Static Map) does not load; IMG_9860.jpeg shows the Widgy import screen. User explicitly clarifies import fails after paste. No imported-widget rendering or transition speed result; option A result not yet supplied."
+    "2026-10-04 13:40-13:41 Asia/Jerusalem: user reports option B (Embedded Static Map) does not load; IMG_9860.jpeg shows the Widgy import screen. User explicitly clarifies import fails after paste. No imported-widget rendering or transition speed result; option A result not yet supplied.",
+    "2026-10-04 13:48:51 Asia/Jerusalem: user reports no dramatic change with option A (full-resolution static network map) compared with the working live GPS copy. No numerical timing; do not claim renderer, geocoder or CDN cause established.",
+    "2026-10-04 15:19:38 Asia/Jerusalem: IMG_9862.jpeg shows Home Hero World Map source selected as Web And Maps / Web URL, not Web URL (No Caching). Editor header shows Layers 1671, Images 38.8 MB. This confirms the UI selection, not measured cache hits or memory pressure.",
+    "2026-10-04 15:24:07 Asia/Jerusalem: user explicitly authorizes 1653x779 only for a separate diagnostic. No approval to reduce master or normal/live export resolution."
   ],
   "conclusionLimit": "A static literal clock improved the already stripped diagnostic, but replacing Live Timer with native HH:mm in the full widget showed no perceived loading improvement. The clock replacement is not an established fix and will not be promoted. Minimal Home improved further, supporting isolation of additional Home content/evaluation. No test identifies every remaining cost or establishes quantitative latency. Removing the 200 progress drawings from the full widget did not produce a noticeable improvement; this does not prove zero cost or rule out interactions. Removing another 137 weather-icon nodes also did not improve perceived waiting. These later tests used the full live-data baseline, whereas fast Minimal uses stripped sources. A native HH:mm vs Live Timer comparison cannot rule out the cost of displaying an active clock because both variants display time. Restoring only the approved live clock to Minimal kept the transition fast. Preserve the approved clock; this does not rule out interactions with other Home content. Four Home event fields on the fast clock baseline remained relatively fast with a possible slight slowdown. This does not reproduce the full-Home delay. Restoring the 13 greeting/date/day-progress text layers also produced no perceived slowdown. These source/display groups remain possible interaction partners, not established causes. Restoring the remaining native Home text and three real shared sources produced only a very slight perceived slowdown. Next isolate the approved static backdrop on this same live-text baseline. Restoring the original backdrop caused another small perceived slowdown. This implicates its complete image path or interactions, but does not separate delivery from decoding/rendering. An embedded-data-URL copy is a compatibility-first experiment, not yet a performance fix. User confirms the embedded backdrop renders normally and reports no significant speed improvement. This weakens a dominant backdrop-download explanation, but does not measure cache behavior or prove zero network cost. Retain the same tested embedded backdrop in the next graphics add-back to avoid changing two groups at once. Restoring all remaining original Home graphics on the confirmed embedded-backdrop/live-data control produced no additional perceived slowdown. Next restore only the original map image and map_request variable, keeping the independent Calendar city lookup frozen. Adding the original map pipeline to the otherwise complete Home reproduced a much larger slowdown. This implicates the combined map path on this controlled baseline, without identifying GPS/geocoder, script, URL/cache, server or image decoding/rendering as the individual cause. Static full-resolution PNG improved speed versus the original dynamic map pipeline. Next keep original live GPS/day-night, endpoint, cache interval and async source mode, but finish the map URL immediately without waiting for client city lookup. Extreme slowness persisted with the live map city fetch removed. Native GPS providers were also retained in the faster Static Map copy, so their mere presence is not sufficient evidence of cause; map consumption/substitution may differ. Next use the exact static literal-source structure with a stable direct live-render URL and explicit empty coordinates.",
   "sourceAudit": {
@@ -605,7 +608,7 @@
     "copyPage": "Only embedded mode downloads this public fixture with omitted credentials, 30-second abort, exact byte count and SHA-256 gate. Converts bytes to base64 without decoding/resizing/re-encoding. Corrupt/failed image prevents copy preparation. Larger export and initial import overhead are expected.",
     "phoneProcedure": "Load A (static network) and B (same PNG embedded) sequentially in the same slot/network. In each first confirm the whole map displays, then compare three Calendar-to-Home transitions after initial loading. Missing map invalidates timing. Do not compare B directly to the live GPS copy because static time/location would confound transport.",
     "interpretationLimit": "Tests network transport plus native data-source/data-URL handling. Larger embedded string may have its own parsing/interpolation/memory cost. Equal speed does not establish decoder or layer cause; faster does not establish network latency alone. Background data requests elsewhere may continue. Diagnostic only, not replacing a live map with a permanent still.",
-    "deviceResult": "FAILED AT IMPORT after paste, confirmed at 13:41:47 Asia/Jerusalem. Rendering and speed were never tested. Option A current result still pending.",
+    "deviceResult": "B FAILED AT IMPORT after paste, confirmed at 13:41:47 Asia/Jerusalem. B rendering and speed were never tested. At 13:48:51 user reports no dramatic change with A versus working live GPS copy.",
     "validation": "Byte-identical full PNG; corrupt/short/error responses rejected; exact one-source delta and immutable input; all twenty-eight copy-page routes including both comparison links verified.",
     "importInvestigation": {
       "syntheticUTF8Bytes": {
@@ -615,5 +618,31 @@
       "finding": "Generated synthetic A and B are syntactically valid JSON. Full embedded map adds about 5.4 MB of base64. Does not establish valid native app import, clipboard completeness or a documented Widgy size limit. No verified alternate native-file packaging found; do not relabel raw JSON as a confirmed .widgy package.",
       "action": "Stop serving B: disable copy/download/retry and return before fetching private export or public image data. Preserve failed builder for local reproduction only. A export unchanged; page now asks for A versus working live GPS copy, without claiming transport isolation."
     }
+  },
+  "staticMapResolutionDiagnostic": {
+    "authorization": "2026-10-04 15:24:07 Asia/Jerusalem: approved only for testing; full-resolution masters and normal export must stay unchanged.",
+    "route": "?home=static-map-1653&v=static-map-1653-1",
+    "controlRoute": "?home=static-map&compare=resolution&v=static-map-1653-1",
+    "baseline": "Existing Static Map (option A); new control route exports exact same widget and does not require another import if already installed.",
+    "onlyExportChange": "One map_request Custom Text URL points to the 1653x779 fixture instead of 3306x1558. Metadata changed to diagnostic title/description. Every layer/frame/provider, other variable/source, clock, tab and navigation remains exactly the same.",
+    "asset": "Resize exact existing static full-size PNG once at deploy time using sharp Lanczos3, sRGB profile, PNG compressionLevel 6. Same fixed 2026-10-04T06:00Z image with no personal location/marker/city. No renderer/API/config change. Resize loses spatial detail; lossless PNG encoding does not make resizing lossless.",
+    "fixture": {
+      "path": "assets/diagnostics/Home_Map_Static_1653x779.png",
+      "width": 1653,
+      "height": 779,
+      "bytes": 1253707,
+      "sha256": "68b6f903e2949e103a59d8ded1acff30ce1334c28eb71b7292e49c9dd2932f88"
+    },
+    "fullFixtureUnchangedSHA256": "c4ccdacd84dec137bd46c6061a4f5b69ed4d210e5cec0bc5e2d08865ffc17df9",
+    "theoreticalRGBABytes": {
+      "fullMap": 20602992,
+      "smallMap": 5150748,
+      "each1320x1377Backdrop": 7270560,
+      "note": "Width times height times four only. Not measured Widgy allocations or total process memory, and does not establish the cause of 38.8 MB counter or lag."
+    },
+    "phoneProcedure": "After complete map load, compare three Calendar-to-Home transitions in same slot/network with option A. Report speed, visible sharpness/detail and optional Images counter. Import/map absence invalidates timing.",
+    "interpretationLimit": "Resolution changes transfer bytes, decoding, scaling and memory demand together. Improvement does not isolate a memory bottleneck. Live map, city, day/night refresh and final visual acceptance are not tested by this static diagnostic.",
+    "validation": "Local full fixture hash unchanged; smaller PNG exact dimensions/channels, quarter pixel count and same embedded ICC profile. Synthetic export changes only one source URL plus metadata. Twenty-nine copy URLs and one blocked route verified, including clipboard and preservation of normal export.",
+    "deviceResult": "Pending; not promoted."
   }
 }

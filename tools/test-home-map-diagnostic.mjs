@@ -1,3 +1,5 @@
+import sharp from 'sharp';
+import {createHash} from 'node:crypto';
 import {loadHomeStaticMapDataURL} from './widget-home-static-map-data.js';
 import {parseMapRequest} from '../lib/native-map-request.js';
 import {resolveLocation} from '../lib/home-map-v122.js';
@@ -6,7 +8,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {personalizedWidget} from './calendar-connect-widget.js';
-import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeEmbeddedStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeStableNativeCity,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
+import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeStaticMap1653,withCompleteHomeEmbeddedStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeStableNativeCity,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
 const template=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
 const normal=personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic');
 const original=perf5DiagnosticBaseline(normal);
@@ -277,6 +279,23 @@ assert.deepEqual(normal,personalizedWidget(template,'https://example.test/api/ca
 console.log('Passed: Static Map changes exactly one source beyond Map Add-Back; all 81 variable identities, map layer, frames, other sources, tabs and taps unchanged, custom async geocoders absent.');
 
 const staticPNG=readFileSync(new URL('../assets/diagnostics/Home_Map_Static_3306x1558.png',import.meta.url));
+const smallStaticPNG=readFileSync(new URL('../assets/diagnostics/Home_Map_Static_1653x779.png',import.meta.url));
+assert.equal(createHash('sha256').update(staticPNG).digest('hex'),'c4ccdacd84dec137bd46c6061a4f5b69ed4d210e5cec0bc5e2d08865ffc17df9');
+const [fullMeta,smallMeta]=await Promise.all([sharp(staticPNG).metadata(),sharp(smallStaticPNG).metadata()]);
+assert.equal(smallMeta.width,1653);assert.equal(smallMeta.height,779);
+assert.equal(smallMeta.format,'png');assert.equal(smallMeta.channels,4);
+assert.equal(fullMeta.width*fullMeta.height,4*smallMeta.width*smallMeta.height);
+assert.deepEqual(smallMeta.icc,fullMeta.icc);
+assert(smallStaticPNG.length<staticPNG.length);
+const staticMap1653=withCompleteHomeStaticMap1653(normal,backdropDataURL);
+const smallStaticExpected=structuredClone(staticMap);
+smallStaticExpected['36'].find(v=>v['1']==='map_request')['3']['66'][0]['25']=staticURL.replace('3306x1558','1653x779');
+smallStaticExpected['3']=staticMap1653['3'];smallStaticExpected['4']=staticMap1653['4'];
+assert.deepEqual(staticMap1653,smallStaticExpected);
+assert.deepEqual(staticMap1653['1'],staticMap['1']);
+assert.equal(staticMap1653['36'].length,81);
+assert.deepEqual(normal,personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic'));
+console.log('Passed: separate 1653x779 resolution trial changes only map URL and metadata; original full PNG hash, ICC, layer geometry, tabs, data and normal export preserved.');
 const staticMapDataURL=await loadHomeStaticMapDataURL(async(url,options)=>{
   assert(url.pathname.endsWith('/assets/diagnostics/Home_Map_Static_3306x1558.png'));
   assert.equal(options.credentials,'omit');assert.equal(options.cache,'force-cache');
@@ -602,7 +621,7 @@ assert.throws(()=>withoutHomeWeatherArtwork(badWeather),/unexpected_template/);
 console.log('Passed: Weather-Art-Off removes only 14 weather-icon alternatives (137 nodes) beyond Progress-Off; all actual data, approved clock, map, weather text, other artwork and navigation unchanged.');
 
 const html=readFileSync(new URL('./widgy-home-map-diagnostic.html',import.meta.url),'utf8');
-assert(html.includes('./widgy-home-map-diagnostic.js?v=embedded-import-stop-1'));
+assert(html.includes('./widgy-home-map-diagnostic.js?v=static-map-1653-1'));
 assert(html.includes('?home=minimal&amp;v=minimal-events-1'));
 const source=readFileSync(new URL('./widgy-home-map-diagnostic.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
 assert(!source.includes('withCompleteHomeStableNativeCity')); // Failed mixed-source export cannot be reissued by the page.
@@ -611,7 +630,7 @@ for(const [query,expectedExport] of [
   ['',diagnostic],['?city=off',cityOff],['?home=data-off',nativeOff],
   ['?home=clock-off',clockOff],['?home=minimal',minimal],['?home=progress-off',progressOff],
   ['?home=weather-art-off',weatherArtOff],['?home=minimal-clock',minimalClock],
-  ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop],['?home=full-artwork',fullArtwork],['?home=map-addback',mapAddback],['?home=static-map',staticMap],['?home=map-no-city',mapNoCity],['?home=direct-live-map',directLiveMap],['?home=native-location-map',nativeLocationMap],['?home=map-binding-check',bindingProbe],['?home=sync-map',synchronousMap],['?home=stable-map-url',stableMapURL],['?home=fixed-map-location',fixedLocationMap],['?home=direct-fixed-map',directFixedMap],['?home=cdn-fixed-map',cdnFixedMap],['?home=stable-native-city',stableMapURL],['?home=embedded-static-map',embeddedStaticMap],['?home=static-map&compare=embedded',staticMap]
+  ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop],['?home=full-artwork',fullArtwork],['?home=map-addback',mapAddback],['?home=static-map',staticMap],['?home=map-no-city',mapNoCity],['?home=direct-live-map',directLiveMap],['?home=native-location-map',nativeLocationMap],['?home=map-binding-check',bindingProbe],['?home=sync-map',synchronousMap],['?home=stable-map-url',stableMapURL],['?home=fixed-map-location',fixedLocationMap],['?home=direct-fixed-map',directFixedMap],['?home=cdn-fixed-map',cdnFixedMap],['?home=stable-native-city',stableMapURL],['?home=embedded-static-map',embeddedStaticMap],['?home=static-map&compare=embedded',staticMap],['?home=static-map-1653',staticMap1653],['?home=static-map&compare=resolution',staticMap]
 ]){
   const elements=Object.fromEntries(elementIDs.map(id=>[id,{textContent:'',hidden:true,classList:{toggle(){}},handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}]));
   let payload='',copied='',backdropLoads=0,staticMapLoads=0,exportLoads=0;
@@ -625,7 +644,7 @@ for(const [query,expectedExport] of [
     loadHomeBackdropDataURL:async()=>{backdropLoads++;return backdropDataURL;},
     loadHomeStaticMapDataURL:async()=>{staticMapLoads++;return staticMapDataURL;},
     perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,
-    withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeEmbeddedStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeStableNativeCity,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
+    withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeStaticMap1653,withCompleteHomeEmbeddedStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeStableNativeCity,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
   });
   await new vm.Script(source).runInContext(context);
   if(query==='?home=embedded-static-map'){
@@ -637,7 +656,7 @@ for(const [query,expectedExport] of [
     continue;
   }
   assert.deepEqual(JSON.parse(payload),expectedExport,query);
-  assert.equal(backdropLoads,['?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check','?home=sync-map','?home=stable-map-url','?home=fixed-map-location','?home=direct-fixed-map','?home=cdn-fixed-map','?home=stable-native-city','?home=embedded-static-map','?home=static-map&compare=embedded'].includes(query)?1:0);
+  assert.equal(backdropLoads,['?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check','?home=sync-map','?home=stable-map-url','?home=fixed-map-location','?home=direct-fixed-map','?home=cdn-fixed-map','?home=stable-native-city','?home=embedded-static-map','?home=static-map&compare=embedded','?home=static-map-1653','?home=static-map&compare=resolution'].includes(query)?1:0);
   assert.equal(staticMapLoads,query==='?home=embedded-static-map'?1:0);
   assert.equal(elements.copy.disabled,false);
   await elements.copy.handlers.click();
@@ -652,7 +671,7 @@ for(const [query,expectedExport] of [
     assert(elements.comparison.textContent.includes('Progress-Off'));
     assert.equal(elements['next-test'].hidden,true);
   }
-  assert.equal(elements['baseline-test'].hidden,!['?home=minimal-clock','?home=minimal-events','?home=minimal-time','?home=minimal-native','?home=minimal-backdrop','?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check','?home=sync-map','?home=stable-map-url','?home=fixed-map-location','?home=direct-fixed-map','?home=cdn-fixed-map','?home=stable-native-city','?home=embedded-static-map','?home=static-map&compare=embedded'].includes(query));
+  assert.equal(elements['baseline-test'].hidden,!['?home=minimal-clock','?home=minimal-events','?home=minimal-time','?home=minimal-native','?home=minimal-backdrop','?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check','?home=sync-map','?home=stable-map-url','?home=fixed-map-location','?home=direct-fixed-map','?home=cdn-fixed-map','?home=stable-native-city','?home=embedded-static-map','?home=static-map&compare=embedded','?home=static-map-1653','?home=static-map&compare=resolution'].includes(query));
   if(query==='?home=minimal-clock'){
     assert.equal(elements.download.download,'Widgy_Home_Minimal_Live_Clock_Diagnostic.json');
     assert(elements.comparison.textContent.includes('בדיקה ב׳ המקורית'));
@@ -661,6 +680,14 @@ for(const [query,expectedExport] of [
   if(query==='?home=minimal-events'){
     assert.equal(elements.download.download,'Widgy_Home_Minimal_Events_Diagnostic.json');
     assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=minimal-clock&v=minimal-events-1');
+    assert.equal(elements['next-test'].hidden,true);
+  }
+  if(query==='?home=static-map-1653' || query==='?home=static-map&compare=resolution'){
+    const smaller=query==='?home=static-map-1653';
+    assert.equal(elements.download.download,smaller?'Widgy_Home_Static_Map_1653_Diagnostic.json':'Widgy_Home_Static_Map_Diagnostic.json');
+    assert.equal(elements['baseline-link'].href,smaller?'./widgy-home-map-diagnostic.html?home=static-map&compare=resolution&v=static-map-1653-1':'./widgy-home-map-diagnostic.html?home=static-map-1653&v=static-map-1653-1');
+    assert(elements.comparison.textContent.includes('38.8 MB'));
+    assert(elements.explanation.textContent.includes(smaller?'ההקטנה מפחיתה פרטים':'אין צורך לייבא אותו שוב'));
     assert.equal(elements['next-test'].hidden,true);
   }
   if(query==='?home=static-map&compare=embedded'){
@@ -774,4 +801,4 @@ for(const [query,expectedExport] of [
     assert.equal(elements['next-test'].hidden,true);
   }
 }
-console.log('Passed: twenty-seven diagnostic URLs export/copy their intended controls; failed embedded map route blocks export, downloads and clipboard without loading private data.');
+console.log('Passed: twenty-nine diagnostic URLs export/copy their intended controls; failed embedded map route blocks export, downloads and clipboard without loading private data.');
