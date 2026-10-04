@@ -355,6 +355,53 @@ export function withCompleteHomeNativeLocationMap(original,dataURL){
   return widget;
 }
 
+// Instrument the failed native source chain on-device. This is deliberately
+// not a performance comparison: temporary readouts cover the clock/event area.
+export function withHomeMapBindingProbe(original,dataURL){
+  const widget=withCompleteHomeNativeLocationMap(original,dataURL);
+  const home=widget['1'].find(n=>n.s==='HOME');
+  const map=home['1'].find(n=>n.s==='Home Hero World Map');
+  const request=widget['36'].find(v=>v['1']==='map_request');
+  const reference=home['1'].find(n=>n.d0===6124);
+  const background=home['1'].find(n=>n.d0===5001);
+  if(!reference || !background || !Number.isInteger(widget.a2))throw Error('unexpected_template');
+  const text=value=>({'5':'Custom Text','6':'Text','25':value});
+  const tail=structuredClone(request);
+  tail['0']='C5D5F231-73AF-48A7-B003-000000000001';tail['1']='map_probe_tail';
+  if(widget['36'].some(v=>v['0']===tail['0'] || v['1']===tail['1']))throw Error('unexpected_template');
+  tail['3'].s='Variable: map_probe_tail';tail['3']['66'][0]=text('lat=');
+  widget['36'].push(tail);
+  // One literal, location-free image request is the visual network control.
+  // The failing composed URL is only displayed as text, never opened here.
+  map['2']='https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/api/night-map?mode=live&width=3306&presentation=glass&atlas=r6&reuse=60&lat=&lon=';
+  const scalar=value=>({a:[{a:value,b:168,c:0,d:168}],b:0});
+  const frame=(node,x,y,width,height)=>{
+    node.b=scalar(x);node.c=scalar(y);node.d=scalar(width);node.e=scalar(height);
+    return node;
+  };
+  const row=(name,sources,y,height=62)=>{
+    const node=structuredClone(reference);
+    node.d0=widget.a2++;node.s='Map Binding Probe · '+name;node['66']=sources;
+    delete node.a;delete node.o1;delete node['28'];delete node['2'];
+    return frame(node,75,y,1450,height);
+  };
+  const rows=[
+    row('Title',[text('MAP BINDING CHECK - NOT A SPEED TEST')],482,52),
+    row('Latitude',[text('1 LAT: ['),structuredClone(request['3']['66'][1]),text(']')],540),
+    row('Longitude',[text('2 LON: ['),structuredClone(request['3']['66'][3]),text(']')],605),
+    row('City',[text('3 CITY: ['),structuredClone(request['3']['66'][5]),text(']')],670),
+    row('Tail',[text('4 JOIN: [${widgy.map_probe_tail}]')],735,60),
+    row('URL Label',[text('5 ACTUAL URL BELOW:')],801,40),
+    row('URL',[text('${widgy.map_request}')],848,44)
+  ];
+  const panel=structuredClone(background);panel.d0=widget.a2++;panel.s='Map Binding Probe · Panel';
+  frame(panel,55,476,1490,443);
+  home['1'].unshift(...rows,panel);
+  widget['3']='Widgy Home Map Binding Check';
+  widget['4']='Readout-only diagnostic after Native Location Map 2 also showed a blank map in Widgy preview. Preserve its native-composed map_request exactly; display native latitude, longitude and city, a short identically composed map_probe_tail variable, and the actual full map_request as text. No new JavaScript, external geocoder, private calendar endpoint readout, or telemetry. Change the map image to the known direct no-location URL as a visual control. Add one native probe variable and eight temporary overlay layers, covering clock/events only in this diagnostic copy. Values are visible on your device and any screenshot you choose to share. This is not a speed test and not the approved final design. A screenshot of this panel is needed to distinguish native source formatting, variable composition and image URL binding. Keep this private export private.';
+  return widget;
+}
+
 // Start from the FULL, repaired normal export, not the earlier stripped probes.
 // Leave every data source active: isolate the two sets of conditional drawings.
 export function withoutHomeProgressArtwork(original){

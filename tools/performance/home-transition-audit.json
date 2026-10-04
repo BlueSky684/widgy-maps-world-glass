@@ -357,7 +357,16 @@
     "onlyFunctionalExportChange": "Change only map_request source list from one literal URL to six concatenated native text sources: literal base, native latitude decimal, literal lon delimiter, native longitude decimal, final city_text delimiter, native city. Image retains the proven single ${widgy.map_request} binding. No nested interpolation, JavaScript or custom city fetch.",
     "preserved": "All 81 variable identities and all remaining sources; all image/layer/frame/style/navigation definitions. Full map quality and renderer unchanged; Calendar city TEST and embedded backdrop retained.",
     "interpretationLimit": "Synthetic source composition is not a Widgy runtime test. Native formatting, source concatenation/encoding, native city correctness and automatic day/night updates require phone verification. Direct native coordinates do not inherit the separate max5 variable formatting. Need visible map and correct marker/city before comparing speed.",
-    "deviceResult": "Pending",
+    "deviceResult": "2026-10-04 10:25 Asia/Jerusalem: IMG_9845.jpeg identifies the second trial by description and shows a blank map in Widgy preview. Device source composition/binding failed appearance validation. No valid speed result; Home Screen was not shown in this latest screenshot.",
     "validation": "Exact one-source-list delta, immutable normal export, native provider guards, offline synthetic coordinate/city-tail parsing, all nineteen copy routes. Public live endpoint returned HTTP 200 PNG without location while investigating the blank map; no actual GPS replay. Offline invocation of the real night-map handler with synthetic 0,0 and Example returned a full-size 3306x1558 PNG with coordinates source, confirming the local marker/city renderer path."
+  },
+  "mapBindingReadoutDiagnostic": {
+    "name": "Widgy Home Map Binding Check",
+    "purpose": "Instrument the second failed native-location path instead of treating another change as a proven fix.",
+    "changes": "Retain native-composed map_request exactly; display direct native Latitude/Longitude/City, a short probe variable with the same source-chain structure, and full actual map_request. Eight temporary text/panel layers cover the clock/events area; one added variable map_probe_tail (82 total). Main map image gets the known direct no-location literal URL as a visual control.",
+    "privacy": "No new script, logging, telemetry or private calendar URL readout. Native location values appear only on the device and any screenshot the user chooses to share. Image control requests no location. No actual user GPS sent by assistant.",
+    "interpretationLimit": "Not a performance test, approved final design, or automatic repair. Device screenshot is needed to distinguish empty/native formatting, chain composition, variable readout and image binding. Raw full URL may require enlarged screenshot.",
+    "deviceResult": "Pending",
+    "validation": "Exact preservation of failed source chain and original content except one control-image URL plus temporary nodes/variable; unique IDs, bounded overlay frames, no calendar token readout, no new JS, immutable normal export; twenty copy routes."
   }
 }

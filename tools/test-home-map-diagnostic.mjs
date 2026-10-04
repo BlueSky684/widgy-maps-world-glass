@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {personalizedWidget} from './calendar-connect-widget.js';
-import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
+import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
 const template=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
 const normal=personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic');
 const original=perf5DiagnosticBaseline(normal);
@@ -356,6 +356,38 @@ assert.throws(()=>withCompleteHomeNativeLocationMap(brokenNativeCity,backdropDat
 assert.deepEqual(normal,personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic'));
 console.log('Passed: Native Location Map 2 changes one source list, preserves all image bindings and other sources/layers; offline synthetic coordinates and city-tail parsing handle missing GPS and parameter-like city text safely. Device substitution/locale/refresh remain unverified.');
 
+const bindingProbe=withHomeMapBindingProbe(normal,backdropDataURL);
+const bindingHome=bindingProbe['1'].find(n=>n.s==='HOME');
+const probeLayers=bindingHome['1'].filter(n=>n.s?.startsWith('Map Binding Probe · '));
+assert.equal(probeLayers.length,8);assert.equal(bindingProbe['36'].length,82);
+assert.deepEqual(bindingProbe['36'].slice(0,81),nativeLocationMap['36']);
+const probeVariable=bindingProbe['36'][81];
+assert.equal(probeVariable['1'],'map_probe_tail');assert.equal(probeVariable['3']['66'][0]['25'],'lat=');
+assert.deepEqual(probeVariable['3']['66'].slice(1),nativeSources.slice(1));
+const restoredProbe=structuredClone(bindingProbe);
+const restoredProbeHome=restoredProbe['1'].find(n=>n.s==='HOME');
+restoredProbeHome['1']=restoredProbeHome['1'].filter(n=>!n.s?.startsWith('Map Binding Probe · '));
+const controlURL=restoredProbeHome['1'].find(n=>n.s==='Home Hero World Map')['2'];
+assert.equal(controlURL,directSource['25']);
+restoredProbeHome['1'].find(n=>n.s==='Home Hero World Map')['2']='${widgy.map_request}';
+restoredProbe['36'].pop();
+for(const key of ['3','4','a2'])restoredProbe[key]=nativeLocationMap[key];
+assert.deepEqual(restoredProbe,nativeLocationMap);
+for(const row of probeLayers){
+  assert(row.b.a[0].a>=31 && row.c.a[0].a>=208);
+  assert(row.b.a[0].a+row.d.a[0].a<=1568 && row.c.a[0].a+row.e.a[0].a<=938);
+  assert(!row.o1 && row.a!==false);
+  assert(!JSON.stringify(row).includes('/api/calendar-'));
+  assert(!JSON.stringify(row).includes('Javascript'));
+}
+assert.deepEqual(probeLayers.find(n=>n.s==='Map Binding Probe · URL')['66'],[{'5':'Custom Text','6':'Text','25':'${widgy.map_request}'}]);
+assert.deepEqual(probeLayers.find(n=>n.s==='Map Binding Probe · Tail')['66'],[{'5':'Custom Text','6':'Text','25':'4 JOIN: [${widgy.map_probe_tail}]'}]);
+const bindingIDs=[...walk(bindingProbe['1'])].map(n=>n.d0);
+assert.equal(new Set(bindingIDs).size,bindingIDs.length);assert(bindingIDs.every(id=>id<bindingProbe.a2));
+assert.equal(new Set(bindingProbe['36'].map(v=>v['0'])).size,82);
+assert.deepEqual(normal,personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic'));
+console.log('Passed: Map Binding Check preserves failed source chain, adds eight bounded readout layers and one short native probe; direct no-location image control; no new JS, telemetry or private calendar URL readout; unique IDs and immutable input.');
+
 const normalUnchanged=structuredClone(normal);
 const progressOff=withoutHomeProgressArtwork(normal),expectedProgress=structuredClone(normal);
 expectedProgress['1'].find(n=>n.s==='HOME')['1']=expectedProgress['1'].find(n=>n.s==='HOME')['1']
@@ -391,7 +423,7 @@ assert.throws(()=>withoutHomeWeatherArtwork(badWeather),/unexpected_template/);
 console.log('Passed: Weather-Art-Off removes only 14 weather-icon alternatives (137 nodes) beyond Progress-Off; all actual data, approved clock, map, weather text, other artwork and navigation unchanged.');
 
 const html=readFileSync(new URL('./widgy-home-map-diagnostic.html',import.meta.url),'utf8');
-assert(html.includes('./widgy-home-map-diagnostic.js?v=native-location-map-2'));
+assert(html.includes('./widgy-home-map-diagnostic.js?v=map-binding-check-1'));
 assert(html.includes('?home=minimal&amp;v=minimal-events-1'));
 const source=readFileSync(new URL('./widgy-home-map-diagnostic.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
 const elementIDs=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
@@ -399,7 +431,7 @@ for(const [query,expectedExport] of [
   ['',diagnostic],['?city=off',cityOff],['?home=data-off',nativeOff],
   ['?home=clock-off',clockOff],['?home=minimal',minimal],['?home=progress-off',progressOff],
   ['?home=weather-art-off',weatherArtOff],['?home=minimal-clock',minimalClock],
-  ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop],['?home=full-artwork',fullArtwork],['?home=map-addback',mapAddback],['?home=static-map',staticMap],['?home=map-no-city',mapNoCity],['?home=direct-live-map',directLiveMap],['?home=native-location-map',nativeLocationMap]
+  ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop],['?home=full-artwork',fullArtwork],['?home=map-addback',mapAddback],['?home=static-map',staticMap],['?home=map-no-city',mapNoCity],['?home=direct-live-map',directLiveMap],['?home=native-location-map',nativeLocationMap],['?home=map-binding-check',bindingProbe]
 ]){
   const elements=Object.fromEntries(elementIDs.map(id=>[id,{textContent:'',hidden:true,classList:{toggle(){}},handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}]));
   let payload='',copied='',backdropLoads=0;
@@ -412,11 +444,11 @@ for(const [query,expectedExport] of [
     prepareWidget:async()=>({payload:JSON.stringify(normal)}),
     loadHomeBackdropDataURL:async()=>{backdropLoads++;return backdropDataURL;},
     perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,
-    withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
+    withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
   });
   await new vm.Script(source).runInContext(context);
   assert.deepEqual(JSON.parse(payload),expectedExport,query);
-  assert.equal(backdropLoads,['?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map'].includes(query)?1:0);
+  assert.equal(backdropLoads,['?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check'].includes(query)?1:0);
   assert.equal(elements.copy.disabled,false);
   await elements.copy.handlers.click();
   assert.equal(copied,payload);
@@ -430,7 +462,7 @@ for(const [query,expectedExport] of [
     assert(elements.comparison.textContent.includes('Progress-Off'));
     assert.equal(elements['next-test'].hidden,true);
   }
-  assert.equal(elements['baseline-test'].hidden,!['?home=minimal-clock','?home=minimal-events','?home=minimal-time','?home=minimal-native','?home=minimal-backdrop','?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map'].includes(query));
+  assert.equal(elements['baseline-test'].hidden,!['?home=minimal-clock','?home=minimal-events','?home=minimal-time','?home=minimal-native','?home=minimal-backdrop','?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check'].includes(query));
   if(query==='?home=minimal-clock'){
     assert.equal(elements.download.download,'Widgy_Home_Minimal_Live_Clock_Diagnostic.json');
     assert(elements.comparison.textContent.includes('בדיקה ב׳ המקורית'));
@@ -439,6 +471,12 @@ for(const [query,expectedExport] of [
   if(query==='?home=minimal-events'){
     assert.equal(elements.download.download,'Widgy_Home_Minimal_Events_Diagnostic.json');
     assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=minimal-clock&v=minimal-events-1');
+    assert.equal(elements['next-test'].hidden,true);
+  }
+  if(query==='?home=map-binding-check'){
+    assert.equal(elements.download.download,'Widgy_Home_Map_Binding_Check.json');
+    assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=direct-live-map&v=map-binding-check-1');
+    assert(elements.comparison.textContent.includes('אין צורך לבדוק מעברים'));
     assert.equal(elements['next-test'].hidden,true);
   }
   if(query==='?home=native-location-map'){
@@ -498,4 +536,4 @@ for(const [query,expectedExport] of [
     assert.equal(elements['next-test'].hidden,true);
   }
 }
-console.log('Passed: all nineteen diagnostic URLs export and copy the intended comparison; add-back pages link to their respective unchanged controls.');
+console.log('Passed: all twenty diagnostic URLs export and copy the intended comparison; add-back pages link to their respective unchanged controls.');
