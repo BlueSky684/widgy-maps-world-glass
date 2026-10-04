@@ -726,6 +726,46 @@
     "report": "Allowlisted timings, HTTP status and boolean validity checks only; excludes coordinates/city/URL/response payload. Arbitrary fetch errors mapped to safe codes.",
     "validation": "Offline injected synthetic 0,0 mocks only, never actual provider. Valid timing, denial, cancel before or during location and late callback, unexpected source/mismatch, timeout, HTTP failure, redacted network errors and report allowlist verified.",
     "providerDocumentation": "https://github.com/bigdatacloudapi/js-reverse-geocode-client (current-device client use with permission only).",
+    "deviceResult": {
+      "measurements": [
+        {
+          "measuredAt": "2026-10-04T14:53:03.585Z",
+          "locationMs": 3853,
+          "lookupHeadersMs": 664,
+          "lookupMs": 664,
+          "httpStatus": 200,
+          "returnedCoordinatesMatch": true,
+          "lookupSourceCoordinates": true,
+          "cityAvailable": true,
+          "totalMs": 4517
+        },
+        {
+          "measuredAt": "2026-10-04T14:55:26.390Z",
+          "locationMs": 2581,
+          "lookupHeadersMs": 593,
+          "lookupMs": 594,
+          "httpStatus": 200,
+          "returnedCoordinatesMatch": true,
+          "lookupSourceCoordinates": true,
+          "cityAvailable": true,
+          "totalMs": 3175
+        }
+      ],
+      "interpretation": "Fresh browser geolocation dominates both runs (about 85% and 81%); second acquisition still 2.581 s, external lookup 0.594 s. Probe explicitly requests high accuracy and maximumAge=0; permission UI may be included. Native Widgy location scheduling/caching differs, so these are not native per-tap timings or proof GPS causes the Home lag. Lookup duration includes client/network/provider, not our map server. Earlier fixed-coordinate trials showed no improvement but retained native variable definitions.",
+      "privacy": "Reports contain no actual coordinates, city name or provider URL. No agent replay of device GPS or external geocoder."
+    }
+  },
+  "unusedGPSDefinitionsComparison": {
+    "route": "?home=unused-gps-off&v=unused-gps-off-1",
+    "controlRoute": "?home=direct-fixed-map&compare=unused-gps&v=unused-gps-off-1",
+    "name": "Widgy Home Unused GPS Off Diagnostic",
+    "baseline": "Existing Direct Fixed Map export, unchanged. Earlier fixed-coordinate and literal-map-request tests retained all 81 variables.",
+    "finding": "Latitude, Longitude, map_latitude_max5 and map_longitude_max5 have zero remaining name-token or UUID references in Direct Fixed Map and Static Map. map_request is still consumed by the Home Web URL image. calendar_native_city remains referenced in Calendar fallback conditions; it must not be blindly deleted.",
+    "onlyFunctionalChange": "Remove exactly the four unreferenced Location/Latitude or Longitude variable definitions, 81 to 77. Same literal synthetic 0,0 map URL, map_request variable and image binding, full-resolution renderer, all layers, remaining sources, approved clock/artwork, embedded backdrop, tabs and navigation. Calendar city TEST. No API/cache/region/normal-export change.",
+    "guards": "Require unique known native coordinate definitions and correct provider fields, then reject any remaining token or case-insensitive UUID references anywhere in exported document before returning.",
+    "phoneProcedure": "Confirm full map and synthetic marker in both exports, then compare three Calendar-to-Home transitions in the same slot/network after initial loading. Use unchanged Direct Fixed Map control linked from the new page; do not compare to a real-location or static-map variant. Missing map invalidates timing.",
+    "limits": "Whether Widgy evaluates unused variables is unknown. Native City fallback, weather and sun sources remain, so this is not a global GPS-off test. Browser fresh high-accuracy acquisition is not the native widget API. Other costs may mask any difference. No improvement would not rule out all location work. No speed claim before phone result.",
+    "validation": "Synthetic personalized export only: exact four-definition deletion plus diagnostic metadata; no layer/URL/provider changes; dangling name/UUID references and changed provider reject; normal export immutable. Copy controller exercises 31 export routes and the blocked failed embedded route.",
     "deviceResult": "Pending."
   }
 }

@@ -440,6 +440,32 @@ export function withCompleteHomeDirectFixedMap(original,dataURL){
   return widget;
 }
 
+// Earlier fixed-coordinate trials kept these native providers defined. Remove
+// only providers that have no remaining name or UUID references in this copy.
+// Other location-dependent sources stay active: this is not a GPS-off widget.
+export function withCompleteHomeUnusedGPSOff(original,dataURL){
+  const widget=withCompleteHomeDirectFixedMap(original,dataURL);
+  const removed=[];
+  for(const [name,field] of [
+    ['Latitude','Latitude (Decimal)'],['Longitude','Longitude (Decimal)'],
+    ['map_latitude_max5','Latitude (Decimal)'],['map_longitude_max5','Longitude (Decimal)']
+  ]){
+    const matches=widget['36'].filter(v=>v['1']===name),v=matches[0];
+    const sources=v?.['3']?.['66'];
+    if(matches.length!==1 || typeof v['0']!=='string' || !v['0'] ||
+        sources?.length!==1 || sources[0]['5']!=='Location' || sources[0]['6']!==field)throw Error('unexpected_template');
+    removed.push(v);
+  }
+  widget['36']=widget['36'].filter(v=>!removed.includes(v));
+  const rest=JSON.stringify(widget),folded=rest.toLowerCase();
+  for(const v of removed){
+    if(rest.includes('${widgy.'+v['1']+'}') || folded.includes(v['0'].toLowerCase()))throw Error('unexpected_template');
+  }
+  widget['3']='Widgy Home Unused GPS Off Diagnostic';
+  widget['4']='Compare only with Direct Fixed Map. Remove its four unreferenced native coordinate variable definitions: Latitude, Longitude, map_latitude_max5 and map_longitude_max5. Variable count 81 to 77. Export fails if any name-token or UUID reference remains. Same literal map_request, image binding, live synthetic 0,0 URL, full 3306x1558 lossless renderer, all layers, approved artwork/clock, other providers and navigation. Calendar city remains TEST; its native City fallback and other location-dependent weather/sun sources remain, so this does not disable all location work. Whether Widgy evaluates unused coordinate definitions is unknown. First confirm map and example marker, then compare three Calendar-to-Home transitions against the unchanged control in the same slot/network after initial loading. This isolates removing unused definitions, not the browser geolocation API or all native GPS work. Fixed example marker and unverified stable-URL refresh are diagnostic only. Normal export and server unchanged. Keep this private export private.';
+  return widget;
+}
+
 // Same public 0,0 image, with opt-in CDN delivery. Server admits only this
 // exact synthetic query; ordinary real-location maps retain private caching.
 export function withCompleteHomeCDNFixedMap(original,dataURL){
