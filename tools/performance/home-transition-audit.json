@@ -14,9 +14,10 @@
     "2026-10-04 07:43 Asia/Jerusalem: user reports the transition is fast with Minimal Live Clock.",
     "2026-10-04 08:00 Asia/Jerusalem: user reports Minimal Events transition is still relatively fast, perhaps slightly slower. No timings or clear reproduction of the original lag.",
     "2026-10-04 08:10 Asia/Jerusalem: user reports Minimal Time Text is the same speed and did not become slower. No numeric timings.",
-    "2026-10-04 08:21 Asia/Jerusalem: user reports a very slight slowdown with Minimal Native Data. No numeric timings."
+    "2026-10-04 08:21 Asia/Jerusalem: user reports a very slight slowdown with Minimal Native Data. No numeric timings.",
+    "2026-10-04 08:41 Asia/Jerusalem: user reports Minimal Backdrop is a little slower again. No numeric timings or claim that it reproduces the full original delay."
   ],
-  "conclusionLimit": "A static literal clock improved the already stripped diagnostic, but replacing Live Timer with native HH:mm in the full widget showed no perceived loading improvement. The clock replacement is not an established fix and will not be promoted. Minimal Home improved further, supporting isolation of additional Home content/evaluation. No test identifies every remaining cost or establishes quantitative latency. Removing the 200 progress drawings from the full widget did not produce a noticeable improvement; this does not prove zero cost or rule out interactions. Removing another 137 weather-icon nodes also did not improve perceived waiting. These later tests used the full live-data baseline, whereas fast Minimal uses stripped sources. A native HH:mm vs Live Timer comparison cannot rule out the cost of displaying an active clock because both variants display time. Restoring only the approved live clock to Minimal kept the transition fast. Preserve the approved clock; this does not rule out interactions with other Home content. Four Home event fields on the fast clock baseline remained relatively fast with a possible slight slowdown. This does not reproduce the full-Home delay. Restoring the 13 greeting/date/day-progress text layers also produced no perceived slowdown. These source/display groups remain possible interaction partners, not established causes. Restoring the remaining native Home text and three real shared sources produced only a very slight perceived slowdown. Next isolate the approved static backdrop on this same live-text baseline.",
+  "conclusionLimit": "A static literal clock improved the already stripped diagnostic, but replacing Live Timer with native HH:mm in the full widget showed no perceived loading improvement. The clock replacement is not an established fix and will not be promoted. Minimal Home improved further, supporting isolation of additional Home content/evaluation. No test identifies every remaining cost or establishes quantitative latency. Removing the 200 progress drawings from the full widget did not produce a noticeable improvement; this does not prove zero cost or rule out interactions. Removing another 137 weather-icon nodes also did not improve perceived waiting. These later tests used the full live-data baseline, whereas fast Minimal uses stripped sources. A native HH:mm vs Live Timer comparison cannot rule out the cost of displaying an active clock because both variants display time. Restoring only the approved live clock to Minimal kept the transition fast. Preserve the approved clock; this does not rule out interactions with other Home content. Four Home event fields on the fast clock baseline remained relatively fast with a possible slight slowdown. This does not reproduce the full-Home delay. Restoring the 13 greeting/date/day-progress text layers also produced no perceived slowdown. These source/display groups remain possible interaction partners, not established causes. Restoring the remaining native Home text and three real shared sources produced only a very slight perceived slowdown. Next isolate the approved static backdrop on this same live-text baseline. Restoring the original backdrop caused another small perceived slowdown. This implicates its complete image path or interactions, but does not separate delivery from decoding/rendering. An embedded-data-URL copy is a compatibility-first experiment, not yet a performance fix.",
   "sourceAudit": {
     "homeTapActions": "All four HOME Tap actions are button_245-247,246,195: show Home and hide Calendar, Weather and Fitness. No explicit additional refresh action is configured.",
     "remainingCustomAsyncScriptInMapOff": "calendar_city_prefix performs its own client-only reverse-geocode request. It can wait for Widgy's runtime/network timeout if the request never settles. Its globalThis cache is best-effort; persistence on the phone is unverified.",
@@ -235,7 +236,27 @@
     "onlyFunctionalChange": "Restore one original web-image layer, Approved Glass / Chrome and Frames (80309), with its exact URL, frame/options and drawing order. Home count 45 -> 46.",
     "preserved": "All 80 variables and sources, real Home text including clock/events/weather/fitness/reminders/sun times, all existing layers, other tabs and navigation. TEST city and absent map stay unchanged. No other artwork restored.",
     "interpretationLimit": "A slowdown implicates this backdrop image path or interactions, including possible fetching, decoding or rendering. PNG file size and layer count do not isolate runtime cost. Full approved export and assets remain unchanged.",
-    "deviceResult": "Pending",
+    "deviceResult": "A little slower again, reported by user. No timings; do not infer recurring image downloads or a single dominant cause from this subjective delta.",
     "validation": "Exact single-layer add-back, input immutable, original drawing order, all variables/sources/tabs unchanged, twelve URL export/copy modes with correct baseline links."
+  },
+  "embeddedBackdropComparison": {
+    "name": "Widgy Home Embedded Backdrop Trial",
+    "baseline": "Minimal Backdrop, reported a little slower again",
+    "onlyFunctionalChange": "Replace the single Home backdrop HTTPS source string with a data:image/png;base64 URL carrying the byte-identical approved PNG. Keep Web URL provider and all rendering options. Home count remains 46, variable count 80.",
+    "asset": {
+      "path": "assets/home-glass/Home_Glass_Chrome_C8.png",
+      "bytes": 61975,
+      "dimensions": [
+        1320,
+        1377
+      ],
+      "sha256": "5c9b260d11c401d1800a69a9ef75fbcb60536c58ccf03aa6b967c1171c169ca5"
+    },
+    "preparation": "Browser copy page loads only the existing public same-origin PNG without credentials, validates its exact length/SHA-256, and embeds the bytes. No private export is transmitted. No Widgy JavaScript source added.",
+    "preserved": "Every layer, style, frame, variable, other source, tab and action. No image resizing/re-encoding; approved regular export remains unchanged.",
+    "compatibilityGate": "Widgy data-URL image support in the current phone build is unverified. First check complete glass/frame appearance. If missing or altered, discard timing result and return to Minimal Backdrop. Do not mistake an absent image for a speed improvement.",
+    "interpretationLimit": "If visually valid, compare repeated transitions to Minimal Backdrop. Faster suggests a source-transport contribution or interaction; similar/slower does not prove zero networking cost. This test does not quantify requests or establish permanent native image import support.",
+    "deviceResult": "Pending: appearance compatibility first, timing only if image is complete",
+    "validation": "Byte-exact PNG/base64 round trip and integrity failure handling, exact one-source delta, input immutable, thirteen copy routes and respective baseline links."
   }
 }
