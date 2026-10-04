@@ -433,7 +433,17 @@
     "preserved": "All 81 variable definitions including native location providers, all remaining sources, map layer/binding/frame, approved artwork/clock and embedded backdrop, all navigation. Calendar city still TEST. No server/renderer/normal-export changes.",
     "phoneProcedure": "Wait for map and synthetic marker, compare three consecutive Calendar-to-Home transitions and one after a minute in the same slot/network against Stable Map URL.",
     "interpretationLimit": "Isolates map-script native coordinate dependencies plus coordinate-driven URL/cache variation together. Renderer still draws a marker, but at a different synthetic position and label; image bytes/cache history are not identical. Does not disable all widget GPS work or separate location availability from URL churn. Fixed location and unverified stable-URL refresh make this a diagnostic only.",
-    "deviceResult": "Pending",
+    "deviceResult": "2026-10-04 12:12 Asia/Jerusalem: user reports the same speed, no additional slowdown. Relative to Stable Map URL, no further improvement from substituting fixed synthetic coordinates is established. No numerical or separately timed immediate/after-minute result. Does not rule out location work elsewhere in Widgy.",
     "validation": "Exact four-argument delta; preserved native variable definitions, script mode, all layers/sources; no remaining Widgy substitutions in map script; synthetic VM output constant over time and input changes and equals Stable Map URL at 0,0; zero is a valid explicit coordinate and suppresses IP fallback; fail-fast template guard, original immutable; twenty-three copy modes and baseline links."
+  },
+  "directFixedMapComparison": {
+    "name": "Widgy Home Direct Fixed Map Diagnostic",
+    "baseline": "Fixed Location Map, reported same speed/no additional slowdown after the slight stable-URL improvement.",
+    "onlyFunctionalExportChange": "Replace map_request Javascript Script provider with one Custom Text/Text source containing the byte-identical URL that the fixed synthetic script returns. Extract generated JSON call arguments without eval and validate the expected synthetic location/endpoint. No map JS runs in this variant.",
+    "preserved": "Identical requested endpoint and URL, synthetic 0,0 marker/label, full lossless map resolution/style and reuse=60. All 81 variable identities and other source definitions, native location variables, map image binding/frame, approved artwork/clock and embedded backdrop, other tabs/navigation remain identical. Calendar city TEST. No server/renderer/normal-export changes.",
+    "phoneProcedure": "Wait for map and example marker; compare three repeated Calendar-to-Home transitions against Fixed Location Map in the same slot/network. Missing map or marker invalidates comparison.",
+    "interpretationLimit": "Tests the map source provider and its interactions while holding the requested URL constant. Does not remove all widget JavaScript or location work. Actual render time, cache history, image transfer/decode can vary between tests. If unchanged, dynamic server/image handling and variable-backed image loading remain candidates. Fixed location and unverified stable-URL refresh are not a final solution.",
+    "deviceResult": "Pending",
+    "validation": "Exact one-source-list delta and input immutability; literal URL equals VM output of prior fixed Script at multiple times, identical remaining sources/layers, no variable tokens in literal source, guarded non-executing JSON argument parsing; twenty-four copy modes and baseline links."
   }
 }

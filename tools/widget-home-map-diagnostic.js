@@ -377,6 +377,27 @@ export function withCompleteHomeFixedLocationMap(original,dataURL){
   return widget;
 }
 
+// Remove the map JavaScript provider while requesting the exact same image
+// URL as Fixed Location Map. Parse generated JSON arguments; never eval code.
+export function withCompleteHomeDirectFixedMap(original,dataURL){
+  const widget=withCompleteHomeFixedLocationMap(original,dataURL);
+  const request=widget['36'].find(v=>v['1']==='map_request');
+  const source=request['3']['66'][0];
+  const call=source['10'].match(/\ncityMapRuntime\(([^\n]+)\);\n  return mapResult;\n}$/);
+  let args;
+  try{args=call && JSON.parse('['+call[1]+']');}catch{throw Error('unexpected_template');}
+  if(source['6']!=='Script' || !args || args.length!==8 || args[0]!=='0' || args[1]!=='0' ||
+      args[3]!==true || args[4]!=='0' || args[5]!=='0' || args[6]!==60)throw Error('unexpected_template');
+  const endpoint=new URL(args[2]);
+  if(endpoint.protocol!=='https:' || endpoint.pathname!=='/api/night-map' ||
+      endpoint.searchParams.get('width')!=='3306' || endpoint.searchParams.get('reuse')!=='60' ||
+      ['lat','lon','t','at','city','city_text'].some(key=>endpoint.searchParams.has(key)))throw Error('unexpected_template');
+  request['3']['66']=[{'5':'Custom Text','6':'Text','25':args[2]+'&lat=0&lon=0'}];
+  widget['3']='Widgy Home Direct Fixed Map Diagnostic';
+  widget['4']='Compare with Fixed Location Map, reported the same speed with no additional slowdown. Replace only map_request source from Javascript Script/main() to Custom Text/Text containing the exact URL returned by that script. Same live endpoint, literal synthetic 0,0 marker and short label, width=3306 lossless PNG, glass/r6, reuse=60 and no time stamp. No map-script execution, coordinate substitution or city fetch. All 81 variable identities and other sources, native location definitions, map image binding/frame, complete approved artwork/clock, embedded backdrop and navigation stay identical; Calendar city remains TEST. Wait for map and example marker, then compare repeated Calendar-to-Home transitions in the same slot/network against Fixed Location Map. URL equality isolates the map source provider and its interactions, not all widget JavaScript or GPS work. Server image/cache and native image decoding remain possible costs; time of request and cache history may differ. Fixed location and unverified stable-URL refresh are diagnostic only. No server, renderer or normal-export changes. Keep this private export private.';
+  return widget;
+}
+
 // Keep the known faster literal-source path, requesting the existing live
 // renderer instead of a prebuilt PNG. Empty coordinates prohibit IP fallback.
 export function withCompleteHomeDirectLiveMap(original,dataURL){
