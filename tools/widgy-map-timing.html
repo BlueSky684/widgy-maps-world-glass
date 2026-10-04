@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+  <title>מדידת זמני טעינת המפה</title>
+  <style>
+    :root{color-scheme:dark;font-family:system-ui,sans-serif;background:#0b1119;color:#eef3f8}
+    *{box-sizing:border-box}body{margin:0;padding:24px 18px}main{max-width:580px;margin:auto}
+    h1{font-size:30px;line-height:1.3}p{color:#bccbd8;line-height:1.7}button{font:inherit;font-weight:650;border:0;border-radius:14px;padding:16px;cursor:pointer}
+    #run,#copy{background:#c3e8ff;color:#0a2435;width:100%}#cancel{background:#273a49;color:#eef3f8;margin-top:12px;width:100%}
+    button:disabled{opacity:.5;cursor:wait}#status{min-height:32px;color:#e4f2ff}article{background:#14202b;border:1px solid #334554;border-radius:18px;padding:18px;margin:18px 0}
+    h2{font-size:20px;margin:0 0 16px}dl{display:grid;grid-template-columns:1fr auto;gap:10px;margin:0}dt{color:#b9c6d3}dd{margin:0;font-variant-numeric:tabular-nums}.error{color:#ffb8ad}
+    textarea{width:100%;min-height:220px;margin-top:14px;border:1px solid #41596e;border-radius:12px;background:#111c26;color:#edf5fa;padding:12px;font:14px/1.6 monospace}
+    .note{font-size:14px}a{color:#bde4ff}:focus-visible{outline:3px solid #9ddeff;outline-offset:4px}[hidden]{display:none!important}
+  </style>
+  <script type="module" src="./widgy-map-timing.js?v=map-timing-1"></script>
+</head>
+<body><main>
+  <h1>כמה זמן לוקח לטעון את המפה?</h1>
+  <p>ארבע בקשות רצופות: מפה סטטית, מפה חיה ללא סימון, מפה חיה עם סימון דוגמה, ובקשה חוזרת לאותה מפת דוגמה. כל התמונות ברזולוציה המלאה.</p>
+  <p>השאר את כרום פתוח בזמן המדידה. לאחר הסיום, העתק את התוצאות ושלח אותן בשיחה. אין צורך לייבא ווידג׳ט.</p>
+  <button id="run" type="button">התחלת המדידה</button>
+  <button id="cancel" type="button" hidden>עצירת המדידה</button>
+  <p id="status" role="status" aria-live="polite">מוכן. המדידה מתחילה רק בלחיצה.</p>
+  <div id="results"></div>
+  <section id="report" hidden>
+    <button id="copy" type="button">העתקת התוצאות</button>
+    <p id="copy-status" role="status" aria-live="polite"></p>
+    <textarea id="text" aria-label="תוצאות המדידה להעתקה ידנית" dir="ltr" readonly></textarea>
+  </section>
+  <p class="note">זו מדידת כרום, לא מדידה פנימית של Widgy. הבקשות עוקפות את מטמון הדפדפן כדי למדוד את נתיב ההגשה; גם בקשה חוזרת אינה מבטיחה שימוש במטמון השרת. סימון הדוגמה קבוע על 0°,0° עם הכיתוב Example. אין קריאת מיקום, גישה ליומנים או העלאת התוצאות לשרת.</p>
+  <p class="note">הבדיקה מורידה ארבע תמונות מלאות, בסך כ־16 MB. היא אינה משנה את הווידג׳ט או את ההגדרות שלו.</p>
+</main></body></html>
