@@ -21,7 +21,7 @@
     },
     "api/night-map.js": {
       "maxDuration": 10,
-      "includeFiles": "assets/earth/**"
+      "includeFiles": "assets/earth/{Terrain_Master_3306x1558.png,Night_Lights_Master_3306x1558.png,Widget_Asset_Contract.json,render-cache-r6.bin.gz,BarlowCondensed-Regular.ttf,BarlowCondensed-Medium.ttf,OFL.txt}"
     }
   },
   "headers": [{
@@ -33,5 +33,11 @@
       {"key":"X-Frame-Options","value":"DENY"},
       {"key":"Content-Security-Policy","value":"default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' blob:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"}
     ]
-  }]
+  }],
+  "rewrites": [
+    {"source":"/tools/widgy-v78.html","destination":"/tools/widgy-v77.html"},
+    {"source":"/tools/widgy-v78.json","destination":"/tools/widgy-v77.json"},
+    {"source":"/tools/widgy-v80.html","destination":"/tools/widgy-v77.html"},
+    {"source":"/tools/widgy-v80.json","destination":"/tools/widgy-v77.json"}
+  ]
 }
