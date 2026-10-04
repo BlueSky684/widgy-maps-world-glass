@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {personalizedWidget} from './calendar-connect-widget.js';
-import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
+import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
 const template=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
 const normal=personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic');
 const original=perf5DiagnosticBaseline(normal);
@@ -140,6 +140,26 @@ badEvent['1'].find(n=>n.s==='HOME')['1'].find(n=>n.d0===6113)['66'][0]['25']='Ex
 assert.throws(()=>withMinimalHomeEvents(badEvent),/unexpected_template/);
 console.log('Passed: Minimal Events adds exactly four original Home calendar text layers to the fast clock control; all variables/sources/other tabs unchanged, no native reminder source restored, correct layer order.');
 
+const minimalTime=withMinimalHomeTimeText(original),withoutTimeText=structuredClone(minimalTime);
+const isTimeText=n=>n.z==='1' && /^(Greeting |Header |Day Progress )/.test(n.s);
+const originalTimeNodes=original['1'].find(n=>n.s==='HOME')['1'].filter(isTimeText);
+const timeHome=minimalTime['1'].find(n=>n.s==='HOME');
+assert.equal(originalTimeNodes.length,13);
+assert.equal(timeHome['1'].length,33);
+assert.equal(count(minimalTime['1'])-count(minimalEvents['1']),13);
+assert.deepEqual(timeHome['1'].filter(isTimeText),originalTimeNodes);
+withoutTimeText['1'].find(n=>n.s==='HOME')['1']=withoutTimeText['1'].find(n=>n.s==='HOME')['1'].filter(n=>!isTimeText(n));
+withoutTimeText['3']=minimalEvents['3'];withoutTimeText['4']=minimalEvents['4'];
+assert.deepEqual(withoutTimeText,minimalEvents);
+assert.deepEqual(original,unchanged);
+const timeOrder=new Set(timeHome['1'].map(n=>n.d0));
+assert.deepEqual(timeHome['1'].map(n=>n.d0),original['1'].find(n=>n.s==='HOME')['1'].filter(n=>timeOrder.has(n.d0)).map(n=>n.d0));
+assert(!timeHome['1'].some(n=>n.s.startsWith('Day Progress Fill')));
+const missingDate=structuredClone(original);
+missingDate['1'].find(n=>n.s==='HOME')['1']=missingDate['1'].find(n=>n.s==='HOME')['1'].filter(n=>n.d0!==80312);
+assert.throws(()=>withMinimalHomeTimeText(missingDate),/unexpected_template/);
+console.log('Passed: Minimal Time Text adds exactly 13 original greeting/date/day-progress text layers to Minimal Events; scripts, conditions, approved date-weight layers and all other content preserved; no graph fills added.');
+
 const normalUnchanged=structuredClone(normal);
 const progressOff=withoutHomeProgressArtwork(normal),expectedProgress=structuredClone(normal);
 expectedProgress['1'].find(n=>n.s==='HOME')['1']=expectedProgress['1'].find(n=>n.s==='HOME')['1']
@@ -175,7 +195,7 @@ assert.throws(()=>withoutHomeWeatherArtwork(badWeather),/unexpected_template/);
 console.log('Passed: Weather-Art-Off removes only 14 weather-icon alternatives (137 nodes) beyond Progress-Off; all actual data, approved clock, map, weather text, other artwork and navigation unchanged.');
 
 const html=readFileSync(new URL('./widgy-home-map-diagnostic.html',import.meta.url),'utf8');
-assert(html.includes('./widgy-home-map-diagnostic.js?v=minimal-events-1'));
+assert(html.includes('./widgy-home-map-diagnostic.js?v=minimal-time-1'));
 assert(html.includes('?home=minimal&amp;v=minimal-events-1'));
 const source=readFileSync(new URL('./widgy-home-map-diagnostic.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
 const elementIDs=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
@@ -183,7 +203,7 @@ for(const [query,expectedExport] of [
   ['',diagnostic],['?city=off',cityOff],['?home=data-off',nativeOff],
   ['?home=clock-off',clockOff],['?home=minimal',minimal],['?home=progress-off',progressOff],
   ['?home=weather-art-off',weatherArtOff],['?home=minimal-clock',minimalClock],
-  ['?home=minimal-events',minimalEvents]
+  ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime]
 ]){
   const elements=Object.fromEntries(elementIDs.map(id=>[id,{textContent:'',hidden:true,classList:{toggle(){}},handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}]));
   let payload='',copied='';
@@ -195,7 +215,7 @@ for(const [query,expectedExport] of [
     navigator:{clipboard:{writeText:async value=>{copied=value;}}},
     prepareWidget:async()=>({payload:JSON.stringify(normal)}),
     perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,
-    withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
+    withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
   });
   await new vm.Script(source).runInContext(context);
   assert.deepEqual(JSON.parse(payload),expectedExport,query);
@@ -212,7 +232,7 @@ for(const [query,expectedExport] of [
     assert(elements.comparison.textContent.includes('Progress-Off'));
     assert.equal(elements['next-test'].hidden,true);
   }
-  assert.equal(elements['baseline-test'].hidden,!['?home=minimal-clock','?home=minimal-events'].includes(query));
+  assert.equal(elements['baseline-test'].hidden,!['?home=minimal-clock','?home=minimal-events','?home=minimal-time'].includes(query));
   if(query==='?home=minimal-clock'){
     assert.equal(elements.download.download,'Widgy_Home_Minimal_Live_Clock_Diagnostic.json');
     assert(elements.comparison.textContent.includes('בדיקה ב׳ המקורית'));
@@ -223,5 +243,10 @@ for(const [query,expectedExport] of [
     assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=minimal-clock&v=minimal-events-1');
     assert.equal(elements['next-test'].hidden,true);
   }
+  if(query==='?home=minimal-time'){
+    assert.equal(elements.download.download,'Widgy_Home_Minimal_Time_Text_Diagnostic.json');
+    assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=minimal-events&v=minimal-time-1');
+    assert.equal(elements['next-test'].hidden,true);
+  }
 }
-console.log('Passed: all nine diagnostic URLs export and copy the intended comparison; add-back pages link to their respective unchanged controls.');
+console.log('Passed: all ten diagnostic URLs export and copy the intended comparison; add-back pages link to their respective unchanged controls.');

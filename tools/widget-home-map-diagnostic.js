@@ -155,6 +155,32 @@ export function withMinimalHomeEvents(original){
   return widget;
 }
 
+// Keep the clock/event control and restore the remaining time-related text.
+// The 100 progress fill drawings are deliberately not part of this comparison.
+export function withMinimalHomeTimeText(original){
+  const widget=withMinimalHomeEvents(original);
+  const originalHome=original['1'].find(n=>n.s==='HOME');
+  const home=widget['1'].find(n=>n.s==='HOME');
+  const layers=new Map(home['1'].map(n=>[n.d0,n]));
+  const restored=[
+    [6101,'Greeting White'],[6102,'Greeting Lime · MORNING'],
+    [80103,'Greeting Lime · AFTERNOON'],[80104,'Greeting Lime · EVENING'],[80105,'Greeting Lime · NIGHT'],
+    [6103,'Header Weekday'],[6104,'Header Month'],[6105,'Header Day'],
+    [80312,'Header Day · Weight'],[80313,'Header Day · Weight'],
+    [6122,'Day Progress Label'],[6123,'Day Progress Value'],[80205,'Day Progress Unavailable']
+  ];
+  for(const [id,name] of restored){
+    const matches=originalHome['1'].filter(n=>n.d0===id),n=matches[0];
+    if(matches.length!==1 || n.z!=='1' || n.s!==name || layers.has(id))throw Error('unexpected_template');
+    layers.set(id,structuredClone(n));
+  }
+  home['1']=originalHome['1'].filter(n=>layers.has(n.d0)).map(n=>layers.get(n.d0));
+  if(home['1'].length!==33)throw Error('unexpected_template');
+  widget['3']='Widgy Home Minimal Time Text Diagnostic';
+  widget['4']='Compared with Minimal Events, restore only 13 original time-related text layers: five greeting layers, weekday/month and three approved day-number layers, plus the day-progress label/value/unavailable text. All original scripts, native date sources, conditions, fonts, frames, colors and drawing order are preserved. All 80 variables, clock, event fields, other layers and tabs remain identical. The graphical progress fills, weather artwork, map and decorative backdrop remain absent. Tests this text/source group and its interactions, not a single layer or a proposed design change. Keep this private export private.';
+  return widget;
+}
+
 // Start from the FULL, repaired normal export, not the earlier stripped probes.
 // Leave every data source active: isolate the two sets of conditional drawings.
 export function withoutHomeProgressArtwork(original){
