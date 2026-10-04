@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+  <title>בדיקת אירוח המפה</title>
+  <style>
+    :root{color-scheme:dark;font-family:system-ui,sans-serif;background:#0c151b;color:#f4f7fa}
+    *{box-sizing:border-box}body{margin:0;padding:28px 20px}main{max-width:570px;margin:auto}
+    .eyebrow{color:#b5f500;font-size:14px;font-weight:700}h1{font-size:30px;line-height:1.35;margin:12px 0}
+    p{line-height:1.7;color:#b8c3ce}strong{color:#f4f7fa}button{font:inherit;font-weight:700;border:0;border-radius:14px;padding:17px;width:100%;cursor:pointer}
+    #host-run,#host-copy{background:#b5f500;color:#152000}#host-cancel{margin-top:10px;background:#233540;color:#f4f7fa}
+    button:disabled{opacity:.5;cursor:wait}#host-status{min-height:54px;color:#e3eaf1}progress{width:100%;height:7px;accent-color:#b5f500}
+    table{width:100%;border-collapse:collapse;text-align:right;margin:22px 0}caption{text-align:right;font-weight:700;margin-bottom:14px}
+    th,td{padding:13px 7px;border-bottom:1px solid #34434e;font-variant-numeric:tabular-nums}th{font-size:14px;color:#afbdc9}td:last-child{direction:rtl}
+    .error{color:#ffb3a7}#host-summary{border:1px solid #34434e;border-radius:14px;padding:0 16px;margin:20px 0}
+    textarea{width:100%;min-height:180px;margin-top:12px;padding:12px;background:#13212b;color:#e9f0f6;border:1px solid #34434e;border-radius:12px;font:12px/1.6 monospace}
+    .note{font-size:14px;margin-top:25px}:focus-visible{outline:3px solid #c9f8ff;outline-offset:4px}[hidden]{display:none!important}
+  </style>
+  <script type="module" src="./map-host-timing.js?v=host-timing-1"></script>
+</head>
+<body><main>
+  <div class="eyebrow">WIDGY · בדיקה קצרה להערב</div>
+  <h1>האם אירוח אחר טוען מהר יותר?</h1>
+  <p>נשווה את <strong>אותה תמונת מקור של המפה</strong>, בגודל המלא, דרך Vercel ודרך jsDelivr. שלושה סבבים אוטומטיים — אין צורך בייבוא או בשעון עצר.</p>
+  <p>לחץ על התחלה והשאר את כרום פתוח. בסיום, העתק את התוצאות לשיחה.</p>
+  <button id="host-run" type="button">התחלת הבדיקה</button>
+  <button id="host-cancel" type="button" hidden>עצירת הבדיקה</button>
+  <p id="host-status" role="status" aria-live="polite">מוכן. הבדיקה מתחילה רק בלחיצה.</p>
+  <progress id="host-progress" value="0" max="6" aria-label="התקדמות הבדיקה"></progress>
+  <section id="host-results" hidden>
+    <table><caption>זמן טעינה בכרום — פחות זה מהר יותר</caption><thead><tr><th scope="col">סבב</th><th scope="col">שירות</th><th scope="col">זמן</th></tr></thead><tbody id="host-rows"></tbody></table>
+    <div id="host-summary"></div>
+  </section>
+  <section id="host-report" hidden>
+    <button id="host-copy" type="button">העתקת התוצאות</button>
+    <p id="host-copy-status" role="status" aria-live="polite"></p>
+    <textarea id="host-text" dir="ltr" readonly aria-label="תוצאות להעתקה ידנית"></textarea>
+  </section>
+  <p class="note">הבדיקה משווה הגשת קובץ קבוע, ללא יצירת מפת יום ולילה או זיהוי עיר. היא אינה מודדת את המעבר בתוך Widgy. התמונה היא PNG מקורי בגודל 3306×1558, ללא הקטנה. שש ההורדות צורכות כ־18 MB. לא מתבצעת קריאת מיקום או גישה ליומן; התוצאות נשארות במכשיר עד שתעתיק אותן.</p>
+  <p class="note">זו דגימה קצרה: תנודות ברשת, חיבורים פתוחים ומטמון עשויים להשפיע. סדר השירותים מתחלף בין הסבבים; הסבב הראשון מוצג בנפרד מהממוצע החוזר.</p>
+</main></body></html>
