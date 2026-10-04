@@ -343,6 +343,22 @@ export function withCompleteHomeSynchronousMap(original,dataURL){
   return widget;
 }
 
+// Remove only the time-driven URL change from the visible-but-slow Script
+// control. GPS still keys the URL, so movement/jitter may change it. The server
+// uses its own current time; Widgy's refresh cadence is unverified here.
+export function withCompleteHomeStableMapURL(original,dataURL){
+  const widget=withCompleteHomeSynchronousMap(original,dataURL);
+  const source=widget['36'].find(v=>v['1']==='map_request')['3']['66'][0];
+  const timedURL="    var instant = Date.now();\n"+
+    "    var stamp = reuseSeconds === 60 ? Math.floor(instant / 60000) * 60000 : instant;\n"+
+    "    return base + (city ? '&city=' + encodeURIComponent(city) : '') + '&t=' + stamp;";
+  if(source['6']!=='Script' || source['10'].split(timedURL).length!==2)throw Error('unexpected_template');
+  source['10']=source['10'].replace(timedURL,"    return base + (city ? '&city=' + encodeURIComponent(city) : '');");
+  widget['3']='Widgy Home Stable Map URL Diagnostic';
+  widget['4']='Compare with Synchronous Map, whose map/marker displayed but transitions stayed slow. Change only map_request mapURL(): remove Date.now/minute-bucket calculation and t query parameter. Retain synchronous Script/main() completion, exact coordinate parser/max5 inputs, live endpoint, full 3306 lossless PNG, glass/r6 and reuse=60. URL is stable only while coordinates stay identical; GPS movement/jitter still changes it. The server uses current time independently of t; its existing at-most-60-second private cache and revalidation policy remain unchanged. Widgy may keep a stable-URL image longer, so automatic day/night refresh must be established before promotion. Keep all 81 variables, remaining sources/layers, approved artwork/clock, embedded backdrop and navigation unchanged. Short coordinates still replace map city; Calendar city remains TEST. Wait for map/marker, compare three consecutive Calendar-to-Home transitions and one more after a minute. Missing map/marker invalidates speed comparison. No server changes or proven fix; normal export unchanged. Keep this private export private.';
+  return widget;
+}
+
 // Keep the known faster literal-source path, requesting the existing live
 // renderer instead of a prebuilt PNG. Empty coordinates prohibit IP fallback.
 export function withCompleteHomeDirectLiveMap(original,dataURL){

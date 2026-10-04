@@ -410,7 +410,18 @@
     "visibleDifference": "Same coordinate-label fallback as No City Fetch, no custom city lookup. Native Binding Check overlay absent.",
     "phoneProcedure": "First confirm live map and marker appear. Then compare three repeated Calendar-to-Home transitions in the same slot/network against Live Map No City Fetch. Missing map/marker invalidates a speed result.",
     "interpretationLimit": "Tests Widgy script runtime mode/completion and interactions; native GPS variable resolution, changing minute URLs, server render and image transfer remain. A matching synthetic VM output is not device validation or evidence of a fix.",
-    "deviceResult": "Pending",
+    "deviceResult": "2026-10-04 11:22 Asia/Jerusalem: IMG_9847.png shows the live map, location marker and expected coordinate-label fallback. At 11:24 user reports still slow. Appearance passed for the active comparison, but no perceptible resolution of the transition delay was reported; no numerical timings or proof that runtime mode has zero cost.",
     "validation": "Exact runtime-mode/script delta; immutable original; synthetic async versus synchronous output equivalence for precise, locale-formatted, missing/out-of-range and boundary coordinates at minute boundaries, repeated main() calls, no fetch/sendToWidgy in sync path; twenty-one copy-page modes."
+  },
+  "stableMapURLComparison": {
+    "name": "Widgy Home Stable Map URL Diagnostic",
+    "baseline": "Synchronous Map: visible map/marker, still slow according to user.",
+    "codeFinding": "api/night-map.js explicitly ignores t for solar time and cache identity. Live rendering uses server current time. Existing location-keyed render cache lasts at most 60 seconds from render; private max-age and ETag are already present, CDN no-store unchanged. The client nevertheless creates a different URL at every minute boundary. Its effect on Widgy fetching/decoding has not been measured.",
+    "onlyFunctionalExportChange": "Remove Date.now/minute stamp calculation and trailing t parameter from map_request mapURL() only. Preserve Script/main(), parser, max5 GPS inputs, endpoint, reuse=60, full resolution, glass/r6 and no-city fallback.",
+    "preserved": "All 81 variables and their remaining sources, exact map binding/layer/frame, approved Home artwork and clock, embedded backdrop, other tabs/navigation; Calendar city TEST. No API, renderer, server policy, assets or normal-export changes.",
+    "phoneProcedure": "Wait for map and marker. In the same slot/network, compare three consecutive Calendar-to-Home transitions and another after a minute against Synchronous Map. Report missing map/marker before timing.",
+    "interpretationLimit": "URL is stable only with unchanged coordinates; GPS jitter can still change it. Widgy may retain stable-URL images longer than expected: automatic day/night refresh remains unverified, so this is not a final live-update solution. If still slow, GPS resolution, script/interpolation evaluation, server/image retrieval and decoding remain candidates; this test alone cannot prove any individual cause.",
+    "deviceResult": "Pending",
+    "validation": "Exact one-script delta and original immutable; synthetic VM verifies same URL minus t across time/minute/hour boundaries, precise coordinate changes still change URL, zero custom fetch/callback, unchanged invalid and locale coordinate handling; twenty-two copy-page modes and comparison links."
   }
 }

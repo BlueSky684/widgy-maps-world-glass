@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {personalizedWidget} from './calendar-connect-widget.js';
-import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
+import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
 const template=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
 const normal=personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic');
 const original=perf5DiagnosticBaseline(normal);
@@ -338,6 +338,36 @@ for(const instant of [fakeNow,Math.floor(fakeNow/60000)*60000+59999,Math.floor(f
 assert.deepEqual(normal,personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic'));
 console.log('Passed: Synchronous Map changes only map_request provider mode/completion; identical URLs to async control across synthetic precision, invalid inputs and minute boundaries, with no fetch/callback and immutable input.');
 
+const stableMapURL=withCompleteHomeStableMapURL(normal,backdropDataURL);
+const stableSource=stableMapURL['36'].find(v=>v['1']==='map_request')['3']['66'][0];
+const stableExpected=structuredClone(synchronousMap);
+stableExpected['36'].find(v=>v['1']==='map_request')['3']['66'][0]['10']=stableSource['10'];
+stableExpected['3']=stableMapURL['3'];stableExpected['4']=stableMapURL['4'];
+assert.deepEqual(stableMapURL,stableExpected); // No provider, layer, coordinate input or source changes elsewhere.
+assert.equal(stableSource['6'],'Script');
+assert(!stableSource['10'].includes('Date.now'));
+assert(!stableSource['10'].includes("'&t='"));
+const runMapMain=(source,lat,lon,instant)=>{
+  const reject=()=>{throw Error('No network or callback allowed');};
+  const context=vm.createContext({Date:class extends Date{static now(){return instant;}},fetch:reject,sendToWidgy:reject});
+  vm.runInContext(substituteCoordinates(source['10'],lat,lon),context,{timeout:1000});
+  return vm.runInContext('main()',context,{timeout:1000});
+};
+for(const [lat,lon] of [['0','0'],['42.12345','-8.54321'],['42,125','−8.5'],['','0'],['999','bad'],['90','-180']]){
+  const stableURL=runMapMain(stableSource,lat,lon,fakeNow);
+  for(const instant of [fakeNow,fakeNow+60000,fakeNow+3600000]){
+    const timedURL=runMapMain(synchronousSource,lat,lon,instant);
+    const stripped=timedURL.replace(/&t=\d+$/,'');
+    assert.notEqual(stripped,timedURL);
+    assert.equal(stableURL,stripped);
+    assert.equal(runMapMain(stableSource,lat,lon,instant),stableURL);
+  }
+  assert(!new URL(stableURL).searchParams.has('at')); // The server still uses its own current time.
+}
+assert.notEqual(runMapMain(stableSource,'42.12345','-8.54321',fakeNow),runMapMain(stableSource,'42.12346','-8.54321',fakeNow));
+assert.deepEqual(normal,personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic'));
+console.log('Passed: Stable Map URL changes only map_request timestamp logic; identical URL minus t, stable across time, responsive to precise coordinate changes, invalid/locale inputs unchanged, no network, immutable input.');
+
 const directLiveMap=withCompleteHomeDirectLiveMap(normal,backdropDataURL);
 const directSource=directLiveMap['36'].find(v=>v['1']==='map_request')['3']['66'][0];
 const directExpected=structuredClone(staticMap);
@@ -455,7 +485,7 @@ assert.throws(()=>withoutHomeWeatherArtwork(badWeather),/unexpected_template/);
 console.log('Passed: Weather-Art-Off removes only 14 weather-icon alternatives (137 nodes) beyond Progress-Off; all actual data, approved clock, map, weather text, other artwork and navigation unchanged.');
 
 const html=readFileSync(new URL('./widgy-home-map-diagnostic.html',import.meta.url),'utf8');
-assert(html.includes('./widgy-home-map-diagnostic.js?v=sync-map-1'));
+assert(html.includes('./widgy-home-map-diagnostic.js?v=stable-map-url-1'));
 assert(html.includes('?home=minimal&amp;v=minimal-events-1'));
 const source=readFileSync(new URL('./widgy-home-map-diagnostic.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
 const elementIDs=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
@@ -463,7 +493,7 @@ for(const [query,expectedExport] of [
   ['',diagnostic],['?city=off',cityOff],['?home=data-off',nativeOff],
   ['?home=clock-off',clockOff],['?home=minimal',minimal],['?home=progress-off',progressOff],
   ['?home=weather-art-off',weatherArtOff],['?home=minimal-clock',minimalClock],
-  ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop],['?home=full-artwork',fullArtwork],['?home=map-addback',mapAddback],['?home=static-map',staticMap],['?home=map-no-city',mapNoCity],['?home=direct-live-map',directLiveMap],['?home=native-location-map',nativeLocationMap],['?home=map-binding-check',bindingProbe],['?home=sync-map',synchronousMap]
+  ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop],['?home=full-artwork',fullArtwork],['?home=map-addback',mapAddback],['?home=static-map',staticMap],['?home=map-no-city',mapNoCity],['?home=direct-live-map',directLiveMap],['?home=native-location-map',nativeLocationMap],['?home=map-binding-check',bindingProbe],['?home=sync-map',synchronousMap],['?home=stable-map-url',stableMapURL]
 ]){
   const elements=Object.fromEntries(elementIDs.map(id=>[id,{textContent:'',hidden:true,classList:{toggle(){}},handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}]));
   let payload='',copied='',backdropLoads=0;
@@ -476,11 +506,11 @@ for(const [query,expectedExport] of [
     prepareWidget:async()=>({payload:JSON.stringify(normal)}),
     loadHomeBackdropDataURL:async()=>{backdropLoads++;return backdropDataURL;},
     perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,
-    withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
+    withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
   });
   await new vm.Script(source).runInContext(context);
   assert.deepEqual(JSON.parse(payload),expectedExport,query);
-  assert.equal(backdropLoads,['?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check','?home=sync-map'].includes(query)?1:0);
+  assert.equal(backdropLoads,['?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check','?home=sync-map','?home=stable-map-url'].includes(query)?1:0);
   assert.equal(elements.copy.disabled,false);
   await elements.copy.handlers.click();
   assert.equal(copied,payload);
@@ -494,7 +524,7 @@ for(const [query,expectedExport] of [
     assert(elements.comparison.textContent.includes('Progress-Off'));
     assert.equal(elements['next-test'].hidden,true);
   }
-  assert.equal(elements['baseline-test'].hidden,!['?home=minimal-clock','?home=minimal-events','?home=minimal-time','?home=minimal-native','?home=minimal-backdrop','?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check','?home=sync-map'].includes(query));
+  assert.equal(elements['baseline-test'].hidden,!['?home=minimal-clock','?home=minimal-events','?home=minimal-time','?home=minimal-native','?home=minimal-backdrop','?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check','?home=sync-map','?home=stable-map-url'].includes(query));
   if(query==='?home=minimal-clock'){
     assert.equal(elements.download.download,'Widgy_Home_Minimal_Live_Clock_Diagnostic.json');
     assert(elements.comparison.textContent.includes('בדיקה ב׳ המקורית'));
@@ -503,6 +533,13 @@ for(const [query,expectedExport] of [
   if(query==='?home=minimal-events'){
     assert.equal(elements.download.download,'Widgy_Home_Minimal_Events_Diagnostic.json');
     assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=minimal-clock&v=minimal-events-1');
+    assert.equal(elements['next-test'].hidden,true);
+  }
+  if(query==='?home=stable-map-url'){
+    assert.equal(elements.download.download,'Widgy_Home_Stable_Map_URL_Diagnostic.json');
+    assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=sync-map&v=stable-map-url-1');
+    assert(elements.comparison.textContent.includes('וסימון המיקום יופיעו'));
+    assert(elements.comparison.textContent.includes('אחרי דקה'));
     assert.equal(elements['next-test'].hidden,true);
   }
   if(query==='?home=sync-map'){
@@ -574,4 +611,4 @@ for(const [query,expectedExport] of [
     assert.equal(elements['next-test'].hidden,true);
   }
 }
-console.log('Passed: all twenty-one diagnostic URLs export and copy the intended comparison; add-back pages link to their respective unchanged controls.');
+console.log('Passed: all twenty-two diagnostic URLs export and copy the intended comparison; add-back pages link to their respective unchanged controls.');
