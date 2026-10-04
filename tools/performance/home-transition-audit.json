@@ -796,7 +796,7 @@
     "reason": "Recent unused coordinate-variable removal and direct image URL binding did not establish meaningful perceived improvement. Further tiny unmeasured widget variants have low information value.",
     "neededEvidence": "Observe native phone /api/night-map requests during known Home transitions: request count, status/304, server duration and cache behavior. Existing browser probes do not establish native per-tap downloads or total transition time.",
     "accessCheck": "Vercel get_project widgy-maps-world-glass, scope blue-sky12, returned 403 Forbidden again on 2026-10-04 after 18:23 Asia/Jerusalem. Error explicitly requires re-authentication to scope or a token with scope access. No runtime log data retrieved.",
-    "nextAction": "User chose a map-only Home test before confirming delay in the prior logged transition. New Map Only City comparison is pending device result.",
+    "nextAction": "Map Only City is subjectively fast; continue isolating other Home content with exact original-clock add-back on that baseline.",
     "infrastructureFinding": "Existing calendar bridge is stateless, stores capabilities in encrypted cookies/tokens, no persistent diagnostic database. An instance-local request counter cannot reliably count across Vercel function instances; do not report it as a complete native request log.",
     "changes": "No widget, map, server, cache, hosting, quality or normal export change in this step; only record user evidence and access blocker.",
     "reconnectCheck": {
@@ -906,6 +906,41 @@
     "validation": "Synthetic personalized export only. Exact Home pruning and variable deletion, unchanged map frame/source and other tabs, valid tap targets, immutable normal input and cross-tab name/UUID guard failures verified. Controller copy/download path matches transform for 34 export URLs; failed embedded B remains blocked. No map/backdrop image fetch needed to construct this new copy.",
     "limits": "This isolates Home content while keeping other tabs, their calendar sources and independent Calendar city lookup. Their global runtime scheduling is not known. No standalone native map timing or speed claim; earlier empty native logs did not receive a subsequent explicit delay confirmation. No private calendar export or actual geocoder/GPS read by agent.",
     "phoneProcedure": "Import separately, assign to same slot, first confirm the map, real marker and city name appear. Then compare three Calendar-to-Home transitions and report slow/same/faster. Missing map or city must be reported separately.",
-    "deviceResult": "Pending"
+    "deviceResult": {
+      "receivedLocal": "2026-10-04T20:17:21+03:00",
+      "userReport": "The map loads quickly.",
+      "followupLocal": "2026-10-04T20:17:31+03:00",
+      "userConclusion": "It is not the map; it is another problem.",
+      "interpretation": "Positive subjective result for the sparse Home with the original full map/city pipeline retained. Shift investigation to removed Home content or interactions with retained content. No numeric timing or separate initial-load/transition breakdown; does not establish every map/network operation is always fast."
+    }
+  },
+  "mapCityClockComparison": {
+    "name": "Widgy Home Map City Clock Diagnostic",
+    "route": "?home=map-city-clock&v=map-city-clock-1",
+    "controlRoute": "?home=map-only-city&v=map-only-city-1",
+    "reason": "User reports original city map loads quickly in otherwise empty Home. Restore remaining Home content incrementally, beginning with the approved live-clock layer. Earlier no-map minimal clock was fast, but that does not measure the map-plus-clock pair.",
+    "onlyFunctionalChange": "Restore exactly the original Hero Time layer, its approved font, Live Timer (24 hours, No Seconds) source, frame/style and drawing order. Home grows from 15 to 16 nodes.",
+    "preserved": "All 69 variables, original live map, native GPS, asynchronous city lookup/marker behavior, navigation and other tabs remain identical to Map Only City. No API, cache, region, resolution, image or original normal-export change.",
+    "validation": "Exact single-layer delta plus diagnostic metadata, immutable normal input and wrong-clock-source rejection. Controller copies the intended export without image/backdrop fetch. 35 export routes and the blocked failed embedded B checked with synthetic data only.",
+    "phoneProcedure": "Confirm map/city/clock appear, then compare three Calendar-to-Home transitions in the same slot with the fast Map Only City copy.",
+    "limits": "A slowdown implicates the restored clock layer or its interaction with the existing content, not proof of a particular native runtime defect. Other tabs remain present.",
+    "deviceResult": "Not published or tested; deferred after user requested a full Home self-audit instead of another incremental trial.",
+    "status": "local prototype removed; no public route"
+  },
+  "consolidatedSelfAudit": {
+    "requestedLocal": "2026-10-04T20:19:37+03:00",
+    "expandedScope": [
+      "Home combinations and safe consolidation",
+      "Accumulated test artifacts and active runtime dependencies",
+      "Equivalent deep Calendar audit requested at 20:23:21 Asia/Jerusalem"
+    ],
+    "report": "consolidated-1-review.md",
+    "machineAudit": "consolidated-1-audit.json",
+    "route": "/tools/widgy-consolidated.html?v=consolidated-1",
+    "name": "Widgy Consolidated Home Calendar 1",
+    "changes": "Native weather condition factoring removes 50 Home groups; four neutral Calendar accent groups and four single-title wrappers removed. 1671 total nodes to 1613. Every drawing and its ordered predicate conjunction preserved, all 81 source definitions unchanged.",
+    "validation": "18,450 weather/wind fixtures, full display-list equivalence, valid navigation, copy/download error paths, 22 existing calendar/ring tests passed. Synthetic only.",
+    "deviceResult": "Pending; no native speedup or root cause established.",
+    "archiveFinding": "Old diagnostic controller is absent from normal and consolidated export import graphs. Historic /api/home-map is separate from current /api/night-map. Broad assets/earth/** packaging needs a bundle manifest before assigning runtime cost; existing public assets preserved."
   }
 }
