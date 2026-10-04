@@ -1,3 +1,4 @@
+import {loadHomeStaticMapDataURL} from './widget-home-static-map-data.js';
 import {parseMapRequest} from '../lib/native-map-request.js';
 import {resolveLocation} from '../lib/home-map-v122.js';
 import {loadHomeBackdropDataURL} from './widget-home-backdrop-data.js';
@@ -5,7 +6,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {personalizedWidget} from './calendar-connect-widget.js';
-import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeStableNativeCity,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
+import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeEmbeddedStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeStableNativeCity,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
 const template=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
 const normal=personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic');
 const original=perf5DiagnosticBaseline(normal);
@@ -274,6 +275,32 @@ assert(!JSON.stringify(staticMap['36']).includes('reverse-geocode-client'));
 assert.deepEqual(jsonFields(staticMap),jsonFields(mapAddback));
 assert.deepEqual(normal,personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic'));
 console.log('Passed: Static Map changes exactly one source beyond Map Add-Back; all 81 variable identities, map layer, frames, other sources, tabs and taps unchanged, custom async geocoders absent.');
+
+const staticPNG=readFileSync(new URL('../assets/diagnostics/Home_Map_Static_3306x1558.png',import.meta.url));
+const staticMapDataURL=await loadHomeStaticMapDataURL(async(url,options)=>{
+  assert(url.pathname.endsWith('/assets/diagnostics/Home_Map_Static_3306x1558.png'));
+  assert.equal(options.credentials,'omit');assert.equal(options.cache,'force-cache');
+  return new Response(staticPNG);
+});
+assert.equal(staticMapDataURL.length,5433978);
+assert.deepEqual(Buffer.from(staticMapDataURL.split(',')[1],'base64'),staticPNG);
+const corruptStaticPNG=Buffer.from(staticPNG);corruptStaticPNG[100]^=1;
+await assert.rejects(()=>loadHomeStaticMapDataURL(async()=>new Response(corruptStaticPNG)),/static_map_image_failed/);
+await assert.rejects(()=>loadHomeStaticMapDataURL(async()=>new Response(staticPNG.subarray(0,100))),/static_map_image_failed/);
+await assert.rejects(()=>loadHomeStaticMapDataURL(async()=>new Response('',{status:404})),/static_map_image_failed/);
+await assert.rejects(()=>loadHomeStaticMapDataURL(async()=>{throw Error('offline');}),/static_map_image_failed/);
+const embeddedStaticMap=withCompleteHomeEmbeddedStaticMap(normal,backdropDataURL,staticMapDataURL);
+const embeddedStaticExpected=structuredClone(staticMap);
+embeddedStaticExpected['36'].find(v=>v['1']==='map_request')['3']['66'][0]['25']=staticMapDataURL;
+embeddedStaticExpected['3']=embeddedStaticMap['3'];embeddedStaticExpected['4']=embeddedStaticMap['4'];
+assert.deepEqual(embeddedStaticMap,embeddedStaticExpected); // Exactly one source string plus metadata.
+assert.deepEqual(embeddedStaticMap['1'],staticMap['1']);
+assert.equal(embeddedStaticMap['36'].length,81);
+for(const value of [undefined,'data:image/png;base64,wrong',staticURL]){
+  assert.throws(()=>withCompleteHomeEmbeddedStaticMap(normal,backdropDataURL,value),/static_map_image_failed/);
+}
+assert.deepEqual(normal,personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic'));
+console.log('Passed: Embedded Static Map carries the exact 4,075,465 PNG bytes; digest/size and HTTP errors reject; only one source string differs from Static Map, with identical design/binding and immutable original. Large data-URL compatibility and speed remain device checks.');
 
 const mapNoCity=withCompleteHomeMapWithoutCityFetch(normal,backdropDataURL);
 const noCitySource=mapNoCity['36'].find(v=>v['1']==='map_request')['3']['66'][0];
@@ -575,7 +602,7 @@ assert.throws(()=>withoutHomeWeatherArtwork(badWeather),/unexpected_template/);
 console.log('Passed: Weather-Art-Off removes only 14 weather-icon alternatives (137 nodes) beyond Progress-Off; all actual data, approved clock, map, weather text, other artwork and navigation unchanged.');
 
 const html=readFileSync(new URL('./widgy-home-map-diagnostic.html',import.meta.url),'utf8');
-assert(html.includes('./widgy-home-map-diagnostic.js?v=stable-map-recovery-1'));
+assert(html.includes('./widgy-home-map-diagnostic.js?v=embedded-static-map-1'));
 assert(html.includes('?home=minimal&amp;v=minimal-events-1'));
 const source=readFileSync(new URL('./widgy-home-map-diagnostic.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
 assert(!source.includes('withCompleteHomeStableNativeCity')); // Failed mixed-source export cannot be reissued by the page.
@@ -584,10 +611,10 @@ for(const [query,expectedExport] of [
   ['',diagnostic],['?city=off',cityOff],['?home=data-off',nativeOff],
   ['?home=clock-off',clockOff],['?home=minimal',minimal],['?home=progress-off',progressOff],
   ['?home=weather-art-off',weatherArtOff],['?home=minimal-clock',minimalClock],
-  ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop],['?home=full-artwork',fullArtwork],['?home=map-addback',mapAddback],['?home=static-map',staticMap],['?home=map-no-city',mapNoCity],['?home=direct-live-map',directLiveMap],['?home=native-location-map',nativeLocationMap],['?home=map-binding-check',bindingProbe],['?home=sync-map',synchronousMap],['?home=stable-map-url',stableMapURL],['?home=fixed-map-location',fixedLocationMap],['?home=direct-fixed-map',directFixedMap],['?home=cdn-fixed-map',cdnFixedMap],['?home=stable-native-city',stableMapURL]
+  ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop],['?home=full-artwork',fullArtwork],['?home=map-addback',mapAddback],['?home=static-map',staticMap],['?home=map-no-city',mapNoCity],['?home=direct-live-map',directLiveMap],['?home=native-location-map',nativeLocationMap],['?home=map-binding-check',bindingProbe],['?home=sync-map',synchronousMap],['?home=stable-map-url',stableMapURL],['?home=fixed-map-location',fixedLocationMap],['?home=direct-fixed-map',directFixedMap],['?home=cdn-fixed-map',cdnFixedMap],['?home=stable-native-city',stableMapURL],['?home=embedded-static-map',embeddedStaticMap],['?home=static-map&compare=embedded',staticMap]
 ]){
   const elements=Object.fromEntries(elementIDs.map(id=>[id,{textContent:'',hidden:true,classList:{toggle(){}},handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}]));
-  let payload='',copied='',backdropLoads=0;
+  let payload='',copied='',backdropLoads=0,staticMapLoads=0;
   const context=vm.createContext({
     document:{getElementById:id=>{assert(elements[id],id);return elements[id];}},
     window:{location:{search:query},addEventListener(){}},URLSearchParams,
@@ -596,12 +623,14 @@ for(const [query,expectedExport] of [
     navigator:{clipboard:{writeText:async value=>{copied=value;}}},
     prepareWidget:async()=>({payload:JSON.stringify(normal)}),
     loadHomeBackdropDataURL:async()=>{backdropLoads++;return backdropDataURL;},
+    loadHomeStaticMapDataURL:async()=>{staticMapLoads++;return staticMapDataURL;},
     perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,
-    withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeStableNativeCity,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
+    withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeEmbeddedStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeStableNativeCity,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
   });
   await new vm.Script(source).runInContext(context);
   assert.deepEqual(JSON.parse(payload),expectedExport,query);
-  assert.equal(backdropLoads,['?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check','?home=sync-map','?home=stable-map-url','?home=fixed-map-location','?home=direct-fixed-map','?home=cdn-fixed-map','?home=stable-native-city'].includes(query)?1:0);
+  assert.equal(backdropLoads,['?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check','?home=sync-map','?home=stable-map-url','?home=fixed-map-location','?home=direct-fixed-map','?home=cdn-fixed-map','?home=stable-native-city','?home=embedded-static-map','?home=static-map&compare=embedded'].includes(query)?1:0);
+  assert.equal(staticMapLoads,query==='?home=embedded-static-map'?1:0);
   assert.equal(elements.copy.disabled,false);
   await elements.copy.handlers.click();
   assert.equal(copied,payload);
@@ -615,7 +644,7 @@ for(const [query,expectedExport] of [
     assert(elements.comparison.textContent.includes('Progress-Off'));
     assert.equal(elements['next-test'].hidden,true);
   }
-  assert.equal(elements['baseline-test'].hidden,!['?home=minimal-clock','?home=minimal-events','?home=minimal-time','?home=minimal-native','?home=minimal-backdrop','?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check','?home=sync-map','?home=stable-map-url','?home=fixed-map-location','?home=direct-fixed-map','?home=cdn-fixed-map','?home=stable-native-city'].includes(query));
+  assert.equal(elements['baseline-test'].hidden,!['?home=minimal-clock','?home=minimal-events','?home=minimal-time','?home=minimal-native','?home=minimal-backdrop','?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check','?home=sync-map','?home=stable-map-url','?home=fixed-map-location','?home=direct-fixed-map','?home=cdn-fixed-map','?home=stable-native-city','?home=embedded-static-map','?home=static-map&compare=embedded'].includes(query));
   if(query==='?home=minimal-clock'){
     assert.equal(elements.download.download,'Widgy_Home_Minimal_Live_Clock_Diagnostic.json');
     assert(elements.comparison.textContent.includes('בדיקה ב׳ המקורית'));
@@ -624,6 +653,19 @@ for(const [query,expectedExport] of [
   if(query==='?home=minimal-events'){
     assert.equal(elements.download.download,'Widgy_Home_Minimal_Events_Diagnostic.json');
     assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=minimal-clock&v=minimal-events-1');
+    assert.equal(elements['next-test'].hidden,true);
+  }
+  if(query==='?home=embedded-static-map'){
+    assert.equal(elements.download.download,'Widgy_Home_Embedded_Static_Map_Trial.json');
+    assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=static-map&compare=embedded&v=embedded-static-map-1');
+    assert(elements.comparison.textContent.includes('אם היא חסרה'));
+    assert(elements.explanation.textContent.includes('ללא הקטנה או שינוי איכות'));
+    assert.equal(elements['next-test'].hidden,true);
+  }
+  if(query==='?home=static-map&compare=embedded'){
+    assert.equal(elements.download.download,'Widgy_Home_Static_Map_Diagnostic.json');
+    assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=embedded-static-map&v=embedded-static-map-1');
+    assert(elements.comparison.textContent.includes('באותו חיבור רשת'));
     assert.equal(elements['next-test'].hidden,true);
   }
   if(query==='?home=stable-native-city'){
@@ -731,4 +773,4 @@ for(const [query,expectedExport] of [
     assert.equal(elements['next-test'].hidden,true);
   }
 }
-console.log('Passed: all twenty-six diagnostic URLs export and copy the intended comparison; add-back pages link to their respective unchanged controls.');
+console.log('Passed: all twenty-eight diagnostic URLs export and copy the intended comparison; add-back pages link to their respective unchanged controls.');

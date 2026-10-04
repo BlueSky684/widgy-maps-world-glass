@@ -306,6 +306,19 @@ export function withCompleteHomeStaticMap(original,dataURL){
   return widget;
 }
 
+// A byte-identical static PNG control, carried inside the private export.
+// Keep the image/variable binding and all other fields. This changes transport
+// and data-URL handling together, not the renderer or the pixel workload.
+export function withCompleteHomeEmbeddedStaticMap(original,dataURL,mapDataURL){
+  if(typeof mapDataURL!=='string' || mapDataURL.length!==5433978 ||
+      !mapDataURL.startsWith('data:image/png;base64,iVBORw0KGgo'))throw Error('static_map_image_failed');
+  const widget=withCompleteHomeStaticMap(original,dataURL);
+  widget['36'].find(v=>v['1']==='map_request')['3']['66'][0]['25']=mapDataURL;
+  widget['3']='Widgy Home Embedded Static Map Trial';
+  widget['4']='Compare only with Static Map: replace its one literal HTTPS map_request source with a data:image/png;base64 URL containing the exact same public fixed-time PNG. Copy page verifies SHA-256 and byte count before embedding. Same 3306x1558 lossless image, no resizing/re-encoding, same single Custom Text source, image binding/frame, all 81 variables and remaining sources/layers, full approved artwork/clock, embedded backdrop and navigation. Both comparison maps deliberately have fixed 2026-10-04T06:00Z day/night and no personal marker/city; Calendar city stays TEST. No live GPS/script/geocoder is consumed by either map. Larger export adds about 5.4 MB of text; import, variable interpolation and data-URL handling may introduce their own cost. Confirm the whole map displays in both copies before timing three repeated Calendar-to-Home transitions in the same slot/network after initial loading. Embedded backdrop support does not prove support for this much larger image. A faster result implicates transport/data-source handling together; equal speed does not prove a specific decoding, memory or layer cause. Diagnostic only, not a final static map replacement. No server, renderer, normal-export or quality change. Keep this private export private.';
+  return widget;
+}
+
 // Preserve the existing map URL builder/runtime mode, but finish immediately
 // with GPS and no city instead of waiting for a client reverse-geocoder.
 export function withCompleteHomeMapWithoutCityFetch(original,dataURL){
