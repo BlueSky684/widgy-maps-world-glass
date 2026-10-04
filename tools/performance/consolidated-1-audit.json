@@ -705,10 +705,11 @@
       "api/night-map.js",
       "lib/engraved-coasts.js",
       "lib/home-map-day-night.js",
-      "lib/home-map-v122.js",
+      "lib/map-astronomy-location.js",
       "lib/map-precomputed.js",
       "lib/map-render-cache.js",
-      "lib/native-map-request.js"
+      "lib/native-map-request.js",
+      "lib/night-map-assets.js"
     ],
     "calendarWidget": [
       "api/calendar-widget.js",
@@ -724,9 +725,9 @@
     "oldHomeMapEndpointImportedByNightMap": false,
     "trackedEarthAssets": 50,
     "trackedEarthBytes": 28951885,
-    "bundleRule": "assets/earth/**",
-    "finding": "The broad assets/earth/** bundle rule may include historical assets; no deployment bundle manifest is available to measure the effective package. Legacy /api/home-map imports historical renderers, but the current map source calls /api/night-map. Static import closures and the serialized widget do not include the old diagnostic controller. Repository size, deploy storage and per-transition latency are separate measurements.",
-    "cleanup": "Removed the unpublished map-plus-clock experiment before publication. New consolidated page imports no old diagnostic transforms. Kept historical URLs/assets for existing widget copies and regression controls; no unsupported speed claim or destructive archive deletion."
+    "bundleRule": "assets/earth/{Terrain_Master_3306x1558.png,Night_Lights_Master_3306x1558.png,Widget_Asset_Contract.json,render-cache-r6.bin.gz,BarlowCondensed-Regular.ttf,BarlowCondensed-Medium.ttf,OFL.txt}",
+    "finding": "Current night-map dependencies use literal approved asset paths and a seven-file inclusion rule; local isolation excludes historical Earth materials. The final deployed package size has not been measured. Legacy /api/home-map retains historical renderers for compatibility. Static import closures and the serialized widget do not include the old diagnostic controller. Repository size, deploy storage and per-transition latency are separate measurements.",
+    "cleanup": "See cleanup-1-review.md. Current map helpers are independent of historical renderers. Four byte-identical old exports were removed with rewrites preserving their public URLs. Historical map API assets and master-generation inputs remain. No branch deletion or measured phone speed claim."
   },
   "verification": {
     "predicateProof": "Each ordered drawing retains identical drawing data and its complete native predicate conjunction, plus manual visibility ancestry.",
