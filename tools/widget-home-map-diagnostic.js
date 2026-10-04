@@ -232,6 +232,19 @@ export function withMinimalHomeBackdrop(original){
   return widget;
 }
 
+// Experimental data-URL transport. Widgy display support must be confirmed on
+// the phone before timing this copy; a missing image invalidates the comparison.
+export function withMinimalHomeEmbeddedBackdrop(original,dataURL){
+  if(typeof dataURL!=='string' || dataURL.length!==82658 ||
+      !dataURL.startsWith('data:image/png;base64,iVBORw0KGgo') ||
+      !/^data:image\/png;base64,[A-Za-z0-9+/]+={0,2}$/.test(dataURL))throw Error('backdrop_image_failed');
+  const widget=withMinimalHomeBackdrop(original);
+  widget['1'].find(n=>n.s==='HOME')['1'].find(n=>n.d0===80309)['2']=dataURL;
+  widget['3']='Widgy Home Embedded Backdrop Trial';
+  widget['4']='Compatibility and timing trial based on Minimal Backdrop. Only the Home glass/frames image source string changes from HTTPS to a data:image/png;base64 URL containing the byte-identical approved PNG. No new JavaScript source inside Widgy, no resampling, no layer/variable/source changes elsewhere. The copy page validates SHA-256 before embedding. Widgy support for this data URL is not yet verified on the phone. First confirm all glass/frames appear exactly as in Minimal Backdrop; if missing or altered, report incompatibility and do not interpret faster switching as an improvement. If appearance matches, compare repeated transitions with Minimal Backdrop. This isolates source transport and its interactions, not a measured network request count or proven fix. Keep this private export private.';
+  return widget;
+}
+
 // Start from the FULL, repaired normal export, not the earlier stripped probes.
 // Leave every data source active: isolate the two sets of conditional drawings.
 export function withoutHomeProgressArtwork(original){
