@@ -327,7 +327,28 @@
     "preserved": "All 81 variable identities/sources other than that literal URL, all layers/frames/styles, embedded backdrop, normal Home artwork and other tabs. Native GPS variables remain globally; Calendar city remains TEST.",
     "locationContract": "Explicit lat=&lon= suppresses server IP fallback, so no personal location/marker/city is requested or displayed. Test this even if synthetic IP headers are present.",
     "interpretationLimit": "If fast, a direct live renderer is compatible with faster transitions under this stable-URL/no-location setup; the original script/coordinate consumption/changing URL path remains to be separated. If slow, live endpoint rendering/retrieval/cache behavior becomes more likely. A stable URL may stay cached inside Widgy: automatic day/night updates must be checked before any promotion.",
-    "deviceResult": "Pending: map appearance and repeated transitions; automatic update cadence not yet established",
+    "deviceResult": "2026-10-04 09:54 Asia/Jerusalem: user strongly attributes the main problem to positioning the city on the map. No explicit speed comparison for Direct Live Map or numeric timing was supplied; marker appearance and automatic refresh remain unverified.",
     "validation": "Exact one-string delta vs Static Map, no map JS or interpolation, no custom geocoder, empty coordinates prevent IP fallback, full input immutable, eighteen copy modes and baseline links; public no-location endpoint checked independently."
+  },
+  "nativeLocationMapComparison": {
+    "name": "Widgy Home Native Location Map Diagnostic",
+    "baseline": "Direct Live Map",
+    "onlyFunctionalExportChange": "One Home map image Web URL string consumes map_latitude_max5, map_longitude_max5 and calendar_native_city directly. No map JavaScript or custom external city lookup; existing city_text safe-tail parser, same live endpoint and full-resolution renderer.",
+    "preserved": "All 81 variables/sources, all layers, frames, artwork, clock, embedded backdrop and navigation. Literal map_request remains unused. Calendar city stays TEST. Normal export unchanged.",
+    "interpretationLimit": "Phone must confirm marker, correct native city, decimal-coordinate formatting and direct substitution before a speed comparison is valid. May change city spelling/language. Stable URL means automatic day/night refresh remains unverified. GPS/city freshness and synchrony not established. No runtime parser or renderer changes.",
+    "deviceResult": "Pending",
+    "validation": "Exact one-image-URL delta and input immutability, native provider guard; offline synthetic location/city-tail parsing and missing-location/IP-fallback behavior; nineteen private copy-page routes. No actual device GPS sent externally."
+  },
+  "storageAlert20261004": {
+    "userEvidence": "User screenshot shows blue-sky12 free team at 100% of Function Storage (10 GB).",
+    "accountInspection": "Vercel project and deployment listing both returned 403: connected token is not authorized for blue-sky12. No account usage totals, per-project storage or eligible deletions verified.",
+    "publicHealth": "Existing diagnostic HTML returned HTTP 200 on 2026-10-04. This alone does not validate function availability.",
+    "inference": "Retained test deployments may contribute. Current repository explicitly includes all assets/earth in each of two map functions; directory measures 36,331,590 bytes locally including generated cache. This is not deployed bundle size or measured team usage.",
+    "officialReferences": [
+      "https://vercel.com/docs/deployment-storage",
+      "https://vercel.com/docs/deployment-storage/optimize",
+      "https://vercel.com/changelog/hobby-projects-now-retain-fewer-deployments-to-free-up-storage"
+    ],
+    "constraint": "No deployment/project deletion, retention change, region change or plan upgrade performed. Storage warning does not prove the Home transition cause."
   }
 }

@@ -334,6 +334,22 @@ export function withCompleteHomeDirectLiveMap(original,dataURL){
   return widget;
 }
 
+// Bind existing native sources in the image URL itself, not inside JavaScript
+// or a second interpolated variable. city_text must remain the complete tail.
+export function withCompleteHomeNativeLocationMap(original,dataURL){
+  const widget=withCompleteHomeDirectLiveMap(original,dataURL);
+  for(const [name,field] of [['map_latitude_max5','Latitude (Decimal)'],['map_longitude_max5','Longitude (Decimal)'],['calendar_native_city','City']]){
+    const matches=widget['36'].filter(v=>v['1']===name);
+    const sources=matches[0]?.['3']?.['66'];
+    if(matches.length!==1 || sources?.length!==1 || sources[0]['5']!=='Location' || sources[0]['6']!==field)throw Error('unexpected_template');
+  }
+  const map=widget['1'].find(n=>n.s==='HOME')['1'].find(n=>n.s==='Home Hero World Map');
+  map['2']='https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/api/night-map?mode=live&width=3306&presentation=glass&atlas=r6&reuse=60&lat=${widgy.map_latitude_max5}&lon=${widgy.map_longitude_max5}&city_text=${widgy.calendar_native_city}';
+  widget['3']='Widgy Home Native Location Map Diagnostic';
+  widget['4']='Compare with Direct Live Map: change only the image Web URL string to bind the existing native latitude, longitude and calendar_native_city sources directly. No map JavaScript or custom external city fetch. All 81 variables and their sources remain exactly as in Direct Live Map, including its now-unused literal map_request. Same full-resolution live renderer, artwork, clock, embedded backdrop and navigation. Calendar city remains TEST. city_text is last for the existing safe-tail parser. Native coordinate formatting, city language/spelling, GPS/city freshness, URL substitution and automatic day/night refresh require real-device verification. No timestamp is added; this is a diagnostic, not a finished refresh solution. Missing coordinates produce no marker rather than IP fallback. Confirm the actual marker and city before comparing repeated transitions; a missing marker invalidates the location comparison. Keep this private export private.';
+  return widget;
+}
+
 // Start from the FULL, repaired normal export, not the earlier stripped probes.
 // Leave every data source active: isolate the two sets of conditional drawings.
 export function withoutHomeProgressArtwork(original){

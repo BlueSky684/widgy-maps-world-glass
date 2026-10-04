@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {personalizedWidget} from './calendar-connect-widget.js';
-import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeDirectLiveMap,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
+import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
 const template=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
 const normal=personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic');
 const original=perf5DiagnosticBaseline(normal);
@@ -325,6 +325,32 @@ assert.equal(resolveLocation(directURL,{'x-vercel-ip-latitude':'0','x-vercel-ip-
 assert.deepEqual(normal,personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic'));
 console.log('Passed: Direct Live Map changes only the static literal URL; live rendering requested without map JS/interpolation, explicit empty coordinates block IP fallback, all other content unchanged.');
 
+const nativeLocationMap=withCompleteHomeNativeLocationMap(normal,backdropDataURL);
+const nativeMapURL=nativeLocationMap['1'].find(n=>n.s==='HOME')['1'].find(n=>n.s==='Home Hero World Map')['2'];
+const nativeExpected=structuredClone(directLiveMap);
+nativeExpected['1'].find(n=>n.s==='HOME')['1'].find(n=>n.s==='Home Hero World Map')['2']=nativeMapURL;
+nativeExpected['3']=nativeLocationMap['3'];nativeExpected['4']=nativeLocationMap['4'];
+assert.deepEqual(nativeLocationMap,nativeExpected); // One image URL; preserve every variable source/frame/style.
+assert.deepEqual([...nativeMapURL.matchAll(/\$\{widgy\.([^}]+)\}/g)].map(m=>m[1]),['map_latitude_max5','map_longitude_max5','calendar_native_city']);
+assert(nativeMapURL.endsWith('&city_text=${widgy.calendar_native_city}'));
+const nativeRequest=(latitude,longitude,city)=>parseMapRequest(nativeMapURL.replace('${widgy.map_latitude_max5}',latitude).replace('${widgy.map_longitude_max5}',longitude).replace('${widgy.calendar_native_city}',city));
+for(const city of ['Example','עיר לדוגמה','A & B + C','Example&lat=90&lon=180']){
+  const url=nativeRequest('42.125','-8.5',city);
+  assert.deepEqual(resolveLocation(url),{latitude:42.125,longitude:-8.5,city,source:'coordinates'});
+  assert.equal(url.searchParams.get('width'),'3306');assert.equal(url.searchParams.get('atlas'),'r6');
+  assert(!url.searchParams.has('t'));assert(!url.searchParams.has('at'));
+}
+assert.equal(resolveLocation(nativeRequest('0','0','Example')).latitude,0);
+assert.equal(resolveLocation(nativeRequest('','','Example'),{'x-vercel-ip-latitude':'0','x-vercel-ip-longitude':'0'}),null);
+assert.equal(resolveLocation(parseMapRequest(nativeMapURL)),null);
+// Locale formatting is deliberately not normalized by this diagnostic; verify on device.
+assert.equal(resolveLocation(nativeRequest('42,125','−8.5','Example')),null);
+const brokenNativeCity=structuredClone(normal);
+brokenNativeCity['36'].find(v=>v['1']==='calendar_native_city')['3']['66'][0]['6']='Country';
+assert.throws(()=>withCompleteHomeNativeLocationMap(brokenNativeCity,backdropDataURL),/unexpected_template/);
+assert.deepEqual(normal,personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic'));
+console.log('Passed: Native Location Map changes one image URL, preserves all sources/layers; offline synthetic coordinates and city-tail parsing handle missing GPS and parameter-like city text safely. Device substitution/locale/refresh remain unverified.');
+
 const normalUnchanged=structuredClone(normal);
 const progressOff=withoutHomeProgressArtwork(normal),expectedProgress=structuredClone(normal);
 expectedProgress['1'].find(n=>n.s==='HOME')['1']=expectedProgress['1'].find(n=>n.s==='HOME')['1']
@@ -360,7 +386,7 @@ assert.throws(()=>withoutHomeWeatherArtwork(badWeather),/unexpected_template/);
 console.log('Passed: Weather-Art-Off removes only 14 weather-icon alternatives (137 nodes) beyond Progress-Off; all actual data, approved clock, map, weather text, other artwork and navigation unchanged.');
 
 const html=readFileSync(new URL('./widgy-home-map-diagnostic.html',import.meta.url),'utf8');
-assert(html.includes('./widgy-home-map-diagnostic.js?v=direct-live-map-1'));
+assert(html.includes('./widgy-home-map-diagnostic.js?v=native-location-map-1'));
 assert(html.includes('?home=minimal&amp;v=minimal-events-1'));
 const source=readFileSync(new URL('./widgy-home-map-diagnostic.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
 const elementIDs=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
@@ -368,7 +394,7 @@ for(const [query,expectedExport] of [
   ['',diagnostic],['?city=off',cityOff],['?home=data-off',nativeOff],
   ['?home=clock-off',clockOff],['?home=minimal',minimal],['?home=progress-off',progressOff],
   ['?home=weather-art-off',weatherArtOff],['?home=minimal-clock',minimalClock],
-  ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop],['?home=full-artwork',fullArtwork],['?home=map-addback',mapAddback],['?home=static-map',staticMap],['?home=map-no-city',mapNoCity],['?home=direct-live-map',directLiveMap]
+  ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop],['?home=full-artwork',fullArtwork],['?home=map-addback',mapAddback],['?home=static-map',staticMap],['?home=map-no-city',mapNoCity],['?home=direct-live-map',directLiveMap],['?home=native-location-map',nativeLocationMap]
 ]){
   const elements=Object.fromEntries(elementIDs.map(id=>[id,{textContent:'',hidden:true,classList:{toggle(){}},handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}]));
   let payload='',copied='',backdropLoads=0;
@@ -381,11 +407,11 @@ for(const [query,expectedExport] of [
     prepareWidget:async()=>({payload:JSON.stringify(normal)}),
     loadHomeBackdropDataURL:async()=>{backdropLoads++;return backdropDataURL;},
     perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,
-    withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeDirectLiveMap,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
+    withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
   });
   await new vm.Script(source).runInContext(context);
   assert.deepEqual(JSON.parse(payload),expectedExport,query);
-  assert.equal(backdropLoads,['?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map'].includes(query)?1:0);
+  assert.equal(backdropLoads,['?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map'].includes(query)?1:0);
   assert.equal(elements.copy.disabled,false);
   await elements.copy.handlers.click();
   assert.equal(copied,payload);
@@ -399,7 +425,7 @@ for(const [query,expectedExport] of [
     assert(elements.comparison.textContent.includes('Progress-Off'));
     assert.equal(elements['next-test'].hidden,true);
   }
-  assert.equal(elements['baseline-test'].hidden,!['?home=minimal-clock','?home=minimal-events','?home=minimal-time','?home=minimal-native','?home=minimal-backdrop','?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map'].includes(query));
+  assert.equal(elements['baseline-test'].hidden,!['?home=minimal-clock','?home=minimal-events','?home=minimal-time','?home=minimal-native','?home=minimal-backdrop','?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map'].includes(query));
   if(query==='?home=minimal-clock'){
     assert.equal(elements.download.download,'Widgy_Home_Minimal_Live_Clock_Diagnostic.json');
     assert(elements.comparison.textContent.includes('בדיקה ב׳ המקורית'));
@@ -408,6 +434,12 @@ for(const [query,expectedExport] of [
   if(query==='?home=minimal-events'){
     assert.equal(elements.download.download,'Widgy_Home_Minimal_Events_Diagnostic.json');
     assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=minimal-clock&v=minimal-events-1');
+    assert.equal(elements['next-test'].hidden,true);
+  }
+  if(query==='?home=native-location-map'){
+    assert.equal(elements.download.download,'Widgy_Home_Native_Location_Map_Diagnostic.json');
+    assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=direct-live-map&v=native-location-map-1');
+    assert(elements.comparison.textContent.includes('ושם העיר הנכון מופיעים'));
     assert.equal(elements['next-test'].hidden,true);
   }
   if(query==='?home=direct-live-map'){
@@ -461,4 +493,4 @@ for(const [query,expectedExport] of [
     assert.equal(elements['next-test'].hidden,true);
   }
 }
-console.log('Passed: all eighteen diagnostic URLs export and copy the intended comparison; add-back pages link to their respective unchanged controls.');
+console.log('Passed: all nineteen diagnostic URLs export and copy the intended comparison; add-back pages link to their respective unchanged controls.');
