@@ -359,6 +359,23 @@ export function withCompleteHomeStableMapURL(original,dataURL){
   return widget;
 }
 
+// Keep the working synchronous GPS URL builder byte-for-byte. Append native
+// city as text data, never as interpolated JavaScript. The existing API treats
+// city_text as the final query tail. Mixed-source image binding needs a phone
+// compatibility check; the earlier all-native URL composition was blank.
+export function withCompleteHomeStableNativeCity(original,dataURL){
+  const widget=withCompleteHomeStableMapURL(original,dataURL);
+  const matches=widget['36'].filter(v=>v['1']==='calendar_native_city');
+  const native=matches[0]?.['3']?.['66'];
+  const request=widget['36'].find(v=>v['1']==='map_request');
+  if(matches.length!==1 || native?.length!==1 || native[0]['5']!=='Location' || native[0]['6']!=='City' ||
+      request['3']['66'].length!==1 || request['3']['66'][0]['6']!=='Script')throw Error('unexpected_template');
+  request['3']['66'].push({'5':'Custom Text','6':'Text','25':'&city_text='},structuredClone(native[0]));
+  widget['3']='Widgy Home Stable Native City Trial';
+  widget['4']='Compatibility-first restoration based on Stable Map URL, which displayed the live GPS marker and was reported slightly faster. Preserve its exact synchronous Script/main() URL source, native max5 coordinates, stable URL and all existing variables/layers. Append only literal &city_text= and native Location/City as two text sources in map_request. City is data outside JavaScript; no custom city fetch, city code interpolation or new variable. Unlike the earlier blank all-native composition, the GPS URL still comes from the working synchronous builder. Mixed Script/Text/Location composition in an image-bound variable is not yet verified in Widgy and may still fail; first confirm map, actual marker and correct city before timing. Same full 3306 lossless PNG, approved artwork/clock, embedded backdrop and navigation. Calendar city remains TEST. Compare three Calendar-to-Home transitions against Stable Map URL in the same slot/network, then again after a minute. Native city spelling/language, GPS/city synchrony and automatic day/night refresh still need device verification. No server, cache-policy or normal-export changes; this is not a confirmed speed fix. Keep this private export private.';
+  return widget;
+}
+
 // Keep the same stable-URL script and marker rendering, but remove its native
 // GPS substitutions. Use an explicit synthetic location, never user GPS.
 // Native location variables elsewhere remain unchanged in this comparison.

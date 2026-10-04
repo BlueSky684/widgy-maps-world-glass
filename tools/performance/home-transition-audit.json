@@ -21,7 +21,9 @@
     "2026-10-04 08:59 Asia/Jerusalem: user reports Complete Artwork is the same speed, with no additional slowdown. No numeric timings.",
     "2026-10-04 09:05 Asia/Jerusalem: user reports Map Add-Back is now much slower. No numeric timings; no explicit distinction supplied between initial load and repeated transitions.",
     "2026-10-04 09:14 Asia/Jerusalem: user reports improved speed with Static Map. No numeric timings.",
-    "2026-10-04 09:33 Asia/Jerusalem: extreme slowness returned with Live Map No City Fetch. User suspects map/city/coordinate loading mechanisms. No numeric timings or separate marker/update confirmation."
+    "2026-10-04 09:33 Asia/Jerusalem: extreme slowness returned with Live Map No City Fetch. User suspects map/city/coordinate loading mechanisms. No numeric timings or separate marker/update confirmation.",
+    "2026-10-04 12:34-12:38 Asia/Jerusalem: user clarifies CDN Fixed Map feels the same as Direct Fixed Map immediately before CDN. Two widgets are installed: original before fixes and experimental. No measured CDN speed gain or separate after-minute result.",
+    "2026-10-04 12:38:47 Asia/Jerusalem: user says the transition is faster in the ongoing original-versus-experimental comparison. This is a qualitative overall improvement, not evidence of a CDN-specific gain. No numeric timings."
   ],
   "conclusionLimit": "A static literal clock improved the already stripped diagnostic, but replacing Live Timer with native HH:mm in the full widget showed no perceived loading improvement. The clock replacement is not an established fix and will not be promoted. Minimal Home improved further, supporting isolation of additional Home content/evaluation. No test identifies every remaining cost or establishes quantitative latency. Removing the 200 progress drawings from the full widget did not produce a noticeable improvement; this does not prove zero cost or rule out interactions. Removing another 137 weather-icon nodes also did not improve perceived waiting. These later tests used the full live-data baseline, whereas fast Minimal uses stripped sources. A native HH:mm vs Live Timer comparison cannot rule out the cost of displaying an active clock because both variants display time. Restoring only the approved live clock to Minimal kept the transition fast. Preserve the approved clock; this does not rule out interactions with other Home content. Four Home event fields on the fast clock baseline remained relatively fast with a possible slight slowdown. This does not reproduce the full-Home delay. Restoring the 13 greeting/date/day-progress text layers also produced no perceived slowdown. These source/display groups remain possible interaction partners, not established causes. Restoring the remaining native Home text and three real shared sources produced only a very slight perceived slowdown. Next isolate the approved static backdrop on this same live-text baseline. Restoring the original backdrop caused another small perceived slowdown. This implicates its complete image path or interactions, but does not separate delivery from decoding/rendering. An embedded-data-URL copy is a compatibility-first experiment, not yet a performance fix. User confirms the embedded backdrop renders normally and reports no significant speed improvement. This weakens a dominant backdrop-download explanation, but does not measure cache behavior or prove zero network cost. Retain the same tested embedded backdrop in the next graphics add-back to avoid changing two groups at once. Restoring all remaining original Home graphics on the confirmed embedded-backdrop/live-data control produced no additional perceived slowdown. Next restore only the original map image and map_request variable, keeping the independent Calendar city lookup frozen. Adding the original map pipeline to the otherwise complete Home reproduced a much larger slowdown. This implicates the combined map path on this controlled baseline, without identifying GPS/geocoder, script, URL/cache, server or image decoding/rendering as the individual cause. Static full-resolution PNG improved speed versus the original dynamic map pipeline. Next keep original live GPS/day-night, endpoint, cache interval and async source mode, but finish the map URL immediately without waiting for client city lookup. Extreme slowness persisted with the live map city fetch removed. Native GPS providers were also retained in the faster Static Map copy, so their mere presence is not sufficient evidence of cause; map consumption/substitution may differ. Next use the exact static literal-source structure with a stable direct live-render URL and explicit empty coordinates.",
   "sourceAudit": {
@@ -521,7 +523,46 @@
     "preserved": "Full lossless renderer and map size/style, same synthetic marker and coordinate label, all 81 variables/other sources, map binding/frame, approved artwork/clock and embedded backdrop, navigation. Calendar city TEST. Normal export unchanged.",
     "phoneProcedure": "Wait for map/marker; compare three Calendar-to-Home transitions and another after a minute against Direct Fixed Map in the same slot/network.",
     "interpretationLimit": "Measures possible delivery-policy effect. Does not establish a GPS or regional cause. Synthetic location and stable-URL refresh are still diagnostic only. Public CDN is not enabled for real user coordinates.",
+    "deviceResult": "Same speed as immediately preceding Direct Fixed Map, explicitly clarified by user; overall experimental widget reported faster than original. No CDN-specific benefit measured.",
+    "validation": "Synthetic route tests verify exact query admission, ordinary/private behavior, rejection of extra/duplicate/location/city parameters, no lifetime extension, identical body/ETag, revalidation and POST behavior. Exact one-URL-suffix export delta, unchanged design/data and original immutable; twenty-five copy modes. Public deployment verified: synthetic query first MISS then two HIT responses with identical full PNG bytes. This establishes CDN delivery, not phone speed.",
+    "publicVerification": {
+      "commit": "e20841b9ff34d2bd55bbae3bf4aec49b2b988eb1",
+      "syntheticLocationOnly": "0,0; no city",
+      "status": 200,
+      "bytes": 4043885,
+      "sha256": "3dccf7cef582abf04eace1e9400258c559ef790b3a8bd7f11f847fa931e66107",
+      "renderedAt": "2026-10-04T09:31:03.564Z",
+      "responses": [
+        {
+          "cdn": "MISS",
+          "ageSeconds": 0,
+          "headersSeconds": 7.91,
+          "bodySeconds": 0.772
+        },
+        {
+          "cdn": "HIT",
+          "ageSeconds": 5,
+          "headersSeconds": 4.663,
+          "bodySeconds": 0.079
+        },
+        {
+          "cdn": "HIT",
+          "ageSeconds": 11,
+          "headersSeconds": 5.477,
+          "bodySeconds": 0.08
+        }
+      ],
+      "limits": "Execution-environment timings, not Israel/iPhone measurements. Server-Timing on cache hits reflects the cached original response, not a new render. No device GPS or private export accessed."
+    }
+  },
+  "stableNativeCityTrial": {
+    "name": "Widgy Home Stable Native City Trial",
+    "baseline": "Stable Map URL, real GPS map visible with slight improvement reported; later fixed-location/script-removal/CDN trials produced no further perceived improvement.",
+    "change": "Preserve working synchronous GPS script exactly, append Custom Text &city_text= then native Location/City in the same map_request source list. City remains text data outside JavaScript; no custom geocoder.",
+    "compatibilityRisk": "Earlier all-native six-source URL composition was blank on device. This trial retains the working Script source for complete GPS URL, but mixed Script/Text/Location binding is also unverified. A correct modeled URL does not prove Widgy image compatibility. Missing map invalidates timing.",
+    "preserved": "Same 81 variables, all layers/frames, full-resolution lossless map renderer, approved artwork/clock and embedded backdrop. Calendar city remains TEST. Normal export and API unchanged. Real-location responses retain private/CDN-no-store policy.",
+    "phoneProcedure": "First confirm map, actual marker and correct native city. Then compare repeated Calendar-to-Home transitions against Stable Map URL without city, in the same slot/network, and once after a minute. Verify city language/synchrony and automatic day/night update before promotion.",
     "deviceResult": "Pending",
-    "validation": "Synthetic route tests verify exact query admission, ordinary/private behavior, rejection of extra/duplicate/location/city parameters, no lifetime extension, identical body/ETag, revalidation and POST behavior. Exact one-URL-suffix export delta, unchanged design/data and original immutable; twenty-five copy modes. Deployed CDN behavior still to be checked."
+    "validation": "Exact source-only export delta, immutable input and GPS script, synthetic text/parser checks including punctuation and parameter injection, missing city/GPS handling, fail-closed template guards and all twenty-six browser export/copy routes. Mixed-source Widgy behavior requires device validation."
   }
 }
