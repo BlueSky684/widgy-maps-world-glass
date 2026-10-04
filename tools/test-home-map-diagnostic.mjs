@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {personalizedWidget} from './calendar-connect-widget.js';
-import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeStaticMap1653,withCompleteHomeEmbeddedStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeStableNativeCity,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeDirectImageURL,withCompleteHomeUnusedGPSOff,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
+import {withHomeMapOnlyCity,perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeStaticMap1653,withCompleteHomeEmbeddedStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeStableNativeCity,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeDirectImageURL,withCompleteHomeUnusedGPSOff,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
 const template=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
 const normal=personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic');
 const original=perf5DiagnosticBaseline(normal);
@@ -661,14 +661,45 @@ badWeather['1'].find(n=>n.s==='HOME')['1'].find(n=>n.d0===80000).s='Unknown';
 assert.throws(()=>withoutHomeWeatherArtwork(badWeather),/unexpected_template/);
 console.log('Passed: Weather-Art-Off removes only 14 weather-icon alternatives (137 nodes) beyond Progress-Off; all actual data, approved clock, map, weather text, other artwork and navigation unchanged.');
 
+const mapOnlyCity=withHomeMapOnlyCity(normal);
+const mapOnlyHome=mapOnlyCity['1'].find(n=>n.s==='HOME');
+const originalHomeForMapOnly=normal['1'].find(n=>n.s==='HOME');
+const mapOnlyExpected=structuredClone(normal);
+mapOnlyExpected['1'].find(n=>n.s==='HOME')['1']=originalHomeForMapOnly['1'].filter(n=>
+  n.s==='Home Hero World Map' || n.z==='11' || /^(HOME|CALENDAR|WEATHER|FITNESS) Nav /.test(n.s));
+const mapOnlyRemoved=new Set(['wx_status','wx_wind_speed','day_greeting','day_progress','steps_today','steps_goal','steps_progress','steps_label','calendar_home_count','calendar_home_event_word','calendar_home_title','calendar_home_meta']);
+mapOnlyExpected['36']=mapOnlyExpected['36'].filter(v=>!mapOnlyRemoved.has(v['1']));
+mapOnlyExpected['3']=mapOnlyCity['3'];mapOnlyExpected['4']=mapOnlyCity['4'];
+assert.deepEqual(mapOnlyCity,mapOnlyExpected);
+assert.equal(count(mapOnlyHome['1']),15);
+assert.equal(mapOnlyHome['1'].filter(n=>n.z==='5').length,1);
+assert.equal(mapOnlyCity['36'].length,69);
+assert.deepEqual(mapOnlyCity['1'].filter(n=>n.s!=='HOME'),normal['1'].filter(n=>n.s!=='HOME'));
+for(const name of ['map_request','Latitude','Longitude','map_latitude_max5','map_longitude_max5','calendar_city_prefix','calendar_native_city']){
+  assert.deepEqual(mapOnlyCity['36'].find(v=>v['1']===name),normal['36'].find(v=>v['1']===name));
+}
+assert.deepEqual(mapOnlyHome['1'].find(n=>n.s==='Home Hero World Map'),originalHomeForMapOnly['1'].find(n=>n.s==='Home Hero World Map'));
+assert.deepEqual(normal,normalUnchanged);
+const mapOnlyIDs=new Set([...walk(mapOnlyCity['1'])].map(n=>n.d0));
+for(const n of walk(mapOnlyCity['1']))if(n['1a'])for(const id of n['1a'].slice(7).split(/[-,]/).map(Number))assert(mapOnlyIDs.has(id),'Dangling tap target '+id);
+for(const referenceByID of [false,true]){
+  const sharedHomeVariable=structuredClone(normal),v=sharedHomeVariable['36'].find(v=>v['1']==='steps_progress');
+  sharedHomeVariable['1'].find(n=>n.s==='CALENDAR').s=referenceByID?v['0'].toLowerCase():'${widgy.steps_progress}';
+  assert.throws(()=>withHomeMapOnlyCity(sharedHomeVariable),/unexpected_template/);
+}
+const badMapOnlySource=structuredClone(normal);
+badMapOnlySource['36'].find(v=>v['1']==='map_request')['3']['66']=[{'5':'Custom Text','6':'Text','25':'https://example.test/static.png'}];
+assert.throws(()=>withHomeMapOnlyCity(badMapOnlySource),/unexpected_template/);
+console.log('Passed: Map Only City keeps original full map frame, live GPS/city pipeline and all other tabs; Home has map plus 14 navigation nodes, 12 unused Home variables removed; shared-reference guards and input immutability verified.');
+
 const html=readFileSync(new URL('./widgy-home-map-diagnostic.html',import.meta.url),'utf8');
-assert(html.includes('./widgy-home-map-diagnostic.js?v=direct-image-url-1'));
+assert(html.includes('./widgy-home-map-diagnostic.js?v=map-only-city-1'));
 assert(html.includes('?home=minimal&amp;v=minimal-events-1'));
 const source=readFileSync(new URL('./widgy-home-map-diagnostic.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
 assert(!source.includes('withCompleteHomeStableNativeCity')); // Failed mixed-source export cannot be reissued by the page.
 const elementIDs=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
 for(const [query,expectedExport] of [
-  ['',diagnostic],['?city=off',cityOff],['?home=data-off',nativeOff],
+  ['?home=map-only-city',mapOnlyCity],['',diagnostic],['?city=off',cityOff],['?home=data-off',nativeOff],
   ['?home=clock-off',clockOff],['?home=minimal',minimal],['?home=progress-off',progressOff],
   ['?home=weather-art-off',weatherArtOff],['?home=minimal-clock',minimalClock],
   ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop],['?home=full-artwork',fullArtwork],['?home=map-addback',mapAddback],['?home=static-map',staticMap],['?home=map-no-city',mapNoCity],['?home=direct-live-map',directLiveMap],['?home=native-location-map',nativeLocationMap],['?home=map-binding-check',bindingProbe],['?home=sync-map',synchronousMap],['?home=stable-map-url',stableMapURL],['?home=fixed-map-location',fixedLocationMap],['?home=unused-gps-off',unusedGPSOff],['?home=direct-fixed-map&compare=unused-gps',directFixedMap],['?home=direct-image-url',directImageURL],['?home=direct-fixed-map&compare=image-url',directFixedMap],['?home=direct-fixed-map',directFixedMap],['?home=cdn-fixed-map',cdnFixedMap],['?home=stable-native-city',stableMapURL],['?home=embedded-static-map',embeddedStaticMap],['?home=static-map&compare=embedded',staticMap],['?home=static-map-1653',staticMap1653],['?home=static-map&compare=resolution',staticMap]
@@ -684,7 +715,7 @@ for(const [query,expectedExport] of [
     prepareWidget:async()=>{exportLoads++;return {payload:JSON.stringify(normal)};},
     loadHomeBackdropDataURL:async()=>{backdropLoads++;return backdropDataURL;},
     loadHomeStaticMapDataURL:async()=>{staticMapLoads++;return staticMapDataURL;},
-    perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,
+    withHomeMapOnlyCity,perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,
     withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeStaticMap1653,withCompleteHomeEmbeddedStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeStableNativeCity,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeDirectImageURL,withCompleteHomeUnusedGPSOff,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
   });
   await new vm.Script(source).runInContext(context);
@@ -702,6 +733,12 @@ for(const [query,expectedExport] of [
   assert.equal(elements.copy.disabled,false);
   await elements.copy.handlers.click();
   assert.equal(copied,payload);
+  if(query==='?home=map-only-city'){
+    assert.equal(elements.download.download,'Widgy_Home_Map_Only_City_Diagnostic.json');
+    assert(elements.explanation.textContent.includes('3306×1558'));
+    assert(elements.comparison.textContent.includes('Widgy Home Map Only City Diagnostic'));
+    assert.equal(backdropLoads,0);assert.equal(staticMapLoads,0);
+  }
   if(query==='?home=progress-off'){
     assert.equal(elements.download.download,'Widgy_Home_Progress_Off_Diagnostic.json');
     assert(elements.explanation.textContent.includes('200'));
@@ -856,4 +893,4 @@ for(const [query,expectedExport] of [
     assert.equal(elements['next-test'].hidden,true);
   }
 }
-console.log('Passed: thirty-three diagnostic URLs export/copy their intended controls; failed embedded map route blocks export, downloads and clipboard without loading private data.');
+console.log('Passed: thirty-four diagnostic URLs export/copy their intended controls; failed embedded map route blocks export, downloads and clipboard without loading private data.');

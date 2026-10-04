@@ -11,6 +11,42 @@ export function perf5DiagnosticBaseline(original){
   return widget;
 }
 
+// User-requested isolation: the original live city map in an otherwise empty
+// Home. Start from the normal export, not a fixed-location/no-city trial.
+export function withHomeMapOnlyCity(original){
+  if(original['3']!=='Widgy Calendar Unified')throw Error('unexpected_template');
+  const widget=structuredClone(original);
+  const home=widget['1'].find(n=>n.s==='HOME');
+  const maps=home?.['1'].filter(n=>n.s==='Home Hero World Map');
+  const mapSources=widget['36'].filter(v=>v['1']==='map_request');
+  const source=mapSources[0]?.['3']['66'];
+  if(maps?.length!==1 || maps[0].d0!==6170 || maps[0].z!=='5' ||
+      maps[0]['1']!=='Web URL' || maps[0]['2']!=='${widgy.map_request}' ||
+      mapSources.length!==1 || source?.length!==1 || source[0]['6']!=='Async + No main()' ||
+      !source[0]['10']?.includes('reverse-geocode-client'))throw Error('unexpected_template');
+  const navigation=new Set([5021,5022,5023,5024,5012,5013,80310,80311,5015,5016,5017,5018,6195,5020]);
+  const retained=home['1'].filter(n=>navigation.has(n.d0));
+  if(retained.length!==14 || new Set(retained.map(n=>n.d0)).size!==14 ||
+      retained.filter(n=>n.z==='11').length!==4 ||
+      retained.some(n=>n.z!=='11' && !/^(HOME|CALENDAR|WEATHER|FITNESS) Nav /.test(n.s)))throw Error('unexpected_template');
+  home['1']=home['1'].filter(n=>n===maps[0] || navigation.has(n.d0));
+  // These definitions serve only removed Home content. Other tabs and the
+  // original map/GPS/city pipeline keep every one of their existing sources.
+  const removedNames=new Set(['wx_status','wx_wind_speed','day_greeting','day_progress',
+    'steps_today','steps_goal','steps_progress','steps_label',
+    'calendar_home_count','calendar_home_event_word','calendar_home_title','calendar_home_meta']);
+  const removed=widget['36'].filter(v=>removedNames.has(v['1']));
+  if(removed.length!==12 || new Set(removed.map(v=>v['1'])).size!==12 ||
+      removed.some(v=>typeof v['0']!=='string' || !v['0']))throw Error('unexpected_template');
+  widget['36']=widget['36'].filter(v=>!removedNames.has(v['1']));
+  const remaining=JSON.stringify(widget);
+  for(const v of removed)if(remaining.includes('${widgy.'+v['1']+'}') ||
+      remaining.toLowerCase().includes(v['0'].toLowerCase()))throw Error('unexpected_template');
+  widget['3']='Widgy Home Map Only City Diagnostic';
+  widget['4']='User-requested temporary map-only Home. Keep the exact original Home Hero World Map layer, its original size/position/options, full 3306x1558 live PNG, native GPS inputs and unchanged asynchronous city lookup/validation/marker pipeline from the normal personalized export. Home contains only that map and its 14 original navigation nodes (four tap areas plus their drawings/labels). Remove all Home backgrounds, panels, clock, greetings/date, events, weather, health and progress artwork, and 12 now-unreferenced Home-only variables. Other tabs and their sources, including the independent Calendar city lookup, remain unchanged; this is not a map-only standalone widget. No static image, synthetic coordinates, resolution reduction, URL/cache/server change or speed claim. First confirm map, real marker and city appear; then compare Calendar-to-Home transitions after first load. Keep this private calendar export private.';
+  return widget;
+}
+
 export function withoutHomeMap(original){
   if(original['3']!=='Widgy Calendar Unified')throw Error('unexpected_template');
   const widget=structuredClone(original);

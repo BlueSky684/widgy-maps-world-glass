@@ -786,6 +786,126 @@
     "priorEvidenceLimit": "Manual native local-file static-map test already showed no perceived improvement but changed provider and transport together. It lowers confidence that image binding alone is important; it does not directly measure the same live URL with versus without variable substitution. No documented native cache behavior or proven defect claimed.",
     "phoneProcedure": "Import one new Direct Image URL copy; control Direct Fixed Map is already imported. Select new copy in same slot/network, wait for full map and synthetic marker, compare three Calendar-to-Home transitions. User uncertainty remains inconclusive; never call missing map a speed gain.",
     "validation": "Synthetic export verifies exact single image-field delta plus metadata, identical URL bytes, every variable and remaining layer, input immutability and invalid binding rejection. Thirty-three copy/export routes and one blocked embedded route covered. No real GPS, geocoder or private owner export read.",
-    "deviceResult": "Pending."
+    "deviceResult": {
+      "receivedLocal": "2026-10-04T18:23:41+03:00",
+      "userReport": "Tested Direct Fixed Map and Direct Image URL side by side; feels quite the same.",
+      "interpretation": "No perceived benefit from bypassing the image URL variable in this comparison. Side-by-side subjective test, not numeric native timing or controlled same-slot measurement. Do not promote as a performance fix or claim definitive equivalence; no evidence of a large binding cost."
+    }
+  },
+  "nativeRequestObservationNextStep": {
+    "reason": "Recent unused coordinate-variable removal and direct image URL binding did not establish meaningful perceived improvement. Further tiny unmeasured widget variants have low information value.",
+    "neededEvidence": "Observe native phone /api/night-map requests during known Home transitions: request count, status/304, server duration and cache behavior. Existing browser probes do not establish native per-tap downloads or total transition time.",
+    "accessCheck": "Vercel get_project widgy-maps-world-glass, scope blue-sky12, returned 403 Forbidden again on 2026-10-04 after 18:23 Asia/Jerusalem. Error explicitly requires re-authentication to scope or a token with scope access. No runtime log data retrieved.",
+    "nextAction": "User chose a map-only Home test before confirming delay in the prior logged transition. New Map Only City comparison is pending device result.",
+    "infrastructureFinding": "Existing calendar bridge is stateless, stores capabilities in encrypted cookies/tokens, no persistent diagnostic database. An instance-local request counter cannot reliably count across Vercel function instances; do not report it as a complete native request log.",
+    "changes": "No widget, map, server, cache, hosting, quality or normal export change in this step; only record user evidence and access blocker.",
+    "reconnectCheck": {
+      "userReportedLocal": "2026-10-04T18:34:15+03:00",
+      "projectAccess": "Still 403 for existing blue-sky12 scope after user reported connection repaired.",
+      "accessibleTeams": 0,
+      "authenticatedUsername": "4bz29n8f6h-1655",
+      "interpretation": "Active plugin credentials may be for a different account or lack expected team access. Do not assert user made a mistake or that reconnect definitely failed; only this tool connection was checked.",
+      "pluginStatus": "Vercel plugin installed and enabled; available dependencies resolved. This is separate from service identity/team authorization.",
+      "nextAction": "Verify connected account selection in Vercel plugin settings; user may need to connect the account with access to blue-sky12. No browser/auth bypass, destructive removal, token extraction or private calendar access."
+    },
+    "userSharedRuntimeEvidence": {
+      "receivedLocal": "2026-10-04T18:47:54+03:00",
+      "source": "IMG_9869.png, viewed directly in conversation; no private URL fetched or token copied.",
+      "requestStartedAsDisplayed": "2026-10-04 18:23:23.13 GMT+3",
+      "path": "/api/calendar-widget",
+      "branchVisibleInHost": "f50-widget-test",
+      "status": 200,
+      "safeQueryFields": {
+        "view": "today",
+        "format": "widgy",
+        "render": "perf-4"
+      },
+      "executionDurationMs": 11,
+      "responseFinishedMs": 52,
+      "receivedRegion": "fra1",
+      "externalAPIsAsDisplayed": "No outgoing requests",
+      "interpretation": "This calendar invocation was quick at Vercel. It does not measure device network, Widgy processing, total transition latency, all calendar calls, or the map request. Do not infer map/cache behavior from this row. Screenshot explicitly displays GMT+3 despite general docs saying UTC.",
+      "nextAction": "Close request detail and search Logs for /api/night-map; inspect matching request details rather than more unfiltered calendar rows."
+    },
+    "accountScopeClarification": {
+      "receivedLocal": "2026-10-04T18:37:21+03:00",
+      "screenshot": "IMG_9867.png shows project dashboard and main production deployment created by the same authenticated username. It is not a screenshot of ChatGPT plugin account settings; account mismatch cannot be concluded.",
+      "authorizedProjectDiscovery": "list_projects with name filter and no forced team slug returned widgy-maps-world-glass, prj_9VbwQghLFyINx9EpsWwweLzKcZ2L, accountId team_vYPWQG2KxYq9ar2wsUYMC026. get_project by that returned project ID without scope override succeeded.",
+      "runtimeLogAttempt": "get_runtime_logs for returned project/team IDs, preview environment, /api/night-map query, last 30 minutes failed with downstream logs API 403 before returning any results. Wrapper isError was false; actual text explicitly states error, not absence of logs.",
+      "interpretation": "Project read access is available; scoped runtime-log access is still denied. Prior forced slug 403 and empty list_teams did not establish wrong account. Do not ask for repeated reconnect based solely on that evidence. No claim about map request count/timing can be made.",
+      "nextAction": "Use user-provided Vercel Logs view for current preview branch and map path, or have proper log access granted. Do not use browser/CLI/token extraction to bypass the denied logs API. No widget change or new variant required."
+    },
+    "mapLogSearchObservation": {
+      "initialScreenshot": "IMG_9870.png: /api/night-map search has no matching logs for displayed 18:12-18:42 range.",
+      "afterRequestedPhoneTransition": "IMG_9871.png: blank search, updated 18:23-18:53 range, six new HTTP 200 rows between 18:51:25.49 and 18:51:37.12. Paths truncated; cannot attribute them to calendar or map or count calls per tap.",
+      "filteredResultReportedLocal": "2026-10-04T18:55:25+03:00",
+      "userReport": "After re-entering /api/night-map, list is empty.",
+      "interpretation": "No map request visible under current query/time/filter conditions. Not proof of native caching or no map network activity; filter coverage and actual selected widget need validation.",
+      "codeCheck": "Direct Image URL and Direct Fixed Map both construct the same /api/night-map URL on the calendar endpoint origin, full width 3306, glass/r6, reuse=60 and synthetic 0,0. Actual installed personalized export not read.",
+      "positiveControl": {
+        "test": "native-log-positive-control-1",
+        "requestedAtLocal": "2026-10-04T18:56:25.748811+03:00",
+        "environment": "Agent public synthetic request only; not native phone timing",
+        "path": "/api/night-map",
+        "status": 200,
+        "headersMs": 12711,
+        "totalMs": 13628,
+        "bytes": 4161066,
+        "headers": {
+          "Content-Type": "image/png",
+          "X-Vercel-Id": "cle1::fra1::h6ddv-1791129396043-9da70483e291",
+          "X-Vercel-Cache": "MISS",
+          "X-Map-Cache": "MISS",
+          "Server-Timing": "map;dur=1445.7",
+          "X-Map-Rendered-At": "2026-10-04T15:56:36.949Z"
+        }
+      },
+      "controlLimit": "Agent request only to public synthetic map endpoint; no denied Logs API bypass, actual GPS, geocoder or private calendar access. Agent transport timing is not native performance. Server rendered at 18:56:36.949 GMT+3; user should check refreshed filtered list for this known request.",
+      "nextAction": "Refresh /api/night-map filtered Logs and confirm whether the known agent control request appears before interpreting empty native results.",
+      "positiveControlConfirmation": {
+        "receivedLocal": "2026-10-04T18:59:35+03:00",
+        "source": "IMG_9872.png viewed directly in conversation",
+        "requestStartedAsDisplayed": "2026-10-04 18:56:36.04 GMT+3",
+        "identityMatch": "Visible request ID exactly matches X-Vercel-Id suffix in recorded agent control response.",
+        "path": "/api/night-map",
+        "executionDurationMs": 2100,
+        "receivedRegion": "cle1",
+        "functionRegion": "fra1",
+        "externalAPIsAsDisplayed": "No outgoing requests",
+        "memoryDisplayedMB": 412,
+        "responseFinishedMs": null,
+        "interpretation": "The known agent map request is visible in the user Logs UI, validating that this view can expose map invocations. Execution duration is platform-side and pertains to the agent synthetic control, not the phone transition. The screenshot does not show complete response-finished duration. Memory display does not establish native widget memory use. User-reported empty native search is meaningful evidence but does not alone prove cache use, complete log coverage, selected widget identity, or absence of all network/other-provider activity.",
+        "nextMissingEvidence": "Whether the same familiar Home delay was present during the phone transition immediately preceding the 18:51 log rows; no explicit timing/lag confirmation yet."
+      }
+    }
+  },
+  "mapOnlyCityComparison": {
+    "requestedLocal": "2026-10-04T20:06:48+03:00",
+    "userRequest": "Remove everything in Home, retain original full-size map and original city identification and map marker pipeline, to assess whether this is still slow.",
+    "route": "?home=map-only-city&v=map-only-city-1",
+    "name": "Widgy Home Map Only City Diagnostic",
+    "baseline": "Normal personalized Widgy Calendar Unified export, not a prior fixed-location or no-city diagnostic.",
+    "home": "Exactly the untouched Home Hero World Map image plus 14 original navigation nodes (four tap actions and ten original drawings/labels). No background, panel, clock, event display, weather, fitness, greeting/date or progress artwork remains in Home.",
+    "preserved": "Map layer including original frame and Web URL provider/options is byte-equivalent as JSON; original map_request async city lookup/validation, coordinate inputs, minute timestamp and cache behavior unchanged. Full live 3306x1558 lossless map, original city text and real GPS marker requested. Other tabs and all their source definitions unchanged.",
+    "removedVariables": [
+      "wx_status",
+      "wx_wind_speed",
+      "day_greeting",
+      "day_progress",
+      "steps_today",
+      "steps_goal",
+      "steps_progress",
+      "steps_label",
+      "calendar_home_count",
+      "calendar_home_event_word",
+      "calendar_home_title",
+      "calendar_home_meta"
+    ],
+    "variableCount": 69,
+    "guards": "Exactly one original map layer and asynchronous city source required. Exactly 14 distinct original navigation IDs. Exactly 12 known removed variable definitions; reject any remaining name-token or case-insensitive UUID reference, including references from other tabs.",
+    "validation": "Synthetic personalized export only. Exact Home pruning and variable deletion, unchanged map frame/source and other tabs, valid tap targets, immutable normal input and cross-tab name/UUID guard failures verified. Controller copy/download path matches transform for 34 export URLs; failed embedded B remains blocked. No map/backdrop image fetch needed to construct this new copy.",
+    "limits": "This isolates Home content while keeping other tabs, their calendar sources and independent Calendar city lookup. Their global runtime scheduling is not known. No standalone native map timing or speed claim; earlier empty native logs did not receive a subsequent explicit delay confirmation. No private calendar export or actual geocoder/GPS read by agent.",
+    "phoneProcedure": "Import separately, assign to same slot, first confirm the map, real marker and city name appear. Then compare three Calendar-to-Home transitions and report slow/same/faster. Missing map or city must be reported separately.",
+    "deviceResult": "Pending"
   }
 }
