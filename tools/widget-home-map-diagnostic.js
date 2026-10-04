@@ -440,6 +440,24 @@ export function withCompleteHomeDirectFixedMap(original,dataURL){
   return widget;
 }
 
+// Isolate the image's variable substitution from the literal Web URL path.
+// Keep the now-unused literal variable and all native providers unchanged.
+export function withCompleteHomeDirectImageURL(original,dataURL){
+  const widget=withCompleteHomeDirectFixedMap(original,dataURL);
+  const maps=widget['1'].find(n=>n.s==='HOME')?.['1'].filter(n=>n.s==='Home Hero World Map');
+  const requests=widget['36'].filter(v=>v['1']==='map_request');
+  const sources=requests[0]?.['3']?.['66'];
+  const url=sources?.[0]?.['25'];
+  if(maps?.length!==1 || maps[0].z!=='5' || maps[0]['1']!=='Web URL' ||
+      maps[0]['2']!=='${widgy.map_request}' || requests.length!==1 ||
+      sources?.length!==1 || sources[0]['5']!=='Custom Text' || sources[0]['6']!=='Text' ||
+      typeof url!=='string' || url.includes('${') || !url.endsWith('&lat=0&lon=0'))throw Error('unexpected_template');
+  maps[0]['2']=url;
+  widget['3']='Widgy Home Direct Image URL Diagnostic';
+  widget['4']='Compare only with Direct Fixed Map. Change one Home Hero World Map image field from ${widgy.map_request} to the exact literal URL stored in that variable. Keep all 81 variable definitions, including now-unused literal map_request and native coordinates, so variable removal is not combined with binding removal. Same Web URL provider/options/frame, live synthetic 0,0 marker, full 3306x1558 lossless renderer, remaining layers/data, approved clock/artwork, embedded backdrop and navigation; Calendar city TEST. No request, cache, server or normal-export changes. Earlier local-file static map did not show improvement, but changed the provider and transport as well; no speed expectation is established. Confirm map and example marker before three Calendar-to-Home transitions in the same slot/network against Direct Fixed Map. Tests image variable substitution and its native handling, not GPS-off or a demonstrated cache defect. Other location sources remain; fixed marker and stable-URL refresh are diagnostic only. Keep this private export private.';
+  return widget;
+}
+
 // Earlier fixed-coordinate trials kept these native providers defined. Remove
 // only providers that have no remaining name or UUID references in this copy.
 // Other location-dependent sources stay active: this is not a GPS-off widget.

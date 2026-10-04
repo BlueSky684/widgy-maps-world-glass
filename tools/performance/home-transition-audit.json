@@ -766,6 +766,26 @@
     "phoneProcedure": "Confirm full map and synthetic marker in both exports, then compare three Calendar-to-Home transitions in the same slot/network after initial loading. Use unchanged Direct Fixed Map control linked from the new page; do not compare to a real-location or static-map variant. Missing map invalidates timing.",
     "limits": "Whether Widgy evaluates unused variables is unknown. Native City fallback, weather and sun sources remain, so this is not a global GPS-off test. Browser fresh high-accuracy acquisition is not the native widget API. Other costs may mask any difference. No improvement would not rule out all location work. No speed claim before phone result.",
     "validation": "Synthetic personalized export only: exact four-definition deletion plus diagnostic metadata; no layer/URL/provider changes; dangling name/UUID references and changed provider reject; normal export immutable. Copy controller exercises 31 export routes and the blocked failed embedded route.",
+    "deviceResult": {
+      "importConfirmedLocal": "2026-10-04T18:09:30+03:00",
+      "mapConfirmedLocal": "2026-10-04T18:11:44+03:00",
+      "newCopyFeedback": "Map appears; user cannot tell whether faster.",
+      "controlRetestLocal": "2026-10-04T18:15:09+03:00",
+      "controlFeedback": "After instructions to switch back to Direct Fixed Map in same slot, user unsure whether control is slower.",
+      "interpretation": "Inconclusive subjective comparison; no clear perceived improvement established. Do not promote deletion as speed fix or infer GPS disabled. No stopwatch, screen recording or per-tap native timing collected."
+    }
+  },
+  "directImageURLComparison": {
+    "name": "Widgy Home Direct Image URL Diagnostic",
+    "route": "?home=direct-image-url&v=direct-image-url-1",
+    "controlRoute": "?home=direct-fixed-map&compare=image-url&v=direct-image-url-1",
+    "baseline": "Direct Fixed Map, most recently selected for unused-GPS control comparison. Exact prior export retained.",
+    "finding": "All previous fixed/literal map_request trials still bind Home Web URL image to ${widgy.map_request}. Existing other Web URL image layers have literal HTTPS source fields. Four unused coordinate definitions removal gave inconclusive subjective result.",
+    "onlyFunctionalChange": "One Home Hero World Map image field changes from ${widgy.map_request} to the exact same literal synthetic 0,0 URL held in that variable. Preserve all 81 variable definitions, including now-unused literal map_request and four native coordinate definitions; source deletion is not combined with binding change.",
+    "preserved": "Same image Web URL provider/options, frame, dimensions, 3306x1558 lossless renderer, remaining layers/conditions, data, approved clock/artwork, embedded backdrop, tabs and navigation. Calendar city remains TEST. No request parameters/cache/region/API/normal export changes.",
+    "priorEvidenceLimit": "Manual native local-file static-map test already showed no perceived improvement but changed provider and transport together. It lowers confidence that image binding alone is important; it does not directly measure the same live URL with versus without variable substitution. No documented native cache behavior or proven defect claimed.",
+    "phoneProcedure": "Import one new Direct Image URL copy; control Direct Fixed Map is already imported. Select new copy in same slot/network, wait for full map and synthetic marker, compare three Calendar-to-Home transitions. User uncertainty remains inconclusive; never call missing map a speed gain.",
+    "validation": "Synthetic export verifies exact single image-field delta plus metadata, identical URL bytes, every variable and remaining layer, input immutability and invalid binding rejection. Thirty-three copy/export routes and one blocked embedded route covered. No real GPS, geocoder or private owner export read.",
     "deviceResult": "Pending."
   }
 }

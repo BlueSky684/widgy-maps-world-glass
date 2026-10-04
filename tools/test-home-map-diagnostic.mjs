@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {personalizedWidget} from './calendar-connect-widget.js';
-import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeStaticMap1653,withCompleteHomeEmbeddedStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeStableNativeCity,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeUnusedGPSOff,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
+import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeStaticMap1653,withCompleteHomeEmbeddedStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeStableNativeCity,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeDirectImageURL,withCompleteHomeUnusedGPSOff,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
 const template=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
 const normal=personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic');
 const original=perf5DiagnosticBaseline(normal);
@@ -494,6 +494,22 @@ assert.throws(()=>withCompleteHomeDirectFixedMap(unexpectedMapArguments,backdrop
 assert.deepEqual(normal,personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic'));
 console.log('Passed: Direct Fixed Map changes only map_request to literal text; URL is byte-identical to the synthetic Script control over time, same marker/server/image binding and all remaining data/design, guarded JSON argument parsing without eval, immutable input.');
 
+const directImageURL=withCompleteHomeDirectImageURL(normal,backdropDataURL);
+const directImageExpected=structuredClone(directFixedMap);
+directImageExpected['1'].find(n=>n.s==='HOME')['1'].find(n=>n.s==='Home Hero World Map')['2']=fixedURL;
+directImageExpected['3']=directImageURL['3'];directImageExpected['4']=directImageURL['4'];
+assert.deepEqual(directImageURL,directImageExpected); // Exactly one image field plus diagnostic metadata.
+assert.deepEqual(directImageURL['36'],directFixedMap['36']); // Do not combine variable deletion with binding change.
+assert.equal(directImageURL['36'].length,81);
+const directImage=directImageURL['1'].find(n=>n.s==='HOME')['1'].find(n=>n.s==='Home Hero World Map');
+assert.equal(directImage['2'],directFixedSources[0]['25']);
+assert.equal(directImage['1'],'Web URL');
+const badImageBinding=structuredClone(normal);
+badImageBinding['1'].find(n=>n.s==='HOME')['1'].find(n=>n.s==='Home Hero World Map')['2']='${widgy.unknown_map}';
+assert.throws(()=>withCompleteHomeDirectImageURL(badImageBinding,backdropDataURL),/unexpected_template/);
+assert.deepEqual(normal,personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic'));
+console.log('Passed: Direct Image URL changes only image variable substitution to the identical literal URL; all 81 variables, image provider/options/frame and remaining widget preserved, invalid binding rejected, normal input unchanged.');
+
 const unusedGPSOff=withCompleteHomeUnusedGPSOff(normal,backdropDataURL);
 const unusedGPSNames=new Set(['Latitude','Longitude','map_latitude_max5','map_longitude_max5']);
 const unusedGPSExpected=structuredClone(directFixedMap);
@@ -646,7 +662,7 @@ assert.throws(()=>withoutHomeWeatherArtwork(badWeather),/unexpected_template/);
 console.log('Passed: Weather-Art-Off removes only 14 weather-icon alternatives (137 nodes) beyond Progress-Off; all actual data, approved clock, map, weather text, other artwork and navigation unchanged.');
 
 const html=readFileSync(new URL('./widgy-home-map-diagnostic.html',import.meta.url),'utf8');
-assert(html.includes('./widgy-home-map-diagnostic.js?v=unused-gps-off-1'));
+assert(html.includes('./widgy-home-map-diagnostic.js?v=direct-image-url-1'));
 assert(html.includes('?home=minimal&amp;v=minimal-events-1'));
 const source=readFileSync(new URL('./widgy-home-map-diagnostic.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
 assert(!source.includes('withCompleteHomeStableNativeCity')); // Failed mixed-source export cannot be reissued by the page.
@@ -655,7 +671,7 @@ for(const [query,expectedExport] of [
   ['',diagnostic],['?city=off',cityOff],['?home=data-off',nativeOff],
   ['?home=clock-off',clockOff],['?home=minimal',minimal],['?home=progress-off',progressOff],
   ['?home=weather-art-off',weatherArtOff],['?home=minimal-clock',minimalClock],
-  ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop],['?home=full-artwork',fullArtwork],['?home=map-addback',mapAddback],['?home=static-map',staticMap],['?home=map-no-city',mapNoCity],['?home=direct-live-map',directLiveMap],['?home=native-location-map',nativeLocationMap],['?home=map-binding-check',bindingProbe],['?home=sync-map',synchronousMap],['?home=stable-map-url',stableMapURL],['?home=fixed-map-location',fixedLocationMap],['?home=unused-gps-off',unusedGPSOff],['?home=direct-fixed-map&compare=unused-gps',directFixedMap],['?home=direct-fixed-map',directFixedMap],['?home=cdn-fixed-map',cdnFixedMap],['?home=stable-native-city',stableMapURL],['?home=embedded-static-map',embeddedStaticMap],['?home=static-map&compare=embedded',staticMap],['?home=static-map-1653',staticMap1653],['?home=static-map&compare=resolution',staticMap]
+  ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop],['?home=full-artwork',fullArtwork],['?home=map-addback',mapAddback],['?home=static-map',staticMap],['?home=map-no-city',mapNoCity],['?home=direct-live-map',directLiveMap],['?home=native-location-map',nativeLocationMap],['?home=map-binding-check',bindingProbe],['?home=sync-map',synchronousMap],['?home=stable-map-url',stableMapURL],['?home=fixed-map-location',fixedLocationMap],['?home=unused-gps-off',unusedGPSOff],['?home=direct-fixed-map&compare=unused-gps',directFixedMap],['?home=direct-image-url',directImageURL],['?home=direct-fixed-map&compare=image-url',directFixedMap],['?home=direct-fixed-map',directFixedMap],['?home=cdn-fixed-map',cdnFixedMap],['?home=stable-native-city',stableMapURL],['?home=embedded-static-map',embeddedStaticMap],['?home=static-map&compare=embedded',staticMap],['?home=static-map-1653',staticMap1653],['?home=static-map&compare=resolution',staticMap]
 ]){
   const elements=Object.fromEntries(elementIDs.map(id=>[id,{textContent:'',hidden:true,classList:{toggle(){}},handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}]));
   let payload='',copied='',backdropLoads=0,staticMapLoads=0,exportLoads=0;
@@ -669,7 +685,7 @@ for(const [query,expectedExport] of [
     loadHomeBackdropDataURL:async()=>{backdropLoads++;return backdropDataURL;},
     loadHomeStaticMapDataURL:async()=>{staticMapLoads++;return staticMapDataURL;},
     perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,
-    withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeStaticMap1653,withCompleteHomeEmbeddedStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeStableNativeCity,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeUnusedGPSOff,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
+    withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeStaticMap1653,withCompleteHomeEmbeddedStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeStableNativeCity,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeDirectImageURL,withCompleteHomeUnusedGPSOff,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
   });
   await new vm.Script(source).runInContext(context);
   if(query==='?home=embedded-static-map'){
@@ -681,7 +697,7 @@ for(const [query,expectedExport] of [
     continue;
   }
   assert.deepEqual(JSON.parse(payload),expectedExport,query);
-  assert.equal(backdropLoads,['?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check','?home=sync-map','?home=stable-map-url','?home=fixed-map-location','?home=unused-gps-off','?home=direct-fixed-map&compare=unused-gps','?home=direct-fixed-map','?home=cdn-fixed-map','?home=stable-native-city','?home=embedded-static-map','?home=static-map&compare=embedded','?home=static-map-1653','?home=static-map&compare=resolution'].includes(query)?1:0);
+  assert.equal(backdropLoads,['?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check','?home=sync-map','?home=stable-map-url','?home=fixed-map-location','?home=unused-gps-off','?home=direct-fixed-map&compare=unused-gps','?home=direct-image-url','?home=direct-fixed-map&compare=image-url','?home=direct-fixed-map','?home=cdn-fixed-map','?home=stable-native-city','?home=embedded-static-map','?home=static-map&compare=embedded','?home=static-map-1653','?home=static-map&compare=resolution'].includes(query)?1:0);
   assert.equal(staticMapLoads,query==='?home=embedded-static-map'?1:0);
   assert.equal(elements.copy.disabled,false);
   await elements.copy.handlers.click();
@@ -696,7 +712,7 @@ for(const [query,expectedExport] of [
     assert(elements.comparison.textContent.includes('Progress-Off'));
     assert.equal(elements['next-test'].hidden,true);
   }
-  assert.equal(elements['baseline-test'].hidden,!['?home=minimal-clock','?home=minimal-events','?home=minimal-time','?home=minimal-native','?home=minimal-backdrop','?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check','?home=sync-map','?home=stable-map-url','?home=fixed-map-location','?home=unused-gps-off','?home=direct-fixed-map&compare=unused-gps','?home=direct-fixed-map','?home=cdn-fixed-map','?home=stable-native-city','?home=embedded-static-map','?home=static-map&compare=embedded','?home=static-map-1653','?home=static-map&compare=resolution'].includes(query));
+  assert.equal(elements['baseline-test'].hidden,!['?home=minimal-clock','?home=minimal-events','?home=minimal-time','?home=minimal-native','?home=minimal-backdrop','?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check','?home=sync-map','?home=stable-map-url','?home=fixed-map-location','?home=unused-gps-off','?home=direct-fixed-map&compare=unused-gps','?home=direct-image-url','?home=direct-fixed-map&compare=image-url','?home=direct-fixed-map','?home=cdn-fixed-map','?home=stable-native-city','?home=embedded-static-map','?home=static-map&compare=embedded','?home=static-map-1653','?home=static-map&compare=resolution'].includes(query));
   if(query==='?home=minimal-clock'){
     assert.equal(elements.download.download,'Widgy_Home_Minimal_Live_Clock_Diagnostic.json');
     assert(elements.comparison.textContent.includes('בדיקה ב׳ המקורית'));
@@ -705,6 +721,13 @@ for(const [query,expectedExport] of [
   if(query==='?home=minimal-events'){
     assert.equal(elements.download.download,'Widgy_Home_Minimal_Events_Diagnostic.json');
     assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=minimal-clock&v=minimal-events-1');
+    assert.equal(elements['next-test'].hidden,true);
+  }
+  if(query==='?home=direct-image-url' || query==='?home=direct-fixed-map&compare=image-url'){
+    const direct=query==='?home=direct-image-url';
+    assert.equal(elements.download.download,direct?'Widgy_Home_Direct_Image_URL_Diagnostic.json':'Widgy_Home_Direct_Fixed_Map_Diagnostic.json');
+    assert.equal(elements['baseline-link'].href,direct?'./widgy-home-map-diagnostic.html?home=direct-fixed-map&compare=image-url&v=direct-image-url-1':'./widgy-home-map-diagnostic.html?home=direct-image-url&v=direct-image-url-1');
+    assert(elements.explanation.textContent.includes(direct?'0°,0°':'כבר מיובא ומופיע בתוך Widgy'));
     assert.equal(elements['next-test'].hidden,true);
   }
   if(query==='?home=unused-gps-off' || query==='?home=direct-fixed-map&compare=unused-gps'){
@@ -833,4 +856,4 @@ for(const [query,expectedExport] of [
     assert.equal(elements['next-test'].hidden,true);
   }
 }
-console.log('Passed: thirty-one diagnostic URLs export/copy their intended controls; failed embedded map route blocks export, downloads and clipboard without loading private data.');
+console.log('Passed: thirty-three diagnostic URLs export/copy their intended controls; failed embedded map route blocks export, downloads and clipboard without loading private data.');
