@@ -1,10 +1,11 @@
 import {loadHomeBackdropDataURL} from './widget-home-backdrop-data.js?v=embedded-backdrop-1';
-import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js?v=static-map-1';
+import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeMapWithoutCityFetch,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js?v=map-no-city-1';
 import {prepareWidget} from './calendar-widget-export.js?v=perf-5-ringfix-1';
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(window.location.search);
+const mapNoCity=params.get('home')==='map-no-city';
 const staticMap=params.get('home')==='static-map';
-const mapAddback=staticMap || params.get('home')==='map-addback';
+const mapAddback=mapNoCity || staticMap || params.get('home')==='map-addback';
 const fullArtwork=mapAddback || params.get('home')==='full-artwork';
 const embeddedBackdrop=fullArtwork || params.get('home')==='embedded-backdrop';
 const minimalBackdrop=embeddedBackdrop || params.get('home')==='minimal-backdrop';
@@ -18,7 +19,16 @@ const minimalHome=minimalLiveClock || params.get('home')==='minimal';
 const clockOff=minimalHome || params.get('home')==='clock-off';
 const nativeDataOff=clockOff || params.get('home')==='data-off';
 const cityOff=nativeDataOff || params.get('city')==='off';
-if(staticMap){
+if(mapNoCity){
+  document.title='בדיקת מפה חיה ללא המתנה לקריאת העיר';
+  $('heading').textContent='מפה חיה, בלי להמתין לשירות העיר.';
+  $('explanation').textContent='מפת היום־לילה החיה וסימון המיקום חזרו. כתובת המפה נמסרת כעת מיד, בלי קריאה לשירות העיר החיצוני. שם העיר שעל המפה יוחלף זמנית בקואורדינטות קצרות. הרזולוציה, העיצוב ושאר מקורות הנתונים נשמרים; שם העיר ב־Calendar עדיין TEST.';
+  $('comparison').textContent='המתן שהמפה וסימון המיקום יופיעו, ואז עבור באותו סלוט שלוש פעמים Calendar → Home. האם השיפור שהיה עם המפה הקבועה נשמר, או שההמתנה הגדולה חזרה? אם המפה או סימון המיקום חסרים, דווח על כך.';
+  $('download').download='Widgy_Home_Live_Map_No_City_Fetch_Diagnostic.json';
+  $('baseline-test').hidden=false;
+  $('baseline-link').href='./widgy-home-map-diagnostic.html?home=static-map&v=map-no-city-1';
+  $('baseline-link').textContent='העותק הקודם עם המפה הקבועה, להשוואה';
+}else if(staticMap){
   document.title='בדיקת תמונת מפה קבועה ב־Home';
   $('heading').textContent='מפה קבועה בגודל ובאיכות המקוריים.';
   $('explanation').textContent='זהה לעותק האחרון שהאט, עם שינוי אחד: מנגנון הטעינה הדינמי של המפה הוחלף בקישור לתמונת מפה קבועה. התמונה נוצרה מהמנוע ומהקבצים המאושרים, באותה רזולוציה וללא אובדן איכות. מצב היום־לילה קבוע וסימון המיקום האישי חסר בכוונה. כל שאר הווידג׳ט זהה.';
@@ -154,10 +164,10 @@ async function prepare(){
     const result=await prepareWidget();
     const transform=minimalBackdrop ? withMinimalHomeBackdrop : minimalNative ? withMinimalHomeNativeData : minimalTime ? withMinimalHomeTimeText : minimalEvents ? withMinimalHomeEvents : minimalLiveClock ? withMinimalHomeLiveClock : minimalHome ? withMinimalHome : clockOff ? withoutHomeLiveClock : nativeDataOff ? withoutHomeNativeData : cityOff ? withoutHomeMapAndCityLookup : withoutHomeMap;
     const original=JSON.parse(result.payload);
-    payload=JSON.stringify(staticMap ? withCompleteHomeStaticMap(original,await loadHomeBackdropDataURL()) : mapAddback ? withCompleteHomeMap(original,await loadHomeBackdropDataURL()) : fullArtwork ? withCompleteHomeArtwork(original,await loadHomeBackdropDataURL()) : embeddedBackdrop ? withMinimalHomeEmbeddedBackdrop(perf5DiagnosticBaseline(original),await loadHomeBackdropDataURL()) : weatherArtOff ? withoutHomeWeatherArtwork(original) : progressOff ? withoutHomeProgressArtwork(original) : transform(perf5DiagnosticBaseline(original)));
+    payload=JSON.stringify(mapNoCity ? withCompleteHomeMapWithoutCityFetch(original,await loadHomeBackdropDataURL()) : staticMap ? withCompleteHomeStaticMap(original,await loadHomeBackdropDataURL()) : mapAddback ? withCompleteHomeMap(original,await loadHomeBackdropDataURL()) : fullArtwork ? withCompleteHomeArtwork(original,await loadHomeBackdropDataURL()) : embeddedBackdrop ? withMinimalHomeEmbeddedBackdrop(perf5DiagnosticBaseline(original),await loadHomeBackdropDataURL()) : weatherArtOff ? withoutHomeWeatherArtwork(original) : progressOff ? withoutHomeProgressArtwork(original) : transform(perf5DiagnosticBaseline(original)));
     downloadURL=URL.createObjectURL(new Blob([payload],{type:'application/json'}));
     $('download').href=downloadURL;$('download').hidden=false;$('copy').disabled=false;
-    status(staticMap ? 'עותק Static Map מוכן. תמונת המפה קבועה בכוונה; המתן להופעתה לפני בדיקת המעברים.' : mapAddback ? 'עותק Map Add-Back מוכן. המפה ומנגנון הטעינה המקורי הוחזרו; המתן להופעתה לפני ההשוואה.' : fullArtwork ? 'עותק Complete Artwork מוכן. כל הגרפיקה של Home הוחזרה; המפה עדיין חסרה.' : embeddedBackdrop ? 'עותק Embedded Backdrop מוכן. אחרי הייבוא יש לוודא שהזכוכית והמסגרות מופיעות כרגיל לפני השוואת המהירות.' : minimalBackdrop ? 'עותק Minimal Backdrop מוכן. נוספה רק שכבת הזכוכית והמסגרות המקורית.' : minimalNative ? 'עותק Minimal Native Data מוכן. נתוני מזג האוויר והכושר, זריחה ושקיעה ותזכורות חזרו לפעול.' : minimalTime ? 'עותק Minimal Time Text מוכן. נוספו הברכה, התאריך ואחוז התקדמות היום.' : minimalEvents ? 'עותק Minimal Events מוכן. Home יציג את השעון וארבעת שדות האירועים.' : minimalLiveClock ? 'עותק Minimal Live Clock מוכן. Home יציג רק רקע, ניווט ואת השעון המאושר.' : weatherArtOff ? 'עותק Weather-Art-Off מוכן. אייקון מזג האוויר חסר בכוונה; הטמפרטורות, המפה והשעון פעילים.' : progressOff ? 'עותק Progress-Off מוכן. המפה והשעון הישן פעילים; רק מילוי טבעת הצעדים ופס היום חסרים זמנית.' : minimalHome ? 'עותק Home Minimal מוכן. Home יהיה כמעט ריק, עם פס הניווט.' : clockOff ? 'עותק Clock-Off מוכן. השעון ב־Home יישאר זמנית על 12:34.' : nativeDataOff ? 'עותק Native-Data-Off מוכן. נתוני הדוגמה ב־Home מסומנים TEST DATA. זהו עותק אבחון זמני.' : cityOff ? 'עותק Map-City-Off מוכן. המפה ריקה ושם העיר הוא TEST. זהו עותק אבחון זמני.' : 'עותק האבחון מוכן. אזור המפה יהיה ריק; שאר הווידג׳ט נשאר זהה.');
+    status(mapNoCity ? 'עותק Live Map No City Fetch מוכן. המפה חיה; שם העיר מוחלף זמנית בקואורדינטות קצרות.' : staticMap ? 'עותק Static Map מוכן. תמונת המפה קבועה בכוונה; המתן להופעתה לפני בדיקת המעברים.' : mapAddback ? 'עותק Map Add-Back מוכן. המפה ומנגנון הטעינה המקורי הוחזרו; המתן להופעתה לפני ההשוואה.' : fullArtwork ? 'עותק Complete Artwork מוכן. כל הגרפיקה של Home הוחזרה; המפה עדיין חסרה.' : embeddedBackdrop ? 'עותק Embedded Backdrop מוכן. אחרי הייבוא יש לוודא שהזכוכית והמסגרות מופיעות כרגיל לפני השוואת המהירות.' : minimalBackdrop ? 'עותק Minimal Backdrop מוכן. נוספה רק שכבת הזכוכית והמסגרות המקורית.' : minimalNative ? 'עותק Minimal Native Data מוכן. נתוני מזג האוויר והכושר, זריחה ושקיעה ותזכורות חזרו לפעול.' : minimalTime ? 'עותק Minimal Time Text מוכן. נוספו הברכה, התאריך ואחוז התקדמות היום.' : minimalEvents ? 'עותק Minimal Events מוכן. Home יציג את השעון וארבעת שדות האירועים.' : minimalLiveClock ? 'עותק Minimal Live Clock מוכן. Home יציג רק רקע, ניווט ואת השעון המאושר.' : weatherArtOff ? 'עותק Weather-Art-Off מוכן. אייקון מזג האוויר חסר בכוונה; הטמפרטורות, המפה והשעון פעילים.' : progressOff ? 'עותק Progress-Off מוכן. המפה והשעון הישן פעילים; רק מילוי טבעת הצעדים ופס היום חסרים זמנית.' : minimalHome ? 'עותק Home Minimal מוכן. Home יהיה כמעט ריק, עם פס הניווט.' : clockOff ? 'עותק Clock-Off מוכן. השעון ב־Home יישאר זמנית על 12:34.' : nativeDataOff ? 'עותק Native-Data-Off מוכן. נתוני הדוגמה ב־Home מסומנים TEST DATA. זהו עותק אבחון זמני.' : cityOff ? 'עותק Map-City-Off מוכן. המפה ריקה ושם העיר הוא TEST. זהו עותק אבחון זמני.' : 'עותק האבחון מוכן. אזור המפה יהיה ריק; שאר הווידג׳ט נשאר זהה.');
   }catch(error){
     status(messages[error.message] || 'לא ניתן להכין את העותק כרגע. נסה שוב; אם הבעיה נמשכת, בדוק את חיבור היומנים בהגדרות למטה.',true);
     $('retry').hidden=false;

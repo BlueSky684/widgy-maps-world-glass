@@ -306,6 +306,24 @@ export function withCompleteHomeStaticMap(original,dataURL){
   return widget;
 }
 
+// Preserve the existing map URL builder/runtime mode, but finish immediately
+// with GPS and no city instead of waiting for a client reverse-geocoder.
+export function withCompleteHomeMapWithoutCityFetch(original,dataURL){
+  const widget=withCompleteHomeMap(original,dataURL);
+  const source=widget['36'].find(v=>v['1']==='map_request')['3']['66'][0];
+  const script=source['10'];
+  const marker='  // Best effort within a surviving JS context only.';
+  const start=script.indexOf(marker),call=script.lastIndexOf('\ncityMapRuntime(');
+  if(start<0 || start!==script.lastIndexOf(marker) || call<=start ||
+      !script.startsWith('function cityMapRuntime(') ||
+      !script.slice(start,call).includes('reverse-geocode-client'))throw Error('unexpected_template');
+  source['10']=script.slice(0,start)+"  finish(mapURL(''));\n}"+script.slice(call);
+  if(source['10'].includes('fetch(') || source['10'].includes('reverse-geocode-client'))throw Error('unexpected_template');
+  widget['3']='Widgy Home Live Map No City Fetch Diagnostic';
+  widget['4']='Compared with Map Add-Back, change only map_request script: retain the exact coordinate parser/input arguments, endpoint, minute URL bucket, reuse=60, sendToWidgy completion and Async + No main() provider, but replace the city cache/fetch block with immediate finish(mapURL(empty city)). Live GPS marker and day/night server rendering remain; no custom reverse-geocoder request runs. The map temporarily displays short coordinates instead of a city name. Calendar city remains TEST. All 81 variable identities, other sources, map layer/frame, approved artwork/clock and embedded backdrop stay unchanged. Compare repeated transitions after the live map appears, especially against the faster Static Map. This isolates waiting for the client city cache/fetch path relative to the original dynamic control, not all map/network costs. Device appearance, timing and updates still require confirmation. Keep this private export private.';
+  return widget;
+}
+
 // Start from the FULL, repaired normal export, not the earlier stripped probes.
 // Leave every data source active: isolate the two sets of conditional drawings.
 export function withoutHomeProgressArtwork(original){
