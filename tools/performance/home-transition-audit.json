@@ -940,7 +940,70 @@
     "name": "Widgy Consolidated Home Calendar 1",
     "changes": "Native weather condition factoring removes 50 Home groups; four neutral Calendar accent groups and four single-title wrappers removed. 1671 total nodes to 1613. Every drawing and its ordered predicate conjunction preserved, all 81 source definitions unchanged.",
     "validation": "18,450 weather/wind fixtures, full display-list equivalence, valid navigation, copy/download error paths, 22 existing calendar/ring tests passed. Synthetic only.",
-    "deviceResult": "Pending; no native speedup or root cause established.",
+    "deviceResult": "2026-10-04 evening: user reports noticeably better overall Home transition, with some remaining Calendar-to-Home lag; later estimates approximately one second less than an earlier version. Subjective, no native numeric timing. Later Direct Dots and Compact Dots trials did not show meaningful further improvement. Consolidated 1 remains the full-function control; no root cause established.",
     "archiveFinding": "Old diagnostic controller is absent from normal and consolidated export import graphs. Historic /api/home-map is separate from current /api/night-map. Broad assets/earth/** packaging needs a bundle manifest before assigning runtime cost; existing public assets preserved."
+  },
+  "homeNextSessionPlan20261005": {
+    "requestedLocal": "2026-10-04T22:35:11+03:00",
+    "report": "home-next-session-plan.txt",
+    "sourceCommit": "2019ffe04c766120fa9aa67b80f9ccb588c33f18",
+    "scope": "Current-source reinspection and synthetic in-memory feasibility check only. No runtime, map, widget export, provider, region or deployment configuration change.",
+    "homeBreakdown": {
+      "descendants": 339,
+      "stepsRingSegments": 100,
+      "dayProgressAlternatives": 100,
+      "weatherGroups": 41,
+      "weatherDrawings": 46,
+      "otherNodes": 52
+    },
+    "meaning": "Source node counts, not concurrent draw counts or measured rendering cost. Ring predicates are cumulative; day-progress predicates select an exact percentage.",
+    "keyComparisonGap": "Fast Map Only City removed both Home content and 12 global variable definitions. Prior Progress-Off and Weather-Art-Off retained all 81 definitions and had no clear perceived benefit.",
+    "firstPlannedProbe": {
+      "control": "Map Only City, 15 Home descendants, 69 variables",
+      "candidate": "Same exact sparse Home and other document fields; restore original 81-variable array in original order",
+      "status": "Planned only. Synthetic in-memory restoration verified: all other document fields deeply identical, 12 restored definitions, dependencies present. No new export or native run.",
+      "negativeResultLimit": "Unreferenced definitions may not be evaluated. A fast candidate does not prove the variables are cheap when consumed by visible layers.",
+      "nextIfSlower": [
+        "Weather + four Home calendar variables (6 total)",
+        "Greeting/day progress + four steps variables (6 total)"
+      ],
+      "nextIfNotClearlySlower": "Inspect/add back visible consumers and their interactions from the same sparse control; do not repeat unrelated hosting or artwork-only tests."
+    },
+    "citySourceObservation": "Normal map variable uses cityReuseSeconds=3600 while Calendar prefix retains the older 60-second source. Both use the same best-effort global cache name, but actual shared JS context and execution scheduling in Widgy are unknown. No claim of duplicate requests per tap.",
+    "navigationObservation": "HOME Tap action is button_245-247,246,195 in both Home and Calendar. No explicit delay instruction found in that action; native transition scheduling remains unmeasured.",
+    "hostingObservation": {
+      "browserStaticOnly": true,
+      "vercelRepeatMeanMs": 183.5,
+      "jsdelivrRepeatMeanMs": 133.5,
+      "absoluteDifferenceMs": 50,
+      "firstRequestMs": {
+        "vercel": 694,
+        "jsdelivr": 517
+      },
+      "conclusion": "Small static-delivery advantage in this run; not proof of live-map or native transition improvement."
+    },
+    "constraints": [
+      "Only f50-widget-test",
+      "Preserve approved design, full lossless map and live functionality in promoted versions",
+      "No private export or real GPS/provider requests by agent",
+      "No extra phone or stopwatch required",
+      "No new user import tonight",
+      "No automatic future/background execution scheduled"
+    ],
+    "nativeRingPriority": {
+      "userQuestionLocal": "2026-10-04T22:40:57+03:00",
+      "confirmedCapability": "Official App Store release notes name Ring Chart and its Exclusive Segment Mode. Native ring existence verified; specific current source binding/export schema not yet verified.",
+      "source": "https://apps.apple.com/us/app/widgy-widgets-home-lock-watch/id1524540481",
+      "existingImplementation": "tools/widgy-step-ring.mjs builds 100 short rounded convex capsules with cumulative thresholds. Comments explain keeping the center hollow versus long concave paths. This is a custom implementation, not a Widgy requirement.",
+      "priority": "First inspect native Ring Chart configuration and grounded export schema. If supported with matching appearance and live data, the first phone candidate should replace only the 100 ring-fill shapes in the full control. Otherwise proceed to the variable-only sparse diagnostic.",
+      "gates": [
+        "Keep current Pedometer-based numeric source consistent with ring; do not silently replace with Health",
+        "10,000 daily step goal and clamp at full",
+        "Match approved frame, stroke thickness, color, start angle, direction, rounded ends and background",
+        "Validate zero, one percent, half, full, over-goal, unavailable and midnight reset",
+        "Do not guess undocumented native JSON fields",
+        "No measured native speed gain is claimed; earlier complete progress removal was not noticeably faster"
+      ]
+    }
   }
 }
