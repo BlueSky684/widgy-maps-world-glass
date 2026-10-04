@@ -398,6 +398,18 @@ export function withCompleteHomeDirectFixedMap(original,dataURL){
   return widget;
 }
 
+// Same public 0,0 image, with opt-in CDN delivery. Server admits only this
+// exact synthetic query; ordinary real-location maps retain private caching.
+export function withCompleteHomeCDNFixedMap(original,dataURL){
+  const widget=withCompleteHomeDirectFixedMap(original,dataURL);
+  const source=widget['36'].find(v=>v['1']==='map_request')['3']['66'][0];
+  if(source['5']!=='Custom Text' || source['6']!=='Text' || !source['25'].endsWith('&lat=0&lon=0'))throw Error('unexpected_template');
+  source['25']+='&cache=synthetic-60';
+  widget['3']='Widgy Home CDN Fixed Map Diagnostic';
+  widget['4']='Compare with Direct Fixed Map, reported no improvement. Append only cache=synthetic-60 to the same literal map_request URL. The server allows public CDN caching only for the exact synthetic 0,0/no-city/full-size/glass/r6 query, for the remaining original 60-second image lifetime; no stale extension. Ordinary real-location maps retain private/CDN-no-store behavior. Same renderer, lossless pixels/resolution, marker, image binding/frame, all variables and other sources/layers, approved clock/artwork, embedded backdrop and navigation. Calendar city TEST; marker is still the public example 0,0. No map JavaScript or GPS interpolation. Wait for map/marker, compare three repeated Calendar-to-Home transitions and one after a minute against Direct Fixed Map. Tests CDN delivery policy and interactions, not GPS or server region. Backend cache hits alone do not establish Widgy speed or refresh cadence. Fixed location is diagnostic only; normal export unchanged. Keep this private export private.';
+  return widget;
+}
+
 // Keep the known faster literal-source path, requesting the existing live
 // renderer instead of a prebuilt PNG. Empty coordinates prohibit IP fallback.
 export function withCompleteHomeDirectLiveMap(original,dataURL){

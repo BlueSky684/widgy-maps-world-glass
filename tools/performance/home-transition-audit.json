@@ -443,7 +443,85 @@
     "preserved": "Identical requested endpoint and URL, synthetic 0,0 marker/label, full lossless map resolution/style and reuse=60. All 81 variable identities and other source definitions, native location variables, map image binding/frame, approved artwork/clock and embedded backdrop, other tabs/navigation remain identical. Calendar city TEST. No server/renderer/normal-export changes.",
     "phoneProcedure": "Wait for map and example marker; compare three repeated Calendar-to-Home transitions against Fixed Location Map in the same slot/network. Missing map or marker invalidates comparison.",
     "interpretationLimit": "Tests the map source provider and its interactions while holding the requested URL constant. Does not remove all widget JavaScript or location work. Actual render time, cache history, image transfer/decode can vary between tests. If unchanged, dynamic server/image handling and variable-backed image loading remain candidates. Fixed location and unverified stable-URL refresh are not a final solution.",
-    "deviceResult": "Pending",
+    "deviceResult": "2026-10-04 12:22 Asia/Jerusalem: user reports no improvement. Removing the map script while keeping the requested synthetic image URL identical did not give a perceived speed-up. No numerical timings; this does not establish that all JavaScript or GPS work is free.",
     "validation": "Exact one-source-list delta and input immutability; literal URL equals VM output of prior fixed Script at multiple times, identical remaining sources/layers, no variable tokens in literal source, guarded non-executing JSON argument parsing; twenty-four copy modes and baseline links."
+  },
+  "deliveryInvestigation20261004": {
+    "scope": "Public exact synthetic 0,0/no-city URL; three sequential requests in execution environment, not phone/Israel latency measurements. No actual GPS replay or private export accessed.",
+    "requests": [
+      {
+        "case": "initial GET",
+        "status": 200,
+        "bytes": 4047894,
+        "serverRenderMs": 1451.6,
+        "mapCache": "MISS",
+        "cdnCache": "MISS",
+        "timeToHeadersSeconds": 8.184,
+        "bodyReadSeconds": 0.802
+      },
+      {
+        "case": "repeat GET",
+        "status": 200,
+        "bytes": 4047894,
+        "serverRenderMs": 0.1,
+        "mapCache": "HIT",
+        "cdnCache": "MISS",
+        "timeToHeadersSeconds": 4.973,
+        "bodyReadSeconds": 0.805
+      },
+      {
+        "case": "conditional GET with ETag",
+        "status": 304,
+        "bytes": 0,
+        "serverRenderMs": 0.1,
+        "cdnCache": "MISS",
+        "timeToHeadersSeconds": 4.479,
+        "bodyReadSeconds": 0
+      }
+    ],
+    "finding": "Warm server render cache and ETag revalidation work. A nonconditional repeat still transfers about 4 MB. CDN is intentionally disabled for ordinary location maps. These samples do not show what requests Widgy actually makes.",
+    "losslessPNGExperiment": {
+      "fixture": "existing static 3306x1558 PNG",
+      "originalBytes": 4075465,
+      "options": [
+        {
+          "compressionLevel": 6,
+          "adaptiveFiltering": false,
+          "bytes": 4075465,
+          "encodeMs": 172
+        },
+        {
+          "compressionLevel": 3,
+          "adaptiveFiltering": true,
+          "bytes": 4222397,
+          "encodeMs": 380
+        },
+        {
+          "compressionLevel": 6,
+          "adaptiveFiltering": true,
+          "bytes": 4087038,
+          "encodeMs": 489
+        },
+        {
+          "compressionLevel": 9,
+          "adaptiveFiltering": true,
+          "bytes": 4040568,
+          "encodeMs": 1390
+        }
+      ],
+      "validation": "Decoded RGBA hashes identical for all four. Single local sample per encoder setting, not a benchmark. No useful size/time tradeoff demonstrated; no renderer or compression changes adopted."
+    },
+    "officialReference": "https://vercel.com/docs/caching/cache-control-headers"
+  },
+  "cdnFixedMapComparison": {
+    "name": "Widgy Home CDN Fixed Map Diagnostic",
+    "baseline": "Direct Fixed Map, no improvement reported.",
+    "onlyFunctionalExportChange": "Append cache=synthetic-60 to the same literal map_request URL. All other widget fields unchanged apart from diagnostic metadata.",
+    "serverChange": "Allow public max-age/must-revalidate cache policy in all three cache-control headers only for the exact eight-parameter synthetic 0,0/no-city query. TTL is remaining lifetime of the same original 60-second render entry; no extension or stale-while-revalidate. Extra/duplicate parameters, actual locations, empty/IP locations and ordinary requests keep private/CDN-no-store policy.",
+    "preserved": "Full lossless renderer and map size/style, same synthetic marker and coordinate label, all 81 variables/other sources, map binding/frame, approved artwork/clock and embedded backdrop, navigation. Calendar city TEST. Normal export unchanged.",
+    "phoneProcedure": "Wait for map/marker; compare three Calendar-to-Home transitions and another after a minute against Direct Fixed Map in the same slot/network.",
+    "interpretationLimit": "Measures possible delivery-policy effect. Does not establish a GPS or regional cause. Synthetic location and stable-URL refresh are still diagnostic only. Public CDN is not enabled for real user coordinates.",
+    "deviceResult": "Pending",
+    "validation": "Synthetic route tests verify exact query admission, ordinary/private behavior, rejection of extra/duplicate/location/city parameters, no lifetime extension, identical body/ETag, revalidation and POST behavior. Exact one-URL-suffix export delta, unchanged design/data and original immutable; twenty-five copy modes. Deployed CDN behavior still to be checked."
   }
 }

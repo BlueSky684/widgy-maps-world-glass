@@ -130,6 +130,38 @@ export function resolveLocation(url,headers){
   assert.equal((await request(query+'&at=bad')).code,400);
   assert.equal((await request(query.replace('width=3306','width=1'))).code,400);
   assert.equal((await request(query,{},'POST')).code,405);
+  // Public CDN delivery is allowed only for the exact synthetic diagnostic.
+  clock+=60000;
+  const syntheticBase='mode=live&width=3306&presentation=glass&atlas=r6&reuse=60&lat=0&lon=0';
+  const synthetic=syntheticBase+'&cache=synthetic-60';
+  const privateControl=await request(syntheticBase);
+  const cdn=await request(synthetic,{'x-vercel-ip-latitude':'1','x-vercel-ip-longitude':'2'});
+  assert.equal(cdn.headers['X-Map-Cache'],'HIT');
+  assert.equal(cdn.headers['X-Map-Delivery'],'synthetic-cdn-60');
+  assert.deepEqual(cdn.body,privateControl.body);assert.equal(cdn.headers.ETag,privateControl.headers.ETag);
+  for(const key of ['Cache-Control','CDN-Cache-Control','Vercel-CDN-Cache-Control'])
+    assert.equal(cdn.headers[key],'public, max-age=60, must-revalidate');
+  clock+=30000;
+  const agedCDN=await request(synthetic);
+  assert.equal(agedCDN.headers['Vercel-CDN-Cache-Control'],'public, max-age=30, must-revalidate');
+  assert.deepEqual(agedCDN.body,cdn.body);
+  const conditionalCDN=await request(synthetic,{'if-none-match':cdn.headers.ETag});
+  assert.equal(conditionalCDN.code,304);assert.equal(conditionalCDN.body,undefined);
+  const denied=[syntheticBase,synthetic+'&city=Example',synthetic+'&city_text=',synthetic+'&lat=0',
+    synthetic+'&diagnostic=location',synthetic+'&token=synthetic',synthetic+'&t=0',
+    synthetic.replace('lat=0','lat=1'),synthetic.replace('lon=0','lon=2'),
+    synthetic.replace('lat=0','lat='),synthetic.replace('lat=0&lon=0&',''),
+    synthetic.replace('cache=synthetic-60','cache=other'),synthetic.replace('width=3306','width=1653')];
+  for(const params of denied){
+    const out=await request(params,{'x-vercel-ip-latitude':'0','x-vercel-ip-longitude':'0'});
+    assert.equal(out.headers['CDN-Cache-Control'],'no-store',params);
+    assert.equal(out.headers['Vercel-CDN-Cache-Control'],'no-store',params);
+    assert(out.headers['Cache-Control'].startsWith('private,'),params);
+    assert.equal(out.headers['X-Map-Delivery'],undefined,params);
+  }
+  const postCDN=await request(synthetic,{},'POST');
+  assert.equal(postCDN.code,405);assert.equal(postCDN.headers['Vercel-CDN-Cache-Control'],'no-store');
+
 } finally {globalThis.Date=RealDate;rmSync(dir,{recursive:true,force:true});}
 const html=n=>readFileSync(new URL('./widgy-home-calendar-'+n+'.html',import.meta.url),'utf8').split('<script>')[1];
 assert.equal(html('c6').replaceAll('C6','C5'),html('c5'));

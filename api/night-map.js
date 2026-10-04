@@ -4,6 +4,10 @@ import {createMapRenderCache} from '../lib/map-render-cache.js';
 import {precomputedState} from '../lib/map-precomputed.js';
 
 const cachedRender = createMapRenderCache();
+// CDN delivery trial is restricted to one public synthetic map. Real device
+// locations, city text, extra/duplicate parameters and normal exports remain
+// private. This response never depends on request IP or calendar data.
+const syntheticCDNQuery = new URLSearchParams('mode=live&width=3306&presentation=glass&atlas=r6&reuse=60&lat=0&lon=0&cache=synthetic-60');
 
 // This route is opt-in. Existing widget endpoints retain their behavior.
 export default async function handler(req, res) {
@@ -47,6 +51,16 @@ export default async function handler(req, res) {
       const remaining = Math.max(0, Math.floor((entry.expiresAt - Date.now()) / 1000));
       res.setHeader('Cache-Control', `private, max-age=${remaining}, must-revalidate`);
       res.setHeader('ETag', entry.etag);
+      const syntheticCDN = url.searchParams.size === syntheticCDNQuery.size &&
+        [...syntheticCDNQuery].every(([key,value]) => url.searchParams.get(key) === value) &&
+        location?.source === 'coordinates' && location.latitude === 0 && location.longitude === 0 && !location.city;
+      if (syntheticCDN && remaining > 0) {
+        const policy = `public, max-age=${remaining}, must-revalidate`;
+        res.setHeader('Cache-Control', policy);
+        res.setHeader('CDN-Cache-Control', policy);
+        res.setHeader('Vercel-CDN-Cache-Control', policy);
+        res.setHeader('X-Map-Delivery', 'synthetic-cdn-60');
+      }
     }
     res.setHeader('Content-Type', 'image/png');
     res.setHeader('X-Map-Cache', result.state);
