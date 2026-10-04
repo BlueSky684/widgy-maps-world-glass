@@ -366,7 +366,51 @@
     "changes": "Retain native-composed map_request exactly; display direct native Latitude/Longitude/City, a short probe variable with the same source-chain structure, and full actual map_request. Eight temporary text/panel layers cover the clock/events area; one added variable map_probe_tail (82 total). Main map image gets the known direct no-location literal URL as a visual control.",
     "privacy": "No new script, logging, telemetry or private calendar URL readout. Native location values appear only on the device and any screenshot the user chooses to share. Image control requests no location. No actual user GPS sent by assistant.",
     "interpretationLimit": "Not a performance test, approved final design, or automatic repair. Device screenshot is needed to distinguish empty/native formatting, chain composition, variable readout and image binding. Raw full URL may require enlarged screenshot.",
-    "deviceResult": "Pending",
+    "deviceResult": "2026-10-04: IMG_9846.png shows native latitude/longitude and city populated, a complete joined tail and a visually complete map_request URL in text, with the literal no-location control map visible. Native coordinates display only one decimal place. This verifies text-context composition for that screenshot, not precise location/city freshness, invisible character absence, image-provider binding or speed. Actual user coordinates are not recorded here or replayed externally.",
     "validation": "Exact preservation of failed source chain and original content except one control-image URL plus temporary nodes/variable; unique IDs, bounded overlay frames, no calendar token readout, no new JS, immutable normal export; twenty copy routes."
+  },
+  "syntheticPublicMapProbe20261004": {
+    "scope": "Public live endpoint; only explicit empty coordinates or synthetic 0,0 / Example. No actual user GPS or private calendar export.",
+    "results": [
+      {
+        "case": "empty explicit coordinates",
+        "http": 200,
+        "type": "PNG",
+        "bytes": 4033601,
+        "locationSource": "unavailable",
+        "cache": "MISS",
+        "serverTimingMs": 1305.1
+      },
+      {
+        "case": "synthetic coordinates with city_text=Example",
+        "http": 200,
+        "type": "PNG",
+        "bytes": 4042138,
+        "locationSource": "coordinates",
+        "cache": "MISS",
+        "serverTimingMs": 1537.5
+      },
+      {
+        "case": "synthetic coordinates with city=Example",
+        "http": 200,
+        "type": "PNG",
+        "bytes": 4042138,
+        "locationSource": "coordinates",
+        "cache": "MISS",
+        "serverTimingMs": 1463.0
+      }
+    ],
+    "interpretationLimit": "Confirms deployed location/city rendering returned valid PNG for these requests. Does not rule out intermittent faults or demonstrate Israel/iPhone transition latency. Requests ran in parallel through the execution environment; overall elapsed times are not phone benchmarks."
+  },
+  "synchronousMapComparison": {
+    "name": "Widgy Home Synchronous Map Diagnostic",
+    "baseline": "Live Map No City Fetch, previously reported extremely slow; returns to its already working image-binding and max5-coordinate path instead of the failed native composition.",
+    "onlyFunctionalExportChange": "map_request provider Async + No main() becomes Javascript Script. Wrap the identical no-city builder/invocation in main(), replacing sendToWidgy(url) with assignment to a local result returned by main(). Exact coordinate parser/input arguments, endpoint, full PNG resolution/style, reuse=60 and minute timestamp remain.",
+    "preserved": "All 81 variable identities and other sources; full Home artwork, map/image binding/frame, approved clock, embedded backdrop and all navigation. Independent Calendar city stays TEST. No API/renderer changes. Normal export unchanged.",
+    "visibleDifference": "Same coordinate-label fallback as No City Fetch, no custom city lookup. Native Binding Check overlay absent.",
+    "phoneProcedure": "First confirm live map and marker appear. Then compare three repeated Calendar-to-Home transitions in the same slot/network against Live Map No City Fetch. Missing map/marker invalidates a speed result.",
+    "interpretationLimit": "Tests Widgy script runtime mode/completion and interactions; native GPS variable resolution, changing minute URLs, server render and image transfer remain. A matching synthetic VM output is not device validation or evidence of a fix.",
+    "deviceResult": "Pending",
+    "validation": "Exact runtime-mode/script delta; immutable original; synthetic async versus synchronous output equivalence for precise, locale-formatted, missing/out-of-range and boundary coordinates at minute boundaries, repeated main() calls, no fetch/sendToWidgy in sync path; twenty-one copy-page modes."
   }
 }

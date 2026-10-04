@@ -324,6 +324,25 @@ export function withCompleteHomeMapWithoutCityFetch(original,dataURL){
   return widget;
 }
 
+// Compare Widgy runtime modes while preserving the existing URL builder.
+// All work in the no-city control is synchronous already; only completion
+// changes from sendToWidgy in Async mode to main() returning in Script mode.
+export function withCompleteHomeSynchronousMap(original,dataURL){
+  const widget=withCompleteHomeMapWithoutCityFetch(original,dataURL);
+  const source=widget['36'].find(v=>v['1']==='map_request')['3']['66'][0];
+  const script=source['10'];
+  const completion='sendToWidgy(url);';
+  if(source['5']!=='Javascript' || source['6']!=='Async + No main()' ||
+      script.split(completion).length!==2 || script.includes('mapResult') ||
+      script.includes('function main('))throw Error('unexpected_template');
+  source['6']='Script';
+  source['10']="function main() {\n  var mapResult = '';\n"+
+    script.replace(completion,'mapResult = url;')+'\n  return mapResult;\n}';
+  widget['3']='Widgy Home Synchronous Map Diagnostic';
+  widget['4']='Compare with Live Map No City Fetch, which returned extreme slowness. Change only map_request runtime/completion: Javascript Script with main() returning the URL, instead of Async + No main() with sendToWidgy. Preserve the exact coordinate parser and max5 input arguments, live endpoint, width=3306, glass/r6, reuse=60 and minute timestamp bucket. Neither copy fetches a city; short coordinates temporarily replace the city label. Preserve all 81 variable identities, remaining sources, map binding/frame, complete approved artwork/clock, embedded backdrop and navigation. Calendar city remains TEST. First confirm the live map and location marker appear, then compare repeated Calendar-to-Home transitions against No City Fetch in the same slot/network. Synthetic equivalence tests do not establish actual Widgy runtime behavior or improved speed. Normal export unchanged; keep this private export private.';
+  return widget;
+}
+
 // Keep the known faster literal-source path, requesting the existing live
 // renderer instead of a prebuilt PNG. Empty coordinates prohibit IP fallback.
 export function withCompleteHomeDirectLiveMap(original,dataURL){
