@@ -24,6 +24,8 @@ export default async function handler(req,res) {
     if (!state?.sources?.length || state.sources.length>6) throw new BridgeError('unauthorized',401);
     const view=url.searchParams.get('view') || 'today';
     if (!['today','dots'].includes(view)) throw new BridgeError('invalid_view');
+    const bounds=url.searchParams.get('bounds') || 'full';
+    if(!['full','grid'].includes(bounds) || (view!=='dots' && bounds!=='full'))throw new BridgeError('invalid_bounds');
     const raw=url.searchParams.get('offset') || '0';
     if (!/^-?\d{1,2}$/.test(raw) || (view==='today' && Number(raw)!==0)) throw new BridgeError('invalid_month');
     const now=new Date(),window=monthWindow({offset:Number(raw),zone:state.zone,now});
@@ -43,8 +45,9 @@ export default async function handler(req,res) {
       res.setHeader('Content-Type','application/json; charset=utf-8');
       return req.method==='HEAD'?res.status(200).end():res.status(200).json(nativeFields?widgyFields(snapshot):snapshot);
     }
-    if(!entry.png)entry.png=renderDots(events,window);
-    const png=await entry.png;
+    const pngKey=bounds==='grid'?'pngGrid':'png';
+    if(!entry[pngKey])entry[pngKey]=renderDots(events,window,{bounds});
+    const png=await entry[pngKey];
     // Reuse month dots on the device within the same provider freshness window.
     // privateHeaders continues to forbid shared/CDN caching of private calendars.
     const remaining=Math.max(0,Math.floor((entry.until-Date.now())/1000));

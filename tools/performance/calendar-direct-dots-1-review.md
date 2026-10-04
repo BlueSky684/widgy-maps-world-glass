@@ -2,7 +2,9 @@
 
 2026-10-04, `f50-widget-test`. Baseline: **Widgy Consolidated Home Calendar 1** at `91c852692c81b8c89eafffeffad5d31afdc3ea5f`.
 
-The consolidated baseline has a user-reported improvement of approximately one second in Calendar-to-Home transition. This is subjective phone feedback, not an instrumented latency distribution. Keep that baseline available.
+The consolidated baseline has a user-reported qualitative improvement. An earlier approximate one-second estimate is subjective feedback, not an instrumented latency distribution. Keep that baseline available.
+
+Device update, 2026-10-04 21:47–22:01 Asia/Jerusalem: IMG_9879.jpeg shows the current month's event dots. The user reports no substantial change with Direct Dots, clarifying that Home-to-Calendar remains faster than Calendar-to-Home. The latest Home transition also feels similar to the previously supplied JSON export. The screenshot alone does not identify the export version or verify all months/refresh. Do not promote Direct Dots as a performance improvement. Consolidated 1 remains the control.
 
 ## Audit finding and change
 

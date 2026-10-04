@@ -1,0 +1,71 @@
+{
+  "name": "Widgy Compact Dots 1",
+  "layers": 1613,
+  "variables": 81,
+  "images": 25,
+  "perImage": {
+    "fullPixels": [
+      2270,
+      2368
+    ],
+    "compactPixels": [
+      1108,
+      1120
+    ],
+    "fullRGBA": 21501440,
+    "compactRGBA": 4963840,
+    "removedPercent": 76.91391832360995
+  },
+  "pixelCases": [
+    {
+      "weeks": 4,
+      "filled": false,
+      "pngBytes": {
+        "full": 21028,
+        "compact": 4925
+      }
+    },
+    {
+      "weeks": 4,
+      "filled": true,
+      "pngBytes": {
+        "full": 44973,
+        "compact": 27630
+      }
+    },
+    {
+      "weeks": 5,
+      "filled": false,
+      "pngBytes": {
+        "full": 21028,
+        "compact": 4925
+      }
+    },
+    {
+      "weeks": 5,
+      "filled": true,
+      "pngBytes": {
+        "full": 50925,
+        "compact": 33157
+      }
+    },
+    {
+      "weeks": 6,
+      "filled": false,
+      "pngBytes": {
+        "full": 21028,
+        "compact": 4925
+      }
+    },
+    {
+      "weeks": 6,
+      "filled": true,
+      "pngBytes": {
+        "full": 59712,
+        "compact": 41960
+      }
+    }
+  ],
+  "proof": "RGBA reconstruction exactly matches full-size output for filled/empty 4/5/6-week layouts. All document properties except dot URL bounds, image frames and candidate metadata are identical.",
+  "limits": "No native Widgy timing, image resampling or memory profiler. Source RGBA bytes are not measured widget memory. Native image placement remains a phone check."
+}

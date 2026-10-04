@@ -270,8 +270,18 @@ test('new capability returns matching TODAY/PNG, reuses provider read and reject
     assert.equal(dots.headers['cdn-cache-control'],'no-store');
     const refreshed=await get(token,'&view=dots&offset=0&render=refresh-1&refresh=12345');
     assert.equal(refreshed.statusCode,200);assert.deepEqual(refreshed.data,dots.data);assert.equal(reads,1);
+    const compact=await get(token,'&view=dots&offset=0&bounds=grid&render=refresh-1&refresh=12345');
+    assert.equal(compact.statusCode,200);assert.equal(reads,1,'Cropped output shares the provider read');
+    const meta=await sharp(compact.data).metadata();assert.equal(meta.width,1108);assert.equal(meta.height,1120);
+    assert.match(compact.headers['cache-control'],/^private, max-age=\d+, must-revalidate$/);
+    assert.equal(compact.headers['cdn-cache-control'],'no-store');
+    assert.deepEqual((await get(token,'&view=dots&bounds=full')).data,dots.data,'Full and cropped PNG cache entries stay distinct');
+    assert.deepEqual((await get(token,'&view=dots&bounds=grid')).data,compact.data);
+    for(const query of ['&view=dots&bounds=unknown','&bounds=grid'])assert.equal((await get(token,query)).statusCode,400);
+    assert.equal((await get(token,'&view=dots&bounds=grid','HEAD')).data,undefined);
     const unauthorized=await get(await seal(state,'calendar-render'));
     assert.equal(unauthorized.statusCode,401);assert.match(unauthorized.headers['cache-control'],/no-store/);
+    assert.equal((await get(await seal(state,'calendar-render'),'&view=dots&bounds=grid')).statusCode,401);
     const nativeUnauthorized=await get(await seal(state,'calendar-render'),'&format=widgy');
     assert.equal(nativeUnauthorized.statusCode,401);assert.match(nativeUnauthorized.headers['cache-control'],/no-store/);
     assert.equal(nativeUnauthorized.data.calendar_bridge_ready,0);
