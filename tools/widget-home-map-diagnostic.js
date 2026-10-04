@@ -271,6 +271,30 @@ export function withCompleteHomeArtwork(original,dataURL){
   return widget;
 }
 
+// Add the original map pipeline to the full-artwork control, keeping the
+// independent Calendar city lookup frozen so it does not confound the result.
+export function withCompleteHomeMap(original,dataURL){
+  const widget=withCompleteHomeArtwork(original,dataURL);
+  const originalHome=original['1'].find(n=>n.s==='HOME');
+  const maps=originalHome['1'].filter(n=>n.s==='Home Hero World Map'),map=maps[0];
+  const vars=original['36'].filter(v=>v['1']==='map_request'),request=vars[0];
+  if(maps.length!==1 || map.z!=='5' || map['1']!=='Web URL' || map['2']!=='${widgy.map_request}' ||
+      vars.length!==1 || request['3']['66']?.length!==1 ||
+      request['3']['66'][0]['6']!=='Async + No main()')throw Error('unexpected_template');
+  const home=widget['1'].find(n=>n.s==='HOME');
+  const layers=new Map(home['1'].map(n=>[n.d0,n]));
+  const variables=new Map(widget['36'].map(v=>[v['0'],v]));
+  if(layers.has(map.d0) || variables.has(request['0']))throw Error('unexpected_template');
+  layers.set(map.d0,structuredClone(map));
+  variables.set(request['0'],structuredClone(request));
+  home['1']=originalHome['1'].map(n=>layers.get(n.d0));
+  widget['36']=original['36'].map(v=>variables.get(v['0']));
+  if(home['1'].some(n=>!n) || widget['36'].some(v=>!v) || widget['36'].length!==81)throw Error('unexpected_template');
+  widget['3']='Widgy Home Map Add-Back Diagnostic';
+  widget['4']='Compared with Complete Artwork, restore only the original Home Hero World Map image and its exact map_request variable/script, in original layer/variable order. Home count 388 to 389 and variable count 80 to 81. The map uses its existing native location inputs, client-side city lookup and server-rendered lossless image pipeline. No map renderer, API, assets or cache changes. The independent Calendar city lookup remains the literal TEST; all other variables/sources, embedded backdrop, artwork, approved clock and navigation are identical to Complete Artwork. Wait until the map is actually visible before comparing repeated Calendar-to-Home transitions; distinguish initial image load from repeated switching. This tests the whole map pipeline and its interactions, not a specific server/network/rendering cost. Keep this private export private.';
+  return widget;
+}
+
 // Start from the FULL, repaired normal export, not the earlier stripped probes.
 // Leave every data source active: isolate the two sets of conditional drawings.
 export function withoutHomeProgressArtwork(original){
