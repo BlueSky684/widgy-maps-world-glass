@@ -212,6 +212,26 @@ export function withMinimalHomeNativeData(original){
   return widget;
 }
 
+// Isolate the original web-image backdrop on the live-text control. A device
+// difference includes image fetching/decoding/rendering, not just layer count.
+export function withMinimalHomeBackdrop(original){
+  const widget=withMinimalHomeNativeData(original);
+  const originalHome=original['1'].find(n=>n.s==='HOME');
+  const matches=originalHome['1'].filter(n=>n.d0===80309),backdrop=matches[0];
+  if(matches.length!==1 || backdrop.s!=='Approved Glass · Chrome and Frames' ||
+      backdrop.z!=='5' || backdrop['1']!=='Web URL' ||
+      backdrop['2']!=='https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/assets/home-glass/Home_Glass_Chrome_C8.png')throw Error('unexpected_template');
+  const home=widget['1'].find(n=>n.s==='HOME');
+  const layers=new Map(home['1'].map(n=>[n.d0,n]));
+  if(layers.has(backdrop.d0))throw Error('unexpected_template');
+  layers.set(backdrop.d0,structuredClone(backdrop));
+  home['1']=originalHome['1'].filter(n=>layers.has(n.d0)).map(n=>layers.get(n.d0));
+  if(home['1'].length!==46)throw Error('unexpected_template');
+  widget['3']='Widgy Home Minimal Backdrop Diagnostic';
+  widget['4']='Compared with Minimal Native Data, restore only the original Approved Glass / Chrome and Frames image layer, with its exact web URL, frame, rendering options and original drawing order. Home count 45 to 46. All 80 variables and sources, live text, approved clock, existing layers, other tabs and navigation stay identical. Map, progress fills, weather-icon alternatives and remaining static icons are still absent. This tests the complete backdrop image path and its interactions, including possible fetching, decoding and rendering; it does not isolate network latency or prove a permanent fix. Keep this private export private.';
+  return widget;
+}
+
 // Start from the FULL, repaired normal export, not the earlier stripped probes.
 // Leave every data source active: isolate the two sets of conditional drawings.
 export function withoutHomeProgressArtwork(original){
