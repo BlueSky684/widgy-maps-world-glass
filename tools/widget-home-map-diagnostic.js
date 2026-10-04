@@ -295,6 +295,17 @@ export function withCompleteHomeMap(original,dataURL){
   return widget;
 }
 
+// Keep the complete map layer and variable identity, but replace its dynamic
+// script with a static PNG URL. The image still loads/decodes through Web URL.
+export function withCompleteHomeStaticMap(original,dataURL){
+  const widget=withCompleteHomeMap(original,dataURL);
+  const request=widget['36'].find(v=>v['1']==='map_request');
+  request['3']['66']=[{'5':'Custom Text','6':'Text','25':'https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/assets/diagnostics/Home_Map_Static_3306x1558.png'}];
+  widget['3']='Widgy Home Static Map Diagnostic';
+  widget['4']='Compare with the much slower Map Add-Back copy. Only map_request source changes: replace the original asynchronous map URL/geocoder script with a literal URL to a prebuilt public 3306x1558 lossless PNG from the exact approved renderer/assets, glass/r6, fixed 2026-10-04T06:00Z, no location marker/city. The map layer, frame, Web URL provider, all 81 variable identities, other sources, artwork, clock and embedded backdrop are unchanged. Native GPS variables remain, but the custom map script does not run; the static file requires no per-request map render or time-bucket URL change. Calendar city remains TEST. The still image intentionally has fixed day/night and no personal location. First ensure it appears, then compare repeated transitions. This broad comparison includes script, geocoder, URL/cache behavior and server rendering; it does not separate those costs or prove a specific cause. Static and dynamic images are not pixel-identical because time/location differ. Keep this private export private.';
+  return widget;
+}
+
 // Start from the FULL, repaired normal export, not the earlier stripped probes.
 // Leave every data source active: isolate the two sets of conditional drawings.
 export function withoutHomeProgressArtwork(original){
