@@ -245,6 +245,32 @@ export function withMinimalHomeEmbeddedBackdrop(original,dataURL){
   return widget;
 }
 
+// Restore all remaining artwork to the confirmed embedded-image control.
+// Use the repaired normal template so the approved cumulative ring is correct.
+export function withCompleteHomeArtwork(original,dataURL){
+  const originalHome=original['1'].find(n=>n.s==='HOME');
+  const rings=originalHome?.['1'].filter(n=>/^Steps Goal Ring · \d+%$/.test(n.s));
+  if(rings?.length!==100 || rings.some(n=>n.o1?.['1']!==5))throw Error('unexpected_template');
+  const widget=withMinimalHomeEmbeddedBackdrop(original,dataURL);
+  const home=widget['1'].find(n=>n.s==='HOME');
+  const retained=new Map(home['1'].map(n=>[n.d0,n]));
+  const added=originalHome['1'].filter(n=>!retained.has(n.d0) && n.s!=='Home Hero World Map');
+  const walk=ns=>ns.flatMap(n=>[n,...(n.z==='13'?walk(n['1']):[])]);
+  const nodes=walk(added);
+  // The legacy 1x1 sun is a literal text glyph, not a live weather source.
+  const staticSun=n=>n.d0===6130 && n.z==='1' && n.s==='Weather Sun' &&
+    n['66']?.length===1 && n['66'][0]['5']==='Custom Text' && n['66'][0]['25']==='☀︎';
+  if(nodes.length!==342 || nodes.some(n=>!['2','4','13'].includes(n.z) && !staticSun(n)) ||
+      added.filter(n=>n.s?.startsWith('WX · ')).length!==14 ||
+      added.filter(n=>/^Day Progress Fill · \d+%$/.test(n.s)).length!==100)throw Error('unexpected_template');
+  for(const n of added)retained.set(n.d0,structuredClone(n));
+  home['1']=originalHome['1'].filter(n=>retained.has(n.d0)).map(n=>retained.get(n.d0));
+  if(walk(home['1']).length!==388)throw Error('unexpected_template');
+  widget['3']='Widgy Home Complete Artwork Diagnostic';
+  widget['4']='Compared with the visually confirmed Embedded Backdrop trial, restore all remaining original Home graphics: 100 cumulative steps-ring segments, 100 day-progress fills, 14 weather-icon alternatives containing 137 nodes, and five static graphic layers. Home count 46 to 388. Use the approved repaired >= steps-ring conditions, not the old diagnostic equality transform. Every existing layer, the embedded byte-identical backdrop, all 80 variables and sources, other tabs and navigation are unchanged. No map/map_request or custom city lookup restored; Calendar city remains TEST. Tests the entire remaining artwork group and its interactions with live data, not individual drawings or a proven optimization. The regular full export remains unchanged. Keep this private export private.';
+  return widget;
+}
+
 // Start from the FULL, repaired normal export, not the earlier stripped probes.
 // Leave every data source active: isolate the two sets of conditional drawings.
 export function withoutHomeProgressArtwork(original){

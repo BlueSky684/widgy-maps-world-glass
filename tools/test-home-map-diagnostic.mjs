@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {personalizedWidget} from './calendar-connect-widget.js';
-import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
+import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
 const template=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
 const normal=personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic');
 const original=perf5DiagnosticBaseline(normal);
@@ -222,6 +222,25 @@ assert.deepEqual(original,unchanged);
 assert.throws(()=>withMinimalHomeEmbeddedBackdrop(original,'data:image/png;base64,wrong'),/backdrop_image_failed/);
 console.log('Passed: embedded backdrop contains byte-identical approved PNG; integrity/network failures rejected; only one source string differs, with unchanged provider, rendering options, variables and all other content. Phone image compatibility remains unverified.');
 
+const fullArtwork=withCompleteHomeArtwork(normal,backdropDataURL);
+const fullArtworkHome=fullArtwork['1'].find(n=>n.s==='HOME');
+const approvedFullHome=structuredClone(normal['1'].find(n=>n.s==='HOME'));
+approvedFullHome['1']=approvedFullHome['1'].filter(n=>n.s!=='Home Hero World Map');
+approvedFullHome['1'].find(n=>n.d0===approvedBackdrop.d0)['2']=backdropDataURL;
+assert.deepEqual(fullArtworkHome,approvedFullHome); // Complete approved Home, except map absence and backdrop transport.
+assert.equal(count(fullArtworkHome['1']),388);
+assert.equal(count(fullArtwork['1'])-count(embeddedBackdrop['1']),342);
+const beforeGraphics=new Set(embeddedBackdrop['1'].find(n=>n.s==='HOME')['1'].map(n=>n.d0));
+const withoutAddedGraphics=structuredClone(fullArtwork);
+withoutAddedGraphics['1'].find(n=>n.s==='HOME')['1']=withoutAddedGraphics['1'].find(n=>n.s==='HOME')['1'].filter(n=>beforeGraphics.has(n.d0));
+withoutAddedGraphics['3']=embeddedBackdrop['3'];withoutAddedGraphics['4']=embeddedBackdrop['4'];
+assert.deepEqual(withoutAddedGraphics,embeddedBackdrop); // No changes to prior layers, variables, sources or other tabs.
+assert.throws(()=>withCompleteHomeArtwork(original,backdropDataURL),/unexpected_template/); // Reject the legacy broken ring.
+assert.deepEqual(normal,personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic'));
+const fullIDs=new Set([...walk(fullArtwork['1'])].map(n=>n.d0));
+for(const n of walk(fullArtwork['1']))if(n['1a'])for(const id of n['1a'].slice(7).split(/[-,]/).map(Number))assert(fullIDs.has(id),'Dangling tap target '+id);
+console.log('Passed: Complete Artwork restores exactly 342 original graphic nodes; full approved Home except map/backdrop source, cumulative ring correct, prior content and sources unchanged, valid navigation.');
+
 const normalUnchanged=structuredClone(normal);
 const progressOff=withoutHomeProgressArtwork(normal),expectedProgress=structuredClone(normal);
 expectedProgress['1'].find(n=>n.s==='HOME')['1']=expectedProgress['1'].find(n=>n.s==='HOME')['1']
@@ -257,7 +276,7 @@ assert.throws(()=>withoutHomeWeatherArtwork(badWeather),/unexpected_template/);
 console.log('Passed: Weather-Art-Off removes only 14 weather-icon alternatives (137 nodes) beyond Progress-Off; all actual data, approved clock, map, weather text, other artwork and navigation unchanged.');
 
 const html=readFileSync(new URL('./widgy-home-map-diagnostic.html',import.meta.url),'utf8');
-assert(html.includes('./widgy-home-map-diagnostic.js?v=embedded-backdrop-1'));
+assert(html.includes('./widgy-home-map-diagnostic.js?v=full-artwork-1'));
 assert(html.includes('?home=minimal&amp;v=minimal-events-1'));
 const source=readFileSync(new URL('./widgy-home-map-diagnostic.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
 const elementIDs=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
@@ -265,7 +284,7 @@ for(const [query,expectedExport] of [
   ['',diagnostic],['?city=off',cityOff],['?home=data-off',nativeOff],
   ['?home=clock-off',clockOff],['?home=minimal',minimal],['?home=progress-off',progressOff],
   ['?home=weather-art-off',weatherArtOff],['?home=minimal-clock',minimalClock],
-  ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop]
+  ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop],['?home=full-artwork',fullArtwork]
 ]){
   const elements=Object.fromEntries(elementIDs.map(id=>[id,{textContent:'',hidden:true,classList:{toggle(){}},handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}]));
   let payload='',copied='',backdropLoads=0;
@@ -278,11 +297,11 @@ for(const [query,expectedExport] of [
     prepareWidget:async()=>({payload:JSON.stringify(normal)}),
     loadHomeBackdropDataURL:async()=>{backdropLoads++;return backdropDataURL;},
     perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,
-    withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
+    withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
   });
   await new vm.Script(source).runInContext(context);
   assert.deepEqual(JSON.parse(payload),expectedExport,query);
-  assert.equal(backdropLoads,query==='?home=embedded-backdrop'?1:0);
+  assert.equal(backdropLoads,['?home=embedded-backdrop','?home=full-artwork'].includes(query)?1:0);
   assert.equal(elements.copy.disabled,false);
   await elements.copy.handlers.click();
   assert.equal(copied,payload);
@@ -296,7 +315,7 @@ for(const [query,expectedExport] of [
     assert(elements.comparison.textContent.includes('Progress-Off'));
     assert.equal(elements['next-test'].hidden,true);
   }
-  assert.equal(elements['baseline-test'].hidden,!['?home=minimal-clock','?home=minimal-events','?home=minimal-time','?home=minimal-native','?home=minimal-backdrop','?home=embedded-backdrop'].includes(query));
+  assert.equal(elements['baseline-test'].hidden,!['?home=minimal-clock','?home=minimal-events','?home=minimal-time','?home=minimal-native','?home=minimal-backdrop','?home=embedded-backdrop','?home=full-artwork'].includes(query));
   if(query==='?home=minimal-clock'){
     assert.equal(elements.download.download,'Widgy_Home_Minimal_Live_Clock_Diagnostic.json');
     assert(elements.comparison.textContent.includes('בדיקה ב׳ המקורית'));
@@ -305,6 +324,11 @@ for(const [query,expectedExport] of [
   if(query==='?home=minimal-events'){
     assert.equal(elements.download.download,'Widgy_Home_Minimal_Events_Diagnostic.json');
     assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=minimal-clock&v=minimal-events-1');
+    assert.equal(elements['next-test'].hidden,true);
+  }
+  if(query==='?home=full-artwork'){
+    assert.equal(elements.download.download,'Widgy_Home_Complete_Artwork_Diagnostic.json');
+    assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=embedded-backdrop&v=full-artwork-1');
     assert.equal(elements['next-test'].hidden,true);
   }
   if(query==='?home=embedded-backdrop'){
@@ -329,4 +353,4 @@ for(const [query,expectedExport] of [
     assert.equal(elements['next-test'].hidden,true);
   }
 }
-console.log('Passed: all thirteen diagnostic URLs export and copy the intended comparison; add-back pages link to their respective unchanged controls.');
+console.log('Passed: all fourteen diagnostic URLs export and copy the intended comparison; add-back pages link to their respective unchanged controls.');
