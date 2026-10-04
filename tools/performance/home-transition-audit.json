@@ -668,6 +668,64 @@
     "limits": "Headers wait includes transport, connection, hosting platform and server work, not server work alone. Server-Timing is a subset and is not added twice. No guaranteed cold/warm instance. No real GPS, geocoding or calendar access; browser and Widgy cache/provider paths differ. Changed date/location means images differ in content/bytes. No inference until phone results.",
     "handling": "Runs only on click; 30-second timeout per request, cancel, partial/error report, manual copy fallback. No report storage or analytics.",
     "validation": "Synthetic fixture verifies phase timing, serial requests, no double counting, explicit location overrides IP fallback, no secret paths, copy JSON, HTTP/type/dimensions failures, timeout and cancellation. Real device browser pending.",
+    "deviceResult": {
+      "measuredAt": "2026-10-04T14:12:25.326Z",
+      "receivedLocal": "2026-10-04T17:12:47+03:00",
+      "rows": [
+        {
+          "id": "static",
+          "headersMs": 411,
+          "bodyMs": 1432,
+          "decodeMs": 64,
+          "totalMs": 1907,
+          "bytes": 4075465,
+          "cdnCache": "MISS"
+        },
+        {
+          "id": "live-plain",
+          "headersMs": 1504,
+          "bodyMs": 1087,
+          "decodeMs": 59,
+          "totalMs": 2650,
+          "bytes": 4001509,
+          "mapCache": "MISS",
+          "serverMapMs": 1310.9,
+          "cdnCache": "MISS"
+        },
+        {
+          "id": "live-example",
+          "headersMs": 1010,
+          "bodyMs": 810,
+          "decodeMs": 59,
+          "totalMs": 1879,
+          "bytes": 4010281,
+          "mapCache": "MISS",
+          "serverMapMs": 844.6,
+          "cdnCache": "MISS"
+        },
+        {
+          "id": "live-repeat",
+          "headersMs": 223,
+          "bodyMs": 696,
+          "decodeMs": 58,
+          "totalMs": 977,
+          "bytes": 4010281,
+          "mapCache": "HIT",
+          "serverMapMs": 0.2,
+          "cdnCache": "MISS"
+        }
+      ],
+      "interpretation": "Render reuse demonstrably works in this run: repeat has identical render timestamp/body bytes and map HIT, service map timing 0.2 ms. Browser still receives full PNG. Browser image opening ~58-64 ms. Single sequential run with changing server warmth/network does not isolate marker/city drawing costs, location acquisition or external geocoding. No statement about native Widgy decoder or actual per-tap downloads is justified."
+    }
+  },
+  "cityTimingProbe": {
+    "route": "/tools/widgy-city-timing.html?v=city-timing-1",
+    "codeFinding": "All HOME Tap nodes use button_245-247,246,195 only, with no explicit extra Reload action in exported definition. Original cityMapRuntime waits for reverse-geocode-client response before sendToWidgy(mapURL(city)); globalThis city cache is only best effort in surviving JS context. StableMapURL diagnostic removed that external lookup, with previous user reporting only slight improvement, so geocoder alone is not established cause.",
+    "purpose": "Measure missing original-pipeline stages from consenting current phone: browser current-position acquisition and one direct BigDataCloud client reverse-geocode call. Does not instrument native Widgy JS, prove per-tap fetches or retest image size.",
+    "consentAndData": "Separate explicit button explains current location is sent directly to existing BigDataCloud provider. Browser geolocation permission required, maximumAge=0, no server geocoder call, no replayed coordinates. Permission denied or cancellation never invokes provider. URL and response values never enter report or logs; no location to our server and no analytics/localStorage.",
+    "report": "Allowlisted timings, HTTP status and boolean validity checks only; excludes coordinates/city/URL/response payload. Arbitrary fetch errors mapped to safe codes.",
+    "validation": "Offline injected synthetic 0,0 mocks only, never actual provider. Valid timing, denial, cancel before or during location and late callback, unexpected source/mismatch, timeout, HTTP failure, redacted network errors and report allowlist verified.",
+    "providerDocumentation": "https://github.com/bigdatacloudapi/js-reverse-geocode-client (current-device client use with permission only).",
     "deviceResult": "Pending."
   }
 }
