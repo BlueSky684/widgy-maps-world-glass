@@ -575,15 +575,16 @@ assert.throws(()=>withoutHomeWeatherArtwork(badWeather),/unexpected_template/);
 console.log('Passed: Weather-Art-Off removes only 14 weather-icon alternatives (137 nodes) beyond Progress-Off; all actual data, approved clock, map, weather text, other artwork and navigation unchanged.');
 
 const html=readFileSync(new URL('./widgy-home-map-diagnostic.html',import.meta.url),'utf8');
-assert(html.includes('./widgy-home-map-diagnostic.js?v=stable-native-city-1'));
+assert(html.includes('./widgy-home-map-diagnostic.js?v=stable-map-recovery-1'));
 assert(html.includes('?home=minimal&amp;v=minimal-events-1'));
 const source=readFileSync(new URL('./widgy-home-map-diagnostic.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
+assert(!source.includes('withCompleteHomeStableNativeCity')); // Failed mixed-source export cannot be reissued by the page.
 const elementIDs=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
 for(const [query,expectedExport] of [
   ['',diagnostic],['?city=off',cityOff],['?home=data-off',nativeOff],
   ['?home=clock-off',clockOff],['?home=minimal',minimal],['?home=progress-off',progressOff],
   ['?home=weather-art-off',weatherArtOff],['?home=minimal-clock',minimalClock],
-  ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop],['?home=full-artwork',fullArtwork],['?home=map-addback',mapAddback],['?home=static-map',staticMap],['?home=map-no-city',mapNoCity],['?home=direct-live-map',directLiveMap],['?home=native-location-map',nativeLocationMap],['?home=map-binding-check',bindingProbe],['?home=sync-map',synchronousMap],['?home=stable-map-url',stableMapURL],['?home=fixed-map-location',fixedLocationMap],['?home=direct-fixed-map',directFixedMap],['?home=cdn-fixed-map',cdnFixedMap],['?home=stable-native-city',stableNativeCity]
+  ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop],['?home=full-artwork',fullArtwork],['?home=map-addback',mapAddback],['?home=static-map',staticMap],['?home=map-no-city',mapNoCity],['?home=direct-live-map',directLiveMap],['?home=native-location-map',nativeLocationMap],['?home=map-binding-check',bindingProbe],['?home=sync-map',synchronousMap],['?home=stable-map-url',stableMapURL],['?home=fixed-map-location',fixedLocationMap],['?home=direct-fixed-map',directFixedMap],['?home=cdn-fixed-map',cdnFixedMap],['?home=stable-native-city',stableMapURL]
 ]){
   const elements=Object.fromEntries(elementIDs.map(id=>[id,{textContent:'',hidden:true,classList:{toggle(){}},handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}]));
   let payload='',copied='',backdropLoads=0;
@@ -626,10 +627,11 @@ for(const [query,expectedExport] of [
     assert.equal(elements['next-test'].hidden,true);
   }
   if(query==='?home=stable-native-city'){
-    assert.equal(elements.download.download,'Widgy_Home_Stable_Native_City_Trial.json');
-    assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=stable-map-url&v=stable-native-city-1');
-    assert(elements.comparison.textContent.includes('ושם העיר הנכון מופיעים'));
-    assert(elements.comparison.textContent.includes('אחרי דקה'));
+    assert.equal(elements.download.download,'Widgy_Home_Stable_Map_URL_Diagnostic.json');
+    assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=stable-map-url&v=stable-map-recovery-1');
+    assert(elements.comparison.textContent.includes('שהמפה וסימון המיקום חוזרים להופיע'));
+    assert(elements.explanation.textContent.includes('שם העיר במפה חסר זמנית'));
+    assert.equal(JSON.parse(payload)['36'].find(v=>v['1']==='map_request')['3']['66'].length,1);
     assert.equal(elements['next-test'].hidden,true);
   }
   if(query==='?home=cdn-fixed-map'){

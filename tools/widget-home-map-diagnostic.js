@@ -363,6 +363,8 @@ export function withCompleteHomeStableMapURL(original,dataURL){
 // city as text data, never as interpolated JavaScript. The existing API treats
 // city_text as the final query tail. Mixed-source image binding needs a phone
 // compatibility check; the earlier all-native URL composition was blank.
+// FAILED ON DEVICE 2026-10-04: map did not load. Retained for reproducible
+// comparison only; the copy page now routes this mode to Stable Map URL.
 export function withCompleteHomeStableNativeCity(original,dataURL){
   const widget=withCompleteHomeStableMapURL(original,dataURL);
   const matches=widget['36'].filter(v=>v['1']==='calendar_native_city');
