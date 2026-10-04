@@ -10,9 +10,10 @@
     "User subsequently tests Home Minimal and reports an additional significant improvement. No numerical timing measurements.",
     "2026-10-04 Asia/Jerusalem: user directly compares the full widget with the old Live Timer and the new HH:mm clock and reports no perceived loading-time difference. No minute-update or appearance result supplied.",
     "2026-10-04 Asia/Jerusalem: Progress-Off user result: no noticeable wait reduction, possibly very slight but not perceptible. User requests exactly one final test tonight.",
-    "2026-10-04 01:16 Asia/Jerusalem: user reports no improvement with Weather-Art-Off. Work resumed at 07:26."
+    "2026-10-04 01:16 Asia/Jerusalem: user reports no improvement with Weather-Art-Off. Work resumed at 07:26.",
+    "2026-10-04 07:43 Asia/Jerusalem: user reports the transition is fast with Minimal Live Clock."
   ],
-  "conclusionLimit": "A static literal clock improved the already stripped diagnostic, but replacing Live Timer with native HH:mm in the full widget showed no perceived loading improvement. The clock replacement is not an established fix and will not be promoted. Minimal Home improved further, supporting isolation of additional Home content/evaluation. No test identifies every remaining cost or establishes quantitative latency. Removing the 200 progress drawings from the full widget did not produce a noticeable improvement; this does not prove zero cost or rule out interactions. Removing another 137 weather-icon nodes also did not improve perceived waiting. These later tests used the full live-data baseline, whereas fast Minimal uses stripped sources. A native HH:mm vs Live Timer comparison cannot rule out the cost of displaying an active clock because both variants display time.",
+  "conclusionLimit": "A static literal clock improved the already stripped diagnostic, but replacing Live Timer with native HH:mm in the full widget showed no perceived loading improvement. The clock replacement is not an established fix and will not be promoted. Minimal Home improved further, supporting isolation of additional Home content/evaluation. No test identifies every remaining cost or establishes quantitative latency. Removing the 200 progress drawings from the full widget did not produce a noticeable improvement; this does not prove zero cost or rule out interactions. Removing another 137 weather-icon nodes also did not improve perceived waiting. These later tests used the full live-data baseline, whereas fast Minimal uses stripped sources. A native HH:mm vs Live Timer comparison cannot rule out the cost of displaying an active clock because both variants display time. Restoring only the approved live clock to Minimal kept the transition fast. Preserve the approved clock; this does not rule out interactions with other Home content.",
   "sourceAudit": {
     "homeTapActions": "All four HOME Tap actions are button_245-247,246,195: show Home and hide Calendar, Weather and Fitness. No explicit additional refresh action is configured.",
     "remainingCustomAsyncScriptInMapOff": "calendar_city_prefix performs its own client-only reverse-geocode request. It can wait for Widgy's runtime/network timeout if the request never settles. Its globalThis cache is best-effort; persistence on the phone is unverified.",
@@ -193,7 +194,17 @@
     "onlyFunctionalChange": "Restore original Hero Time Live Timer layer with approved HomeGlassTime-Light font, geometry, color and layer order. Home node count 15 -> 16.",
     "preserved": "All 80 variables and their sources, other tabs, original 15 Home nodes and actions, TEST city and absent map. No new requests/variables introduced by the transform.",
     "interpretationLimit": "A slower result implicates the added live-clock layer, including its source and text rendering, not which clock internals are expensive. A similar result does not exclude interactions with full Home.",
-    "deviceResult": "Pending",
+    "deviceResult": "User reports fast transition. The approved live clock alone did not reproduce the slow full-Home behavior on the stripped Minimal baseline. No numeric timings.",
     "validation": "Exact one-node add-back, no baseline mutation, original order, reject wrong clock provider, eight copy routes and comparison-link visibility verified."
+  },
+  "minimalEventsComparison": {
+    "name": "Widgy Home Minimal Events Diagnostic",
+    "baseline": "Minimal Live Clock, just reported fast by the user",
+    "onlyFunctionalChange": "Restore four original Home text layers: Events Summary 1/count, Events Summary 2/event_word, Next Event Title/title, Next Event Label/meta. Home count 16 -> 20.",
+    "preserved": "All 80 variables and their sources, all other tabs, approved live clock, other retained nodes and original draw order. Real Home event values use the already-existing four native JSON bindings. No native reminder source restored.",
+    "sourceAudit": "The four Home fields use exactly the same literal native JSON URL as the other Calendar fields. Earlier broad native-data test did not freeze these four fields; Minimal removed their display layers but retained the variables. This is not evidence of four additional HTTP requests.",
+    "interpretationLimit": "A slower result implicates displaying/evaluating the four Home calendar fields together, not a proven server bottleneck or a single source. All other additions stay out of this test.",
+    "deviceResult": "Pending",
+    "validation": "Exact four-node add-back with original fonts/frames/sources/order, original immutable, all variables unchanged, no restored reminders source, nine copy-page modes and correct comparison links."
   }
 }

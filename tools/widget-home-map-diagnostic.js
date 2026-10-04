@@ -129,6 +129,32 @@ export function withMinimalHomeLiveClock(original){
   return widget;
 }
 
+// The user reports Minimal + the approved live clock is fast. Restore only
+// the four Home calendar-bound text layers on that exact measured baseline.
+export function withMinimalHomeEvents(original){
+  const widget=withMinimalHomeLiveClock(original);
+  const originalHome=original['1'].find(n=>n.s==='HOME');
+  const home=widget['1'].find(n=>n.s==='HOME');
+  const layers=new Map(home['1'].map(n=>[n.d0,n]));
+  for(const [name,field] of [
+    ['Events Summary · 1','count'],['Events Summary · 2','event_word'],
+    ['Next Event Title','title'],['Next Event Label','meta']
+  ]){
+    const matches=originalHome['1'].filter(n=>n.s===name),n=matches[0];
+    const variables=original['36'].filter(v=>v['1']==='calendar_home_'+field);
+    if(matches.length!==1 || n.z!=='1' || layers.has(n.d0) ||
+        n['66']?.length!==1 || n['66'][0]['5']!=='Custom Text' ||
+        n['66'][0]['25']!=='${widgy.calendar_home_'+field+'}' ||
+        variables.length!==1 || variables[0]['3']['66']?.[0]?.['5']!=='JSON Endpoint')throw Error('unexpected_template');
+    layers.set(n.d0,structuredClone(n));
+  }
+  home['1']=originalHome['1'].filter(n=>layers.has(n.d0)).map(n=>layers.get(n.d0));
+  if(home['1'].length!==20)throw Error('unexpected_template');
+  widget['3']='Widgy Home Minimal Events Diagnostic';
+  widget['4']='Compared with the fast Minimal Live Clock copy, restore only four original Home calendar text layers: event count, event/events wording, full event title, and status/time line. Their actual native JSON bindings, fonts, frames, colors and original order are preserved. All 80 variables and their sources, approved live clock, remaining layers and other tabs are identical. No new endpoint or variable, no reminders source restored, no map or decorative backdrop. Tests the display/evaluation of this four-layer group, not proof of four network requests or a single slow provider. Keep this private export private.';
+  return widget;
+}
+
 // Start from the FULL, repaired normal export, not the earlier stripped probes.
 // Leave every data source active: isolate the two sets of conditional drawings.
 export function withoutHomeProgressArtwork(original){
