@@ -359,6 +359,24 @@ export function withCompleteHomeStableMapURL(original,dataURL){
   return widget;
 }
 
+// Keep the same stable-URL script and marker rendering, but remove its native
+// GPS substitutions. Use an explicit synthetic location, never user GPS.
+// Native location variables elsewhere remain unchanged in this comparison.
+export function withCompleteHomeFixedLocationMap(original,dataURL){
+  const widget=withCompleteHomeStableMapURL(original,dataURL);
+  const source=widget['36'].find(v=>v['1']==='map_request')['3']['66'][0];
+  const names=['map_latitude_max5','map_longitude_max5','Latitude','Longitude'];
+  for(const name of names){
+    const token=JSON.stringify('${widgy.'+name+'}');
+    if(source['10'].split(token).length!==2)throw Error('unexpected_template');
+    source['10']=source['10'].replace(token,JSON.stringify('0'));
+  }
+  if(source['10'].includes('${widgy.'))throw Error('unexpected_template');
+  widget['3']='Widgy Home Fixed Location Map Diagnostic';
+  widget['4']='Compare with Stable Map URL, reported only slightly improved. Replace only the four native coordinate substitutions in map_request with literal strings 0: latitude/longitude max5 and both fallback arguments. Keep the exact synchronous Script/main() body, coordinate parser, live endpoint, reuse=60, absent time stamp, full 3306 lossless PNG and glass/r6 rendering. The map marker and short label intentionally show synthetic 0,0, not the device location. No user GPS is captured or embedded. All 81 variable definitions, including native location providers, and remaining sources/layers stay unchanged, so other widget location work may still run. Preserve approved clock/artwork, embedded backdrop and navigation; Calendar city stays TEST. Wait for the map and example marker before comparing three consecutive Calendar-to-Home transitions and another after a minute in the same slot/network. This removes map-script GPS substitution/availability and coordinate-driven URL/cache variation together; improvement would not separate those costs or prove GPS acquisition alone is responsible. Widgy live-image refresh remains unverified with a stable URL. No API/renderer/normal-export changes; diagnostic only. Keep this private export private.';
+  return widget;
+}
+
 // Keep the known faster literal-source path, requesting the existing live
 // renderer instead of a prebuilt PNG. Empty coordinates prohibit IP fallback.
 export function withCompleteHomeDirectLiveMap(original,dataURL){

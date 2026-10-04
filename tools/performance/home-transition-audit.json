@@ -421,7 +421,19 @@
     "preserved": "All 81 variables and their remaining sources, exact map binding/layer/frame, approved Home artwork and clock, embedded backdrop, other tabs/navigation; Calendar city TEST. No API, renderer, server policy, assets or normal-export changes.",
     "phoneProcedure": "Wait for map and marker. In the same slot/network, compare three consecutive Calendar-to-Home transitions and another after a minute against Synchronous Map. Report missing map/marker before timing.",
     "interpretationLimit": "URL is stable only with unchanged coordinates; GPS jitter can still change it. Widgy may retain stable-URL images longer than expected: automatic day/night refresh remains unverified, so this is not a final live-update solution. If still slow, GPS resolution, script/interpolation evaluation, server/image retrieval and decoding remain candidates; this test alone cannot prove any individual cause.",
-    "deviceResult": "Pending",
+    "deviceResult": "2026-10-04 12:04 Asia/Jerusalem: user reports transitions improved slightly. No numerical timings or separate immediate-versus-after-minute result. Partial subjective improvement, not resolution or proof of cache-buster causality.",
     "validation": "Exact one-script delta and original immutable; synthetic VM verifies same URL minus t across time/minute/hour boundaries, precise coordinate changes still change URL, zero custom fetch/callback, unchanged invalid and locale coordinate handling; twenty-two copy-page modes and comparison links."
+  },
+  "fixedLocationMapComparison": {
+    "name": "Widgy Home Fixed Location Map Diagnostic",
+    "baseline": "Stable Map URL, just reported slightly improved but not a resolved transition delay.",
+    "codeFinding": "map_request still substitutes four native location references: max5 latitude/longitude plus the two fallback latitude/longitude values. The builder chooses primary inputs with enabled=true, but all four placeholders remain in the supplied script. Whether Widgy evaluates unused fallback substitutions eagerly, waits for native GPS or re-evaluates unrelated location variables is unmeasured.",
+    "onlyFunctionalExportChange": "Replace exactly those four quoted script placeholders with literal string 0. Retain the complete stable synchronous URL builder, location parser, endpoint, absent time bucket, reuse=60, full lossless map size/style and marker renderer.",
+    "visibleDifference": "Marker and short coordinate label intentionally represent synthetic 0,0, not the user location. No actual user GPS captured, stored or embedded.",
+    "preserved": "All 81 variable definitions including native location providers, all remaining sources, map layer/binding/frame, approved artwork/clock and embedded backdrop, all navigation. Calendar city still TEST. No server/renderer/normal-export changes.",
+    "phoneProcedure": "Wait for map and synthetic marker, compare three consecutive Calendar-to-Home transitions and one after a minute in the same slot/network against Stable Map URL.",
+    "interpretationLimit": "Isolates map-script native coordinate dependencies plus coordinate-driven URL/cache variation together. Renderer still draws a marker, but at a different synthetic position and label; image bytes/cache history are not identical. Does not disable all widget GPS work or separate location availability from URL churn. Fixed location and unverified stable-URL refresh make this a diagnostic only.",
+    "deviceResult": "Pending",
+    "validation": "Exact four-argument delta; preserved native variable definitions, script mode, all layers/sources; no remaining Widgy substitutions in map script; synthetic VM output constant over time and input changes and equals Stable Map URL at 0,0; zero is a valid explicit coordinate and suppresses IP fallback; fail-fast template guard, original immutable; twenty-three copy modes and baseline links."
   }
 }
