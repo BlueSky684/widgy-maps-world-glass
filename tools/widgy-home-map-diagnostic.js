@@ -1,6 +1,6 @@
 import {loadHomeStaticMapDataURL} from './widget-home-static-map-data.js?v=embedded-static-map-1';
 import {loadHomeBackdropDataURL} from './widget-home-backdrop-data.js?v=embedded-backdrop-1';
-import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeEmbeddedStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js?v=embedded-static-map-1';
+import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeEmbeddedStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js?v=embedded-import-stop-1';
 import {prepareWidget} from './calendar-widget-export.js?v=perf-5-ringfix-1';
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(window.location.search);
@@ -34,21 +34,20 @@ const cityOff=nativeDataOff || params.get('city')==='off';
 if(embeddedStaticControl){
   document.title='בדיקה א׳ — תמונת המפה מהרשת';
   $('heading').textContent='א׳: תמונת המפה נטענת מהרשת.';
-  $('explanation').textContent='עותק ההשוואה מציג תמונת מפה קבועה בגודל ובאיכות המלאים. בדיקה ב׳ תציג בדיוק את אותו קובץ כשהוא מוטמע בווידג׳ט. בשני העותקים המפה אינה מתעדכנת וסימון המיקום האישי חסר בכוונה; Calendar מציג TEST. כל שאר העיצוב והנתונים נשמרים.';
-  $('comparison').textContent='המתן שהמפה כולה תופיע ואז בדוק שלושה מעברים Calendar → Home. לאחר מכן ייבא את בדיקה ב׳ לאותו סלוט וחזור על הבדיקה באותו חיבור רשת. האם ב׳ מהירה יותר, זהה או איטית יותר? אם המפה חסרה באחד העותקים, עצור את השוואת המהירות.';
+  $('explanation').textContent='עותק א׳ מציג תמונת מפה קבועה בגודל ובאיכות המלאים. המפה אינה מתעדכנת וסימון המיקום האישי חסר בכוונה; Calendar מציג TEST. בדיקה ב׳ הופסקה לאחר שנכשלה בייבוא, ולכן אין כעת השוואת רשת מול הטמעה.';
+  $('comparison').textContent='אם כבר בדקת את א׳, אין צורך לייבא אותה שוב. דווח אם המפה מופיעה ואם המעבר Calendar → Home מהיר יותר מהעותק החי עם המיקום, זהה או איטי יותר. לשם השוואה השתמש באותו סלוט ובאותו חיבור רשת.';
   $('download').download='Widgy_Home_Static_Map_Diagnostic.json';
   $('baseline-test').hidden=false;
-  $('baseline-link').href='./widgy-home-map-diagnostic.html?home=embedded-static-map&v=embedded-static-map-1';
-  $('baseline-link').textContent='מעבר לבדיקה ב׳ — אותה מפה מוטמעת';
+  $('baseline-link').href='./widgy-home-map-diagnostic.html?home=stable-map-url&v=embedded-import-stop-1';
+  $('baseline-link').textContent='העותק החי עם סימון המיקום שכבר הוצג';
 }else if(embeddedStaticMap){
-  document.title='בדיקה ב׳ — תמונת המפה מוטמעת';
-  $('heading').textContent='ב׳: אותה תמונת מפה בתוך הווידג׳ט.';
-  $('explanation').textContent='אותו קובץ PNG בדיוק כמו בבדיקה א׳, ללא הקטנה או שינוי איכות. התמונה נשמרת בתוך העותק, ולכן קובץ הייבוא גדול יותר. זו בדיקה זמנית: המפה קבועה ואינה מציגה סימון מיקום אישי, ו־Calendar מציג TEST. שאר העיצוב והנתונים זהים לבדיקה א׳.';
-  $('comparison').textContent='קודם ודא שהמפה כולה מופיעה ונראית כמו בבדיקה א׳. אם היא חסרה, דווח על כך ואל תשווה מהירות. לאחר שהייבוא והטעינה הראשונית הסתיימו, בדוק באותו סלוט שלושה מעברים Calendar → Home והשווה לא׳: מהיר יותר, זהה או איטי יותר?';
-  $('download').download='Widgy_Home_Embedded_Static_Map_Trial.json';
+  document.title='בדיקה ב׳ הופסקה — כשל בייבוא';
+  $('heading').textContent='בדיקה ב׳ נעצרה לאחר כשל בייבוא.';
+  $('explanation').textContent='העותק המוטמע נכשל ב־Widgy אחרי ההדבקה. זו אינה תוצאת מהירות או הוכחה שהמפה עצמה אינה נתמכת. סיבת הכשל טרם נקבעה; ההעתקה וההורדה של עותק זה הושבתו.';
+  $('comparison').textContent='אין צורך להדביק שוב את אותו עותק. אפשר לחזור לאופציה א׳ בקישור למטה. אם כבר בדקת אותה, דווח על התוצאה שלה.';
   $('baseline-test').hidden=false;
-  $('baseline-link').href='./widgy-home-map-diagnostic.html?home=static-map&compare=embedded&v=embedded-static-map-1';
-  $('baseline-link').textContent='בדיקה א׳ — אותה מפה בכתובת רשת';
+  $('baseline-link').href='./widgy-home-map-diagnostic.html?home=static-map&compare=embedded&v=embedded-import-stop-1';
+  $('baseline-link').textContent='חזרה לאופציה א׳ — מפה קבועה מהרשת';
 }else if(stableNativeCity){
   document.title='חזרה לעותק Home שבו המפה עבדה';
   $('heading').textContent='חזרה למנגנון המפה שעבד.';
@@ -268,6 +267,13 @@ const messages={
 };
 function status(text,error=false){$('status').textContent=text;$('status').classList.toggle('error',error);}
 async function prepare(){
+  if(embeddedStaticMap){
+    // This copy failed on-device after paste. Do not regenerate it or request
+    // private export data while its import compatibility is unresolved.
+    payload='';$('copy').disabled=true;$('download').hidden=true;$('retry').hidden=true;
+    status('הבדיקה הופסקה לאחר כשל בייבוא. השתמש בקישור לאופציה א׳ למעלה.',true);
+    return;
+  }
   if(busy)return;busy=true;payload='';
   if(downloadURL)URL.revokeObjectURL(downloadURL);downloadURL='';
   $('copy').disabled=true;$('download').hidden=true;$('retry').hidden=true;

@@ -602,7 +602,7 @@ assert.throws(()=>withoutHomeWeatherArtwork(badWeather),/unexpected_template/);
 console.log('Passed: Weather-Art-Off removes only 14 weather-icon alternatives (137 nodes) beyond Progress-Off; all actual data, approved clock, map, weather text, other artwork and navigation unchanged.');
 
 const html=readFileSync(new URL('./widgy-home-map-diagnostic.html',import.meta.url),'utf8');
-assert(html.includes('./widgy-home-map-diagnostic.js?v=embedded-static-map-1'));
+assert(html.includes('./widgy-home-map-diagnostic.js?v=embedded-import-stop-1'));
 assert(html.includes('?home=minimal&amp;v=minimal-events-1'));
 const source=readFileSync(new URL('./widgy-home-map-diagnostic.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
 assert(!source.includes('withCompleteHomeStableNativeCity')); // Failed mixed-source export cannot be reissued by the page.
@@ -614,20 +614,28 @@ for(const [query,expectedExport] of [
   ['?home=minimal-events',minimalEvents],['?home=minimal-time',minimalTime],['?home=minimal-native',minimalNative],['?home=minimal-backdrop',minimalBackdrop],['?home=embedded-backdrop',embeddedBackdrop],['?home=full-artwork',fullArtwork],['?home=map-addback',mapAddback],['?home=static-map',staticMap],['?home=map-no-city',mapNoCity],['?home=direct-live-map',directLiveMap],['?home=native-location-map',nativeLocationMap],['?home=map-binding-check',bindingProbe],['?home=sync-map',synchronousMap],['?home=stable-map-url',stableMapURL],['?home=fixed-map-location',fixedLocationMap],['?home=direct-fixed-map',directFixedMap],['?home=cdn-fixed-map',cdnFixedMap],['?home=stable-native-city',stableMapURL],['?home=embedded-static-map',embeddedStaticMap],['?home=static-map&compare=embedded',staticMap]
 ]){
   const elements=Object.fromEntries(elementIDs.map(id=>[id,{textContent:'',hidden:true,classList:{toggle(){}},handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}]));
-  let payload='',copied='',backdropLoads=0,staticMapLoads=0;
+  let payload='',copied='',backdropLoads=0,staticMapLoads=0,exportLoads=0;
   const context=vm.createContext({
     document:{getElementById:id=>{assert(elements[id],id);return elements[id];}},
     window:{location:{search:query},addEventListener(){}},URLSearchParams,
     URL:{createObjectURL:b=>{payload=b.parts[0];return 'blob:synthetic';},revokeObjectURL(){}},
     Blob:class{constructor(parts){this.parts=parts;}},
     navigator:{clipboard:{writeText:async value=>{copied=value;}}},
-    prepareWidget:async()=>({payload:JSON.stringify(normal)}),
+    prepareWidget:async()=>{exportLoads++;return {payload:JSON.stringify(normal)};},
     loadHomeBackdropDataURL:async()=>{backdropLoads++;return backdropDataURL;},
     loadHomeStaticMapDataURL:async()=>{staticMapLoads++;return staticMapDataURL;},
     perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,
     withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withMinimalHomeEvents,withMinimalHomeTimeText,withMinimalHomeNativeData,withMinimalHomeBackdrop,withMinimalHomeEmbeddedBackdrop,withCompleteHomeArtwork,withCompleteHomeMap,withCompleteHomeStaticMap,withCompleteHomeEmbeddedStaticMap,withCompleteHomeMapWithoutCityFetch,withCompleteHomeSynchronousMap,withCompleteHomeStableMapURL,withCompleteHomeStableNativeCity,withCompleteHomeFixedLocationMap,withCompleteHomeDirectFixedMap,withCompleteHomeCDNFixedMap,withCompleteHomeDirectLiveMap,withCompleteHomeNativeLocationMap,withHomeMapBindingProbe,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
   });
   await new vm.Script(source).runInContext(context);
+  if(query==='?home=embedded-static-map'){
+    assert.equal(payload,'');assert.equal(exportLoads,0);assert.equal(backdropLoads,0);assert.equal(staticMapLoads,0);
+    assert.equal(elements.copy.disabled,true);assert.equal(elements.download.hidden,true);assert.equal(elements.retry.hidden,true);
+    assert(elements.status.textContent.includes('כשל בייבוא'));
+    assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=static-map&compare=embedded&v=embedded-import-stop-1');
+    await elements.copy.handlers.click();assert.equal(copied,'');
+    continue;
+  }
   assert.deepEqual(JSON.parse(payload),expectedExport,query);
   assert.equal(backdropLoads,['?home=embedded-backdrop','?home=full-artwork','?home=map-addback','?home=static-map','?home=map-no-city','?home=direct-live-map','?home=native-location-map','?home=map-binding-check','?home=sync-map','?home=stable-map-url','?home=fixed-map-location','?home=direct-fixed-map','?home=cdn-fixed-map','?home=stable-native-city','?home=embedded-static-map','?home=static-map&compare=embedded'].includes(query)?1:0);
   assert.equal(staticMapLoads,query==='?home=embedded-static-map'?1:0);
@@ -655,16 +663,9 @@ for(const [query,expectedExport] of [
     assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=minimal-clock&v=minimal-events-1');
     assert.equal(elements['next-test'].hidden,true);
   }
-  if(query==='?home=embedded-static-map'){
-    assert.equal(elements.download.download,'Widgy_Home_Embedded_Static_Map_Trial.json');
-    assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=static-map&compare=embedded&v=embedded-static-map-1');
-    assert(elements.comparison.textContent.includes('אם היא חסרה'));
-    assert(elements.explanation.textContent.includes('ללא הקטנה או שינוי איכות'));
-    assert.equal(elements['next-test'].hidden,true);
-  }
   if(query==='?home=static-map&compare=embedded'){
     assert.equal(elements.download.download,'Widgy_Home_Static_Map_Diagnostic.json');
-    assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=embedded-static-map&v=embedded-static-map-1');
+    assert.equal(elements['baseline-link'].href,'./widgy-home-map-diagnostic.html?home=stable-map-url&v=embedded-import-stop-1');
     assert(elements.comparison.textContent.includes('באותו חיבור רשת'));
     assert.equal(elements['next-test'].hidden,true);
   }
@@ -773,4 +774,4 @@ for(const [query,expectedExport] of [
     assert.equal(elements['next-test'].hidden,true);
   }
 }
-console.log('Passed: all twenty-eight diagnostic URLs export and copy the intended comparison; add-back pages link to their respective unchanged controls.');
+console.log('Passed: twenty-seven diagnostic URLs export/copy their intended controls; failed embedded map route blocks export, downloads and clipboard without loading private data.');
