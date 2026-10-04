@@ -1,14 +1,22 @@
-import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js?v=home-weather-art-1';
+import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js?v=minimal-live-1';
 import {prepareWidget} from './calendar-widget-export.js?v=perf-5-ringfix-1';
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(window.location.search);
+const minimalLiveClock=params.get('home')==='minimal-clock';
 const weatherArtOff=params.get('home')==='weather-art-off';
 const progressOff=params.get('home')==='progress-off';
-const minimalHome=params.get('home')==='minimal';
+const minimalHome=minimalLiveClock || params.get('home')==='minimal';
 const clockOff=minimalHome || params.get('home')==='clock-off';
 const nativeDataOff=clockOff || params.get('home')==='data-off';
 const cityOff=nativeDataOff || params.get('city')==='off';
-if(weatherArtOff){
+if(minimalLiveClock){
+  document.title='בדיקה ב׳ עם השעון המאושר';
+  $('heading').textContent='בדיקה ב׳ + השעון בלבד.';
+  $('explanation').textContent='אותו Home מינימלי שהיה מהיר בבדיקה ב׳, עם השעון הישן והמאושר בלבד. Home יציג רקע, ניווט ושעון בגודל ובפונט המקוריים. כל שאר המקורות והכרטיסיות זהים לבדיקה ב׳. זו בדיקת אבחון; המראה הריק מכוון.';
+  $('comparison').textContent='השווה לבדיקה ב׳ המקורית באותו סלוט וחיבור רשת; יש קישור אליה למטה. אחרי הטעינה הראשונה, עבור שלוש פעמים Calendar → Home. האם Home נשאר מהיר, או שהוספת השעון מחזירה את ההמתנה?';
+  $('download').download='Widgy_Home_Minimal_Live_Clock_Diagnostic.json';
+  $('baseline-test').hidden=false;
+}else if(weatherArtOff){
   document.title='בדיקת אייקון מזג האוויר ב־Home';
   $('heading').textContent='בדיקה אחרונה: אייקון מזג האוויר.';
   $('explanation').textContent='זהה לבדיקת Progress-Off האחרונה, עם שינוי נוסף אחד: אייקון מזג האוויר ב־Home וקבוצות התנאים שלו הוסרו זמנית. הטמפרטורות, הטקסט, כל הנתונים האמיתיים, השעון הישן והמפה נשמרים. מילוי טבעת הצעדים ופס היום עדיין חסרים, כמו בבדיקה הקודמת.';
@@ -62,12 +70,12 @@ async function prepare(){
   status('קורא את היומנים ומכין את העותק האישי…');
   try{
     const result=await prepareWidget();
-    const transform=minimalHome ? withMinimalHome : clockOff ? withoutHomeLiveClock : nativeDataOff ? withoutHomeNativeData : cityOff ? withoutHomeMapAndCityLookup : withoutHomeMap;
+    const transform=minimalLiveClock ? withMinimalHomeLiveClock : minimalHome ? withMinimalHome : clockOff ? withoutHomeLiveClock : nativeDataOff ? withoutHomeNativeData : cityOff ? withoutHomeMapAndCityLookup : withoutHomeMap;
     const original=JSON.parse(result.payload);
     payload=JSON.stringify(weatherArtOff ? withoutHomeWeatherArtwork(original) : progressOff ? withoutHomeProgressArtwork(original) : transform(perf5DiagnosticBaseline(original)));
     downloadURL=URL.createObjectURL(new Blob([payload],{type:'application/json'}));
     $('download').href=downloadURL;$('download').hidden=false;$('copy').disabled=false;
-    status(weatherArtOff ? 'עותק Weather-Art-Off מוכן. אייקון מזג האוויר חסר בכוונה; הטמפרטורות, המפה והשעון פעילים.' : progressOff ? 'עותק Progress-Off מוכן. המפה והשעון הישן פעילים; רק מילוי טבעת הצעדים ופס היום חסרים זמנית.' : minimalHome ? 'עותק Home Minimal מוכן. Home יהיה כמעט ריק, עם פס הניווט.' : clockOff ? 'עותק Clock-Off מוכן. השעון ב־Home יישאר זמנית על 12:34.' : nativeDataOff ? 'עותק Native-Data-Off מוכן. נתוני הדוגמה ב־Home מסומנים TEST DATA. זהו עותק אבחון זמני.' : cityOff ? 'עותק Map-City-Off מוכן. המפה ריקה ושם העיר הוא TEST. זהו עותק אבחון זמני.' : 'עותק האבחון מוכן. אזור המפה יהיה ריק; שאר הווידג׳ט נשאר זהה.');
+    status(minimalLiveClock ? 'עותק Minimal Live Clock מוכן. Home יציג רק רקע, ניווט ואת השעון המאושר.' : weatherArtOff ? 'עותק Weather-Art-Off מוכן. אייקון מזג האוויר חסר בכוונה; הטמפרטורות, המפה והשעון פעילים.' : progressOff ? 'עותק Progress-Off מוכן. המפה והשעון הישן פעילים; רק מילוי טבעת הצעדים ופס היום חסרים זמנית.' : minimalHome ? 'עותק Home Minimal מוכן. Home יהיה כמעט ריק, עם פס הניווט.' : clockOff ? 'עותק Clock-Off מוכן. השעון ב־Home יישאר זמנית על 12:34.' : nativeDataOff ? 'עותק Native-Data-Off מוכן. נתוני הדוגמה ב־Home מסומנים TEST DATA. זהו עותק אבחון זמני.' : cityOff ? 'עותק Map-City-Off מוכן. המפה ריקה ושם העיר הוא TEST. זהו עותק אבחון זמני.' : 'עותק האבחון מוכן. אזור המפה יהיה ריק; שאר הווידג׳ט נשאר זהה.');
   }catch(error){
     status(messages[error.message] || 'לא ניתן להכין את העותק כרגע. נסה שוב; אם הבעיה נמשכת, בדוק את חיבור היומנים בהגדרות למטה.',true);
     $('retry').hidden=false;

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {personalizedWidget} from './calendar-connect-widget.js';
-import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
+import {perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withoutHomeProgressArtwork,withoutHomeWeatherArtwork} from './widget-home-map-diagnostic.js';
 const template=JSON.parse(readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
 const normal=personalizedWidget(template,'https://example.test/api/calendar-dots?token=synthetic','https://example.test/api/calendar-widget?token=synthetic');
 const original=perf5DiagnosticBaseline(normal);
@@ -105,6 +105,23 @@ for(const n of walk(minimal['1']))if(n['1a'])for(const id of n['1a'].slice(7).sp
 assert.deepEqual(original,unchanged);
 console.log('Passed: Clock-Off changes only one source beyond Native-Data-Off; Minimal removes exactly 373 Home nodes and keeps all variables, other tabs and valid navigation.');
 
+const minimalClock=withMinimalHomeLiveClock(original),withoutAddedClock=structuredClone(minimalClock);
+const approvedClock=original['1'].find(n=>n.s==='HOME')['1'].find(n=>n.s==='Hero Time');
+const minimalClockHome=minimalClock['1'].find(n=>n.s==='HOME');
+assert.deepEqual(minimalClockHome['1'].find(n=>n.s==='Hero Time'),approvedClock);
+assert.equal(minimalClockHome['1'].length,16);
+assert.equal(count(minimalClock['1'])-count(minimal['1']),1);
+withoutAddedClock['1'].find(n=>n.s==='HOME')['1']=withoutAddedClock['1'].find(n=>n.s==='HOME')['1'].filter(n=>n.d0!==approvedClock.d0);
+withoutAddedClock['3']=minimal['3'];withoutAddedClock['4']=minimal['4'];
+assert.deepEqual(withoutAddedClock,minimal); // Every source, variable, other tab and retained layer matches fast B.
+assert.deepEqual(original,unchanged);
+const clockOrder=new Set(minimalClockHome['1'].map(n=>n.d0));
+assert.deepEqual(minimalClockHome['1'].map(n=>n.d0),original['1'].find(n=>n.s==='HOME')['1'].filter(n=>clockOrder.has(n.d0)).map(n=>n.d0));
+const wrongClock=structuredClone(original);
+wrongClock['1'].find(n=>n.s==='HOME')['1'].find(n=>n.s==='Hero Time')['66'][0]['6']='HH:mm';
+assert.throws(()=>withMinimalHomeLiveClock(wrongClock),/unexpected_template/);
+console.log('Passed: Minimal Live Clock differs from fast Minimal by exactly one unchanged approved live-clock layer plus metadata, with identical sources/variables/other tabs and original layer order.');
+
 const normalUnchanged=structuredClone(normal);
 const progressOff=withoutHomeProgressArtwork(normal),expectedProgress=structuredClone(normal);
 expectedProgress['1'].find(n=>n.s==='HOME')['1']=expectedProgress['1'].find(n=>n.s==='HOME')['1']
@@ -140,13 +157,14 @@ assert.throws(()=>withoutHomeWeatherArtwork(badWeather),/unexpected_template/);
 console.log('Passed: Weather-Art-Off removes only 14 weather-icon alternatives (137 nodes) beyond Progress-Off; all actual data, approved clock, map, weather text, other artwork and navigation unchanged.');
 
 const html=readFileSync(new URL('./widgy-home-map-diagnostic.html',import.meta.url),'utf8');
-assert(html.includes('./widgy-home-map-diagnostic.js?v=home-weather-art-1'));
+assert(html.includes('./widgy-home-map-diagnostic.js?v=minimal-live-1'));
+assert(html.includes('?home=minimal&amp;v=minimal-live-1'));
 const source=readFileSync(new URL('./widgy-home-map-diagnostic.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
 const elementIDs=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
 for(const [query,expectedExport] of [
   ['',diagnostic],['?city=off',cityOff],['?home=data-off',nativeOff],
   ['?home=clock-off',clockOff],['?home=minimal',minimal],['?home=progress-off',progressOff],
-  ['?home=weather-art-off',weatherArtOff]
+  ['?home=weather-art-off',weatherArtOff],['?home=minimal-clock',minimalClock]
 ]){
   const elements=Object.fromEntries(elementIDs.map(id=>[id,{textContent:'',hidden:true,classList:{toggle(){}},handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}}]));
   let payload='',copied='';
@@ -158,7 +176,7 @@ for(const [query,expectedExport] of [
     navigator:{clipboard:{writeText:async value=>{copied=value;}}},
     prepareWidget:async()=>({payload:JSON.stringify(normal)}),
     perf5DiagnosticBaseline,withoutHomeMap,withoutHomeMapAndCityLookup,withoutHomeNativeData,
-    withoutHomeLiveClock,withMinimalHome,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
+    withoutHomeLiveClock,withMinimalHome,withMinimalHomeLiveClock,withoutHomeProgressArtwork,withoutHomeWeatherArtwork
   });
   await new vm.Script(source).runInContext(context);
   assert.deepEqual(JSON.parse(payload),expectedExport,query);
@@ -175,5 +193,11 @@ for(const [query,expectedExport] of [
     assert(elements.comparison.textContent.includes('Progress-Off'));
     assert.equal(elements['next-test'].hidden,true);
   }
+  assert.equal(elements['baseline-test'].hidden,query!=='?home=minimal-clock');
+  if(query==='?home=minimal-clock'){
+    assert.equal(elements.download.download,'Widgy_Home_Minimal_Live_Clock_Diagnostic.json');
+    assert(elements.comparison.textContent.includes('בדיקה ב׳ המקורית'));
+    assert.equal(elements['next-test'].hidden,true);
+  }
 }
-console.log('Passed: all seven diagnostic URLs export and copy the intended comparison; new artwork tests retain the full real-data baseline.');
+console.log('Passed: all eight diagnostic URLs export and copy the intended comparison; Minimal Live Clock has a direct link to the unchanged fast Minimal control.');

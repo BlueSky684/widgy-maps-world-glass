@@ -108,6 +108,27 @@ export function withMinimalHome(original){
   return widget;
 }
 
+// Add back one untouched layer to the user's fast Minimal control. This is
+// different from comparing two active clock providers in the full widget.
+export function withMinimalHomeLiveClock(original){
+  const widget=withMinimalHome(original);
+  const originalHome=original['1'].find(n=>n.s==='HOME');
+  const clocks=originalHome['1'].filter(n=>n.s==='Hero Time');
+  const clock=clocks[0],source=clock?.['66'];
+  if(clocks.length!==1 || source?.length!==1 || source[0]['5']!=='Date And Time' ||
+      source[0]['6']!=='Live Timer (24 hours, No Seconds)' ||
+      clock['1']!=='HomeGlassTime-Light')throw Error('unexpected_template');
+  const home=widget['1'].find(n=>n.s==='HOME');
+  const layers=new Map(home['1'].map(n=>[n.d0,n]));
+  if(layers.has(clock.d0))throw Error('unexpected_template');
+  layers.set(clock.d0,structuredClone(clock));
+  home['1']=originalHome['1'].filter(n=>layers.has(n.d0)).map(n=>layers.get(n.d0));
+  if(home['1'].length!==16)throw Error('unexpected_template');
+  widget['3']='Widgy Home Minimal Live Clock Diagnostic';
+  widget['4']='Exact fast Minimal control with only the original approved Hero Time layer restored, including Live Timer (24 hours, No Seconds), HomeGlassTime-Light font, frame, color and original layer order. Home has 16 nodes instead of 15. All variables, frozen sensor inputs, TEST city label, absent map, other tabs and navigation remain identical to Minimal. This tests the presence of the live clock layer, including its source and drawing, not a specific internal cause or a proposed replacement. Keep this private calendar export private.';
+  return widget;
+}
+
 // Start from the FULL, repaired normal export, not the earlier stripped probes.
 // Leave every data source active: isolate the two sets of conditional drawings.
 export function withoutHomeProgressArtwork(original){
