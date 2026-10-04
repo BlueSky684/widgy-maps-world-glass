@@ -44,3 +44,17 @@ export function replaceHomeStepsWithNativeRing(original,nativeRing=NATIVE_STEPS_
   widget['4']='Compact Dots 1 trial: replace all 100 manual Home steps-ring shapes with one native Ring Chart. Native Pedometer / Steps, manual 10000 goal, original frame and lime material, 30% start/end scale from the device export. Total 1514 layers. All other Home/Calendar content, 81 variables, map/city and navigation retained. Ring thickness/track alignment, edge cases and transition speed still require native phone verification. Keep this private export private.';
   return widget;
 }
+
+// IMG_9891 measured 46–47 screenshot pixels at the right-hand stroke for the
+// 30% trial, against the approved 13px track. 30 * 13 / 46.5 ≈ 8.4.
+// Use 8.5 as a first empirical correction; native scaling is not proven linear.
+// Keep the first trial reproducible and alter only its two known scale fields.
+export function thinNativeStepsRing(original){
+  const widget=replaceHomeStepsWithNativeRing(original);
+  const ring=widget['1'].find(n=>n.d0===245)['1'].find(n=>n.s==='Steps Goal Ring · Native');
+  ring['8'].a[0].a=8.5;
+  ring['9'].a[0].a=8.5;
+  widget['3']='Widgy Native Steps Ring 2';
+  widget['4']='Native Steps Ring 1 thickness correction: only Start Scale and End Scale change from 30 to 8.5, based on the first phone screenshot. Same single native Pedometer ring, 10000 goal, original frame/lime and full Compact Dots 1 content; all 100 manual ring layers remain removed. Total 1514 layers and 81 variables. Native thickness/track alignment, edge cases and speed still require phone verification; proportional scale calibration is an estimate. Keep this private export private.';
+  return widget;
+}
