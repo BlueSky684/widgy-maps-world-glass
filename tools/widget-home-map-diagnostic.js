@@ -324,6 +324,16 @@ export function withCompleteHomeMapWithoutCityFetch(original,dataURL){
   return widget;
 }
 
+// Keep the known faster literal-source path, requesting the existing live
+// renderer instead of a prebuilt PNG. Empty coordinates prohibit IP fallback.
+export function withCompleteHomeDirectLiveMap(original,dataURL){
+  const widget=withCompleteHomeStaticMap(original,dataURL);
+  widget['36'].find(v=>v['1']==='map_request')['3']['66'][0]['25']='https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/api/night-map?mode=live&width=3306&presentation=glass&atlas=r6&reuse=60&lat=&lon=';
+  widget['3']='Widgy Home Direct Live Map Diagnostic';
+  widget['4']='Compare with the faster Static Map: change only its literal map_request URL from a prebuilt PNG to the unchanged live night-map endpoint, same width=3306/presentation=glass/atlas=r6, reuse=60, explicit empty lat/lon. No map JavaScript, city fetch, GPS interpolation or changing timestamp in this URL. Empty coordinates suppress the server IP-location fallback; no personal marker or city is displayed. Native GPS variables elsewhere are retained exactly, so this does not disable all widget location work. All 81 variables, all layers/frames and other data remain identical to Static Map. The server renders current day/night when requested; automatic refresh cadence inside Widgy with a stable URL is unverified and must not be treated as a finished live-update fix. Compare repeated transitions after the map appears. This separates a stable direct live-image URL from the broader slow client-driven pipeline, not script vs coordinates vs cache behavior individually. Keep this private export private.';
+  return widget;
+}
+
 // Start from the FULL, repaired normal export, not the earlier stripped probes.
 // Leave every data source active: isolate the two sets of conditional drawings.
 export function withoutHomeProgressArtwork(original){
