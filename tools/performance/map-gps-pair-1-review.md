@@ -29,5 +29,8 @@ Unexpected variable identities/source kinds and invalid origins fail. Real contr
 ## Device gate and next decision
 
 Import `Widgy Map GPS Pair 1` from `/tools/widgy-map-gps-pair.html?v=map-gps-pair-1`, retaining fast Minute URL1 in the same slot/network. Wait for the full map AND a marker near the expected location with coordinate label. No city name is expected. Missing map, missing marker or wrong location must be reported before performance; a fast map with unavailable coordinates does not validate active location. No request to copy/share actual coordinates is needed.
-
 Then try three Calendar↔Home cycles and a natural later return after a minute or two. No stopwatch, video or second phone. If fast with correct marker, keep this as the location prototype and check freshness/city separately before restoring full Home. If slow, isolate native dependency work from location-specific image/cache work on the same small baseline, without declaring a unique culprit. Original Minimal Pair differed in two extra fallback definitions and script structure, so any improvement cannot be attributed uniquely to removing those definitions. Preserve Lean1 and full approved Ring2; final dynamic city spelling Ashkelon and the approved design remain required. No production promotion, branch deletion or asset cleanup.
+
+## Device result — 2026-10-05 20:38:41 Asia/Jerusalem
+
+Owner reports a small delay after leaving the phone untouched for several minutes, then transitions start improving with use. This is not a stable no-delay pass. No exact duration, GPS freshness or marker correctness was separately confirmed. Next matched control: Map Fixed Marker1, retaining the same marked live-image path with synthetic0,0 and minute URL while removing native coordinate bindings/definitions. See map-fixed-marker-1-review.md. Do not infer a unique GPS, network or cold-function cause from the idle/warm pattern.
