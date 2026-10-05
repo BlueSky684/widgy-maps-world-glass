@@ -1,0 +1,356 @@
+{
+  "schema": 1,
+  "kind": "offline-research-not-device-test",
+  "baseline": "f56c6cdc5688e4bb48bae8c6c3e50676e0412be2",
+  "dimensions": [
+    3306,
+    1558
+  ],
+  "versions": {
+    "node": "v24.19.0",
+    "sharp": "0.34.5",
+    "vips": "8.17.3"
+  },
+  "precomputedState": "HIT",
+  "basePNGBytes": 3256497,
+  "baseSHA256": "1bb6b48b8f424f38acdb2d104ea1b7b5823a783f8bd4d6baf1d2a78cdccb00ce",
+  "edgePixels": 5822,
+  "prepareBaseMs": 712.67,
+  "decodedRGBABytes": {
+    "single": 20602992,
+    "twoLayers": 41205984
+  },
+  "caveats": [
+    "Full-size pixel parity does not prove parity after independent native layer sampling.",
+    "RGBA buffer counts are theoretical, not measured Widgy memory.",
+    "The overlay prototype first renders the full image; timings are not optimized endpoint timings.",
+    "Splitting images does not provide a background update or atomic snapshot commit API.",
+    "All benchmark locations and times are synthetic. No device data or live geocoder calls."
+  ],
+  "results": [
+    {
+      "id": "october-evening",
+      "at": "2026-10-05T20:00:00Z",
+      "syntheticLocation": null,
+      "renderMs": 477.99,
+      "fullPNGBytes": 4319404,
+      "fullSHA256": "c8619437d5451cdfa04a5cee56963c8d9e2a6df987643506dd42934a86199512",
+      "overlayPNGBytes": 2267643,
+      "overlaySHA256": "ba9cb9d5f07f9e24e91e1d67fd6197638f1dc0f2641a67eca2ed36b5d227379a",
+      "changedOverlayPixels": 2155354,
+      "recurringByteReductionPercent": 47.5,
+      "makeOverlayMs": 644.92,
+      "overlayEncodeMs": 131.5,
+      "fullResolution": {
+        "pixels": 0,
+        "channels": 0,
+        "maxChannelDifference": 0,
+        "meanAbsoluteChannelDifference": 0
+      },
+      "fullResolutionPass": true,
+      "sampling": [
+        {
+          "width": 1102,
+          "height": 519,
+          "pixels": 76656,
+          "channels": 184864,
+          "maxChannelDifference": 51,
+          "meanAbsoluteChannelDifference": 0.17612179991537544
+        },
+        {
+          "width": 367,
+          "height": 173,
+          "pixels": 14126,
+          "channels": 34461,
+          "maxChannelDifference": 52,
+          "meanAbsoluteChannelDifference": 0.30693720369816196
+        }
+      ],
+      "minuteChanges": {
+        "pixels": 128298,
+        "channels": 199670,
+        "maxChannelDifference": 12,
+        "meanAbsoluteChannelDifference": 0.01020832314063899
+      }
+    },
+    {
+      "id": "october-morning",
+      "at": "2026-10-05T06:00:00Z",
+      "syntheticLocation": null,
+      "renderMs": 376.82,
+      "fullPNGBytes": 4079714,
+      "fullSHA256": "af07613048f9c8d3fa9a20c9e5c9a95b78aeb493364e55b253810703ec433940",
+      "overlayPNGBytes": 1588616,
+      "overlaySHA256": "4df2ca40207cbf05e13de84dc59759bfb82a75f6fa04eaed625fe6c042fa81db",
+      "changedOverlayPixels": 2341596,
+      "recurringByteReductionPercent": 61.06,
+      "makeOverlayMs": 609.72,
+      "overlayEncodeMs": 74.59,
+      "fullResolution": {
+        "pixels": 0,
+        "channels": 0,
+        "maxChannelDifference": 0,
+        "meanAbsoluteChannelDifference": 0
+      },
+      "fullResolutionPass": true,
+      "sampling": [
+        {
+          "width": 1102,
+          "height": 519,
+          "pixels": 38739,
+          "channels": 96569,
+          "maxChannelDifference": 51,
+          "meanAbsoluteChannelDifference": 0.09603925600327308
+        },
+        {
+          "width": 367,
+          "height": 173,
+          "pixels": 8491,
+          "channels": 21547,
+          "maxChannelDifference": 51,
+          "meanAbsoluteChannelDifference": 0.23061536280732703
+        }
+      ],
+      "minuteChanges": {
+        "pixels": 141430,
+        "channels": 216275,
+        "maxChannelDifference": 13,
+        "meanAbsoluteChannelDifference": 0.012088923783497076
+      }
+    },
+    {
+      "id": "march-equinox",
+      "at": "2026-03-20T12:00:00Z",
+      "syntheticLocation": null,
+      "renderMs": 320.81,
+      "fullPNGBytes": 3942118,
+      "fullSHA256": "665b226b58dfbd8f929de356eb6cb0f08da6b585beb2b7ccd26b03f528cff879",
+      "overlayPNGBytes": 1385757,
+      "overlaySHA256": "0077446acfef061b310eceaed593a07ac4fc92228b498dfdc8357d6432e157d0",
+      "changedOverlayPixels": 2200298,
+      "recurringByteReductionPercent": 64.85,
+      "makeOverlayMs": 686.71,
+      "overlayEncodeMs": 73.03,
+      "fullResolution": {
+        "pixels": 0,
+        "channels": 0,
+        "maxChannelDifference": 0,
+        "meanAbsoluteChannelDifference": 0
+      },
+      "fullResolutionPass": true,
+      "sampling": [
+        {
+          "width": 1102,
+          "height": 519,
+          "pixels": 51127,
+          "channels": 127410,
+          "maxChannelDifference": 44,
+          "meanAbsoluteChannelDifference": 0.12576669149453262
+        },
+        {
+          "width": 367,
+          "height": 173,
+          "pixels": 10022,
+          "channels": 25375,
+          "maxChannelDifference": 52,
+          "meanAbsoluteChannelDifference": 0.24286513049093572
+        }
+      ],
+      "minuteChanges": {
+        "pixels": 118247,
+        "channels": 195522,
+        "maxChannelDifference": 14,
+        "meanAbsoluteChannelDifference": 0.012063393511000732
+      }
+    },
+    {
+      "id": "june-solstice",
+      "at": "2026-06-21T00:00:00Z",
+      "syntheticLocation": null,
+      "renderMs": 330.22,
+      "fullPNGBytes": 4152286,
+      "fullSHA256": "f02d00d51708351b6dcdee38cd42e5ed28cddfde9f9c779d544dbb969f6c8566",
+      "overlayPNGBytes": 1847436,
+      "overlaySHA256": "0bdb568ecc13effc9565163a251bb155b2bdf8fc34c634f40d304004ecb77bd5",
+      "changedOverlayPixels": 1977115,
+      "recurringByteReductionPercent": 55.51,
+      "makeOverlayMs": 663.69,
+      "overlayEncodeMs": 94.08,
+      "fullResolution": {
+        "pixels": 0,
+        "channels": 0,
+        "maxChannelDifference": 0,
+        "meanAbsoluteChannelDifference": 0
+      },
+      "fullResolutionPass": true,
+      "sampling": [
+        {
+          "width": 1102,
+          "height": 519,
+          "pixels": 40031,
+          "channels": 95205,
+          "maxChannelDifference": 51,
+          "meanAbsoluteChannelDifference": 0.0856736219660173
+        },
+        {
+          "width": 367,
+          "height": 173,
+          "pixels": 7902,
+          "channels": 19086,
+          "maxChannelDifference": 27,
+          "meanAbsoluteChannelDifference": 0.14648532862925454
+        }
+      ],
+      "minuteChanges": {
+        "pixels": 131961,
+        "channels": 211557,
+        "maxChannelDifference": 13,
+        "meanAbsoluteChannelDifference": 0.012822409483049841
+      }
+    },
+    {
+      "id": "december-solstice",
+      "at": "2026-12-21T12:00:00Z",
+      "syntheticLocation": null,
+      "renderMs": 356.59,
+      "fullPNGBytes": 4172236,
+      "fullSHA256": "d09e43afcaca5b4267319735dd1135dfe4cc9b71828b82c4642a8861dcd5106e",
+      "overlayPNGBytes": 1877911,
+      "overlaySHA256": "01dd9aed996cd9d0777256db49b68f86d06c52e72b6ba269fa7670ddd01c95a2",
+      "changedOverlayPixels": 2386511,
+      "recurringByteReductionPercent": 54.99,
+      "makeOverlayMs": 648.64,
+      "overlayEncodeMs": 101.59,
+      "fullResolution": {
+        "pixels": 0,
+        "channels": 0,
+        "maxChannelDifference": 0,
+        "meanAbsoluteChannelDifference": 0
+      },
+      "fullResolutionPass": true,
+      "sampling": [
+        {
+          "width": 1102,
+          "height": 519,
+          "pixels": 75264,
+          "channels": 186414,
+          "maxChannelDifference": 44,
+          "meanAbsoluteChannelDifference": 0.18532515762198
+        },
+        {
+          "width": 367,
+          "height": 173,
+          "pixels": 14819,
+          "channels": 37376,
+          "maxChannelDifference": 52,
+          "meanAbsoluteChannelDifference": 0.3830779165551023
+        }
+      ],
+      "minuteChanges": {
+        "pixels": 131671,
+        "channels": 220491,
+        "maxChannelDifference": 13,
+        "meanAbsoluteChannelDifference": 0.015036942207228931
+      }
+    },
+    {
+      "id": "synthetic-zero-marker",
+      "at": "2026-10-05T20:00:00Z",
+      "syntheticLocation": {
+        "latitude": 0,
+        "longitude": 0,
+        "source": "coordinates"
+      },
+      "renderMs": 461.28,
+      "fullPNGBytes": 4329622,
+      "fullSHA256": "8f07e9f753a1aadd8816c688f877933b7f747b44aa2bd76a3ff42b7d72b912f8",
+      "overlayPNGBytes": 2280989,
+      "overlaySHA256": "127f7a2e7d18b890050f7a69d5ece25ec0433badb1653bace57fa6d95671582f",
+      "changedOverlayPixels": 2157611,
+      "recurringByteReductionPercent": 47.32,
+      "makeOverlayMs": 654,
+      "overlayEncodeMs": 115.65,
+      "fullResolution": {
+        "pixels": 0,
+        "channels": 0,
+        "maxChannelDifference": 0,
+        "meanAbsoluteChannelDifference": 0
+      },
+      "fullResolutionPass": true,
+      "sampling": [
+        {
+          "width": 1102,
+          "height": 519,
+          "pixels": 76525,
+          "channels": 184707,
+          "maxChannelDifference": 51,
+          "meanAbsoluteChannelDifference": 0.17722812612555908
+        },
+        {
+          "width": 367,
+          "height": 173,
+          "pixels": 14090,
+          "channels": 34417,
+          "maxChannelDifference": 52,
+          "meanAbsoluteChannelDifference": 0.3094848088705486
+        }
+      ],
+      "minuteChanges": {
+        "pixels": 128298,
+        "channels": 199670,
+        "maxChannelDifference": 12,
+        "meanAbsoluteChannelDifference": 0.01020832314063899
+      }
+    },
+    {
+      "id": "synthetic-edge-label",
+      "at": "2026-06-21T00:00:00Z",
+      "syntheticLocation": {
+        "latitude": 85,
+        "longitude": -180,
+        "city": "Synthetic",
+        "source": "coordinates"
+      },
+      "renderMs": 486.31,
+      "fullPNGBytes": 4166171,
+      "fullSHA256": "90c6dc1365741c71918be2a70f17fbb28faa445c9527b18fda1fe50bb45df805",
+      "overlayPNGBytes": 1865567,
+      "overlaySHA256": "52fc8a3e75c8369b179ecbf804f66ded6df6bfbf7ecef11ff8dcae8bc710665a",
+      "changedOverlayPixels": 1997254,
+      "recurringByteReductionPercent": 55.22,
+      "makeOverlayMs": 642.42,
+      "overlayEncodeMs": 97.63,
+      "fullResolution": {
+        "pixels": 8,
+        "channels": 9,
+        "maxChannelDifference": 1,
+        "meanAbsoluteChannelDifference": 4.368297575420114e-07
+      },
+      "fullResolutionPass": false,
+      "sampling": [
+        {
+          "width": 1102,
+          "height": 519,
+          "pixels": 42098,
+          "channels": 100994,
+          "maxChannelDifference": 54,
+          "meanAbsoluteChannelDifference": 0.09000975630225654
+        },
+        {
+          "width": 367,
+          "height": 173,
+          "pixels": 8428,
+          "channels": 20544,
+          "maxChannelDifference": 58,
+          "meanAbsoluteChannelDifference": 0.15752626356491473
+        }
+      ],
+      "minuteChanges": {
+        "pixels": 131961,
+        "channels": 211557,
+        "maxChannelDifference": 13,
+        "meanAbsoluteChannelDifference": 0.012822409483049841
+      }
+    }
+  ]
+}

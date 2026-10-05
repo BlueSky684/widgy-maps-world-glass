@@ -1,5 +1,9 @@
 # Live map refresh without blocking Home — investigation checkpoint
 
+## Continuation completed in the next session
+
+Read `map-refresh-architecture-2026-10-05.md` and its JSON measurements first. New research found a direct historical developer answer about the missing cached-image refresh/fallback behavior; current v27 capabilities and complete Apple lifecycle documentation were checked. A real static-base/dynamic-overlay prototype saves47–65% recurring PNG bytes but has a failed sampling-parity gate and doubles theoretical full-size RGBA surfaces. It was NOT deployed. No Widgy-only nonblocking live-refresh solution is verified. The next bounded feasibility direction is a completed local PNG refreshed by an independent updater; current Files serialization, replacement/refresh behavior, and acceptable automation cadence require verification. Do not send another five-minute import as the next step.
+
 Saved 2026-10-05, after the owner's 23:03 request for a deep investigation and 23:09 screenshot reporting that this conversation is too long. This is an INCOMPLETE investigation checkpoint, not a verified fix.
 
 ## Resume here
