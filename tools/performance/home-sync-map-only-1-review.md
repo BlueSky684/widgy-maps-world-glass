@@ -27,3 +27,9 @@ Import Widgy Home Sync Map Only 1 separately; assign to the same slot used for M
 If clearly faster, isolate groups of the removed Home consumers on this exact current baseline. If similar, do not repeat artwork deletion; revisit source dependencies and map path with evidence on the sparse control. Neither outcome alone diagnoses Widgy, DNS/network, server, decoding or an individual layer. Do not run a batch of additional phone variants without this result.
 
 Page: `/tools/widgy-home-sync-map-only.html?v=home-sync-map-only-1`.
+
+## Device feedback, 2026-10-05 10:08:06 Asia/Jerusalem
+
+Owner reports “still a little slow”. Residual lag remains in the sparse copy, but the wording does not quantify a delta against the full Home or establish identical timing. No new missing-map report was supplied. Do not call this a confirmed absence of improvement, or infer a server/Widgy root cause.
+
+Next comparison keeps this exact current sparse display and removes only the 12 Home-only variable definitions proved unreferenced by the remaining document. See `home-sync-map-lean-1-review.md`.
