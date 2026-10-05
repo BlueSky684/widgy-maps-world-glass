@@ -26,4 +26,12 @@ Improvement would implicate the combined custom city paths; this experiment does
 
 The previously prepared Home Map Variables 1 test is deferred while investigating this stronger city-related report.
 
+## Device result, 2026-10-05 07:34 Asia/Jerusalem
+
+The owner reports both transition directions much faster with this trial, with Calendar still faster than Home. This is subjective native-device evidence, not numerical timing. It implicates the combined custom city paths and their interactions; it does not distinguish fetch waiting, cache behavior, validation cost or Widgy scheduling.
+
+At 07:39 the owner also reports a slightly faster map transition in an uploaded older export. Inspection identifies it as `Widgy Home Direct Image URL Diagnostic`: literal map image URL, fixed synthetic 0,0, no city, no timestamp, no map or Calendar-city JavaScript, 1671 layers and 81 variables. This is not a single-change comparison with this 1514-layer, live-GPS, minute-bucket trial. Keep the direct URL observation as a lead, not proof of one remaining cause. No uploaded private export contents are published.
+
+Next compatibility trial is `Widgy Native City URL 1`, restoring real city via the existing native Location/City source. Its details and phone gates are in `native-city-url-1-review.md`.
+
 Page: `/tools/widgy-city-lookup-bypass.html?v=city-bypass-1`.
