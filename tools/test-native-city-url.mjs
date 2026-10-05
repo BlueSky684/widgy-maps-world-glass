@@ -6,7 +6,7 @@ import {consolidateWidget} from './widget-consolidation.js';
 import {compactCalendarDots} from './calendar-compact-dots.js';
 import {thinNativeStepsRing} from './native-steps-ring.js';
 import {bypassCityLookups} from './city-lookup-bypass.js';
-import {withNativeCityURL} from './native-city-url.js';
+import {withNativeCityURL,withNativeCityRecovery} from './native-city-url.js';
 import {parseMapRequest} from '../lib/native-map-request.js';
 import {resolveLocation} from '../lib/map-astronomy-location.js';
 
@@ -79,26 +79,35 @@ for(const change of [w=>get(w,'calendar_native_city')['6']='Country',w=>map(w)['
   const invalid=structuredClone(control);change(invalid);assert.throws(()=>withNativeCityURL(invalid),/unexpected_template/);
 }
 
+const recovery=withNativeCityRecovery(control),restoreRecovery=structuredClone(recovery);
+map(restoreRecovery)['2']=map(result)['2'];restoreRecovery['3']=result['3'];restoreRecovery['4']=result['4'];
+assert.deepEqual(restoreRecovery,result,'Recovery changes only failed image binding and metadata');
+assert.deepEqual(map(recovery),map(control),'Original working map image definition is restored exactly');
+assert.deepEqual(control,before,'Recovery input immutable');
+assert.equal(recovery['3'],'Widgy Native City Recovery 1');
+assert.equal(walk(recovery['1']).length,1514);assert.equal(recovery['36'].length,81);
+assert.deepEqual(recovery['36'],result['36'],'Immediate scripts and native city fallback retained');
+
 const html=readFileSync(new URL('./widgy-native-city-url.html',import.meta.url),'utf8');
 const elements=Object.fromEntries([...html.matchAll(/\bid="([^"]+)"/g)].map(m=>[m[1],
   {events:{},classList:{toggle(){}},addEventListener(name,fn){this.events[name]=fn;},removeAttribute(name){delete this[name];}}]));
 const events={};let downloaded,copied,error;
 const ctx={document:{getElementById:id=>{assert(elements[id],id);return elements[id];}},Blob,
-  consolidateWidget,compactCalendarDots,thinNativeStepsRing,withNativeCityURL,
+  consolidateWidget,compactCalendarDots,thinNativeStepsRing,withNativeCityRecovery,
   URL:{createObjectURL(blob){downloaded=blob;return 'blob:synthetic';},revokeObjectURL(){}},
   navigator:{clipboard:{async writeText(value){copied=value;}}},window:{addEventListener(name,fn){events[name]=fn;}},
   async prepareWidget(){if(error)throw Error(error);return {payload:JSON.stringify(normal)};}};
 const source=readFileSync(new URL('./widgy-native-city-url.js',import.meta.url),'utf8');
 vm.runInNewContext(source.replace(/^import .*;\n/gm,''),ctx);
 await new Promise(setImmediate);
-assert.equal(elements.copy.disabled,false);assert.deepEqual(JSON.parse(await downloaded.text()),result);
-await elements.copy.events.click();assert.deepEqual(JSON.parse(copied),result);
+assert.equal(elements.copy.disabled,false);assert.deepEqual(JSON.parse(await downloaded.text()),recovery);
+await elements.copy.events.click();assert.deepEqual(JSON.parse(copied),recovery);
 error='unauthorized';await elements.retry.events.click();assert.equal(elements.copy.disabled,true);
 assert.equal(elements.download.hidden,true);assert.equal(elements.download.href,undefined);
 copied='';await elements.copy.events.click();assert.equal(copied,'');
 error=null;events.pageshow({persisted:true});await new Promise(setImmediate);assert.equal(elements.copy.disabled,false);
 ctx.navigator.clipboard.writeText=async()=>{throw Error('blocked');};
 await elements.copy.events.click();assert.equal(elements.download.hidden,false);
-assert(html.includes('widgy-native-city-url.js?v=native-city-url-1'));
-assert(html.includes('Widgy_Native_City_URL_1.json'));
-console.log('PASS: narrow full-widget delta, 1514 layers/81 variables, immediate scripts without custom geocoder, live GPS and invalid-input behavior, safe city tail parsing, native Calendar fallback, ordinary city= regression, and copy/download/session recovery. Multi-variable Web URL, native city/coordinate synchrony, language, rendering and speed await phone verification.');
+assert(html.includes('widgy-native-city-url.js?v=native-city-recovery-1'));
+assert(html.includes('Widgy_Native_City_Recovery_1.json'));
+console.log('PASS: recovery changes only failed image binding and metadata; original map image restored exactly; 1514 layers/81 variables, immediate scripts without custom geocoder, live GPS and invalid-input behavior, native Calendar fallback and copy/download/session recovery preserved. Recovery map rendering, native city and speed await phone verification.');

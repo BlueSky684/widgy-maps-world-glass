@@ -2,6 +2,18 @@
 
 2026-10-05, test branch `f50-widget-test`, source parent `ab619abb980121c1dcf23f920e19bb58cb9b1d86`.
 
+## Device result and recovery, 07:50 Asia/Jerusalem
+
+FAILED: the owner reports the map did not load; IMG_9894 shows a black map panel. Calendar transition is fast, Home slower. This failed-image state is not a valid performance comparison. Correct Calendar city was not explicitly confirmed, so do not infer it from the speed report or Home screenshot.
+
+A public synthetic request using live mode, width 3306, glass/r6, reuse 60, explicit 0,0, minute timestamp and final `city_text=Example` returned HTTP 200, image/png, 4,201,434 bytes, valid PNG dimensions 3306x1558, location source coordinates. No real location, private export or geocoder request was used. This confirms server handling for that concrete synthetic request, not the phone's actual composed URL. Do not conclude that Widgy universally rejects multiple placeholders or that the server is never responsible.
+
+The import page now creates `Widgy Native City Recovery 1`. Starting from the failed candidate, change ONLY the map image Web URL back to `${widgy.map_request}`, plus name/description. Preserve both immediate empty-city scripts and Calendar's native fallback unchanged. Home temporarily shows live GPS coordinates without city. This restores the exact image definition used by the working full-widget control while keeping the native Calendar city path available for inspection. It is not a completed city replacement.
+
+`node tools/test-native-city-url.mjs` now additionally verifies that recovery's only change from the failed candidate is image binding/metadata, its entire image definition equals the original control, and the public controller copies/downloads the recovery with session/error handling. Existing synthetic script/parser/fallback checks remain passing. No backend or renderer changes in recovery. Native map recovery and correct Calendar city still await the device.
+
+Current link: `/tools/widgy-native-city-url.html?v=native-city-recovery-1`. Keep the old constructor only for source reproducibility; do not send users the failed trial again. First check the map and actual Calendar city, then compare against the working City Lookup Bypass 1 if both are present. Further city-on-map work remains open and should not repeat a failed mixed-provider binding without new evidence.
+
 ## Evidence
 
 The owner reports City Lookup Bypass 1 substantially faster in both directions, with residual Home delay. Restore city functionality while retaining its bypass of both custom reverse-geocoders. This is a compatibility trial, not an accepted permanent replacement or measured speed improvement.
