@@ -25,3 +25,9 @@ Page: `/tools/widgy-navigation-only.html?v=navigation-only-1`, name `Widgy Navig
 Same slot/network as Minimal Pair; retain the old copy. After the widget appears, make three Calendar→Home→Calendar cycles. No map should appear. Ask only whether there is still occasional waiting. No stopwatch/video/second phone/permission reconnect.
 
 If waiting also occurs, the map block is not necessary for the observed symptom on this sample. Shift toward native widget presentation/runtime/device context; do not assert a confirmed Widgy bug or rule out additional map costs in the real widget. If consistently immediate, the result supports investigating the combined map block on this small baseline; it does not isolate GPS, script, transport, renderer or decode. Three fast cycles cannot exclude a rare stall. Avoid promoting this intentionally empty test or restoring other sources before map stability is resolved.
+
+## Device result — 2026-10-05 14:28:20 Asia/Jerusalem
+
+Owner: “אין המתנה בכלל” — no waiting at all in Navigation Only 1. Preserve this as a positive subjective result on the minimal no-map/no-variable control; no numerical time or independently known sample count. Together with Minimal Pair's intermittent delay, this supports further isolation of the combined map consumer and five source definitions. It does not prove that navigation can never stall, identify the server/GPS/decoder as responsible, or eliminate possible Widgy interactions with images. Do not promote the intentionally empty widget as a solution.
+
+Next: Map Source Only 1 restores the same five definitions with an active native text consumer of the exact map_request value. It does not request a map image. This avoids treating unconsumed variable definitions as proof that GPS/script work occurred. Native text binding must visibly resolve before timing is interpreted; see map-source-only-1-review.md.
