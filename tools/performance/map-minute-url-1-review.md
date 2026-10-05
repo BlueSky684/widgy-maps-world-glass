@@ -29,3 +29,11 @@ Before handoff verify test-branch deployment success, exact bytes of the three n
 Import `Widgy Map Minute URL 1` from `/tools/widgy-map-minute-url.html?v=map-minute-url-1`, same slot/network, retaining Script Constant 1. Wait for the complete map. No marker/city is expected. Do three Calendar↔Home cycles, then stay on Calendar for a natural minute or two and return to Home. Ask whether immediate throughout, only delayed on that later return, intermittently delayed, or missing map. No stopwatch/video; later return does not prove a new request occurred. Missing map invalidates a speed conclusion.
 
 If fast, restore native location dependencies separately before city/full Home. If delayed, reconfirm constant control and investigate URL change with image reload/cache/evaluation; do not declare server CPU, network, cache or GPS uniquely responsible. Preserve the older contrary Lean result and final live-refresh requirements. No production promotion, cleanup/deletion or unrelated Home restoration. Lean1 and full approved Ring2 remain preserved.
+
+## Deployment and device result
+
+Published as `056b88f553196da1c54105615ef1abb9d65d0f67`, Vercel success. Public transform/controller/HTML returned HTTP200 and matched local bytes (2153/2506/3875). One public request with explicit empty coordinates and current rounded t returned HTTP200 PNG3306×1558, 4286614 bytes, server-now, unavailable location, private max-age58/must-revalidate, CDN no-store, rendered at 2026-10-05T17:16:38.167Z. This is not phone timing.
+
+At 2026-10-05 20:20:17 Asia/Jerusalem the owner reports “אין עיכובים הכל נראה תקין”. Treat appearance and subjective speed as passed in the reported test. The preceding instructions requested a later return, but native reevaluation/new network work was not directly observed. Do not claim timestamp updates or cache misses proven fast in all circumstances.
+
+Next: Map GPS Pair 1 restores only the two original primary native coordinate definitions and a short synchronous URL builder with output parity to the original primary path. Unlike earlier five-variable Minimal Pair, no legacy fallback pair or generic city-runtime wrapper remains. No actual city lookup is added. See `map-gps-pair-1-review.md`.
