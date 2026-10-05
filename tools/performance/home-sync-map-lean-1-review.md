@@ -39,3 +39,7 @@ Next inexpensive distinction: during a stall, does Calendar stay visible and the
 At 10:21:20 Asia/Jerusalem the owner reaffirms that removing the variables definitely improved something in their comparison. Preserve this as a meaningful subjective improvement alongside the intermittent stalls, not as no benefit. It still does not quantify or isolate a provider. At 10:22:10 they suspect the map is the main issue; at 10:22:57 and 10:23:18 they explicitly prioritize stable map/location loading before returning any other Home components.
 
 The briefly resumed add-back draft was removed again, unpublished. Source add-back is deferred by user priority. Current baseline remains Lean 1; next map-only comparison is documented in `map-cache-url-1-review.md`.
+
+## Follow-up, 12:28:43 Asia/Jerusalem
+
+At 10:56 the stable-URL comparison reported no perceived improvement; Lean stays the control. At 12:28 the owner confirms Calendar remains visible during the delay, then Home and map appear together. The visible delay precedes the new Home presentation; this does not identify the underlying source/network/rendering/native stage. Current code has no extra Reload tap action, but map 6170 inherits Home group's hide/show state. The next matched test moves only the exact map to an independent root layer behind all tabs, preserving every source and action. See `map-separate-layer-1-review.md`. Native caching/retention or speed is not established by the exported hierarchy.
