@@ -14,6 +14,14 @@ The import page now creates `Widgy Native City Recovery 1`. Starting from the fa
 
 Current link: `/tools/widgy-native-city-url.html?v=native-city-recovery-1`. Keep the old constructor only for source reproducibility; do not send users the failed trial again. First check the map and actual Calendar city, then compare against the working City Lookup Bypass 1 if both are present. Further city-on-map work remains open and should not repeat a failed mixed-provider binding without new evidence.
 
+## Recovery device result, 08:04 Asia/Jerusalem
+
+The owner confirms the map loads, Calendar transition is fast, and Home remains a little slower. Actual Calendar city accuracy is still not explicitly confirmed. The owner asks whether external map loading can explain the remainder. This is possible but not established: native transfer count, decode work and source scheduling have not been measured. The current Home image remains Web URL (not its No Caching variant), the builder includes a minute timestamp plus live coordinates, and the API permits bounded private reuse up to 60 seconds while disabling shared CDN caching for real-location requests. Changing minute/GPS values changes the URL; how Widgy uses cached bytes or decoded images is unknown. Prior static/local/host comparisons changed other factors or showed only small/no perceptible differences, so do not claim a new host alone is the fix or repeat an old test as a new finding. Next work should distinguish fresh remote loading from repeated native image/source handling in the current full-widget control.
+
+## Intermittent failure confirmed, 08:11 Asia/Jerusalem
+
+The owner now reports occasional missing maps after Calendar-to-Home transitions; IMG_9895 shows a black map panel with the remaining Home content present. Initial successful loading is not a stability pass. The next candidate, Map Sync Recovery 1, changes only the current map URL script's completion mode; see `map-sync-recovery-1-review.md`. Native City Recovery 1 remains available as the control, not an approved reliable final version.
+
 ## Evidence
 
 The owner reports City Lookup Bypass 1 substantially faster in both directions, with residual Home delay. Restore city functionality while retaining its bypass of both custom reverse-geocoders. This is a compatibility trial, not an accepted permanent replacement or measured speed improvement.

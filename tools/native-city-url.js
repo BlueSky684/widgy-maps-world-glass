@@ -41,3 +41,20 @@ export function withNativeCityRecovery(original){
   widget['4']='Recovery diagnostic after Native City URL 1 produced a blank map on the phone. Change only its map image Web URL field back to the proven single ${widgy.map_request} binding, plus name/description. Both immediate JavaScript bodies, live coordinates, minute bucket, all 1514 layers/81 variables and design remain unchanged. No custom city lookup. Home temporarily displays the live GPS marker and coordinate label without a city name; Calendar retains its existing native City/Country fallback and Ashkelon spelling condition. This is not the finished city replacement. Confirm map, live marker and correct Calendar city before comparing transitions with City Lookup Bypass 1. The previous failed image load is not a valid speed baseline. Native restoration, city freshness/language and timing need phone confirmation. Keep this private export private.';
   return widget;
 }
+
+// Stability trial after Recovery 1 loaded initially but intermittently lost its
+// map during tab switching. Only the map variable's completion mode changes.
+export function withMapSyncRecovery(original){
+  const widget=withNativeCityRecovery(original);
+  const source=widget['36'].find(v=>v['1']==='map_request')['3']['66'][0];
+  const script=source['10'],completion='sendToWidgy(url);';
+  if(source['5']!=='Javascript' || source['6']!=='Async + No main()' ||
+      script.split(completion).length!==2 || /fetch\s*\(|mapResult|function main\(/.test(script))
+    throw Error('unexpected_template');
+  source['6']='Script';
+  source['10']="function main() {\n  var mapResult = '';\n"+
+    script.replace(completion,'mapResult = url;')+'\n  return mapResult;\n}';
+  widget['3']='Widgy Map Sync Recovery 1';
+  widget['4']='Stability comparison against Native City Recovery 1 after its map loaded initially but intermittently disappeared during Calendar-to-Home transitions. Change only map_request completion from Async + No main()/sendToWidgy to synchronous Script/main() returning the exact same URL. No custom fetch remains in either version. Preserve all GPS inputs/validation, missing-location handling, minute timestamp, endpoint/cache/resolution, image binding/frame, every other variable and all 1514 layers/81 variables. Calendar still uses its existing native city fallback; Home temporarily shows live coordinates without city. This tests native map-source execution and interactions, not a confirmed cause, network-off mode, last-good-image cache or completed city replacement. First check map reliability over several tab switches, then compare speed against Recovery 1. Native results remain unverified. Keep this private export private.';
+  return widget;
+}
