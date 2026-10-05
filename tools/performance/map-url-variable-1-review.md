@@ -29,3 +29,11 @@ Before handoff, check test-branch Vercel success and byte identity of the three 
 Import `Widgy Map URL Variable 1` from `/tools/widgy-map-url-variable.html?v=map-url-variable-1`; keep Direct Live 1 for comparison in the same slot/network. Wait for the full map. No marker/city is expected. Try three Calendar↔Home cycles and another natural return after a minute or two, without stopwatch or video. Ask only immediate / intermittent delay / missing map.
 
 If fast, next isolate synchronous JavaScript returning the same constant URL before native GPS/minute changes. If delayed, confirm the immediate direct control and investigate this native variable/image binding without claiming all Widgy variables or the server are slow. If blank, resolve compatibility first. A constant source can be cached/lazily evaluated, so even a fast result does not establish the cost of changing native GPS/script sources. Final approved live location/city and the full design remain required; Lean 1 and Native Steps Ring 2 are preserved.
+
+## Deployment and owner result
+
+Published as `2fc7ddf313a76e9c83e4eb628c94670ef47ed0cd`, Vercel success. The three new runtime files returned HTTP200 and matched tested local bytes (transform2017, controller2522, HTML3806 bytes). No backend or endpoint change was made.
+
+At 2026-10-05 16:54:00 Asia/Jerusalem the owner reports “אין עיכובים הכל נראה תקין”: no delays and everything looks normal. Treat this as a positive image-display gate and subjective speed result for the constant-variable probe. Native invocation count, caching and refresh are not measured. This does not establish performance of changing values or GPS/script dependencies.
+
+Next: Map Script Constant 1 changes only that variable's source object from Custom Text to synchronous Javascript/Script main() returning the exact same literal URL, plus identifying metadata. No GPS, time or async/network work enters the script. See `map-script-constant-1-review.md`.
