@@ -41,6 +41,12 @@ Phone procedure: import separately, same slot/network as Lean. Confirm map and m
 
 Page: `/tools/widgy-map-cache-url.html?v=map-cache-url-1`.
 
+## Phone result — October 5, 10:56 Israel time
+
+The owner reports no improvement compared with the previous test, Home Sync Map Lean 1. Record this as no perceived transition-speed benefit, without a numeric measurement. Do not adopt Map Cache URL 1 or repeat a stable-URL variation without new evidence. Lean 1 remains the working control, including its previously reported partial improvement and intermittent stalls.
+
+This result does not rule out image delivery, rendering, decoding or Widgy scheduling. It supplies no separate confirmation about missing-map recurrence, location accuracy or automatic day/night refresh. Before another import, clarify the visible phase of the delay: does Calendar stay visible until Home appears, or does Home/navigation appear before the map? That observation can guide the next isolation step but cannot by itself identify the cause. Continue map/location work first; restore Home components only after stability as requested.
+
 ## References checked
 
 - https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control
