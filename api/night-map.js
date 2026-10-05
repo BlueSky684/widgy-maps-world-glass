@@ -33,7 +33,9 @@ export default async function handler(req, res) {
   const atlas = url.searchParams.get('atlas') === 'r6' ? 'r6' : 'f50';
   try {
     const started=performance.now();
-    const diagnostic = url.searchParams.get('diagnostic') === 'location';
+    const diagnosticValue = url.searchParams.get('diagnostic');
+    // Keep the existing false/true keys; only this opt-in uses a distinct key.
+    const diagnostic = diagnosticValue === 'refresh-v1' ? 'refresh-v1' : diagnosticValue === 'location';
     // C6 opt-in only. Explicit coordinates (including empty/unavailable values)
     // make the URL self-contained; IP-derived locations must never be browser-cached.
     const reuse = url.searchParams.get('reuse') === '60' && fixed === null &&
