@@ -27,3 +27,10 @@ The exact existing local PNG signature, dimensions, byte count and full SHA are 
 Page `/tools/widgy-map-static-only.html?v=map-static-only-1`, name `Widgy Map Static Only 1`. Same slot/network as the immediate Navigation Only control. Wait until the whole map is visible, then three Calendar→Home-and-back cycles. The map deliberately has fixed day/night time and no personal location. Ask whether all returns are immediate or occasional waiting occurs. Missing map invalidates timing. No screenshot, stopwatch or second phone.
 
 If fast, next compare a direct server-generated image on the same small baseline and consider dynamic URL binding separately; do not declare per-request rendering proven responsible. If slow, investigate static image delivery/cache/decode/display before blaming the geocoder or buying hosting. No live location/city or automatic refresh behavior is validated by a static file. The final map must stay live; preserve Lean/full approved versions and both prior controls. Do not promote this still as the final solution.
+
+
+## Owner result — 2026-10-05 16:19:59 Asia/Jerusalem
+
+“גם כאן הכל תקין ואין עיכובים” — everything is normal here too, with no delays. Treat this as a successful map-display gate and no perceived delay in the reported run, not measured zero latency or proof of all-day stability. Together with immediate Navigation Only, this is a positive full-resolution image control on the small document. Minimal Pair's dynamic image path still intermittently waited. The Source Only result remains conditional on its unconfirmed resolved-text gate.
+
+Next is Map Direct Live 1 on precisely this static baseline: change only image6170's URL to the existing current-time night-map endpoint with explicit empty lat/lon, plus identifying metadata. No native GPS/JS variables, timestamp, city, synthetic CDN flag or server/cache-policy changes. This compares the combined server-generated delivery path with static delivery; time-dependent pixels and cache behavior also differ. Earlier direct-URL trials retained the large widget, so they do not replace this matched small-document comparison. See `map-direct-live-1-review.md`.
