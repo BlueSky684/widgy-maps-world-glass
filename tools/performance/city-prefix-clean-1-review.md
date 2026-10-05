@@ -29,3 +29,7 @@ Code equivalence describes a completed script value. Widgy's handling of an empt
 Page: `/tools/widgy-city-prefix-clean.html?v=city-prefix-clean-1`, widget `Widgy City Prefix Clean 1`.
 
 Import as a separate copy in the same slot/network as Lean 1. Confirm original map/frame/live marker and correct Calendar city/fallback. Make three Calendar-to-Home-and-back transitions. Record faster/similar/slower and missing map/city separately. No stopwatch or video. If there is no perceived benefit, do not call the redundant path the main cause, and do not repeat empty-prefix variants or assume a server move will help. Preserve the outcome for the map-first investigation. Any full-design restoration remains deferred until map/location stability.
+
+## Device result — 2026-10-05 13:26 Asia/Jerusalem
+
+Owner: “אין שיפור” (no improvement). Record no perceived transition benefit; no numeric timing or separate stability confirmation. Do not adopt this trial, call the retired prefix the main cause, or repeat empty-prefix variants. Lean 1 remains the working control. The next separate probe removes the rest of the whole widget while keeping Lean's map pipeline exact; see map-minimal-pair-1-review.md.
