@@ -25,3 +25,11 @@ Compare Widgy Home Sync Map Lean 1 with the immediately previous Home Sync Map O
 If clearly faster, split the removed definition group to locate a contributing source group, without assuming an individual request/provider caused it. If similar, stop unused-definition deletion variants; the comparison supplies no evidence of meaningful cost from this group. Investigation would then require better evidence about the remaining map/native transition path, rather than repeating old hosting/artwork trials. Any outcome remains subjective and does not by itself diagnose Widgy, network, rendering or the server. The full control remains available; no production promotion.
 
 Page: `/tools/widgy-home-sync-map-lean.html?v=home-sync-map-lean-1`.
+
+## Device feedback and correction, 2026-10-05
+
+At 10:17:54 Asia/Jerusalem the owner reports improved Home transition speed. At 10:18:47 they clarify that it is not consistent: sometimes it gets a little stuck and then goes to Home. Preserve both observations: some subjective improvement, with intermittent stalls still present. This is not stable performance validation, a measured delta, proof the 12 definitions caused the lag or evidence all were evaluated.
+
+A proposed six-variable weather/Home-calendar add-back was paused before testing or publication after this clarification. Its three newly drafted files were removed; no new import route, widget or runtime change was published. Do not continue a chain of variants based on a presumed stable faster baseline.
+
+Next inexpensive distinction: during a stall, does Calendar stay visible and then Home appear all at once, or does Home appear before the map? This observation can distinguish the user-visible phase, although it cannot alone locate network/native/rendering cause. Keep Lean 1 unchanged until that answer; preserve the full Sync Recovery control.
