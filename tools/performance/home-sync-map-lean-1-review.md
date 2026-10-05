@@ -33,3 +33,9 @@ At 10:17:54 Asia/Jerusalem the owner reports improved Home transition speed. At 
 A proposed six-variable weather/Home-calendar add-back was paused before testing or publication after this clarification. Its three newly drafted files were removed; no new import route, widget or runtime change was published. Do not continue a chain of variants based on a presumed stable faster baseline.
 
 Next inexpensive distinction: during a stall, does Calendar stay visible and then Home appear all at once, or does Home appear before the map? This observation can distinguish the user-visible phase, although it cannot alone locate network/native/rendering cause. Keep Lean 1 unchanged until that answer; preserve the full Sync Recovery control.
+
+## Owner steering after the pause
+
+At 10:21:20 Asia/Jerusalem the owner reaffirms that removing the variables definitely improved something in their comparison. Preserve this as a meaningful subjective improvement alongside the intermittent stalls, not as no benefit. It still does not quantify or isolate a provider. At 10:22:10 they suspect the map is the main issue; at 10:22:57 and 10:23:18 they explicitly prioritize stable map/location loading before returning any other Home components.
+
+The briefly resumed add-back draft was removed again, unpublished. Source add-back is deferred by user priority. Current baseline remains Lean 1; next map-only comparison is documented in `map-cache-url-1-review.md`.
