@@ -23,3 +23,7 @@ Passed `node tools/test-map-stable-marker.mjs`, `node tools/test-map-fixed-marke
 Import Stable Marker1 at the same place/network, retaining Fixed Marker1. Confirm full map plus deliberate0,0 marker; switch to Calendar, leave phone untouched about a minute as just reported, return to Home, then repeat two or three transitions. No stopwatch or video. Compare the first post-idle return rather than only warm repeats.
 
 If delayed as before, changing t is not necessary for the symptom either; next isolate expiring image/render cache/revalidation using a strictly synthetic opt-in control. If immediate, stable URL becomes a candidate pending reproducibility and actual map freshness, not a completed fix or proof that t was the sole cause. Do not restore dynamic city or full Home until the dynamic map/location path is stable. Preserve Lean1/full Ring2 design; no production promotion or deletions.
+
+## Device result — 2026-10-05 21:24:29 Asia/Jerusalem
+
+Owner reports no slowness even after four minutes without touching the phone. Stable Marker1 passes subjective idle speed in this run. Map refetch/age and marker freshness were not separately measured. Keep it as the fast minimal control. Next: Stable GPS1 restores the original primary native location pair while retaining no time suffix. A correct marker and matched idle speed are required, followed by image freshness verification before adoption. See map-stable-gps-1-review.md. Do not declare a proven unique cause or complete fix.
