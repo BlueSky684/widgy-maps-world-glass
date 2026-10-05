@@ -32,3 +32,9 @@ An earlier Synchronous Map diagnostic in a different full-artwork configuration 
 Import `Widgy Map Sync Recovery 1`, wait for map and marker, then switch Calendar → Home several times. First report whether the map stays visible every time. Only if it does, compare speed with Native City Recovery 1, same slot/network. No stopwatch or second phone needed. No production promotion until native stability, refresh/location and city functionality are established.
 
 Page: `/tools/widgy-map-sync-recovery.html?v=map-sync-recovery-1`.
+
+## Device result, 2026-10-05 09:17:47 Asia/Jerusalem
+
+Owner reports the map appears correctly on every tested return, Calendar transition is normal, but Home remains slow. Treat this as successful repeated-visibility feedback for that run, not a measured speed improvement or proof of a permanent fix/causal async defect. Do not repeat execution-mode variants. Keep Sync Recovery as the current full-Home control while isolating remaining Home content.
+
+Next: `home-sync-map-only-1-review.md` describes a sparse copy of this exact current control with all 81 variable definitions retained. The older Map Only City result removed 12 variables too and is not an exact comparator.
