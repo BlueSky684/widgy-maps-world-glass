@@ -27,3 +27,11 @@ Before handoff, require successful test-branch deployment and byte identity of t
 Import `Widgy Map Script Constant 1` from `/tools/widgy-map-script-constant.html?v=map-script-constant-1` in the same slot/network; retain Map URL Variable 1. Wait for the complete map, with no marker/city expected. Test three Calendar↔Home cycles and another natural return after a minute or two. No stopwatch/video required. Missing image invalidates a speed conclusion.
 
 If immediate, next isolate a minute-dependent URL without native GPS, then consider GPS dependencies separately. If delayed, reconfirm the fast text-variable control and investigate this synchronous Script/image consumption path; do not generalize to all JavaScript or blame rendering without evidence. If blank, treat as compatibility failure. Constant output can still be cached/lazily evaluated, so a fast run does not prove changing GPS-dependent scripts cheap. Keep Lean 1 and full approved Ring2; final live location/city and all approved Home/Calendar functionality remain required. No production promotion or deletions.
+
+## Deployment and device result
+
+Published as `4190473094859b94a964b4d838bf3eab3cda37f4`, Vercel success. All three new public runtime files returned HTTP200 and matched tested local bytes: transform1732, controller2541, HTML3780 bytes. No backend or asset changes.
+
+At 2026-10-05 20:10:04 Asia/Jerusalem the owner reports “אין עיכובים הכל נראה תקין”. Treat the map-display gate and subjective speed as passed for this reported run. The elapsed wall time since delivery is not evidence of continuous testing; script invocation count, request count and image freshness remain unknown.
+
+Next: Map Minute URL 1 adds only the original epoch-millisecond minute-bucket t suffix inside the same synchronous source, without native GPS or city. This tests changing URL/evaluation/image-cache behavior together. Earlier removing t from the large Lean widget did not improve perceived speed; the new trial is on a matched small baseline now reported fast. See `map-minute-url-1-review.md`.
