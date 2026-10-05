@@ -33,3 +33,11 @@ Before handoff, require test-branch deployment success, byte identity for the th
 Import `Widgy Map Direct Live 1` from `/tools/widgy-map-direct-live.html?v=map-direct-live-1` into the same slot/network. Keep the fast Static Only copy. Wait for the whole map, then three Calendar↔Home cycles; naturally try again after a minute or two without timing tools. No marker/city is expected. A later return does not guarantee a new network request. Ask only whether immediate throughout, intermittently waiting, or missing map. A missing map invalidates a speed conclusion.
 
 If fast, investigate variable-bound image URL/native location/minute-changing URL next, one comparison at a time. If slow, isolate the server-generated image/delivery/cache path on this small baseline before restoring dynamic data. Do not call either outcome proof of one stage's fault. No Home components or city are restored yet; preserve Lean 1 and full approved Native Steps Ring 2. No production promotion or branch/asset deletion.
+
+## Deployment and device result
+
+Published as commit `1585940995d497e3b72b8d0a6300ebe7d77de7d6`. Vercel GitHub status succeeded; all three new public runtime files returned HTTP200 and matched local bytes. The no-location live endpoint returned HTTP200 image/png, 3306×1558, 3991938 bytes, `server-now`, `unavailable` location, private max-age58/must-revalidate, CDN no-store, rendered at 2026-10-05T13:29:28.289Z. This was a server check, not native timing.
+
+At 2026-10-05 16:44:32 Asia/Jerusalem the owner reports “אין עיכובים הכל תקין” after explicitly being asked about Direct Live 1. The map-display gate and lack of perceived delays are positive for this run. Whether a fresh request occurred at each transition or after cache expiry is not observed. Do not infer that server rendering, transfer or GPS can never cause delays.
+
+Next: Map URL Variable 1. Keep the exact same URL, but deliver it via one native Custom Text `map_request` variable and the established single-variable image binding. No script/GPS/timestamp/city is restored. See `map-url-variable-1-review.md` for the export delta and limits.
