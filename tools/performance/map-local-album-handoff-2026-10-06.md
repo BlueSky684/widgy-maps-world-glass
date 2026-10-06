@@ -1,5 +1,40 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Current result — English city, coordinates and fast navigation, 2026-10-06 22:20 Israel
+
+This supersedes the location-pending status at 20:50 below. The update Shortcut
+now obtains Current Location once, extracts latitude and longitude, and calls
+BigDataCloud's reverse-geocode-client endpoint on the phone with those current
+coordinates and localityLanguage=en. Get Dictionary Value with key city reads
+that GET response. Its output replaces the native Hebrew City token after the
+final city_text parameter of the existing map URL. The map GET and fixed-file
+overwrite remain in place. Geocoding belongs to the update Shortcut, outside
+Home/Calendar tap actions; no backend geocoder was added.
+
+At 22:18 the supplied image shows the English city label, location marker,
+coordinate caption and MAP TIME 22:18:15. At 22:20 the owner explicitly confirms
+that repeated Calendar -> Home transitions remain fast, the city and location
+are displayed correctly, and the new timestamp remains. This is a positive
+manual update and qualitative navigation result in the small test consumer.
+
+Two earlier issues were isolated: the resolved map URL contained the literal
+separator =lon& instead of &lon=, producing no valid location; correcting it
+restored marker/coordinates. The native Hebrew city then rendered missing-glyph
+boxes in the map font. The phone-side English city lookup resolves the observed
+label issue. Do not misdiagnose an actual URL separator error as bidi display.
+Keep city_text last because the parser consumes the entire remaining tail.
+
+Remaining work: preserve this working Shortcut and small consumer; integrate
+the fixed-file image into a separate copy of the full widget; verify a shared
+city binding for Calendar; then configure and test automatic updates. Freshness
+while staying on Home, scheduled/locked-device execution, failed-download
+retention, locality fallback for an empty city, and full-widget performance are
+not yet verified. Do not promise automatic refresh or zero local storage.
+The temporary Show Content diagnostic still exists unless the owner removes it.
+
+No runtime code, masters, layout or service plan changed in this checkpoint.
+No device screenshots, raw GPS coordinates or resolved personal URLs are stored.
+
 ## Current result — fixed-file replacement and fast navigation, 2026-10-06 20:50 Israel
 
 The owner returned to the Shortcuts/iCloud route after reviewing web alternatives.
