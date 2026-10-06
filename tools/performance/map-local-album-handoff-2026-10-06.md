@@ -1,5 +1,20 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Final diagnostic PASSED; stop for tonight — 2026-10-07 00:31 Israel
+
+Owner reports "זה עובד" (it works) for widgy-map-detail-test.png selected
+through System > Files and exported as JSON. The 3306x1558 RGBA diagnostic
+containing the exact upper-right map quarter on the successful blue background
+therefore exports successfully. This completes tonight's final requested test.
+Do not request more tests tonight; continue in the morning from this result.
+
+Together with the prior failed full maps and successful blue controls, this
+shows real map detail can export when limited to this quarter of the canvas.
+It does not prove a numeric size limit, the exact rejection cause, or a permanent
+fix. The partial-map export's hosted image has not been supplied or inspected.
+The permanent full-quality map export fix remains OPEN. No renderer, Shortcut,
+automation, working widget or approved master asset was changed.
+
 ## Last diagnostic for tonight; resume in morning — 2026-10-07 00:25 Israel
 
 The owner requests only ONE final test tonight, then sleep and continuation in
@@ -13,7 +28,7 @@ CRC/full decode, quarter-pixel equality, alpha and metadata checks passed.
 This is a diagnostic copy, not approved artwork or a proposed final design.
 
 The one requested native action is to select this image in the existing test
-widget through Files and try JSON export. Result PENDING. Record the result
+widget through Files and try JSON export. Result PASSED at 00:31 (see above). Record the result
 without inferring a numeric upload limit or immediately asking another test.
 The actual successfully hosted blue image was transformed to 2411x1136/60,423
 bytes as documented below; input PNG size does not establish request-body size.
