@@ -1,0 +1,104 @@
+{
+  "kind": "black-alpha-vs-current-grayscale-mask",
+  "dimensions": [
+    522,
+    246
+  ],
+  "versions": {
+    "node": "v24.19.0",
+    "sharp": "0.34.5",
+    "vips": "8.17.3"
+  },
+  "scalarCases": 65536,
+  "losslessInverseAlpha": true,
+  "rows": [
+    {
+      "at": "2026-10-06T09:35:00Z",
+      "bytes": {
+        "day": {
+          "old": 19480,
+          "alpha": 14974
+        },
+        "night": {
+          "old": 19761,
+          "alpha": 14705
+        }
+      },
+      "totalOldBytes": 39241,
+      "totalAlphaBytes": 29679,
+      "independentSharpSampling": {
+        "367": {
+          "changedPixels": 537,
+          "maxChannelDifference": 2,
+          "meanAbsoluteChannelDifference": 0.0069563665191391955
+        },
+        "1101": {
+          "changedPixels": 876,
+          "maxChannelDifference": 2,
+          "meanAbsoluteChannelDifference": 0.001209270255276776
+        }
+      }
+    },
+    {
+      "at": "2026-06-21T00:00:00Z",
+      "bytes": {
+        "day": {
+          "old": 16465,
+          "alpha": 12140
+        },
+        "night": {
+          "old": 15845,
+          "alpha": 13346
+        }
+      },
+      "totalOldBytes": 32310,
+      "totalAlphaBytes": 25486,
+      "independentSharpSampling": {
+        "367": {
+          "changedPixels": 487,
+          "maxChannelDifference": 2,
+          "meanAbsoluteChannelDifference": 0.006126852624781465
+        },
+        "1101": {
+          "changedPixels": 522,
+          "maxChannelDifference": 2,
+          "meanAbsoluteChannelDifference": 0.0006772613441275141
+        }
+      }
+    },
+    {
+      "at": "2026-12-21T12:00:00Z",
+      "bytes": {
+        "day": {
+          "old": 17137,
+          "alpha": 13970
+        },
+        "night": {
+          "old": 17819,
+          "alpha": 13166
+        }
+      },
+      "totalOldBytes": 34956,
+      "totalAlphaBytes": 27136,
+      "independentSharpSampling": {
+        "367": {
+          "changedPixels": 511,
+          "maxChannelDifference": 2,
+          "meanAbsoluteChannelDifference": 0.006599360539289033
+        },
+        "1101": {
+          "changedPixels": 583,
+          "maxChannelDifference": 2,
+          "meanAbsoluteChannelDifference": 0.0007256788217869316
+        }
+      }
+    }
+  ],
+  "limits": [
+    "Reference is the current Appeared Off1 composition, which itself is not exact approved-renderer parity.",
+    "This models byte-space RGB operations and independent Sharp lanczos3 resampling, not native Widgy colour management.",
+    "All PNG RGB bytes are black; preventing a white mask plane does not guarantee a complete map, paired refresh or fast navigation.",
+    "Static assets, source geometry, transition settings and approved masters are untouched.",
+    "No native claim or automatic refresh schedule follows from these results."
+  ]
+}

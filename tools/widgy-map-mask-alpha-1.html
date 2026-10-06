@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Widgy Map Mask Alpha 1</title>
+<style>
+:root{font-family:system-ui,-apple-system,sans-serif;color:#edf2f7;background:#11151b;line-height:1.65}*{box-sizing:border-box}body{margin:0;padding:26px 18px}main{max-width:620px;margin:auto}h1{font-size:25px;line-height:1.35;margin:12px 0}p{margin:12px 0}.version{font-size:13px;letter-spacing:.08em;color:#b9cbe0}.card{background:#1d242e;border:1px solid #354153;border-radius:18px;padding:20px;margin:20px 0}button,.link{display:block;width:100%;padding:15px 18px;border-radius:12px;border:1px solid #536780;font:inherit;font-weight:650;text-align:center;text-decoration:none;cursor:pointer;margin:10px 0;background:#daeaff;color:#122033}button:disabled{opacity:.45;cursor:wait}.secondary{background:transparent;color:#daeaff}.small{font-size:14px;color:#bcc9d8}.error{color:#ffb8b8}[hidden]{display:none!important}#status{min-height:52px;overflow-wrap:anywhere}details{margin-top:18px}summary{cursor:pointer}bdi{unicode-bidi:isolate}ol{padding-right:22px}li{margin:10px 0}
+</style>
+</head>
+<body><main>
+<div class="version" dir="ltr">WIDGY · ALPHA MASK 1</div>
+<h1>בדיקת מפה עם מסיכות שקופות</h1>
+<p>עותק נפרד המבוסס על Appeared Off 1, שבו דיווחת על מעבר מהיר. כאן שתי המסיכות משתמשות בשקיפות במקום בתמונת שחור־לבן. מטרת הבדיקה היא מפה שלמה בלי הבהוב, באותה מהירות.</p>
+<section class="card" aria-label="העתקת עותק הבדיקה">
+<p id="status" role="status" aria-live="polite">מכין ובודק את מבנה העותק…</p>
+<button id="copy" type="button" disabled>העתקת הקוד ל־Widgy</button>
+<a id="download" class="link secondary" download="Widgy_Map_Mask_Alpha_1.json" hidden>שמירת קובץ JSON</a>
+<button id="retry" class="secondary" type="button" hidden>ניסיון נוסף</button>
+<a id="chrome" class="link secondary" hidden>פתיחת הדף ב־Chrome</a>
+</section>
+<ol>
+<li>העתק את הקוד וב־Widgy בחר <bdi>Import URL Or JSON</bdi> והדבק.</li>
+<li>ודא ששם העותק הוא <bdi>Widgy Map Mask Alpha 1</bdi>, שייך אותו לווידג׳ט במסך הבית, וודא שמופיעה הכותרת <bdi>ALPHA MASK</bdi>. שמור גם את העותקים הקודמים.</li>
+<li>לאחר שהמפה הופיעה בשלמותה במסך הבית של האייפון, עבור כמה פעמים בין Home ל־Calendar וחזרה.</li>
+<li>בדוק אם המפה חוזרת מיד בשלמותה, בלי הבזק לבן, אזור שחור או ש־N מופיע לפני D. בדוק גם שצבעי המפה וגבול היום והלילה נראים כמו בעותק הקודם. שים לב גם למהירות המעבר. הקלטה קצרה תאפשר להשוות.</li>
+</ol>
+<p><strong>אין צורך לשנות הגדרות.</strong> מסך Calendar נשאר ריק בכוונה. המפות הקבועות, כפתורי הניווט והגדרות המעבר המהירות נשמרים. רק שתי המסיכות ואופן השילוב שלהן הוחלפו. כתובות הזמן עדיין מחולקות למקטעים של חמש דקות כש־Widgy מחשבת אותן. במהלך שימוש רגיל, שים לב ששתי חותמות הזמן ממשיכות להתקדם יחד.</p>
+<details><summary>מה הבדיקה משנה?</summary><p class="small">שתי המסיכות מצוירות כשחור בדרגות שקיפות, במצב Normal. לקובצי המסיכות עצמם אין צבע לבן. המפות הקבועות והכיבוי בקבוצות נשארים כפי שהיו. זו עדיין בדיקת מכשיר: היעלמות ההבזק הלבן לבדה אינה מספיקה — המפה צריכה להופיע שלמה, בצבעים תקינים ובאותה מהירות. בבדיקת הקטנה מקומית נמצאו הבדלי צבע קטנים; המראה ב־Widgy טעון השוואה. אין הבטחה ששתי המסיכות יתעדכנו יחד או לרענון אוטומטי כל חמש דקות.</p></details>
+<script type="module">
+import {personalizedWidget} from './calendar-connect-widget.js?v=perf-5-ringfix-1';
+import {consolidateWidget} from './widget-consolidation.js?v=consolidated-1';
+import {compactCalendarDots} from './calendar-compact-dots.js?v=compact-dots-1';
+import {thinNativeStepsRing} from './native-steps-ring.js?v=native-ring-2';
+import {withMapMaskLive} from './map-mask-live.js?v=map-mask-live-1';
+import {withMapMaskAppearedOff} from './map-mask-appeared-off.js?v=appeared-off-1';
+import {withMapMaskAlpha} from './map-mask-alpha.js?v=alpha-1';
+
+// BEGIN PERSISTENT TRANSFORM — only native hierarchy and trial labels change.
+function persistentMask(live){
+  const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+  const require=(value,message)=>{if(!value)throw Error(message);};
+  const flatten=nodes=>nodes.flatMap(n=>[n,...(Array.isArray(n['1'])?flatten(n['1']):[])]);
+  require(live?.['3']==='Widgy Map Mask Live 1','baseline_version');
+  require(live['1']?.length===2,'baseline_roots');
+  const widget=structuredClone(live),[home,calendar]=widget['1'];
+  require(home?.d0===245&&calendar?.d0===247&&home.a!==false&&calendar.a===false,'baseline_tabs');
+  const before=flatten(live['1']),newID=84100;
+  require(before.every(n=>n.d0!==newID),'new_id_collision');
+  const movedIDs=new Set([84020,84010,84040]);
+  const mapLayers=home['1'].filter(n=>movedIDs.has(n.d0));
+  require(same(mapLayers.map(n=>n.d0),[84020,84010,84040]),'baseline_paint_order');
+  require(mapLayers[0]['1']?.length===2&&mapLayers[1]['1']?.length===2&&mapLayers[2].z==='2','baseline_map_groups');
+  require(calendar['1'].some(n=>n.d0===5049&&n.z==='2'&&n.s==='Full Graphite Background'),'calendar_cover');
+  const imageNodes=before.filter(n=>n.z==='5');
+  require(imageNodes.length===4&&imageNodes.every(n=>n['1']==='Web URL'&&n['3']===true),'baseline_images');
+  require(live['36']?.length===3,'baseline_variables');
+  const taps=before.filter(n=>n.z==='11');
+  require(taps.length===4&&taps.every(n=>/^button_(245-247|247-245)$/.test(n['1a'])),'baseline_navigation');
+  // Keep the existing Home coordinate/effect container around the images.
+  // Do not flatten blend groups or change their front-to-back ordering.
+  const persistent=structuredClone(home);
+  persistent.d0=newID;persistent.s='Persistent Map · Not A Navigation Target';persistent.a=true;
+  persistent['1']=mapLayers;
+  home['1']=home['1'].filter(n=>!movedIDs.has(n.d0));
+  const title=home['1'].find(n=>n.d0===84050);
+  require(title?.['66']?.[0]?.['25']==='LIVE MASK','baseline_title');
+  title['66'][0]['25']='PERSISTENT MASK';
+  widget['1']=[home,calendar,persistent];
+  widget['3']='Widgy Map Mask Persistent 1';
+  widget['4']='Opt-in navigation-visibility diagnostic derived from Live Mask1. Move unchanged Night84020, Day84010 and Graphite84040 into always-visible root group84100, preserving their parent coordinate/effect container. Existing Home245/Calendar247 buttons target only245/247. Existing opaque Calendar background5049 covers the persistent map; no map node is a navigation hide/show target. Same four cached Web URL images, masks, static map assets, blend effects, frame and three five-minute-bucket scripts. No animation/refresh/server/asset or account changes. No GPS, city, calendar account, health source or Reload action. Keep Live1 and Five Minute1 unchanged. This is not guaranteed memory residency, atomic two-mask refresh, periodic refresh or an iPhone performance result. Verify initial composition, blank Calendar, joint D/N Home return, latency and matching advancing stamps on device.';
+  const after=flatten(widget['1']);
+  require(after.length===before.length+1&&new Set(after.map(n=>n.d0)).size===after.length,'layer_identity');
+  require(same(widget['36'],live['36']),'changed_refresh');
+  require(same(calendar,live['1'][1]),'changed_calendar');
+  for(const node of before){
+    if(node.d0===245||node.d0===84050)continue;
+    require(same(node,after.find(n=>n.d0===node.d0)),'changed_existing_node_'+node.d0);
+  }
+  for(const key of Object.keys(live)){
+    if(['1','3','4'].includes(key))continue;
+    require(same(widget[key],live[key]),'changed_document_setting_'+key);
+  }
+  require(!after.filter(n=>n.z==='11').some(n=>JSON.stringify(n).includes(String(newID))),'persistent_is_navigation_target');
+  require(!/\/api\/(?:night-map|calendar-)|token=|map_latitude|map_longitude|"Location"|reference\.png/.test(JSON.stringify(widget)),'unexpected_source');
+  return widget;
+}
+// END PERSISTENT TRANSFORM
+
+const $=id=>document.getElementById(id);
+let payload='',downloadURL='',busy=false;
+function status(text,error=false){$('status').textContent=text;$('status').classList.toggle('error',error);}
+function reset(){
+  payload='';if(downloadURL)URL.revokeObjectURL(downloadURL);downloadURL='';
+  $('download').removeAttribute('href');$('download').hidden=true;$('copy').disabled=true;$('retry').hidden=true;
+}
+async function prepare(){
+  if(busy)return;busy=true;reset();status('מכין ובודק את מבנה העותק…');
+  try{
+    const origin=new URL(window.location.href).origin;
+    const response=await fetch('./Widgy_Home_Glass_Calendar_C16.json',{cache:'no-store'});
+    if(!response.ok)throw Error('template_failed');
+    const full=personalizedWidget(await response.json(),origin+'/api/calendar-dots?token=unused-mask-test',origin+'/api/calendar-widget?token=unused-mask-test');
+    const baseline=withMapMaskLive(thinNativeStepsRing(compactCalendarDots(consolidateWidget(full))),origin);
+    payload=JSON.stringify(withMapMaskAlpha(withMapMaskAppearedOff(persistentMask(baseline))));
+    downloadURL=URL.createObjectURL(new Blob([payload],{type:'application/json'}));
+    $('download').href=downloadURL;$('download').hidden=false;$('copy').disabled=false;
+    status('מוכן: Widgy Map Mask Alpha 1. שמור את העותק המהיר הקודם להשוואה ובדוק במסך הבית.');
+  }catch(error){
+    reset();status('לא ניתן להכין את העותק. קוד הבדיקה: '+(error?.message||'unknown')+'. ניתן לנסות שוב.',true);$('retry').hidden=false;
+  }finally{busy=false;}
+}
+$('copy').addEventListener('click',async()=>{
+  if(!payload)return;
+  try{await navigator.clipboard.writeText(payload);status('הועתק! ב־Widgy בחר Import URL Or JSON והדבק.');}
+  catch{status('ההעתקה נחסמה בדפדפן. הקובץ זמין לשמירה, או פתח את הדף ב־Chrome.',true);}
+});
+$('retry').addEventListener('click',prepare);
+window.addEventListener('pageshow',event=>{if(event.persisted)prepare();});
+if(window.location.protocol==='https:'){
+  $('chrome').href='googlechromes://'+window.location.host+window.location.pathname+window.location.search;
+  $('chrome').hidden=false;
+}
+prepare();
+</script>
+</main></body></html>
