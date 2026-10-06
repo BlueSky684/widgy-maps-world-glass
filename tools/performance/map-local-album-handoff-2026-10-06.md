@@ -1,5 +1,28 @@
 # Complete server PNG to a native album source: initial handoff
 
+## New one-layer reproduction — 2026-10-06 23:52 Israel
+
+The owner created a NEW widget ("Eriaera"), added a NEW Image layer, and selected
+Home_Map_Static_3306x1558.png through System -> Files. The screenshot shows one
+layer, one data source, and HTTP 422 at Layer 1 / Image / Both Modes / Files.
+This reproduces the failure without the original full document or its old layer.
+"Widget Format: 29" is a document-format field, not the installed app version.
+
+The newly supplied PNG was checked separately: 4,075,465 bytes, 3306x1558, 8-bit
+RGBA, valid chunk CRCs, successful full decoding, no trailing bytes, sRGB ICC,
+25.4 dpi and alpha range 0..255. It is a different valid image but shares the
+previous map's dimensions, RGBA structure, ICC and DPI profile. It is NOT the
+small unrelated-image control; do not infer that every local PNG upload fails.
+No general file-size threshold or metadata cause has been established.
+
+A separate synthetic control was prepared: widgy-upload-control-64.png, 64x64,
+RGB, opaque, no ancillary metadata, 182 bytes. Its decoded dimensions/mode were
+verified. It contains no map/location/user data and does not modify approved
+artwork. The owner can select this control in the new one-layer widget and try
+JSON export. That result and the installed Widgy version/build remain pending.
+If the control succeeds, narrow the map-payload differences individually; if it
+also fails, focus on native upload/app/service behavior. No new runtime change.
+
 ## Export investigation — permanent fix required, 2026-10-06
 
 The owner confirms that existing URL-source map versions export JSON, whereas
