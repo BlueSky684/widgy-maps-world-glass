@@ -1,5 +1,7 @@
 # Real-map split after the native flat-mask result
 
+Superseded continuation decision: the owner asks for deeper mask investigation at09:55. Read `map-mask-compare-1-review.md`. The measurements below remain valid, but their offline differences do not justify stopping the native experiment. New small masks reduce decoded input cost, the phone screenshot's Display P3 profile explains the flat-sample color discrepancy, and a fixed-time native real-map A/B comparison is prepared.
+
 2026-10-06, branch `f50-widget-test`. The owner supplied IMG_9923 showing the controlled gold-to-navy gradient on the iPhone Home Screen. This is positive qualitative evidence for the captured Multiply-image / Plus-Lighter-group construction. It is not proof of matching the real map, a refreshed mask, reduced memory, or fast navigation. No location was copied from any screenshot.
 
 Run `node tools/benchmark-map-native-split.mjs`. The complete measurements are in `map-native-split-2026-10-06.json`. This offline script uses the approved full-size textures and current r6 renderer at five synthetic dates. It writes no assets and changes no runtime, import, endpoint, subscription or approved master.

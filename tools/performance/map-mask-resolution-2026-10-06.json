@@ -1,0 +1,832 @@
+{
+  "kind": "solar-mask-resolution-only",
+  "rows": [
+    {
+      "at": "2026-10-06T04:30:00Z",
+      "maskWidth": 3306,
+      "maskHeight": 1558,
+      "maskPNGBytes": [
+        146886,
+        143707
+      ],
+      "combinedMaskBytes": 290593,
+      "theoreticalTwoMaskRGBABytes": 41205984,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 1837,
+            "pixelsOverOneLevel": 108,
+            "maxChannelDifference": 5,
+            "meanAbsoluteChannelDifference": 0.014715996492941258
+          },
+          "versusFullMask": {
+            "changedPixels": 0,
+            "pixelsOverOneLevel": 0,
+            "maxChannelDifference": 0,
+            "meanAbsoluteChannelDifference": 0
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 10680,
+            "pixelsOverOneLevel": 222,
+            "maxChannelDifference": 5,
+            "meanAbsoluteChannelDifference": 0.008443308092077209
+          },
+          "versusFullMask": {
+            "changedPixels": 0,
+            "pixelsOverOneLevel": 0,
+            "maxChannelDifference": 0,
+            "meanAbsoluteChannelDifference": 0
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-06T04:30:00Z",
+      "maskWidth": 1044,
+      "maskHeight": 492,
+      "maskPNGBytes": [
+        26941,
+        26044
+      ],
+      "combinedMaskBytes": 52985,
+      "theoreticalTwoMaskRGBABytes": 4109184,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 1855,
+            "pixelsOverOneLevel": 106,
+            "maxChannelDifference": 5,
+            "meanAbsoluteChannelDifference": 0.014784247636147906
+          },
+          "versusFullMask": {
+            "changedPixels": 345,
+            "pixelsOverOneLevel": 0,
+            "maxChannelDifference": 1,
+            "meanAbsoluteChannelDifference": 0.0022312873740635156
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 15233,
+            "pixelsOverOneLevel": 1350,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.014490242711565418
+          },
+          "versusFullMask": {
+            "changedPixels": 12892,
+            "pixelsOverOneLevel": 974,
+            "maxChannelDifference": 8,
+            "meanAbsoluteChannelDifference": 0.011696029241823135
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-06T04:30:00Z",
+      "maskWidth": 522,
+      "maskHeight": 246,
+      "maskPNGBytes": [
+        8591,
+        8398
+      ],
+      "combinedMaskBytes": 16989,
+      "theoreticalTwoMaskRGBABytes": 1027296,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 1838,
+            "pixelsOverOneLevel": 111,
+            "maxChannelDifference": 5,
+            "meanAbsoluteChannelDifference": 0.014658245525612554
+          },
+          "versusFullMask": {
+            "changedPixels": 324,
+            "pixelsOverOneLevel": 0,
+            "maxChannelDifference": 1,
+            "meanAbsoluteChannelDifference": 0.0020527843841384344
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 15361,
+            "pixelsOverOneLevel": 1356,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.014561993913398049
+          },
+          "versusFullMask": {
+            "changedPixels": 12932,
+            "pixelsOverOneLevel": 987,
+            "maxChannelDifference": 8,
+            "meanAbsoluteChannelDifference": 0.01172344636772666
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-06T04:30:00Z",
+      "maskWidth": 261,
+      "maskHeight": 123,
+      "maskPNGBytes": [
+        2578,
+        2619
+      ],
+      "combinedMaskBytes": 5197,
+      "theoreticalTwoMaskRGBABytes": 256824,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 2748,
+            "pixelsOverOneLevel": 652,
+            "maxChannelDifference": 12,
+            "meanAbsoluteChannelDifference": 0.03797913615053052
+          },
+          "versusFullMask": {
+            "changedPixels": 2466,
+            "pixelsOverOneLevel": 504,
+            "maxChannelDifference": 12,
+            "meanAbsoluteChannelDifference": 0.03311230463110257
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 15556,
+            "pixelsOverOneLevel": 1344,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.014811664762051431
+          },
+          "versusFullMask": {
+            "changedPixels": 13163,
+            "pixelsOverOneLevel": 1001,
+            "maxChannelDifference": 9,
+            "meanAbsoluteChannelDifference": 0.01195445023704147
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-06T20:00:00Z",
+      "maskWidth": 3306,
+      "maskHeight": 1558,
+      "maskPNGBytes": [
+        148162,
+        144218
+      ],
+      "combinedMaskBytes": 292380,
+      "theoreticalTwoMaskRGBABytes": 41205984,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 1753,
+            "pixelsOverOneLevel": 68,
+            "maxChannelDifference": 8,
+            "meanAbsoluteChannelDifference": 0.013933733390034283
+          },
+          "versusFullMask": {
+            "changedPixels": 0,
+            "pixelsOverOneLevel": 0,
+            "maxChannelDifference": 0,
+            "meanAbsoluteChannelDifference": 0
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 9325,
+            "pixelsOverOneLevel": 138,
+            "maxChannelDifference": 4,
+            "meanAbsoluteChannelDifference": 0.0070164508588852195
+          },
+          "versusFullMask": {
+            "changedPixels": 0,
+            "pixelsOverOneLevel": 0,
+            "maxChannelDifference": 0,
+            "meanAbsoluteChannelDifference": 0
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-06T20:00:00Z",
+      "maskWidth": 1044,
+      "maskHeight": 492,
+      "maskPNGBytes": [
+        27451,
+        26370
+      ],
+      "combinedMaskBytes": 53821,
+      "theoreticalTwoMaskRGBABytes": 4109184,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 1729,
+            "pixelsOverOneLevel": 66,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.013707979608658445
+          },
+          "versusFullMask": {
+            "changedPixels": 395,
+            "pixelsOverOneLevel": 53,
+            "maxChannelDifference": 2,
+            "meanAbsoluteChannelDifference": 0.0026617945850593
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 14263,
+            "pixelsOverOneLevel": 527,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.012416457975671093
+          },
+          "versusFullMask": {
+            "changedPixels": 13050,
+            "pixelsOverOneLevel": 255,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.010412091069192076
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-06T20:00:00Z",
+      "maskWidth": 522,
+      "maskHeight": 246,
+      "maskPNGBytes": [
+        8712,
+        8474
+      ],
+      "combinedMaskBytes": 17186,
+      "theoreticalTwoMaskRGBABytes": 1027296,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 1679,
+            "pixelsOverOneLevel": 66,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.013408724596136986
+          },
+          "versusFullMask": {
+            "changedPixels": 376,
+            "pixelsOverOneLevel": 29,
+            "maxChannelDifference": 2,
+            "meanAbsoluteChannelDifference": 0.002383539924293732
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 14337,
+            "pixelsOverOneLevel": 539,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.012494042608547027
+          },
+          "versusFullMask": {
+            "changedPixels": 13172,
+            "pixelsOverOneLevel": 262,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.010497842505528635
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-06T20:00:00Z",
+      "maskWidth": 261,
+      "maskHeight": 123,
+      "maskPNGBytes": [
+        2592,
+        2630
+      ],
+      "combinedMaskBytes": 5222,
+      "theoreticalTwoMaskRGBABytes": 256824,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 2530,
+            "pixelsOverOneLevel": 619,
+            "maxChannelDifference": 9,
+            "meanAbsoluteChannelDifference": 0.033863067206375705
+          },
+          "versusFullMask": {
+            "changedPixels": 2490,
+            "pixelsOverOneLevel": 445,
+            "maxChannelDifference": 8,
+            "meanAbsoluteChannelDifference": 0.029999002483291595
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 14670,
+            "pixelsOverOneLevel": 568,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.012951383602342006
+          },
+          "versusFullMask": {
+            "changedPixels": 13413,
+            "pixelsOverOneLevel": 288,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.010879348895760671
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-03-20T12:00:00Z",
+      "maskWidth": 3306,
+      "maskHeight": 1558,
+      "maskPNGBytes": [
+        106200,
+        110081
+      ],
+      "combinedMaskBytes": 216281,
+      "theoreticalTwoMaskRGBABytes": 41205984,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 1775,
+            "pixelsOverOneLevel": 113,
+            "maxChannelDifference": 5,
+            "meanAbsoluteChannelDifference": 0.014642495261795636
+          },
+          "versusFullMask": {
+            "changedPixels": 0,
+            "pixelsOverOneLevel": 0,
+            "maxChannelDifference": 0,
+            "meanAbsoluteChannelDifference": 0
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 10601,
+            "pixelsOverOneLevel": 326,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.008751896594267955
+          },
+          "versusFullMask": {
+            "changedPixels": 0,
+            "pixelsOverOneLevel": 0,
+            "maxChannelDifference": 0,
+            "meanAbsoluteChannelDifference": 0
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-03-20T12:00:00Z",
+      "maskWidth": 1044,
+      "maskHeight": 492,
+      "maskPNGBytes": [
+        23717,
+        24209
+      ],
+      "combinedMaskBytes": 47926,
+      "theoreticalTwoMaskRGBABytes": 4109184,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 1779,
+            "pixelsOverOneLevel": 108,
+            "maxChannelDifference": 5,
+            "meanAbsoluteChannelDifference": 0.014605744646222824
+          },
+          "versusFullMask": {
+            "changedPixels": 334,
+            "pixelsOverOneLevel": 9,
+            "maxChannelDifference": 2,
+            "meanAbsoluteChannelDifference": 0.0021052852635281643
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 15365,
+            "pixelsOverOneLevel": 1565,
+            "maxChannelDifference": 8,
+            "meanAbsoluteChannelDifference": 0.015307506400732212
+          },
+          "versusFullMask": {
+            "changedPixels": 12363,
+            "pixelsOverOneLevel": 1182,
+            "maxChannelDifference": 8,
+            "meanAbsoluteChannelDifference": 0.011766030414342774
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-03-20T12:00:00Z",
+      "maskWidth": 522,
+      "maskHeight": 246,
+      "maskPNGBytes": [
+        7833,
+        7884
+      ],
+      "combinedMaskBytes": 15717,
+      "theoreticalTwoMaskRGBABytes": 1027296,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 1762,
+            "pixelsOverOneLevel": 111,
+            "maxChannelDifference": 5,
+            "meanAbsoluteChannelDifference": 0.01452699332713823
+          },
+          "versusFullMask": {
+            "changedPixels": 313,
+            "pixelsOverOneLevel": 3,
+            "maxChannelDifference": 2,
+            "meanAbsoluteChannelDifference": 0.0019005318339082179
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 15270,
+            "pixelsOverOneLevel": 1570,
+            "maxChannelDifference": 8,
+            "meanAbsoluteChannelDifference": 0.01526958909895074
+          },
+          "versusFullMask": {
+            "changedPixels": 12584,
+            "pixelsOverOneLevel": 1189,
+            "maxChannelDifference": 8,
+            "meanAbsoluteChannelDifference": 0.011925283081824953
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-03-20T12:00:00Z",
+      "maskWidth": 261,
+      "maskHeight": 123,
+      "maskPNGBytes": [
+        2377,
+        2364
+      ],
+      "combinedMaskBytes": 4741,
+      "theoreticalTwoMaskRGBABytes": 256824,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 2523,
+            "pixelsOverOneLevel": 685,
+            "maxChannelDifference": 15,
+            "meanAbsoluteChannelDifference": 0.03832039186656377
+          },
+          "versusFullMask": {
+            "changedPixels": 2242,
+            "pixelsOverOneLevel": 582,
+            "maxChannelDifference": 14,
+            "meanAbsoluteChannelDifference": 0.03406257054805668
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 15452,
+            "pixelsOverOneLevel": 1594,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.015546093730403318
+          },
+          "versusFullMask": {
+            "changedPixels": 12881,
+            "pixelsOverOneLevel": 1214,
+            "maxChannelDifference": 8,
+            "meanAbsoluteChannelDifference": 0.012388457506663236
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-06-21T00:00:00Z",
+      "maskWidth": 3306,
+      "maskHeight": 1558,
+      "maskPNGBytes": [
+        112759,
+        108130
+      ],
+      "combinedMaskBytes": 220889,
+      "theoreticalTwoMaskRGBABytes": 41205984,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 1871,
+            "pixelsOverOneLevel": 150,
+            "maxChannelDifference": 5,
+            "meanAbsoluteChannelDifference": 0.016138770324402935
+          },
+          "versusFullMask": {
+            "changedPixels": 0,
+            "pixelsOverOneLevel": 0,
+            "maxChannelDifference": 0,
+            "meanAbsoluteChannelDifference": 0
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 10713,
+            "pixelsOverOneLevel": 194,
+            "maxChannelDifference": 4,
+            "meanAbsoluteChannelDifference": 0.008396640643730783
+          },
+          "versusFullMask": {
+            "changedPixels": 0,
+            "pixelsOverOneLevel": 0,
+            "maxChannelDifference": 0,
+            "meanAbsoluteChannelDifference": 0
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-06-21T00:00:00Z",
+      "maskWidth": 1044,
+      "maskHeight": 492,
+      "maskPNGBytes": [
+        23575,
+        22418
+      ],
+      "combinedMaskBytes": 45993,
+      "theoreticalTwoMaskRGBABytes": 4109184,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 1892,
+            "pixelsOverOneLevel": 151,
+            "maxChannelDifference": 5,
+            "meanAbsoluteChannelDifference": 0.016385524457534665
+          },
+          "versusFullMask": {
+            "changedPixels": 301,
+            "pixelsOverOneLevel": 1,
+            "maxChannelDifference": 2,
+            "meanAbsoluteChannelDifference": 0.0019897833288707585
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 15674,
+            "pixelsOverOneLevel": 1267,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.015612011501192645
+          },
+          "versusFullMask": {
+            "changedPixels": 14269,
+            "pixelsOverOneLevel": 1077,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.014040485178126734
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-06-21T00:00:00Z",
+      "maskWidth": 522,
+      "maskHeight": 246,
+      "maskPNGBytes": [
+        7661,
+        7231
+      ],
+      "combinedMaskBytes": 14892,
+      "theoreticalTwoMaskRGBABytes": 1027296,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 1874,
+            "pixelsOverOneLevel": 149,
+            "maxChannelDifference": 5,
+            "meanAbsoluteChannelDifference": 0.016228021819365473
+          },
+          "versusFullMask": {
+            "changedPixels": 305,
+            "pixelsOverOneLevel": 1,
+            "maxChannelDifference": 2,
+            "meanAbsoluteChannelDifference": 0.0019057819218471909
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 15696,
+            "pixelsOverOneLevel": 1246,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.015605011383940682
+          },
+          "versusFullMask": {
+            "changedPixels": 14299,
+            "pixelsOverOneLevel": 1072,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.013993817729780308
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-06-21T00:00:00Z",
+      "maskWidth": 261,
+      "maskHeight": 123,
+      "maskPNGBytes": [
+        2359,
+        2293
+      ],
+      "combinedMaskBytes": 4652,
+      "theoreticalTwoMaskRGBABytes": 256824,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 2535,
+            "pixelsOverOneLevel": 1134,
+            "maxChannelDifference": 14,
+            "meanAbsoluteChannelDifference": 0.04463099756920928
+          },
+          "versusFullMask": {
+            "changedPixels": 2319,
+            "pixelsOverOneLevel": 1023,
+            "maxChannelDifference": 14,
+            "meanAbsoluteChannelDifference": 0.041879951489187446
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 15803,
+            "pixelsOverOneLevel": 1307,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.015773014197987816
+          },
+          "versusFullMask": {
+            "changedPixels": 14366,
+            "pixelsOverOneLevel": 1104,
+            "maxChannelDifference": 7,
+            "meanAbsoluteChannelDifference": 0.014160653857618782
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-12-21T12:00:00Z",
+      "maskWidth": 3306,
+      "maskHeight": 1558,
+      "maskPNGBytes": [
+        116655,
+        121281
+      ],
+      "combinedMaskBytes": 237936,
+      "theoreticalTwoMaskRGBABytes": 41205984,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 2021,
+            "pixelsOverOneLevel": 175,
+            "maxChannelDifference": 5,
+            "meanAbsoluteChannelDifference": 0.01780829828899634
+          },
+          "versusFullMask": {
+            "changedPixels": 0,
+            "pixelsOverOneLevel": 0,
+            "maxChannelDifference": 0,
+            "meanAbsoluteChannelDifference": 0
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 11272,
+            "pixelsOverOneLevel": 218,
+            "maxChannelDifference": 5,
+            "meanAbsoluteChannelDifference": 0.00890181577208085
+          },
+          "versusFullMask": {
+            "changedPixels": 0,
+            "pixelsOverOneLevel": 0,
+            "maxChannelDifference": 0,
+            "meanAbsoluteChannelDifference": 0
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-12-21T12:00:00Z",
+      "maskWidth": 1044,
+      "maskHeight": 492,
+      "maskPNGBytes": [
+        25038,
+        26172
+      ],
+      "combinedMaskBytes": 51210,
+      "theoreticalTwoMaskRGBABytes": 4109184,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 2013,
+            "pixelsOverOneLevel": 170,
+            "maxChannelDifference": 4,
+            "meanAbsoluteChannelDifference": 0.017650795650827153
+          },
+          "versusFullMask": {
+            "changedPixels": 379,
+            "pixelsOverOneLevel": 3,
+            "maxChannelDifference": 2,
+            "meanAbsoluteChannelDifference": 0.002562042914218813
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 17268,
+            "pixelsOverOneLevel": 2142,
+            "maxChannelDifference": 11,
+            "meanAbsoluteChannelDifference": 0.020051835868250795
+          },
+          "versusFullMask": {
+            "changedPixels": 15060,
+            "pixelsOverOneLevel": 1790,
+            "maxChannelDifference": 11,
+            "meanAbsoluteChannelDifference": 0.017308956591689576
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-12-21T12:00:00Z",
+      "maskWidth": 522,
+      "maskHeight": 246,
+      "maskPNGBytes": [
+        8055,
+        8481
+      ],
+      "combinedMaskBytes": 16536,
+      "theoreticalTwoMaskRGBABytes": 1027296,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 2019,
+            "pixelsOverOneLevel": 175,
+            "maxChannelDifference": 4,
+            "meanAbsoluteChannelDifference": 0.017692796354338937
+          },
+          "versusFullMask": {
+            "changedPixels": 379,
+            "pixelsOverOneLevel": 4,
+            "maxChannelDifference": 2,
+            "meanAbsoluteChannelDifference": 0.002530542386584975
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 17268,
+            "pixelsOverOneLevel": 2143,
+            "maxChannelDifference": 11,
+            "meanAbsoluteChannelDifference": 0.02002558542855593
+          },
+          "versusFullMask": {
+            "changedPixels": 15048,
+            "pixelsOverOneLevel": 1771,
+            "maxChannelDifference": 11,
+            "meanAbsoluteChannelDifference": 0.017273372662325426
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-12-21T12:00:00Z",
+      "maskWidth": 261,
+      "maskHeight": 123,
+      "maskPNGBytes": [
+        2519,
+        2567
+      ],
+      "combinedMaskBytes": 5086,
+      "theoreticalTwoMaskRGBABytes": 256824,
+      "samples": {
+        "367": {
+          "versusApproved": {
+            "changedPixels": 2795,
+            "pixelsOverOneLevel": 1028,
+            "maxChannelDifference": 29,
+            "meanAbsoluteChannelDifference": 0.05301013791981016
+          },
+          "versusFullMask": {
+            "changedPixels": 2441,
+            "pixelsOverOneLevel": 1004,
+            "maxChannelDifference": 24,
+            "meanAbsoluteChannelDifference": 0.04928257548313934
+          }
+        },
+        "1101": {
+          "versusApproved": {
+            "changedPixels": 17402,
+            "pixelsOverOneLevel": 2130,
+            "maxChannelDifference": 11,
+            "meanAbsoluteChannelDifference": 0.02017142120463851
+          },
+          "versusFullMask": {
+            "changedPixels": 15039,
+            "pixelsOverOneLevel": 1748,
+            "maxChannelDifference": 11,
+            "meanAbsoluteChannelDifference": 0.017299039758915963
+          }
+        }
+      }
+    }
+  ],
+  "limits": [
+    "The approved terrain/night textures remain3306x1558. Only the smooth solar masks have reduced dimensions.",
+    "Endpoint interpolation remains an approximation to the approved sequential renderer.",
+    "Sharp lanczos3 independent resampling is a model, not native Widgy output or a perceptual approval.",
+    "Byte counts are measurements. RGBA inputs are theoretical and exclude compositor surfaces.",
+    "No refresh timing, request count, location, rounding of map corners or native color-space behavior is tested."
+  ]
+}

@@ -1,5 +1,7 @@
 # Small solar mask: native flat composition works; real-map fidelity unresolved
 
+Current continuation after the owner's09:55 request: **do not stop at the offline mismatch**. Read `map-mask-compare-1-review.md`. Color-managed IMG_9923 samples match expected sRGB blending closely;522×246 masks retain the exact master aspect ratio and sharply reduce mask payload/surfaces. `Map Mask Compare1` provides MASK versus ORIGINAL at one fixed time in the same native widget. Two actual color-profiled mask PNGs total41,984 bytes. No live refresh is claimed. One-file cropping is a concrete lead supported by published Frame/Crop availability, but native crop serialization/atomic replacement are unverified. Keep Five Minute1 as the working control.
+
 Latest: IMG_9923 qualitatively confirms the controlled gold/navy gradient on the iPhone Home Screen. Read `map-native-split-2026-10-06.md` and its reproducible benchmark before another import. Native flat masking is supported by this observation, but the actual renderer also darkens some terrain channels; three measured real-map decompositions fail exact independent-resampling parity. No live split is published and no speed improvement is established. Historical capability questions below have been superseded where noted.
 
 2026-10-06, branch f50-widget-test, baseline 30de2d60d1b385f046f7abb9df24266374d4e82d.

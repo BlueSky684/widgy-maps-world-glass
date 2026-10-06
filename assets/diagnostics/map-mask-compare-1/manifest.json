@@ -1,0 +1,52 @@
+{
+  "revision": "map-mask-compare-1",
+  "at": "2026-10-06T04:30:00.000Z",
+  "atlas": "r6",
+  "mapDimensions": [
+    3306,
+    1558
+  ],
+  "maskDimensions": [
+    522,
+    246
+  ],
+  "files": {
+    "day.png": {
+      "width": 3306,
+      "height": 1558,
+      "bytes": 3194123,
+      "sha256": "64549cb7d7a10a41859f6a964cc5a506d4a9c8b0d16b60694eacc6008037c885"
+    },
+    "night.png": {
+      "width": 3306,
+      "height": 1558,
+      "bytes": 4540058,
+      "sha256": "b47b3c2f4b58c1a6d2648a7fb59316e40a816b1108ffa95856a0edc669f30c1c"
+    },
+    "reference.png": {
+      "width": 3306,
+      "height": 1558,
+      "bytes": 4030894,
+      "sha256": "cb77d96e914c9d04a288927ce36e429c00cad3f9d5a1650293c6ba57c85a4b69"
+    },
+    "mask-day.png": {
+      "width": 522,
+      "height": 246,
+      "bytes": 21266,
+      "sha256": "00a608bdb565cecc9830ab7a5ba9ec77451107632aa464e016ec26c11b935697"
+    },
+    "mask-night.png": {
+      "width": 522,
+      "height": 246,
+      "bytes": 20718,
+      "sha256": "ee298c5d837ae0541642309df707d917c4d81ae71efdc67f73799eddfde5dc07"
+    }
+  },
+  "purpose": "Fixed-time native appearance comparison. HOME/MASK uses static day/night plus complementary small masks; CALENDAR/ORIGINAL uses the approved renderer at the same instant. No location, live endpoint or personal data.",
+  "limits": [
+    "The mask construction is an approximation, pending owner comparison.",
+    "Corners are rectangular in both views to isolate color/composition.",
+    "This cannot measure live update latency or prove separate sources update atomically.",
+    "No approved master asset is edited."
+  ]
+}

@@ -1,5 +1,11 @@
 # Live map refresh without blocking Home — investigation checkpoint
 
+## Continue masks, actual native real-map comparison — 2026-10-06 09:55 Asia/Jerusalem
+
+The owner asks why masks are not being investigated deeply. The previous stop was premature: local Sharp mismatches are not a native visual rejection. Read `map-mask-compare-1-review.md`. The screenshot's embedded Display P3 profile explains raw-byte color differences; converted plateau samples are within one sRGB level of the expected flat composition. Mask-only downsampling was measured at five dates/four sizes;522×246 preserves the master's exact87:41 aspect ratio. The actual explicit-sRGB fixture masks total41,984 bytes, with full-size map textures untouched.
+
+Prepared `Map Mask Compare1`: MASK/Home composes fixed day/night images using the two small masks and captured native blend objects; ORIGINAL/Calendar displays the actual approved renderer at the identical fixed instant. Same frame/native tab actions; zero GPS/variables/accounts/APIs; rectangular corners and no marker in both. Tests pass. Native appearance and eventual live-mask speed remain separate gates. Publication must be checked before handoff. One packed mask file selected with Frame/Crop is a concrete next lead, but no crop schema, shared decoding or atomic update is assumed. Do not repeat the flat probe, animation-off trial or substitute the older full-widget test for the user's mask priority.
+
 ## Flat native mask succeeded; real-map split evaluated — 2026-10-06 09:20 Asia/Jerusalem
 
 IMG_9923 displays the expected gold/navy gradient on the iPhone Home Screen. This supports the captured native Multiply/Plus Lighter construction qualitatively, not real-map fidelity, refresh or speed. Read `map-native-split-2026-10-06.md` and JSON, reproduced by `node tools/benchmark-map-native-split.mjs`.
