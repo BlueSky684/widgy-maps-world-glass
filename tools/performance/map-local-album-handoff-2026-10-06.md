@@ -1,5 +1,27 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Correction — no Shortcut run before full-widget check, 2026-10-06 22:56 Israel
+
+The owner clarifies that they did NOT run the update Shortcut before checking the
+new full widget and sending its screenshot. The previous 22:48 interpretation of
+the unchanged MAP TIME as a failed full-widget update was premature. The displayed
+22:18:15 frame is the last saved image and is expected without another producer
+run. Full-widget replacement freshness is UNTESTED, not a demonstrated failure.
+
+The reported navigation improvement, residual delay compared with the small
+consumer, Files selection and source audit remain valid. Automatic scheduling
+has not been configured, so no new production was expected merely by waiting or
+switching tabs. Do not diagnose caching, file mismatch or save failure from the
+old timestamp. The proposed Files-output investigation is not needed unless an
+actual update attempt fails.
+
+Next: run the already working map update Shortcut once and let it finish, then
+return to the new full widget and switch Calendar -> Home. Observe whether MAP
+TIME advances and whether navigation remains improved. This is the first explicit
+producer-to-full-widget replacement check, not a repeat of the completed small
+consumer checks. Preserve the diagnostic strip for this observation and continue
+the Home dependency work without attributing all delay to variable count.
+
 ## Current result — full widget uses Files; freshness unresolved, 2026-10-06 22:48 Israel
 
 The small consumer's successful manual replacement and fast navigation remain
