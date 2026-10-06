@@ -2,6 +2,8 @@
 
 2026-10-06, branch `f50-widget-test`.
 
+Publication verified: runtime commit `1cc57105294ee7705af124ebb87637ac2066d9fc` has a successful Vercel deployment. The HTML, controller, transform and asset manifest return HTTP200 and match local bytes exactly. All five build-produced PNGs return HTTP200/image/png with exact manifest byte sizes and SHA256 hashes. Ready for the fixed-time native appearance comparison; no phone result yet.
+
 The owner explicitly asks why we are not investigating masks more deeply. The previous decision to stop at offline differences was premature: Sharp is not Widgy and a measured color delta is not, by itself, a user-visible rejection. Continue with a bounded native appearance comparison while retaining the successful Five Minute1 control. Do not present the approximation as the final approved map.
 
 ## New evidence: the phone screenshot's color profile
