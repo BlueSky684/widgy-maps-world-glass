@@ -1,5 +1,28 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Large equivalent control also exports — 2026-10-07 00:18 Israel
+
+The owner confirms successful JSON export of widgy-same-image-large.png
+(4,326,777 bytes). Both the 32,917-byte and 4,326,777-byte versions of the
+pixel-identical full-size RGBA control export. The latter exceeds the sizes
+of all supplied failed map trials. Original local PNG byte length alone
+therefore does not explain the observed failures.
+
+Do not equate input-file size with upload payload size: native decoding,
+resampling/re-encoding or other processing before upload has not been observed.
+This success does not prove that the upload service accepts a 4.33 MB body.
+The map's pixel content/complexity and its handling remain relevant unresolved
+differences. No blanket resolution, alpha, ICC or input-size restriction was
+demonstrated. Do not repeat either successful blue-image control.
+
+Next request: the actual successfully exported JSON from the NEW blue-control
+widget, and the installed Widgy version/build (not Widget Format 29). Inspect
+the export to learn what image source/reference Widgy serializes and whether
+any uploaded-image properties are accessible; do not promise it contains an
+upload trace, validation message, original Files bookmark or a root-cause answer.
+No more speculative minor PNG recompression trials are currently requested.
+Working map refresh stays unchanged; no permanent fix or runtime edit is claimed.
+
 ## Full-size RGBA control exports successfully — 2026-10-07 00:14 Israel
 
 The owner confirms that widgy-fullsize-control.png exports successfully. This
