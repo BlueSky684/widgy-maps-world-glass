@@ -1,3 +1,9 @@
+## Current checkpoint — native appeared-Off image field captured, 2026-10-06 12:17 Asia/Jerusalem
+
+Read `map-mask-appeared-transition-2026-10-06.md`. The owner's current screenshots explicitly warn that blends and transitions on a layer or across its group break blend modes. A native Persistent1 export identifies image Layer Appeared Transition Off as `r0={b:0,a:[{d:736,a:-1,b:736,c:0}]}` on day mask84011 only. All image sources/frames/blends and three variables match baseline. Do not conflate this with the failed content-animation Off trial; Interpolate remains unchanged.
+
+An isolated four-image patch and exact whole-document reversal test are prepared, not wired to an import page. Group and background-shape transition fields remain uncaptured; do not copy image source736 into other layer types by assumption. Next: on the SAME Persistent1 set appeared-Off on the Night group itself and sibling Full Graphite Background shape, then export once. Keep existing day image Off and all other settings. This captures the two missing types for a uniform eight-node map composition trial. No new import or performance result yet; don't repeat hierarchy variants or migrate services.
+
 ## Current checkpoint — Persistent1 did not fix the composition, 2026-10-06 12:04 Asia/Jerusalem
 
 Read the latest result in `map-mask-live-1-video-2026-10-06.md`. The new9.7-second recording confirms PERSISTENT MASK; both complete stamps show12:00. On both Home returns the night/N contribution still appears before day/D, with a black daytime region. Calendar does eventually cover the entire map. No exact touch latency or periodic refresh is measured. Close the hierarchy route as unsuccessful for this defect; no additional reparenting import or service migration.
