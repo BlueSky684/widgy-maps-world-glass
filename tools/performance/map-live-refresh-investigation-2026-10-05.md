@@ -1,3 +1,7 @@
+## Current checkpoint — local image transitions reported very fast, 2026-10-06 15:26 Asia/Jerusalem
+
+Owner reports very fast transitions after the Photos/local consumer setup. Preserve this qualitative success; no exact newest-album binding, A→B freshness, original-byte retention, background automation or full Home integration is yet proven. Next add a later complete server PNG B to the same album while retaining A, observe the existing widget without manual reload or source edits, then test two transitions if B appears. If unchanged, inspect the actual provider/album before diagnosing scheduling or adding Reload. See `map-local-album-handoff-2026-10-06.md`. No runtime change or new import.
+
 ## Current checkpoint — complete PNG/local album setup accepted, 2026-10-06 14:50 Asia/Jerusalem
 
 Read `map-local-album-handoff-2026-10-06.md`. Owner agrees to the distinct complete-server-image→local-consumer route. Existing no-location endpoint verifiedHTTP200,3306×1558 PNG,3,942,092bytes,actual14:50 stamp,complete composition. Reuse the zero-variable21-node Static Only1 import and manually select the observed newest-album PNG source with a dedicated album; until changed, its source is still Web URL. No native source fields are fabricated. Consumer setup/navigation/fidelity/B-refresh/offline retention/slot-reload/automatic scheduling remain untested. No runtime change or new import variant. This route downloads the full map, not tiny masks; preserve original masters and prior controls.

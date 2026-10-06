@@ -61,3 +61,23 @@ captured from this non-private diagnostic when needed for repeatable imports.
 No runtime files, endpoint, master image, template or paid hosting plan changed.
 This checkpoint records a verified producer link and native setup instructions;
 it does not claim the phone consumer is already configured or tested.
+
+## First owner speed result — 2026-10-06 15:26:40 Israel
+
+After the local-image instructions, the owner reports: “המעברים מהירים מאוד”
+(the transitions are very fast). Preserve this positive qualitative result for
+the current small consumer and saved map. It is not measured zero latency,
+full Home integration, automatic updating or confirmed original-byte retention.
+At15:24 the owner described a Photos-only image picker; we clarified Files →
+Share → Save Image, then add to the dedicated Photos album. No new screenshot
+or native export yet verifies the exact newest-album binding, so a successful
+A→B replacement is still a meaningful gate and cannot be assumed.
+
+Next: save a later current complete PNG B into the same album, retain A, return
+to the existing Home widget without editing its source or manually reloading.
+Observe whether MAP TIME changes to B. If it does, make two normal Calendar→Home
+returns and report speed and whether the timestamp stays at B. If it does not,
+inspect the actual source/album selection before assuming a scheduling fault
+or adding Reload. No new import, animation change, server or paid service.
+The link may add a literal diagnostic t value to avoid reopening the old browser
+page; the existing server ignores t for solar time and still renders server-now.
