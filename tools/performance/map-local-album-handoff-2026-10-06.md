@@ -1,5 +1,41 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Native JSON inspected; hosted image is transformed — 2026-10-07 00:22 Israel
+
+The owner supplied the successful blue-control export as a 433-byte text file.
+It is valid JSON for Eriaera with one image layer. The image's source field is
+"Web URL" and its value is a PNG on widgy.fra1.digitaloceanspaces.com/images/.
+The JSON contains no native Files path/bookmark for that layer. This confirms
+conversion of the source in the exported document, not mutation of the working
+widget's source. Root field 0 is 29; field 9 is 140 but its semantics are not
+established, so neither is an independently confirmed installed app/build number.
+
+The exact hosted image referenced by the export was downloaded successfully:
+HTTP 200, Content-Type image/png, 60,423 bytes, dimensions 2411x1136, RGBA.
+It has sRGB, eXIf, pHYs (~72 dpi), iDOT and four IDAT chunks, no embedded iCCP.
+Its dimensions differ from the original 3306x1558 controls (32,917 / 4,326,777
+bytes), so this is demonstrably transformed output, not byte-preserved storage.
+The exported-image SHA256 is
+4c0ab21bf9a27019a296650e91cf823968a1a4d59d2b51bc301a8de8aa2ef018.
+
+The transformation occurred somewhere in the export/upload/storage pipeline.
+This observation alone does NOT locate it before vs after the upload request.
+It explains why the large-file control cannot settle the actual request-body
+size of a detailed map. No upload-body capture, validation response body,
+documented byte limit or proven permanent repair is available yet.
+
+Consequences:
+- Stop attempting small input PNG recompression/profile tweaks as established
+  fixes; shared images are processed by the native/service export pipeline.
+- A JSON produced by this tested share path is not a faithful backup of the
+  original dynamic Files binding. Do not invent bookmarks or promise that
+  re-importing it will continue following map-current.png.
+- Installed Widgy version/build remains a requested diagnostic; do not confuse
+  the document format or an unknown numeric JSON field with that version.
+- Keep all successful/failed native tests above; no repeat requested.
+No runtime/Shortcut/full widget/approved image was changed. Personal images and
+raw exports are not committed; only synthetic-control measurements are recorded.
+
 ## Large equivalent control also exports — 2026-10-07 00:18 Israel
 
 The owner confirms successful JSON export of widgy-same-image-large.png
