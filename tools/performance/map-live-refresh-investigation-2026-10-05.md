@@ -1,3 +1,9 @@
+## Current checkpoint — Live1 video shows staggered composition, 2026-10-06 11:27 Asia/Jerusalem
+
+Read `map-mask-live-1-video-2026-10-06.md`. The16-second owner recording shows three Home returns: N/night appears before D/day settles, producing a transient black daytime region each time. Both bitmap stamps read06/10 11:00; this clip does not show a five-minute refresh. It supports a repeated presentation defect within the same epoch, not a server/cache/root-cause diagnosis or measured touch latency.
+
+Existing candidate `Widgy Map Mask Persistent1` was found at branch commit79b2f40 and verified instead of duplicating it. It moves the unchanged two composition groups/background into an always-enabled root container covered by Calendar. Same four images, three scripts, APIs, URLs, blend effects and navigation. Exact reversal/controller tests pass. Device gate: heading PERSISTENT MASK, Calendar fully covers map, and D/N appear together on Home returns without a black-region blink. Native result pending. Prior single-bitmap reparenting had no speed benefit; this new bounded trial targets the observed split-composition defect and is not a proven speed fix. Preserve Live1/Five Minute1; no animation-off repeat, new hosting or full-widget add-back yet.
+
 ## Current checkpoint — live small-mask candidate, 2026-10-06 10:34 Asia/Jerusalem
 
 IMG_9924/9925 show both native real-map views and broad visual similarity, not exact parity or explicit final appearance approval. ORIGINAL temporarily disappeared and recovered at10:22; current asset fetches are200 and byte-identical. Cause remains unknown. Do not diagnose hosting or memory from this incident.
