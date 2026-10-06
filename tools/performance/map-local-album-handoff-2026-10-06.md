@@ -1,5 +1,31 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Below-4-million-byte trial failed — 2026-10-07 00:10 Israel
+
+The owner reports the same error for map-lossless-under4m.png (3,992,384 bytes).
+The under-4,000,000-byte lossless variant is NOT a fix. Do not repeat that trial
+or infer that size is fully excluded; a lower limit remains possible. Profile
+normalization and small lossless re-encoding changes have now both failed.
+
+Next diagnostic prepared: widgy-fullsize-control.png, 32,917 bytes. It is a flat
+blue technical control with the failed map's exact 3306x1558 RGBA dimensions,
+full alpha plane, ICC profile, DPI, and all non-IDAT chunks byte-for-byte. Chunk
+types/order/count also match (497 IDAT chunks), and decoded storage is the same
+20,602,992 RGBA bytes. Only RGB content and consequently compressed image data
+differ. PNG CRCs, full decode, metadata, alpha and structure checks passed.
+It contains no map/location content and is not a proposed design replacement.
+
+Native export is pending. A success would show that the map's dimensions,
+alpha shape and color metadata can be accepted together for simple content;
+then focus on payload size/content/encoding handling. A failure would show
+that lowering local compressed size alone is insufficient for this matching
+format and prompt format/dimension controls. Neither outcome reveals the
+actual native upload body or proves a specific server validation rule.
+
+Keep the working widget untouched; select this file only in the new diagnostic
+widget and try JSON export. Installed Widgy version/build remains unconfirmed.
+No new renderer/Shortcut/approved-art changes. No permanent fix is claimed.
+
 ## Color-profile trial failed — 2026-10-07 00:04 Israel
 
 The owner reports the same export error for map-srgb-test.png. Replacing only
