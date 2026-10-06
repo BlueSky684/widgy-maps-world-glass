@@ -1,5 +1,11 @@
 # Live map refresh without blocking Home — investigation checkpoint
 
+## Latest steering — static map/network mask, 2026-10-06 08:53 Asia/Jerusalem
+
+The owner asks to test a static map and load only the mask from the network. Keep the successful minimal Five Minute1 copy assigned. The full Home Five Minute Map1 candidate was already built/published and its three public files verified HTTP200/byte-identical, but has no phone result and is not the next requested import.
+
+Read the last section of `map-mask-capability-2026-10-06.md`. A separate harmless Mask Blend Probe1 contains one group/one generic image/zero variables, no location or accounts. Request named Multiply on the image and Plus Lighter on the group if available, then its native file, to learn actual serialization. No guessed effect fields or native mask implementation have been added. This is a prerequisite for a controlled composition test, not a static-map/mask performance result. Existing108–144KB mask savings and failed prior independent-sampling parity remain relevant. Preserve the now-positive live refresh observation; do not restart animation or hosting trials.
+
 ## Current checkpoint — initial live-map success, 2026-10-06 08:47 Asia/Jerusalem
 
 The owner reports advancing map time, relatively fast transitions and no serious slowdown in Map Five Minute1. This is the first reported phone result for THIS candidate: promising under the accepted occasional-delay tradeoff, not a zero-delay or full-widget guarantee. Retain the working minimal copy.

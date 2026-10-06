@@ -35,3 +35,9 @@ The next useful report is whether the whole widget remains relatively fast or br
 Page: https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/tools/widgy-home-five-minute-map.html?v=home-five-minute-map-1
 
 Public deployment/byte verification is required before presenting this link as ready. Native result pending.
+
+## Publication verified; mask investigation requested first
+
+Runtime commit5668c4abd0e420580293ce0a290ed19e54bcf6b2 has successful Vercel deployment status. All three public runtime files returnedHTTP200 with exact local bytes: HTML4859, controller2351, transformer2694. Private export behavior was tested with synthetic responses only; native full-widget result remains pending.
+
+At08:53:34, while publication was completing, the owner asks to prioritize static-map/network-mask feasibility. The ready full-widget candidate is retained, but not handed off as the immediate required test. Continue with the harmless native schema probe described in `map-mask-capability-2026-10-06.md` and retain the fast minimal Five Minute1 on the phone.
