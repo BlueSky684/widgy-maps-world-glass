@@ -1,5 +1,33 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Current result — manual refresh works in full widget, 2026-10-06 22:58 Israel
+
+The owner explicitly reports running the update Shortcut and seeing the time
+advance. The supplied Home Screen image shows the full Native Steps Ring 2
+layout with MAP TIME 22:57:16, replacing the previous 22:18:15 frame. The English
+city and location marker remain visible. This is positive evidence of manual
+fixed-file replacement being consumed by the full widget after native Files
+selection. The earlier non-refresh interpretation is closed by the 22:56
+clarification and this successful actual run; do not request that test again.
+
+The earlier reported navigation improvement and residual delay relative to the
+small consumer remain the latest explicit speed evidence. No new latency
+measurement or speed report accompanied this screenshot. Do not call the full
+widget equally fast or fully optimized. Background refresh while remaining on
+Home, scheduling/locked execution, failed-download retention and an English city
+binding shared with Calendar remain unverified. Automation is not configured.
+
+Next priority is the owner's requested Home dependency work. Inspect the actual
+Variables screen in the working full copy before asking for native edits; its
+Files binding cannot currently be exported due to the HTTP 422 sharing error.
+The generated-baseline audit below identifies map_request, steps_goal and
+steps_progress as no longer reachable after removing the old map image consumer,
+but their deletion alone is not a measured speed fix. Preserve functional Home
+weather/health/calendar data and Calendar's remaining coordinate dependencies.
+The temporary MAP TIME strip may be removed from the producer URL when moving to
+the clean presentation; it is part of the PNG, not a separate Home text layer.
+Do not edit approved assets or replace the working local map path.
+
 ## Correction — no Shortcut run before full-widget check, 2026-10-06 22:56 Israel
 
 The owner clarifies that they did NOT run the update Shortcut before checking the
