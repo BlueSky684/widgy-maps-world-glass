@@ -1,5 +1,35 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Positive Files export control — 2026-10-06 23:58 Israel
+
+The owner reports selecting IMG_7352.PNG through Files and successfully exporting
+JSON. This establishes that local Files-image export can work in the current
+environment; do not continue describing a blanket Files upload failure or ask
+for the tiny synthetic control again. The exact native widget used for this
+successful control is not independently captured in this message.
+
+The supplied successful image is a valid 503,594-byte, 1320x2868, 8-bit RGB PNG
+without alpha. It has sRGB (intent 0), eXIf, pHYs (~144 dpi) and iTXt/XMP chunks,
+and no embedded iCCP. The failed static map is 4,075,465 bytes, 3306x1558, RGBA,
+with an embedded sRGB ICC profile and 25.4 dpi. Size, dimensions, alpha and color
+metadata all differ; no single cause is proven. Do not infer a PNG corruption,
+an alpha prohibition, or a numeric upload limit from this comparison.
+
+One isolated full-quality trial was prepared as map-srgb-test.png:
+- Based on the failed static map, not the approved master or the working file.
+- Only replaces the iCCP chunk with an sRGB chunk (intent 0).
+- All original IDAT bytes, dimensions, decoded RGBA pixels, alpha and DPI match.
+- Valid CRCs/full decode checked; 4,075,147 bytes (318 bytes smaller).
+- Native JSON export result is pending. It is a diagnostic, not a verified fix.
+
+The producer code currently uses withIccProfile('srgb') before PNG encoding in
+lib/home-map-day-night.js. If the isolated metadata trial succeeds, confirm the
+same behavior with the live producer's output before making normalization
+permanent. No runtime code, Shortcut, current map or approved asset was changed.
+If it fails, color-profile representation alone is insufficient; next select a
+different controlled payload variable rather than repeating the same tests.
+Installed Widgy version/build remains unconfirmed.
+
 ## New one-layer reproduction — 2026-10-06 23:52 Israel
 
 The owner created a NEW widget ("Eriaera"), added a NEW Image layer, and selected
