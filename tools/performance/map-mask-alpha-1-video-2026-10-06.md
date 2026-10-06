@@ -1,5 +1,9 @@
 # Alpha1 device result and fixed-URL control — 2026-10-06
 
+Update13:22: Fixed Alpha1 also reproduces the black-day phase with no variables.
+Read `map-mask-alpha-fixed-1-video-2026-10-06.md`; the pending result below is
+resolved negatively for the variable-removal hypothesis.
+
 ## Result
 
 **Alpha1 fails the complete-map presentation gate.** White mask exposure is
@@ -80,7 +84,7 @@ Runtime commit6cea0ccb5abdc5376987b72e9f1d2705d1d088b0 deployed successfully.
 `map-mask-alpha-fixed-1-public-verification.json` records five HTTP200 responses
 with local byte identity: the fixed page/transform, unchanged Alpha1 page and
 both actual13:05 alpha PNGs. The pair totals29,624 bytes, with correct revision,
-time and immutable-cache headers. Native fixed-control result remains pending.
+time and immutable-cache headers. Native fixed-control result: the later13:21 clip reproduces the black-day phase.
 No successful visual or performance outcome is claimed.
 
 Verified Chrome handoff:

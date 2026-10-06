@@ -1,3 +1,9 @@
+## Current checkpoint — fixed Alpha reproduces defect, 2026-10-06 13:22 Asia/Jerusalem
+
+Read `map-mask-alpha-fixed-1-video-2026-10-06.md`. The5.77-second FIXED ALPHA recording confirms the literal-URL/zero-variable control. Its one clear Home return still shows N/night and a black day area around3.50–4.00s, with complete D/N by4.25s; all stamps13:05. No second clip is needed for this reproduction. Variable evaluation and a changing epoch are not required for the defect. This does not exclude network/decoding/source work or prove all masking impossible. No measured touch latency or new explicit speed/fidelity approval.
+
+Close the variable-removal hypothesis for this visual defect. No further arbitrary hierarchy, grayscale/alpha or frozen-time variants. Next mask work requires a verified way to present the complete composition as a unit, or remove dependence on two independently presented contributions. SwiftUI drawingGroup is an app-author API, not a verified Widgy JSON control or async-source atomicity guarantee. No such native Widgy capability is yet established. Keep the user's fast Appeared Off1 evidence and Five Minute1 control; do not silently switch to the full-widget fallback. No runtime change or new device import in this checkpoint. Paid migration and weather/fitness integration remain premature.
+
 ## Current checkpoint — Alpha1 black-day defect remains, 2026-10-06 13:11 Asia/Jerusalem
 
 Read `map-mask-alpha-1-video-2026-10-06.md`. The new9.585-second ALPHA MASK recording shows no white mask in reviewed samples, but both Home returns still show N/night with a black daytime area before D/day joins. All completed stamps read13:05; no epoch advancement occurs. This fails the visual gate, not a measured input-latency test. Keep the owner's fast Appeared Off1 report distinct; Alpha1 speed has no new explicit owner assessment. Same displayed epoch does not prove no HTTP/decoding/source work.
