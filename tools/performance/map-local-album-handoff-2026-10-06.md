@@ -1,5 +1,30 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Full-size RGBA control exports successfully — 2026-10-07 00:14 Israel
+
+The owner confirms that widgy-fullsize-control.png exports successfully. This
+positive native result accepts the failed map's dimensions, actual alpha plane,
+ICC/DPI metadata and PNG chunk-type layout together for simple RGB content.
+Do not repeat this test, the small RGB control, or claim that Files, RGBA,
+3306x1558 dimensions or ICC metadata alone is categorically unsupported.
+
+Next paired diagnostic: widgy-same-image-large.png, 4,326,777 bytes versus the
+successful control's 32,917. The decoded pixels, alpha, metadata, scanline data,
+and chunk types/order/count are identical. Only DEFLATE coding differs: an
+initial region uses stored blocks and the rest stronger lossless compression.
+The entire zlib stream and PNG CRCs fully decode correctly; native export is
+pending. This is a diagnostic fixture, not an attempted production map fix.
+
+If the paired large control fails, input encoding/length handling becomes a
+strong suspect. If it succeeds, original local file length alone cannot explain
+the map failures; Widgy could re-encode the simple image before upload, so actual
+upload-payload size would still be unknown. Do not claim a numeric server limit
+or infer that a local 4 MB file necessarily creates a 4 MB upload request.
+
+The owner still requires an automatic permanent solution without recurring
+source changes, loss of approved image quality or speculative runtime edits.
+No production map, renderer, Shortcut or full widget was modified.
+
 ## Below-4-million-byte trial failed — 2026-10-07 00:10 Israel
 
 The owner reports the same error for map-lossless-under4m.png (3,992,384 bytes).
