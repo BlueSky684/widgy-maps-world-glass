@@ -76,8 +76,12 @@ native script/variable bindings and literal epoch URLs, and exercises copy,
 download, failed preparation clearing, clipboard fallback, pageshow and retry.
 `git diff --check` passes. Original Alpha1 page/transform and API are untouched.
 
-Publication verification pending before handoff. Native fixed-control result
-pending. No successful visual or performance outcome is claimed.
+Runtime commit6cea0ccb5abdc5376987b72e9f1d2705d1d088b0 deployed successfully.
+`map-mask-alpha-fixed-1-public-verification.json` records five HTTP200 responses
+with local byte identity: the fixed page/transform, unchanged Alpha1 page and
+both actual13:05 alpha PNGs. The pair totals29,624 bytes, with correct revision,
+time and immutable-cache headers. Native fixed-control result remains pending.
+No successful visual or performance outcome is claimed.
 
-Chrome handoff after verification:
+Verified Chrome handoff:
 `googlechromes://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/tools/widgy-map-mask-alpha-fixed-1.html?v=alpha-fixed-1`

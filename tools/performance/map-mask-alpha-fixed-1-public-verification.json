@@ -1,0 +1,56 @@
+{
+  "verifiedAt": "2026-10-06T10:18:52.873570+00:00",
+  "runtimeCommit": "6cea0ccb5abdc5376987b72e9f1d2705d1d088b0",
+  "base": "https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app",
+  "files": [
+    {
+      "path": "tools/widgy-map-mask-alpha-fixed-1.html?v=alpha-fixed-1",
+      "status": 200,
+      "bytes": 10727,
+      "sha256": "0f81e32535dc913d81bf9f6f7be6bdc3bfd47b0ffa9370d753119f323903a754",
+      "matchesLocal": true,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "path": "tools/map-mask-alpha-fixed.js?v=alpha-fixed-1",
+      "status": 200,
+      "bytes": 2449,
+      "sha256": "c2e674524e3b0bfa4f9bc03ed545ed22cee3243302fd4294c9a7bf4787bed2a5",
+      "matchesLocal": true,
+      "contentType": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "tools/widgy-map-mask-alpha-1.html?v=alpha-fixed-1",
+      "status": 200,
+      "bytes": 11137,
+      "sha256": "856c096db397d17a2eed7f729e90cf90e2032dc5669f2073a2e7dfcdb4e5e090",
+      "matchesLocal": true,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "path": "api/solar-mask?rev=alpha-1&part=day&t=1791281100000",
+      "status": 200,
+      "bytes": 14970,
+      "sha256": "fd379a911e624034cef6a29f46b4b48d9c8f045bb9cd1d6176a6bbc816dddc07",
+      "matchesLocal": true,
+      "contentType": "image/png",
+      "revision": "alpha-1",
+      "epochTime": "2026-10-06T10:05:00.000Z",
+      "etag": "\"fd379a911e624034cef6a29f46b4b48d9c8f045bb9cd1d6176a6bbc816dddc07\"",
+      "cacheControl": "public, max-age=86400, immutable"
+    },
+    {
+      "path": "api/solar-mask?rev=alpha-1&part=night&t=1791281100000",
+      "status": 200,
+      "bytes": 14654,
+      "sha256": "b91a81f387bc1e7958eaa06c12927e270ebc1172c8435ac289ca76a093aa8bbf",
+      "matchesLocal": true,
+      "contentType": "image/png",
+      "revision": "alpha-1",
+      "epochTime": "2026-10-06T10:05:00.000Z",
+      "etag": "\"b91a81f387bc1e7958eaa06c12927e270ebc1172c8435ac289ca76a093aa8bbf\"",
+      "cacheControl": "public, max-age=86400, immutable"
+    }
+  ],
+  "limits": "Public byte identity and local actual import-controller tests; deliberately fixed epoch, native composition and speed result pending. No live-refresh claim."
+}
