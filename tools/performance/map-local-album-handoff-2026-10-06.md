@@ -1,5 +1,27 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Last diagnostic for tonight; resume in morning — 2026-10-07 00:25 Israel
+
+The owner requests only ONE final test tonight, then sleep and continuation in
+the morning. Do not request further experiments tonight after their result.
+
+Prepared widgy-map-detail-test.png (1,630,238 bytes): full 3306x1558 RGBA canvas
+with the original map's exact alpha plane and non-IDAT metadata/structure.
+The upper-right quarter retains the original map pixels exactly; the remaining
+RGB area is the same flat blue as the successful control. No resampling.
+CRC/full decode, quarter-pixel equality, alpha and metadata checks passed.
+This is a diagnostic copy, not approved artwork or a proposed final design.
+
+The one requested native action is to select this image in the existing test
+widget through Files and try JSON export. Result PENDING. Record the result
+without inferring a numeric upload limit or immediately asking another test.
+The actual successfully hosted blue image was transformed to 2411x1136/60,423
+bytes as documented below; input PNG size does not establish request-body size.
+
+Resume from the recorded result in the morning. Main goal remains a permanent
+export solution preserving the working map update path and quality. No runtime,
+Shortcut, full widget or approved asset was changed. No scheduled task requested.
+
 ## Native JSON inspected; hosted image is transformed — 2026-10-07 00:22 Israel
 
 The owner supplied the successful blue-control export as a 433-byte text file.
