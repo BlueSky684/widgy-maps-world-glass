@@ -1,5 +1,66 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Current result — full widget uses Files; freshness unresolved, 2026-10-06 22:48 Israel
+
+The small consumer's successful manual replacement and fast navigation remain
+valid. Do not repeat those completed tests or generalize them to the full widget.
+
+Export of the working small consumer was blocked: the supplied native dialog
+says Image Upload Failed, HTTP 422, for HOME / Home Hero World Map / Both Modes /
+Files. The owner reports that JSON export also fails. No Files source
+serialization, bookmark or native export was obtained. Do not fabricate one.
+
+The owner was guided to Edit As A Copy of Widgy Native Steps Ring 2 and selected
+Home Hero World Map -> Image -> System -> Files, using the same map-current.png.
+Aspect Fit and Both Modes were retained. The 22:42 editor screenshot shows Files
+selected, 1514 layers and MAP TIME 22:18:15; the 22:45 Home Screen screenshot shows
+the full widget and that same map time. The native Images indicator changed from
+38.8 MB to 13.0 MB; this is not a measured extension RSS or performance result.
+The diagnostic strip overlaps the Home event area and is not final artwork.
+
+After being asked to run the existing update Shortcut and return Calendar -> Home,
+at 22:48 the owner reports that the map time does not change, and navigation is
+faster but still slower than the small map test. Record this as partial speed
+improvement with unresolved full-widget freshness. The owner also explicitly
+requests attention to additional Home variables. Their causal contribution has
+not yet been isolated. Automatic scheduling is still not configured.
+
+### Source audit for the installed full baseline
+
+The public Native Steps Ring 2 generation chain was inspected using inert
+example.test calendar URLs only. Its 1514 layers and 81 variables match the
+visible native counts, but no export verifies all current phone-side fields.
+
+- Replacing the map image consumer does not itself delete variable definitions.
+  With the old map_request consumer excluded, map_request, steps_goal and
+  steps_progress are unreachable by name/ID from the remaining generated
+  document. The last two were already unused after the native ring replacement.
+  Widgy may skip unused definitions; pruning them is not a proven speed fix.
+- calendar_city_prefix remains an active, separate asynchronous city lookup,
+  with dependencies on Latitude, Longitude, map_latitude_max5 and
+  map_longitude_max5. Do not delete these four coordinate definitions while that
+  consumer remains. A shared saved English city binding is still unverified.
+- Home still consumes weather status/wind, greeting/day-progress calculations,
+  the steps_today -> steps_label formatting chain and four calendar_home_* JSON
+  fields. It also has direct native weather, sunrise/sunset, clock, reminders,
+  distance, energy and ring bindings. Four JSON fields do not prove four requests.
+  Native data must remain functional; blanket variable deletion is inappropriate.
+- The phone-side Files edit is not reflected in the generated public JSON.
+  No new widget import, variable removal, runtime deployment or source mutation
+  has been performed by this checkpoint.
+
+Next discriminating observation: inspect the actual map-current.png in Files
+after the last Shortcut run and read its burned-in MAP TIME. A new time there
+locates the unresolved problem downstream of saving (consumer binding/refresh);
+an old time there requires inspecting the producer/output path first. Do not
+assume caching, a wrong file, or a failed Shortcut from the unchanged widget alone.
+Keep the diagnostic strip until this is resolved. Then optimize the active
+full-widget dependencies while preserving layout/data, verify the shared
+Calendar city, and configure native automatic updates.
+
+Raw screenshots, GPS coordinates, personal resolved URLs and calendar data are
+not committed.
+
 ## Current result — English city, coordinates and fast navigation, 2026-10-06 22:20 Israel
 
 This supersedes the location-pending status at 20:50 below. The update Shortcut
