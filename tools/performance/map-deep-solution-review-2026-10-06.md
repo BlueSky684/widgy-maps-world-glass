@@ -1,5 +1,13 @@
 # Deep solution review: complete map presentation outside navigation
 
+> Device update at 14:04–14:06: the rendering action and file input/output are now
+> observed. Its saved 1170×1170 PNG contains an approximately1123×530 map, a white
+> night stamp plate, and a composition strongly matching an unapplied night mask.
+> The owner rejects the appearance. This tested producer fails; do not proceed
+> to a consumer/automation. Read `map-render-intent-output-2026-10-06.md`.
+> The research below records the earlier capability discovery and conditional gates.
+
+
 Date: 2026-10-06. Branch: `f50-widget-test`. Remote baseline:
 `1e9e7a76185737fcb7ad6e95000054a8894a03cc` (local tree-equivalent `4f803ad`).
 Request: investigate possible solutions deeply after the Fixed Alpha1 result.
