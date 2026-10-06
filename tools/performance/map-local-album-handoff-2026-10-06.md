@@ -1,5 +1,88 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Export investigation — permanent fix required, 2026-10-06
+
+The owner confirms that existing URL-source map versions export JSON, whereas
+the Files-source versions fail. The Photos-with-PNG-transparency trial also failed,
+so the evidence points to the local-image sharing/upload path rather than Files
+alone. The owner explicitly rejects changing the source before every export and
+restoring it afterwards. The old export-copy workaround below is superseded as
+the next action; it is not an accepted permanent solution.
+
+### What is established
+
+- Both the minimal map widget and the full widget fail on their map image layer.
+  Layer count and Home variables therefore cannot alone explain the export error.
+- The PNG is valid and renders; alternative lossless encoding and a new Photos
+  source did not resolve HTTP 422. These checks do NOT exclude an undocumented
+  payload/dimension/metadata restriction or a bug in Widgy's upload conversion.
+- URL-source export success is an owner observation on URL-source versions,
+  not a captured upload request/response or proof of the server's validation rule.
+- No Widgy app/build number has been confirmed. The App Store page inspected on
+  this date lists 27.0.1 (September 17). No explicit fix for this HTTP 422 case
+  was found in its release notes. A historical Shortcut transparency-image
+  upload fix is a different issue and must not be presented as this fix.
+- We do not have the native upload request, response body, Widgy server logs,
+  or native app source. No permanent repair has been verified.
+
+### Public reports and their limits
+
+1. July 2021: a user reports that QR sharing fails with Stash images; copying
+   layers to a new widget and trying JPG/PNG/GIF did not help. This is evidence
+   of a similar generic upload failure, not proof of the same HTTP status/root.
+   https://www.reddit.com/r/widgy/comments/ok75ax
+2. September 2022: a user reports file export failing with "image upload failed"
+   and describes a downloaded image selected from Files.
+   https://www.reddit.com/r/widgy/comments/xi5bzm
+3. Developer duke4e identifies a missing referenced image as a common cause in
+   another sharing-error thread; the original poster confirms it fixed their
+   case. The original post is deleted and the surviving comment does not
+   establish HTTP 422. Our valid file/reselection results do not establish
+   this diagnosis for the current widget.
+   https://www.reddit.com/r/widgy/comments/1bzb8r9/comment/kyp0j8r/
+4. A recent user asks about "image upload failed" while publishing; no confirmed
+   fix is visible in the retrieved discussion. Do not call it a confirmed
+   current widespread 422 outage.
+   https://www.reddit.com/r/widgy/comments/1vkm1g3/my_wallpaper_and_widgets/
+5. Community discussion describes local Files/Stash/Photos images being uploaded
+   during sharing. Another recommends images at about 1000 pixels for widget
+   use. Neither establishes a current documented upload size/dimension limit.
+   https://www.reddit.com/r/widgy/comments/toh80z
+   https://www.reddit.com/r/widgy/comments/1amgbca
+6. Official release history checked:
+   https://apps.apple.com/us/app/widgy-widgets-home-lock-watch/id1524540481
+
+Some historical threads were available through indexed search text but not
+through direct page retrieval. The developer reply, recent complaint, official
+App Store history and current beta discussion were directly readable. Searches
+did not locate a verified public permanent fix matching our PNG + local source
++ HTTP 422 combination. Unrelated products also named Widgy are excluded.
+
+### Next discriminating check (not performed)
+
+Record the installed Widgy version/build. In a NEW blank diagnostic widget,
+select one small, unrelated PNG through System -> Files and try JSON export.
+This is a one-time control experiment, not a source-switching export workflow.
+Do not alter the working full widget or repeat map refresh/navigation tests.
+
+- If this control also returns 422, investigate the app/build and upload service
+  with the Widgy developer; there is no basis to modify Vercel map rendering yet.
+- If it succeeds, select the original map in that same new diagnostic widget
+  and attempt export. Success would implicate old layer/document state; failure
+  would focus investigation on the map payload or its native upload handling.
+- Only after a map-specific failure is isolated should dimensions, byte size
+  or metadata be varied individually. A validated necessary normalization can
+  be made permanent in the producer while retaining map-current.png and Files;
+  do not degrade or alter approved map artwork speculatively.
+- A Widgy upload bug requires a Widgy-side fix. A useful escalation includes
+  app/iOS builds, exact source/error, this control result and PNG characteristics.
+  No external message has been sent and no personal image/location is published.
+
+Acceptance requires export from the normal Files-configured widget without
+manual source edits, plus native re-import behavior checked separately. Do not
+assume a successful export preserves the dynamic local file binding on import.
+Manual map refresh remains verified; automation and Calendar city work are paused.
+
 ## Export blocker — PNG validated; two native sources fail, 2026-10-06 23:34 Israel
 
 The owner prioritizes restoring JSON export before the proposed shared Calendar
