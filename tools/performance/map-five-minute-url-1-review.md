@@ -33,3 +33,10 @@ Keep the prior copies. Import Map Five Minute1 and assign this exact copy to the
 If the stamp still rolls back, investigate stored navigation states/actual evaluated URL rather than declaring this solved. If first returns remain delayed, a longer bucket only reduces frequency and does not fix the delay itself; do not keep increasing intervals indefinitely. If fresh and sufficiently fast, validate natural refresh/location before restoring city/full Home. Do not ask the owner to travel or record a video for this gate.
 
 Preview page: https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/tools/widgy-map-five-minute-url.html?v=map-five-minute-url-1
+
+
+## Reactivated for clarified goal — 2026-10-06 07:09 Asia/Jerusalem
+
+Owner explicitly accepts occasional delay when a new map is loaded after idle, but rejects repeated delays on ordinary Home taps while using the phone. This changes the acceptance criterion and authorizes a bounded freshness/reuse tradeoff. No phone result exists yet for Five Minute1; re-use its existing code instead of inventing another interval/export.
+
+The preparation page now asks for ordinary active-use transitions, observation of the first refreshed MAP TIME and following returns, and the next natural return after a break. It does not ask for a six-minute timed wait. Widget JS/provider/PNG/backend remain unchanged. The page explicitly retains exact-coordinate URL churn and wall-clock-boundary limits. This does not detect idle or ensure one fetch per five minutes. Do not ask the owner to select No Caching or Files for this trial.

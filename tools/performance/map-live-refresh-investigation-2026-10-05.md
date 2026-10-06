@@ -1,5 +1,9 @@
 # Live map refresh without blocking Home — investigation checkpoint
 
+## Current goal — owner clarification 2026-10-06 07:09 Asia/Jerusalem
+
+Read `map-refresh-session-policy-2026-10-06.md` first. The owner now accepts occasional waiting when the map refreshes, especially after idle, but wants repeated Home taps during active use to remain fast. This relaxes the prior zero-wait-on-every-refresh gate. Pause Files preparation. The already-built, not yet device-tested Map Five Minute1 is now the bounded next trial. It preserves the original cached Web URL provider; exact coordinates can still change the URL inside a time bucket, and it is neither an idle detector nor a guaranteed five-minute downloader. Judge actual bitmap freshness, non-regression, and subsequent ordinary navigation; do not demand a timed idle chore.
+
 ## Continuation completed in the next session
 
 Read `map-refresh-architecture-2026-10-05.md` and its JSON measurements first. New research found a direct historical developer answer about the missing cached-image refresh/fallback behavior; current v27 capabilities and complete Apple lifecycle documentation were checked. A real static-base/dynamic-overlay prototype saves47–65% recurring PNG bytes but has a failed sampling-parity gate and doubles theoretical full-size RGBA surfaces. It was NOT deployed. No Widgy-only nonblocking live-refresh solution is verified. The next bounded feasibility direction is a completed local PNG refreshed by an independent updater; current Files serialization, replacement/refresh behavior, and acceptable automation cadence require verification. Do not send another five-minute import as the next step.
