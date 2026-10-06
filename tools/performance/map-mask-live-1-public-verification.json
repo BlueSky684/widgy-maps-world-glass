@@ -1,0 +1,94 @@
+{
+  "runtimeCommit": "f4cdb070f2b62f980e44388b47f1c89319ae03e0",
+  "deployment": "success",
+  "checks": [
+    {
+      "path": "/tools/widgy-map-mask-live.html",
+      "status": 200,
+      "bytes": 3212,
+      "sha256": "9197e9c7dfeaecf9208ddd0bc32afdb8e6580e91627c55a4151ed2f43784c674",
+      "contentType": "text/html; charset=utf-8",
+      "cache": "MISS"
+    },
+    {
+      "path": "/tools/widgy-map-mask-live.js",
+      "status": 200,
+      "bytes": 2272,
+      "sha256": "e72aabe3ad35cd5ea8ad8b8990e22df0a975f045b0e19d2f96ceca259071bfc4",
+      "contentType": "application/javascript; charset=utf-8",
+      "cache": "MISS"
+    },
+    {
+      "path": "/tools/map-mask-live.js",
+      "status": 200,
+      "bytes": 3674,
+      "sha256": "661be91f9fd7c66bb30d2562ed5216126498587ac9463f9a9868ee46af5b9c19",
+      "contentType": "application/javascript; charset=utf-8",
+      "cache": "MISS"
+    },
+    {
+      "path": "/assets/diagnostics/map-mask-live-1/manifest.json",
+      "status": 200,
+      "bytes": 839,
+      "sha256": "6bf13f6b4bc66dff9066ae1b84dc57d0edaab0ef8272bd223445d16281b24c55",
+      "contentType": "application/json; charset=utf-8",
+      "cache": "MISS"
+    },
+    {
+      "path": "/assets/diagnostics/map-mask-live-1/day.png",
+      "status": 200,
+      "bytes": 3182413,
+      "sha256": "2ce2ee2e828ceb36008a34f1507f46ef2d1b580c2bb9767e7ae1ce43656bedb5",
+      "contentType": "image/png",
+      "cache": "MISS"
+    },
+    {
+      "path": "/assets/diagnostics/map-mask-live-1/night.png",
+      "status": 200,
+      "bytes": 4506450,
+      "sha256": "29c823658a419722e815aba13f53ef56bddf753a4fd08a66230fba150f58e498",
+      "contentType": "image/png",
+      "cache": "MISS"
+    },
+    {
+      "path": "/api/solar-mask?rev=live-1&part=day&t=1791271800000",
+      "status": 200,
+      "bytes": 19416,
+      "sha256": "5b13db3edd666d8707679876ae69d26f8a69b0df7c665c1fd3b4a8ed30eb98b0",
+      "contentType": "image/png",
+      "cache": "MISS",
+      "maskTime": "2026-10-06T07:30:00.000Z",
+      "serverTiming": "mask;dur=48.5"
+    },
+    {
+      "path": "/api/solar-mask?rev=live-1&part=night&t=1791271800000",
+      "status": 200,
+      "bytes": 19864,
+      "sha256": "5d3d1f4dfd9518c6f337fb32b462b2ff694f100910c22a07fb6545edf44d6d17",
+      "contentType": "image/png",
+      "cache": "MISS",
+      "maskTime": "2026-10-06T07:30:00.000Z",
+      "serverTiming": "mask;dur=0.1"
+    },
+    {
+      "path": "/api/solar-mask?rev=live-1&part=day&t=1791272100000",
+      "status": 200,
+      "bytes": 19395,
+      "sha256": "a4df9e62832914b4d4389d9eccf1d4cfbb0528f715e180ed5b1c3eeb5633c3af",
+      "contentType": "image/png",
+      "cache": "MISS",
+      "maskTime": "2026-10-06T07:35:00.000Z",
+      "serverTiming": "mask;dur=22.3"
+    },
+    {
+      "path": "/api/solar-mask?rev=live-1&part=night&t=1791272100000",
+      "status": 200,
+      "bytes": 19799,
+      "sha256": "1175d37532061a158c656ee797c63046c98c3e3355f226168ab1b85c13afc7f4",
+      "contentType": "image/png",
+      "cache": "MISS",
+      "maskTime": "2026-10-06T07:35:00.000Z",
+      "serverTiming": "mask;dur=0.0"
+    }
+  ]
+}

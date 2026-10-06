@@ -23,7 +23,7 @@ Live1 is the next separate diagnostic: retain full-size fixed day/night textures
 
 At the synthetic epoch 2026-10-06T07:30:00Z, day/night PNG sizes are 19,416 and 19,864 bytes: 39,280 bytes together. This is one measured case, not a universal size bound. Local Server-Timing was 15.6 ms; this is not a hosted cold-start, network or iPhone navigation measurement. Two static map downloads remain about 3.18 and 4.51 MB for initial loading. Smaller recurring downloads do not prove lower native rendering cost or retained decoded-image memory.
 
-Publication and actual device behavior are still pending at this checkpoint. Public runtime files, generated assets and the deployed API must be verified before handoff.
+Runtime commit `f4cdb070f2b62f980e44388b47f1c89319ae03e0` has a successful Vercel deployment. All six public page/module/manifest/static-map files returned HTTP 200 and matched local bytes. The four real API requests for day/night at two consecutive synthetic epochs also returned HTTP 200, exact locally rendered PNG bytes and the correct epoch/revision/part headers. See `map-mask-live-1-public-verification.json`. This verifies deployed construction and delivery, not native Widgy freshness or navigation speed. The candidate is ready for the device gate.
 
 ## Device gate
 
