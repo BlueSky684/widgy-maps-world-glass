@@ -1,5 +1,9 @@
 # Live map refresh without blocking Home — investigation checkpoint
 
+## Native blend schema received — 2026-10-06 09:09 Asia/Jerusalem
+
+The owner shared the harmless Mask Blend Probe1 export. Read the latest section of `map-mask-capability-2026-10-06.md`: image Multiply=1 and group Plus Lighter=17 are now verified native mappings with their full saved `t` objects. A new isolated Mask Composition Probe1 uses a navy base, gold layer and white-to-black Multiply mask inside a Plus Lighter group. It has zero variables/private data and passed source/asset/controller tests. Publication verification and the native output screenshot are the remaining gates before approved map textures. Do not request another blend-mode file or infer other numeric modes.
+
 ## Latest steering — static map/network mask, 2026-10-06 08:53 Asia/Jerusalem
 
 The owner asks to test a static map and load only the mask from the network. Keep the successful minimal Five Minute1 copy assigned. The full Home Five Minute Map1 candidate was already built/published and its three public files verified HTTP200/byte-identical, but has no phone result and is not the next requested import.

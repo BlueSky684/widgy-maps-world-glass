@@ -88,3 +88,17 @@ The owner should import the probe separately, select the named Multiply mode on 
 Page: https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/tools/widgy-mask-blend-probe.html?v=mask-blend-probe-1
 
 After native file receipt: identify exact image/group blend fields, verify group isolation with controlled flat samples before using approved textures, then assess native map appearance, advancing mask and repeated navigation. Do not equate a successful two-color composition with pixel parity or a full-widget speed fix.
+
+## Native schema captured and controlled composition prepared, 09:09 Asia/Jerusalem
+
+The owner shared the harmless Mask Blend Probe1 as a3402-byte UTF-8 JSON text export. It has the expected name/author, one Probe Group and one Probe Image, zero variables, and the generic public asset. No private location/account data or approved map texture is present. The upload itself is not committed.
+
+The native export establishes the exact relevant effect field on both object types: `t.a[0].a=1` on Probe Image selected by name as Multiply, and `t.a[0].a=17` on Probe Group selected by name as Plus Lighter. The complete saved effect objects are respectively `{a:[{a:1,b:547,c:0,d:547}],b:0}` and `{a:[{a:17,b:548,c:0,d:548}],b:0}`. Treat only these two captured objects/mappings as verified. The neighboring identifiers are preserved for this isolated document; their general semantics and the other numeric modes remain unknown.
+
+Prepared `Mask Composition Probe1` using those native objects. It contains one normal outer group with a static navy base and, above it, an isolated Plus Lighter group containing an opaque gold image plus an opaque white-to-black gradient set to Multiply. Layer order is front-to-back: mask, gold, then the lighting group above base. All three technical PNG inputs are losslessRGBA640×300 and public under `assets/diagnostics/mask-composition-probe/`. The probe has zero variables and no API/location/calendar/weather/health/navigation. No approved asset, renderer or runtime endpoint is changed.
+
+The bounded capability signal is gold where the mask is white, navy where black, and a smooth transition. A wholly gold/black/navy result, missing content, or leakage outside the group rejects this construction as a mask equivalent. Even the expected result would prove only this flat native composition, not the approved terrain/lights/engraving formula, independent resizing parity, time refresh, decoded memory or navigation speed.
+
+`node tools/test-mask-composition-probe.mjs` passes: exact captured blend objects on only the intended group/image, verified technical PNG dimensions/end colors/mid-gradient, distinct existing layer IDs, zero variables/API/private references, and public copy/failure/recovery flow. Native screenshot remains required.
+
+Page: https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/tools/widgy-mask-composition-probe.html?v=mask-composition-probe-1
