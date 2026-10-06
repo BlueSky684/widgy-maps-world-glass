@@ -2,7 +2,9 @@
 
 Status: offline representation, API and actual import-controller checks pass.
 Runtime commit128025838d1dcd6ceb4228f408a876a8705c944d deployed successfully.
-Public verification passes; native result pending.
+Public verification passes. Native result: the13:09 recording still shows a
+black-day/N-before-D phase on both Home returns. The visual gate fails. Read
+`map-mask-alpha-1-video-2026-10-06.md` for evidence and the fixed-URL control.
 
 ## Purpose and preserved baseline
 
