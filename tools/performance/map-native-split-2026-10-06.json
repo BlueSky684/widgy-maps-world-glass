@@ -1,0 +1,391 @@
+{
+  "schema": 1,
+  "kind": "offline-native-split-feasibility-after-flat-probe",
+  "baseline": "a88f155cede9778af7a5b8a39b163f989ad2c3cd",
+  "dimensions": [
+    3306,
+    1558
+  ],
+  "findings": {
+    "darkerPixels": 136964,
+    "maximumDarkening": 166,
+    "coastLightOverlap": 14107
+  },
+  "staticPNGBytes": {
+    "day": 3193792,
+    "night": 4539727,
+    "minimum": 3242349,
+    "dayResidual": 248966,
+    "nightResidual": 2355801,
+    "envelope": 4602110
+  },
+  "theoreticalFullSizeRGBAInputBytes": {
+    "singleImage": 20602992,
+    "endpointPair": 82411968,
+    "minimumAndResiduals": 103014960,
+    "multiplicativeEnvelope": 41205984
+  },
+  "rows": [
+    {
+      "at": "2026-10-06T04:30:00Z",
+      "rawMapPNGBytes": 4030563,
+      "maskPNGBytes": 143707,
+      "inversePNGBytes": 146886,
+      "totalPairMaskPNGBytes": 290593,
+      "ratioMaskPNGBytes": 2008504,
+      "fullResolution": {
+        "endpointPair": {
+          "changedPixels": 66959,
+          "pixelsOverOneLevel": 0,
+          "maxChannelDifference": 1,
+          "meanAbsoluteChannelDifference": 0.005208693313411308
+        },
+        "minimumAndResiduals": {
+          "changedPixels": 66959,
+          "pixelsOverOneLevel": 0,
+          "maxChannelDifference": 1,
+          "meanAbsoluteChannelDifference": 0.005208693313411308
+        },
+        "multiplicativeEnvelope": {
+          "changedPixels": 0,
+          "pixelsOverOneLevel": 0,
+          "maxChannelDifference": 0,
+          "meanAbsoluteChannelDifference": 0
+        }
+      },
+      "independentSampling": {
+        "367": {
+          "endpointPair": {
+            "changedPixels": 1835,
+            "pixelsOverOneLevel": 106,
+            "maxChannelDifference": 5,
+            "meanAbsoluteChannelDifference": 0.01468449596530742
+          },
+          "minimumAndResiduals": {
+            "changedPixels": 12422,
+            "pixelsOverOneLevel": 1861,
+            "maxChannelDifference": 17,
+            "meanAbsoluteChannelDifference": 0.1451754316884808
+          },
+          "multiplicativeEnvelope": {
+            "changedPixels": 21016,
+            "pixelsOverOneLevel": 7488,
+            "maxChannelDifference": 37,
+            "meanAbsoluteChannelDifference": 0.49820184488090175
+          }
+        },
+        "1101": {
+          "endpointPair": {
+            "changedPixels": 10628,
+            "pixelsOverOneLevel": 220,
+            "maxChannelDifference": 5,
+            "meanAbsoluteChannelDifference": 0.008402474074774086
+          },
+          "minimumAndResiduals": {
+            "changedPixels": 71311,
+            "pixelsOverOneLevel": 7625,
+            "maxChannelDifference": 17,
+            "meanAbsoluteChannelDifference": 0.08055209924766239
+          },
+          "multiplicativeEnvelope": {
+            "changedPixels": 126632,
+            "pixelsOverOneLevel": 45325,
+            "maxChannelDifference": 55,
+            "meanAbsoluteChannelDifference": 0.29929351316634556
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-06T20:00:00Z",
+      "rawMapPNGBytes": 4117507,
+      "maskPNGBytes": 144218,
+      "inversePNGBytes": 148162,
+      "totalPairMaskPNGBytes": 292380,
+      "ratioMaskPNGBytes": 1673377,
+      "fullResolution": {
+        "endpointPair": {
+          "changedPixels": 61438,
+          "pixelsOverOneLevel": 0,
+          "maxChannelDifference": 1,
+          "meanAbsoluteChannelDifference": 0.004808880833101005
+        },
+        "minimumAndResiduals": {
+          "changedPixels": 61438,
+          "pixelsOverOneLevel": 0,
+          "maxChannelDifference": 1,
+          "meanAbsoluteChannelDifference": 0.004808880833101005
+        },
+        "multiplicativeEnvelope": {
+          "changedPixels": 0,
+          "pixelsOverOneLevel": 0,
+          "maxChannelDifference": 0,
+          "meanAbsoluteChannelDifference": 0
+        }
+      },
+      "independentSampling": {
+        "367": {
+          "endpointPair": {
+            "changedPixels": 1768,
+            "pixelsOverOneLevel": 68,
+            "maxChannelDifference": 8,
+            "meanAbsoluteChannelDifference": 0.014033485060874769
+          },
+          "minimumAndResiduals": {
+            "changedPixels": 14562,
+            "pixelsOverOneLevel": 2287,
+            "maxChannelDifference": 14,
+            "meanAbsoluteChannelDifference": 0.17300089776503758
+          },
+          "multiplicativeEnvelope": {
+            "changedPixels": 18964,
+            "pixelsOverOneLevel": 5572,
+            "maxChannelDifference": 37,
+            "meanAbsoluteChannelDifference": 0.3683251694465882
+          }
+        },
+        "1101": {
+          "endpointPair": {
+            "changedPixels": 9412,
+            "pixelsOverOneLevel": 139,
+            "maxChannelDifference": 4,
+            "meanAbsoluteChannelDifference": 0.007068951738274949
+          },
+          "minimumAndResiduals": {
+            "changedPixels": 84678,
+            "pixelsOverOneLevel": 10861,
+            "maxChannelDifference": 23,
+            "meanAbsoluteChannelDifference": 0.10065235259357261
+          },
+          "multiplicativeEnvelope": {
+            "changedPixels": 112999,
+            "pixelsOverOneLevel": 31680,
+            "maxChannelDifference": 29,
+            "meanAbsoluteChannelDifference": 0.18973701142827476
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-03-20T12:00:00Z",
+      "rawMapPNGBytes": 3795067,
+      "maskPNGBytes": 110081,
+      "inversePNGBytes": 106200,
+      "totalPairMaskPNGBytes": 216281,
+      "ratioMaskPNGBytes": 2262496,
+      "fullResolution": {
+        "endpointPair": {
+          "changedPixels": 62301,
+          "pixelsOverOneLevel": 0,
+          "maxChannelDifference": 1,
+          "meanAbsoluteChannelDifference": 0.004829783945943385
+        },
+        "minimumAndResiduals": {
+          "changedPixels": 62301,
+          "pixelsOverOneLevel": 0,
+          "maxChannelDifference": 1,
+          "meanAbsoluteChannelDifference": 0.004829783945943385
+        },
+        "multiplicativeEnvelope": {
+          "changedPixels": 0,
+          "pixelsOverOneLevel": 0,
+          "maxChannelDifference": 0,
+          "meanAbsoluteChannelDifference": 0
+        }
+      },
+      "independentSampling": {
+        "367": {
+          "endpointPair": {
+            "changedPixels": 1782,
+            "pixelsOverOneLevel": 112,
+            "maxChannelDifference": 5,
+            "meanAbsoluteChannelDifference": 0.014710746405002284
+          },
+          "minimumAndResiduals": {
+            "changedPixels": 11225,
+            "pixelsOverOneLevel": 1571,
+            "maxChannelDifference": 17,
+            "meanAbsoluteChannelDifference": 0.1248313409249605
+          },
+          "multiplicativeEnvelope": {
+            "changedPixels": 20847,
+            "pixelsOverOneLevel": 8697,
+            "maxChannelDifference": 37,
+            "meanAbsoluteChannelDifference": 0.5217379891113176
+          }
+        },
+        "1101": {
+          "endpointPair": {
+            "changedPixels": 10710,
+            "pixelsOverOneLevel": 324,
+            "maxChannelDifference": 8,
+            "meanAbsoluteChannelDifference": 0.0088335646288742
+          },
+          "minimumAndResiduals": {
+            "changedPixels": 63391,
+            "pixelsOverOneLevel": 8344,
+            "maxChannelDifference": 22,
+            "meanAbsoluteChannelDifference": 0.07439607946766441
+          },
+          "multiplicativeEnvelope": {
+            "changedPixels": 128526,
+            "pixelsOverOneLevel": 50820,
+            "maxChannelDifference": 55,
+            "meanAbsoluteChannelDifference": 0.2952194449257025
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-06-21T00:00:00Z",
+      "rawMapPNGBytes": 3938816,
+      "maskPNGBytes": 108130,
+      "inversePNGBytes": 112759,
+      "totalPairMaskPNGBytes": 220889,
+      "ratioMaskPNGBytes": 1885286,
+      "fullResolution": {
+        "endpointPair": {
+          "changedPixels": 61752,
+          "pixelsOverOneLevel": 2,
+          "maxChannelDifference": 2,
+          "meanAbsoluteChannelDifference": 0.004798267487880725
+        },
+        "minimumAndResiduals": {
+          "changedPixels": 61752,
+          "pixelsOverOneLevel": 2,
+          "maxChannelDifference": 2,
+          "meanAbsoluteChannelDifference": 0.004798267487880725
+        },
+        "multiplicativeEnvelope": {
+          "changedPixels": 0,
+          "pixelsOverOneLevel": 0,
+          "maxChannelDifference": 0,
+          "meanAbsoluteChannelDifference": 0
+        }
+      },
+      "independentSampling": {
+        "367": {
+          "endpointPair": {
+            "changedPixels": 1862,
+            "pixelsOverOneLevel": 150,
+            "maxChannelDifference": 5,
+            "meanAbsoluteChannelDifference": 0.016086269445013204
+          },
+          "minimumAndResiduals": {
+            "changedPixels": 10792,
+            "pixelsOverOneLevel": 1512,
+            "maxChannelDifference": 14,
+            "meanAbsoluteChannelDifference": 0.1144939177731227
+          },
+          "multiplicativeEnvelope": {
+            "changedPixels": 20614,
+            "pixelsOverOneLevel": 8108,
+            "maxChannelDifference": 37,
+            "meanAbsoluteChannelDifference": 0.5469436613063269
+          }
+        },
+        "1101": {
+          "endpointPair": {
+            "changedPixels": 10625,
+            "pixelsOverOneLevel": 186,
+            "maxChannelDifference": 4,
+            "meanAbsoluteChannelDifference": 0.008335389617776098
+          },
+          "minimumAndResiduals": {
+            "changedPixels": 64549,
+            "pixelsOverOneLevel": 6400,
+            "maxChannelDifference": 23,
+            "meanAbsoluteChannelDifference": 0.06645211307289398
+          },
+          "multiplicativeEnvelope": {
+            "changedPixels": 123549,
+            "pixelsOverOneLevel": 46753,
+            "maxChannelDifference": 53,
+            "meanAbsoluteChannelDifference": 0.29224964518155677
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-12-21T12:00:00Z",
+      "rawMapPNGBytes": 4003766,
+      "maskPNGBytes": 121281,
+      "inversePNGBytes": 116655,
+      "totalPairMaskPNGBytes": 237936,
+      "ratioMaskPNGBytes": 2090315,
+      "fullResolution": {
+        "endpointPair": {
+          "changedPixels": 64534,
+          "pixelsOverOneLevel": 18,
+          "maxChannelDifference": 3,
+          "meanAbsoluteChannelDifference": 0.005007557478383075
+        },
+        "minimumAndResiduals": {
+          "changedPixels": 64534,
+          "pixelsOverOneLevel": 18,
+          "maxChannelDifference": 3,
+          "meanAbsoluteChannelDifference": 0.005007557478383075
+        },
+        "multiplicativeEnvelope": {
+          "changedPixels": 0,
+          "pixelsOverOneLevel": 0,
+          "maxChannelDifference": 0,
+          "meanAbsoluteChannelDifference": 0
+        }
+      },
+      "independentSampling": {
+        "367": {
+          "endpointPair": {
+            "changedPixels": 2058,
+            "pixelsOverOneLevel": 182,
+            "maxChannelDifference": 5,
+            "meanAbsoluteChannelDifference": 0.018039302158311152
+          },
+          "minimumAndResiduals": {
+            "changedPixels": 14946,
+            "pixelsOverOneLevel": 2461,
+            "maxChannelDifference": 17,
+            "meanAbsoluteChannelDifference": 0.18483459597948265
+          },
+          "multiplicativeEnvelope": {
+            "changedPixels": 19640,
+            "pixelsOverOneLevel": 6410,
+            "maxChannelDifference": 37,
+            "meanAbsoluteChannelDifference": 0.38819675229560097
+          }
+        },
+        "1101": {
+          "endpointPair": {
+            "changedPixels": 11256,
+            "pixelsOverOneLevel": 224,
+            "maxChannelDifference": 6,
+            "meanAbsoluteChannelDifference": 0.008866231842716699
+          },
+          "minimumAndResiduals": {
+            "changedPixels": 82972,
+            "pixelsOverOneLevel": 11441,
+            "maxChannelDifference": 22,
+            "meanAbsoluteChannelDifference": 0.10474333778424122
+          },
+          "multiplicativeEnvelope": {
+            "changedPixels": 122114,
+            "pixelsOverOneLevel": 39409,
+            "maxChannelDifference": 55,
+            "meanAbsoluteChannelDifference": 0.24235514278197492
+          }
+        }
+      }
+    }
+  ],
+  "limits": [
+    "Flat native blend screenshot supports only qualitative masked addition, not real-map parity or timing.",
+    "Full-size formulas assume component-wise sRGB byte arithmetic and a single final rounding; native intermediate precision/color space is unknown.",
+    "Independent Sharp lanczos3 sampling is a counterexample to guaranteed parity, not a prediction of the Widgy renderer.",
+    "367 and 1101 are representative output widths, not measured Widgy render surfaces.",
+    "Endpoint interpolation changes the approved sequential coast/light operations; the original masters are unmodified.",
+    "RGBA input counts exclude compositor surfaces, caching and memory sharing; these are not Widgy RSS measurements.",
+    "Two complementary URLs have no verified atomic native update; mixing generations can temporarily alter brightness.",
+    "No marker, coordinates, labels, timestamp, corner clipping, native color profile, refresh or navigation is included.",
+    "No runtime, widget export, network endpoint, paid service or approved asset is changed. No candidate passes exact appearance parity at both tested scales."
+  ]
+}

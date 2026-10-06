@@ -1,4 +1,6 @@
-# Small solar mask: measured payload, native capability still required
+# Small solar mask: native flat composition works; real-map fidelity unresolved
+
+Latest: IMG_9923 qualitatively confirms the controlled gold/navy gradient on the iPhone Home Screen. Read `map-native-split-2026-10-06.md` and its reproducible benchmark before another import. Native flat masking is supported by this observation, but the actual renderer also darkens some terrain channels; three measured real-map decompositions fail exact independent-resampling parity. No live split is published and no speed improvement is established. Historical capability questions below have been superseded where noted.
 
 2026-10-06, branch f50-widget-test, baseline 30de2d60d1b385f046f7abb9df24266374d4e82d.
 
@@ -102,3 +104,9 @@ The bounded capability signal is gold where the mask is white, navy where black,
 `node tools/test-mask-composition-probe.mjs` passes: exact captured blend objects on only the intended group/image, verified technical PNG dimensions/end colors/mid-gradient, distinct existing layer IDs, zero variables/API/private references, and public copy/failure/recovery flow. Native screenshot remains required.
 
 Page: https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/tools/widgy-mask-composition-probe.html?v=mask-composition-probe-1
+
+## Native flat composition result, 09:20 Asia/Jerusalem
+
+IMG_9923 shows the expected gold left side, navy right side and smooth transition in the assigned Home Screen widget. Record a successful qualitative result for this exact controlled composition. Do not infer lossless pixel/color equality from the supplied screenshot or claim the mask has advanced in time. This test has no time variable, real map, GPS or tab navigation.
+
+The follow-up offline benchmark now applies actual approved textures. Adding light alone cannot match136,964 pixels where at least one night channel is darker than terrain. A complementary day/night construction is substantially closer than a residual split, and its two changing masks total216–292KB at full resolution, but it requires four image inputs and changes the approved formula slightly. A single RGB correction mask is exact before scaling but1.67–2.26MB and diverges after separately resizing inputs. Full details and limits are in `map-native-split-2026-10-06.md`; no production change or new import was made. Keep Five Minute1 as the successful freshness/navigation control.

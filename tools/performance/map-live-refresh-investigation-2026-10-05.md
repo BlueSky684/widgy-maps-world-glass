@@ -1,5 +1,11 @@
 # Live map refresh without blocking Home — investigation checkpoint
 
+## Flat native mask succeeded; real-map split evaluated — 2026-10-06 09:20 Asia/Jerusalem
+
+IMG_9923 displays the expected gold/navy gradient on the iPhone Home Screen. This supports the captured native Multiply/Plus Lighter construction qualitatively, not real-map fidelity, refresh or speed. Read `map-native-split-2026-10-06.md` and JSON, reproduced by `node tools/benchmark-map-native-split.mjs`.
+
+The approved map darkens at least one channel at136,964 night pixels, so simple additive lighting over unchanged terrain cannot preserve it. Three decompositions were measured at five synthetic dates and two representative output widths. A complementary day/night pair is closest (216–292KB for two masks), but needs four image inputs and differs by up to8 levels after the modeled independent resize. A two-image multiplicative construction is exactly equal at full size but uses1.67–2.26MB correction masks and fails resized parity. Sharp sampling is not a native Widgy measurement. No split passes the exact appearance gate, no new import/runtime/service is published, and paid hosting is not justified by this evidence. Preserve the working Five Minute1 and the owner's mask-research priority; do not repeat the flat probe or claim zero-delay refresh.
+
 ## Native blend schema received — 2026-10-06 09:09 Asia/Jerusalem
 
 The owner shared the harmless Mask Blend Probe1 export. Read the latest section of `map-mask-capability-2026-10-06.md`: image Multiply=1 and group Plus Lighter=17 are now verified native mappings with their full saved `t` objects. A new isolated Mask Composition Probe1 uses a navy base, gold layer and white-to-black Multiply mask inside a Plus Lighter group. It has zero variables/private data and passed source/asset/controller tests. Publication verification and the native output screenshot are the remaining gates before approved map textures. Do not request another blend-mode file or infer other numeric modes.
