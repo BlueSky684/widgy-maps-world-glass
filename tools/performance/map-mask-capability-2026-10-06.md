@@ -48,3 +48,15 @@ Observed on the 21-layer map diagnostic:
 No controlled animation-off trial was found in the current investigation notes. The three animation settings are a new candidate to isolate, not a diagnosis of the stall. The current blend is Normal, so historical reports of a non-default blend/transition interaction do not directly explain this baseline.
 
 Next minimal input: the available choices inside Blend Mode, currently Normal. Do not request another scroll through all Effects or alter image source/cache/animation simultaneously. Keep these observed defaults as the control for a later isolated animation test if needed. No image/export/native settings were modified by the assistant.
+
+## Numeric selector and Plus Lighter result, received 08:02:57 Asia/Jerusalem
+
+IMG_9920 showed the numeric Blend Mode editor with range0–17 and current value0, previously labelled Normal. At the assistant's request the owner tried17. IMG_9921(2), phone clock08:01, now explicitly labels Blend Mode Plus Lighter. Verified mappings are only0=Normal and17=Plus Lighter; do not infer the other16 values or exported JSON field names.
+
+The map is not visible in the captured editor frame, while Object Alpha remains100%, Blur0, and the header reports21 layers and Images0.0MB. This screenshot alone cannot distinguish compositing against the backdrop from an unavailable/unloaded image or another editor state. The editor's size label is not a process-memory measurement. Do not claim successful masking, a performance improvement, or an image deletion. No coordinates were copied, and the visible attachment needed no Library retrieval.
+
+Restore Blend Mode0/Normal before any timing comparison. Recovery has been requested, not yet reported. This blend name does not establish arbitrary image masking, isolated groups, sampling parity, or a safe native split. The small-mask route remains unverified; no renderer, service, native export, or subscription was changed.
+
+Next bounded device check, only once the map is visibly restored: change the map image's Layer Contents Updated Animation from Interpolate to Off. Keep the existing source, URL, blend, and appeared/disappeared transitions as the control. Try ordinary Calendar-to-Home returns and observe whether delay changes, plus whether the burned-in map time actually advances during normal use. No timed idle chore is required. If it makes no difference, restore Interpolate. If Off is not offered, report the available label rather than guessing a numeric enum.
+
+This is an unperformed single-setting trial of update animation, not proof that animations caused the network/refresh wait and not a test of all transition animations. Fast returns with a frozen bitmap still do not satisfy the live-refresh goal. A positive result needs the same-source Interpolate/Off comparison with comparable freshness before broader changes.

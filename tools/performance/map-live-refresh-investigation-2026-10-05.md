@@ -2,6 +2,8 @@
 
 ## Next concrete gate — small-mask capability, 2026-10-06
 
+Update08:02:57: IMG_9920 and IMG_9921(2) verify numeric Blend Mode0=Normal and17=Plus Lighter. The latter screenshot has no visible map and an Images0.0MB editor label; the cause is not established. Restore0 and confirm the image returns. This is not verified arbitrary-mask support. Read the latest section of `map-mask-capability-2026-10-06.md`. The next bounded native check changes only Layer Contents Updated Animation, Interpolate→Off, after restoring the control; no result yet. Preserve image source, URL, other transitions, and the actual-freshness gate. Do not request all18 mode screenshots or migrate services on this evidence.
+
 Update07:48:57: IMG_9912–9919 confirm Image Effects has Blend Mode Normal and three active animation/transition settings. No explicit mask-source option is visible, and the blend-mode choices are not open. Read the appended screenshot findings in `map-mask-capability-2026-10-06.md`. Ask only for the Blend Mode choices next, not another full Effects scroll. Animation-off has no documented controlled test yet and is a separate candidate, not a proven cause.
 
 Read `map-mask-capability-2026-10-06.md`. A new offline benchmark found a full-resolution solar-only grayscale mask of108–144KB, distinct from the earlier1.39–2.28MB replacement overlay. Eight-bit weights introduce measured one-level pixel differences; native mask support and independent layer sampling remain unverified. The next user action is one screenshot of the existing Image Effects options, without changing the working source. No new import, service or renderer change was made.
