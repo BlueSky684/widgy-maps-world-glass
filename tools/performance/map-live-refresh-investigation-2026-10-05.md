@@ -1,3 +1,9 @@
+## Current checkpoint — Persistent1 did not fix the composition, 2026-10-06 12:04 Asia/Jerusalem
+
+Read the latest result in `map-mask-live-1-video-2026-10-06.md`. The new9.7-second recording confirms PERSISTENT MASK; both complete stamps show12:00. On both Home returns the night/N contribution still appears before day/D, with a black daytime region. Calendar does eventually cover the entire map. No exact touch latency or periodic refresh is measured. Close the hierarchy route as unsuccessful for this defect; no additional reparenting import or service migration.
+
+Next specific capability: **Layer Appeared Transition**, then its corresponding disappeared setting, on the Multiply/Plus Lighter map composition. This differs from the earlier negative **Layer Contents Updated Animation** Interpolate→Off trial on a full Normal image. Keep Interpolate and existing providers unchanged. Current native enum serialization is not known: request only the available appeared-transition choices for Live day Mask · Bitmap Time in Persistent1/Day/Effects. Historical blend/transition conflict is a lead, not a confirmed current diagnosis. No runtime changes in this checkpoint.
+
 ## Current checkpoint — Live1 video shows staggered composition, 2026-10-06 11:27 Asia/Jerusalem
 
 Read `map-mask-live-1-video-2026-10-06.md`. The16-second owner recording shows three Home returns: N/night appears before D/day settles, producing a transient black daytime region each time. Both bitmap stamps read06/10 11:00; this clip does not show a five-minute refresh. It supports a repeated presentation defect within the same epoch, not a server/cache/root-cause diagnosis or measured touch latency.

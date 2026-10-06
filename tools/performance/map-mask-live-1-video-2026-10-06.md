@@ -37,3 +37,19 @@ Next device check: import **Widgy Map Mask Persistent1** separately, verify its 
 Runtime commit79b2f40 has a successful Vercel deployment. The public Persistent1 page returned HTTP200,10,267 bytes, exactly matching the committed source; SHA-256 `ac90725e4e835dd6a998e2cdf23a84ab08446640756bf51f5fe307bf04910f09`. Tests passed with29 layers,4 images and3 variables. No runtime modification was needed in this review.
 
 Chrome: `googlechromes://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/tools/widgy-map-mask-persistent-1.html?v=map-mask-persistent-1`.
+
+## Persistent1 device result — 12:04 Asia/Jerusalem
+
+The owner supplied `ScreenRecording_10-06-2026 12-01-43_1.zip`. Its one MP4 is9.706667 seconds,1320×2868,583 video frames, creation metadata09:01:43Z. The visible heading is PERSISTENT MASK, confirming that this is the intended candidate. Both complete bitmap stamps show06/10 12:00, while the phone shows12:01.
+
+The primary gate **failed**: the daytime contribution still disappears during both recorded Home returns, leaving N/night visible before D/day settles. At quarter-second sampling, the first transition is visible around1.25s, partial composition around1.5–1.75s, complete by2.0s; the second around6.25s, partial around6.5–6.75s, complete by7.0s. Day also disappears around3.0–3.25s before the full outgoing transition. These are approximate visible-phase positions, not touch latency measurements. Calendar eventually fully covers the map. No later time bucket appears within this clip. The11:00 and12:00 recordings are different imported versions, so their different stamps do not independently establish periodic refresh within one assigned version.
+
+Do not promote Persistent1 as a fix or create another arbitrary hierarchy variant. Keeping the exported group outside navigation visibility targets did not ensure stable composite presentation on the device. No network/decode/memory/root-cause conclusion is warranted, and the owner has not separately rated perceived speed.
+
+### Next capability to establish
+
+Investigate **Layer Appeared Transition / Layer Disappeared Transition** on blended map components. The earlier failed trial changed only **Layer Contents Updated Animation**, Interpolate→Off, on the original full image with Normal blend; appeared/disappeared settings were explicitly preserved. That result does not test entering/exiting transitions on the new Multiply/Plus Lighter composition. Keep Interpolate unchanged. Do not invent transition enum fields or disable all animations as an unbounded repeat.
+
+A fresh primary-source search recovered the original2024 discussion about blend/transition interaction: https://www.reddit.com/r/widgy/comments/1c0uadq/ . The indexed discussion contains an explicit report of the conflict and a follow-up saying it worked without transition. Direct Reddit retrieval was blocked and author identity was not independently confirmed this turn; do not attribute that comment to a verified developer or treat it as a current27.0.1 contract. The publisher's App Store history separately reports a warning related to non-Normal blend modes and distinguishes in/out transitions: https://apps.apple.com/us/app/widgy-widgets-home-lock-watch/id1524540481 . A historical warning change does not prove either a fix or a persisting current bug.
+
+Native serialization/available disabling option for appeared/disappeared transitions is still missing from the approved exports. The smallest next owner input is the Layer Appeared Transition choices for **Live day Mask · Bitmap Time** within Persistent1 → Day → Effects. Ask for those choices, not another complete Effects scroll, repeated video, server purchase, import or generic Interpolate-Off test. This is a capability capture before a focused new candidate; no runtime change was made following the failed Persistent1 result.
