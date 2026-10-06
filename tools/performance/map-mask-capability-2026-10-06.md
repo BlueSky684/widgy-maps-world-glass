@@ -60,3 +60,9 @@ Restore Blend Mode0/Normal before any timing comparison. Recovery has been reque
 Next bounded device check, only once the map is visibly restored: change the map image's Layer Contents Updated Animation from Interpolate to Off. Keep the existing source, URL, blend, and appeared/disappeared transitions as the control. Try ordinary Calendar-to-Home returns and observe whether delay changes, plus whether the burned-in map time actually advances during normal use. No timed idle chore is required. If it makes no difference, restore Interpolate. If Off is not offered, report the available label rather than guessing a numeric enum.
 
 This is an unperformed single-setting trial of update animation, not proof that animations caused the network/refresh wait and not a test of all transition animations. Fast returns with a frozen bitmap still do not satisfy the live-refresh goal. A positive result needs the same-source Interpolate/Off comparison with comparable freshness before broader changes.
+
+## Owner feedback at 08:11:27 Asia/Jerusalem
+
+In response to the proposed animation-off trial, the owner reports that the transition feels slower. Treat this as a subjective negative result, not a measured causal attribution. No new settings screenshot, comparable MAP TIME observations, or explicit confirmation of the preceding Normal restoration accompanied the report.
+
+Rollback requested: Layer Contents Updated Animation to Interpolate, Blend Mode0/Normal. The owner has not yet reported the rollback result. Do not adopt Off as an optimization or repeat this unchanged trial. Confirm ordinary navigation has returned to its previous behavior before adding another change. The original refresh bottleneck and arbitrary-image-mask capability remain unresolved; this result does not isolate network, decoding, or Widgy scheduling. No runtime/service changes were made.
