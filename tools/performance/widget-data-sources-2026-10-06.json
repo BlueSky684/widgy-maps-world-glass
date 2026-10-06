@@ -1,0 +1,315 @@
+{
+  "schema": 1,
+  "kind": "synthetic-normal-export-source-inventory",
+  "baseline": "0e60aab9b76cd77ef0db26415490eb32f8b39d3b",
+  "tabs": [
+    {
+      "tab": "HOME",
+      "nodes": 389,
+      "placeholder": false,
+      "variables": [
+        "Latitude",
+        "Longitude",
+        "calendar_home_count",
+        "calendar_home_event_word",
+        "calendar_home_meta",
+        "calendar_home_title",
+        "day_greeting",
+        "day_progress",
+        "map_latitude_max5",
+        "map_longitude_max5",
+        "map_request",
+        "steps_goal",
+        "steps_label",
+        "steps_progress",
+        "steps_today",
+        "wx_status",
+        "wx_wind_speed"
+      ],
+      "sources": [
+        {
+          "provider": "Agenda (Today)",
+          "field": "Reminder Events Today",
+          "bindings": 1
+        },
+        {
+          "provider": "Custom Text",
+          "field": "Text",
+          "bindings": 21
+        },
+        {
+          "provider": "Date And Time",
+          "field": "d",
+          "bindings": 3
+        },
+        {
+          "provider": "Date And Time",
+          "field": "Live Timer (24 hours, No Seconds)",
+          "bindings": 1
+        },
+        {
+          "provider": "Health (Daily)",
+          "field": "Active Energy Burned",
+          "bindings": 1
+        },
+        {
+          "provider": "Javascript",
+          "field": "Async + No main()",
+          "bindings": 1
+        },
+        {
+          "provider": "Javascript",
+          "field": "Script",
+          "bindings": 6
+        },
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint",
+          "bindings": 4
+        },
+        {
+          "provider": "Location",
+          "field": "Latitude (Decimal)",
+          "bindings": 2
+        },
+        {
+          "provider": "Location",
+          "field": "Longitude (Decimal)",
+          "bindings": 2
+        },
+        {
+          "provider": "Pedometer",
+          "field": "Distance",
+          "bindings": 1
+        },
+        {
+          "provider": "Pedometer",
+          "field": "Steps",
+          "bindings": 1
+        },
+        {
+          "provider": "Sun And Moon",
+          "field": "Sunrise",
+          "bindings": 1
+        },
+        {
+          "provider": "Sun And Moon",
+          "field": "Sunset",
+          "bindings": 1
+        },
+        {
+          "provider": "Weather (Now)",
+          "field": "Max. Temperature Today",
+          "bindings": 1
+        },
+        {
+          "provider": "Weather (Now)",
+          "field": "Min. Temperature Today",
+          "bindings": 1
+        },
+        {
+          "provider": "Weather (Now)",
+          "field": "Status (Full)",
+          "bindings": 1
+        },
+        {
+          "provider": "Weather (Now)",
+          "field": "Status (Simple)",
+          "bindings": 1
+        },
+        {
+          "provider": "Weather (Now)",
+          "field": "Temperature",
+          "bindings": 1
+        },
+        {
+          "provider": "Weather (Now)",
+          "field": "Wind Speed",
+          "bindings": 1
+        }
+      ]
+    },
+    {
+      "tab": "CALENDAR",
+      "nodes": 1230,
+      "placeholder": false,
+      "variables": [
+        "Latitude",
+        "Longitude",
+        "calendar_bridge_count",
+        "calendar_bridge_ready",
+        "calendar_city_prefix",
+        "calendar_dots_url_m1",
+        "calendar_dots_url_m10",
+        "calendar_dots_url_m11",
+        "calendar_dots_url_m12",
+        "calendar_dots_url_m2",
+        "calendar_dots_url_m3",
+        "calendar_dots_url_m4",
+        "calendar_dots_url_m5",
+        "calendar_dots_url_m6",
+        "calendar_dots_url_m7",
+        "calendar_dots_url_m8",
+        "calendar_dots_url_m9",
+        "calendar_dots_url_p0",
+        "calendar_dots_url_p1",
+        "calendar_dots_url_p10",
+        "calendar_dots_url_p11",
+        "calendar_dots_url_p12",
+        "calendar_dots_url_p2",
+        "calendar_dots_url_p3",
+        "calendar_dots_url_p4",
+        "calendar_dots_url_p5",
+        "calendar_dots_url_p6",
+        "calendar_dots_url_p7",
+        "calendar_dots_url_p8",
+        "calendar_dots_url_p9",
+        "calendar_event_1_all_day",
+        "calendar_event_1_color",
+        "calendar_event_1_detail_icon",
+        "calendar_event_1_end",
+        "calendar_event_1_location",
+        "calendar_event_1_start",
+        "calendar_event_1_title",
+        "calendar_event_1_title_layout",
+        "calendar_event_2_all_day",
+        "calendar_event_2_color",
+        "calendar_event_2_detail_icon",
+        "calendar_event_2_end",
+        "calendar_event_2_location",
+        "calendar_event_2_start",
+        "calendar_event_2_title",
+        "calendar_event_2_title_layout",
+        "calendar_event_3_all_day",
+        "calendar_event_3_color",
+        "calendar_event_3_detail_icon",
+        "calendar_event_3_end",
+        "calendar_event_3_location",
+        "calendar_event_3_start",
+        "calendar_event_3_title",
+        "calendar_event_3_title_layout",
+        "calendar_event_4_all_day",
+        "calendar_event_4_color",
+        "calendar_event_4_detail_icon",
+        "calendar_event_4_end",
+        "calendar_event_4_location",
+        "calendar_event_4_start",
+        "calendar_event_4_title",
+        "calendar_event_4_title_layout",
+        "calendar_month_layouts",
+        "calendar_native_city",
+        "calendar_remaining_today",
+        "calendar_today_cell",
+        "map_latitude_max5",
+        "map_longitude_max5"
+      ],
+      "sources": [
+        {
+          "provider": "Agenda (Today)",
+          "field": "Reminder Events Today",
+          "bindings": 1
+        },
+        {
+          "provider": "Custom Text",
+          "field": "Text",
+          "bindings": 57
+        },
+        {
+          "provider": "Date And Time",
+          "field": "d",
+          "bindings": 288
+        },
+        {
+          "provider": "Javascript",
+          "field": "Async + No main()",
+          "bindings": 1
+        },
+        {
+          "provider": "Javascript",
+          "field": "Script",
+          "bindings": 80
+        },
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint",
+          "bindings": 35
+        },
+        {
+          "provider": "Location",
+          "field": "City",
+          "bindings": 2
+        },
+        {
+          "provider": "Location",
+          "field": "Country",
+          "bindings": 3
+        },
+        {
+          "provider": "Location",
+          "field": "Latitude (Decimal)",
+          "bindings": 2
+        },
+        {
+          "provider": "Location",
+          "field": "Longitude (Decimal)",
+          "bindings": 2
+        }
+      ]
+    },
+    {
+      "tab": "WEATHER",
+      "nodes": 24,
+      "placeholder": true,
+      "variables": [],
+      "sources": [
+        {
+          "provider": "Custom Text",
+          "field": "Text",
+          "bindings": 7
+        }
+      ]
+    },
+    {
+      "tab": "FITNESS",
+      "nodes": 24,
+      "placeholder": true,
+      "variables": [],
+      "sources": [
+        {
+          "provider": "Custom Text",
+          "field": "Text",
+          "bindings": 7
+        }
+      ]
+    }
+  ],
+  "rawImages": [
+    {
+      "tab": "HOME",
+      "count": 2
+    },
+    {
+      "tab": "CALENDAR",
+      "count": 26
+    },
+    {
+      "tab": "WEATHER",
+      "count": 0
+    },
+    {
+      "tab": "FITNESS",
+      "count": 0
+    }
+  ],
+  "calendarJSON": {
+    "bindings": 39,
+    "uniqueURLs": 1
+  },
+  "limits": [
+    "Binding and image counts are definitions, not measured HTTP requests, active drawings or render time.",
+    "Variable closure conservatively follows both interpolation and native variable identifiers.",
+    "Weather and fitness tab shells do not represent their future source counts.",
+    "Native Weather, Pedometer and Health providers are not served by our map/calendar API.",
+    "No owner credentials, location, health data or calendar events are read."
+  ]
+}

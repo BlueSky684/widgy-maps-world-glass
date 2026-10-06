@@ -1,5 +1,7 @@
 # Map refresh: accept occasional refresh cost, keep ordinary navigation fast
 
+Latest scope: at07:21–07:28 the owner asks for the most effective whole-widget architecture, permits considering a small service payment, and explicitly includes weather, fitness and future tabs. Read `whole-widget-delivery-2026-10-06.md`. Five Minute1 remains unverified and available; it is not the final architecture. No additional import is requested while comparing these options.
+
 Date: 2026-10-06. Repository: BlueSky684/widgy-maps-world-glass. Branch: f50-widget-test. Starting head: 7d6b5ddb6143dd44059519255ae0c3f11df882a0.
 
 ## User direction

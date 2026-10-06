@@ -1,5 +1,9 @@
 # Live map refresh without blocking Home — investigation checkpoint
 
+## Whole-widget scope — 2026-10-06 07:21–07:28 Asia/Jerusalem
+
+Read `whole-widget-delivery-2026-10-06.md` for the latest direction. The owner wants measurable speed improvement across map, calendar, weather, fitness and future tabs, and will consider a small service payment. A new source inventory confirms native weather/pedometer/health ownership; a fresh local resource benchmark sizes the existing full PNG service. Railway is a comparison candidate, not a selected subscription or verified fix. No new import, runtime change or paid service was created. The image split remains an offline candidate with unresolved appearance/native-lifecycle gates.
+
 ## Current goal — owner clarification 2026-10-06 07:09 Asia/Jerusalem
 
 Read `map-refresh-session-policy-2026-10-06.md` first. The owner now accepts occasional waiting when the map refreshes, especially after idle, but wants repeated Home taps during active use to remain fast. This relaxes the prior zero-wait-on-every-refresh gate. Pause Files preparation. The already-built, not yet device-tested Map Five Minute1 is now the bounded next trial. It preserves the original cached Web URL provider; exact coordinates can still change the URL inside a time bucket, and it is neither an idle detector nor a guaranteed five-minute downloader. Judge actual bitmap freshness, non-regression, and subsequent ordinary navigation; do not demand a timed idle chore.
