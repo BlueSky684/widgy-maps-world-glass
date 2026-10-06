@@ -1,0 +1,104 @@
+{
+  "verifiedAt": "2026-10-06T10:05:17.776827+00:00",
+  "runtimeCommit": "128025838d1dcd6ceb4228f408a876a8705c944d",
+  "base": "https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app",
+  "files": [
+    {
+      "path": "api/solar-mask?rev=alpha-1&part=day&t=1791279300000",
+      "status": 200,
+      "bytes": 14974,
+      "sha256": "0c164e7c826b88f0dc0511dbc032dc62e472ef7d8583ebe7784fbef4abb67d08",
+      "matchesLocal": true,
+      "contentType": "image/png",
+      "revision": "alpha-1",
+      "epochTime": "2026-10-06T09:35:00.000Z",
+      "etag": "\"0c164e7c826b88f0dc0511dbc032dc62e472ef7d8583ebe7784fbef4abb67d08\"",
+      "cacheControl": "public, max-age=86400, immutable"
+    },
+    {
+      "path": "api/solar-mask?rev=alpha-1&part=night&t=1791279300000",
+      "status": 200,
+      "bytes": 14705,
+      "sha256": "94bad10e8cb43a0fbfae481185fa87b1d7e88c2b4b2aaab6508481b538088657",
+      "matchesLocal": true,
+      "contentType": "image/png",
+      "revision": "alpha-1",
+      "epochTime": "2026-10-06T09:35:00.000Z",
+      "etag": "\"94bad10e8cb43a0fbfae481185fa87b1d7e88c2b4b2aaab6508481b538088657\"",
+      "cacheControl": "public, max-age=86400, immutable"
+    },
+    {
+      "path": "api/solar-mask?rev=live-1&part=day&t=1791279300000",
+      "status": 200,
+      "bytes": 19480,
+      "sha256": "3decc1037627fef070d6aaaf8e4379258c3ec65894fa8484b1e98e212ee34339",
+      "matchesLocal": true,
+      "contentType": "image/png",
+      "revision": "live-1",
+      "epochTime": "2026-10-06T09:35:00.000Z",
+      "etag": "\"3decc1037627fef070d6aaaf8e4379258c3ec65894fa8484b1e98e212ee34339\"",
+      "cacheControl": "public, max-age=86400, immutable"
+    },
+    {
+      "path": "api/solar-mask?rev=live-1&part=night&t=1791279300000",
+      "status": 200,
+      "bytes": 19761,
+      "sha256": "57589338e4ea6e186074e502a0712e7623132c5ac05aa448baea8863ca0d31a6",
+      "matchesLocal": true,
+      "contentType": "image/png",
+      "revision": "live-1",
+      "epochTime": "2026-10-06T09:35:00.000Z",
+      "etag": "\"57589338e4ea6e186074e502a0712e7623132c5ac05aa448baea8863ca0d31a6\"",
+      "cacheControl": "public, max-age=86400, immutable"
+    },
+    {
+      "path": "api/solar-mask?rev=alpha-1&part=day&t=1791279600000",
+      "status": 200,
+      "bytes": 14982,
+      "sha256": "dd3d0f8882cc12413d124c51ff3305a4ff0ecc54bd57a2ecc4357942e23e29f7",
+      "matchesLocal": true,
+      "contentType": "image/png",
+      "revision": "alpha-1",
+      "epochTime": "2026-10-06T09:40:00.000Z",
+      "etag": "\"dd3d0f8882cc12413d124c51ff3305a4ff0ecc54bd57a2ecc4357942e23e29f7\"",
+      "cacheControl": "public, max-age=86400, immutable"
+    },
+    {
+      "path": "api/solar-mask?rev=alpha-1&part=night&t=1791279600000",
+      "status": 200,
+      "bytes": 14633,
+      "sha256": "932ed728a57b05d9c2fa0d45bde756dffb968c1ef400a71756e5719710c0806d",
+      "matchesLocal": true,
+      "contentType": "image/png",
+      "revision": "alpha-1",
+      "epochTime": "2026-10-06T09:40:00.000Z",
+      "etag": "\"932ed728a57b05d9c2fa0d45bde756dffb968c1ef400a71756e5719710c0806d\"",
+      "cacheControl": "public, max-age=86400, immutable"
+    },
+    {
+      "path": "tools/widgy-map-mask-alpha-1.html?v=alpha-1",
+      "status": 200,
+      "bytes": 11137,
+      "sha256": "856c096db397d17a2eed7f729e90cf90e2032dc5669f2073a2e7dfcdb4e5e090",
+      "matchesLocal": true,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "path": "tools/map-mask-alpha.js?v=alpha-1",
+      "status": 200,
+      "bytes": 2625,
+      "sha256": "c70c9e2901f3d5e0a48ebffa2aeff0032c4339a5ac2ba0dbdd0155c7362e001c",
+      "matchesLocal": true,
+      "contentType": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "tools/widgy-map-mask-appeared-off-1.html?v=alpha-1",
+      "status": 200,
+      "bytes": 10564,
+      "sha256": "b2561df5a3fbf2a98a2f74c34ee217540a8eedd6d28063b5da522b4187df3c85",
+      "matchesLocal": true,
+      "contentType": "text/html; charset=utf-8"
+    }
+  ],
+  "limits": "HTTP byte identity with exact-version local generator and local import-controller tests; native Widgy composition, speed and appearance pending."
+}

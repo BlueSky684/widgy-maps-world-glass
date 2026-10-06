@@ -1,7 +1,8 @@
 # Alpha Mask1 — 2026-10-06
 
 Status: offline representation, API and actual import-controller checks pass.
-Publication verification required before handoff. Native result pending.
+Runtime commit128025838d1dcd6ceb4228f408a876a8705c944d deployed successfully.
+Public verification passes; native result pending.
 
 ## Purpose and preserved baseline
 
@@ -80,6 +81,15 @@ real route PNG inverse alpha; actual solar/stamp advancement; revision-isolated
 cache/ETags;304/HEAD; strict invalid-query handling and original live PNG bytes.
 The existing Live1 API, assets and widget regression test also passes.
 
+## Public verification
+
+`map-mask-alpha-1-public-verification.json` records nine HTTP200 responses, all
+byte-identical to local expectations: the new page and transform, unchanged
+Appeared Off1 control page, both alpha parts at09:35/09:40Z and both original
+live-1 parts at09:35Z. API revision/time headers, immutable caching and PNG
+content types match. The two epochs return different encoded masks. This verifies
+the deployed generator, not automatic Widgy refresh or native rendering.
+
 ## Native handoff
 
 Keep **APPEARED OFF**. Import the separate **Widgy Map Mask Alpha1**, assign it
@@ -96,5 +106,5 @@ can check composition; it does not alone establish refresh across epochs. If
 only the flash colour changes, do not declare success or add arbitrary cover
 layers. Full widget, city, Calendar, weather and fitness remain later gates.
 
-Chrome handoff after public verification:
+Verified Chrome handoff:
 `googlechromes://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/tools/widgy-map-mask-alpha-1.html?v=alpha-1`
