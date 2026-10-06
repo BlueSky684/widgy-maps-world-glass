@@ -1,5 +1,9 @@
 # Live map refresh without blocking Home — investigation checkpoint
 
+## Next concrete gate — small-mask capability, 2026-10-06
+
+Read `map-mask-capability-2026-10-06.md`. A new offline benchmark found a full-resolution solar-only grayscale mask of108–144KB, distinct from the earlier1.39–2.28MB replacement overlay. Eight-bit weights introduce measured one-level pixel differences; native mask support and independent layer sampling remain unverified. The next user action is one screenshot of the existing Image Effects options, without changing the working source. No new import, service or renderer change was made.
+
 ## Whole-widget scope — 2026-10-06 07:21–07:28 Asia/Jerusalem
 
 Read `whole-widget-delivery-2026-10-06.md` for the latest direction. The owner wants measurable speed improvement across map, calendar, weather, fitness and future tabs, and will consider a small service payment. A new source inventory confirms native weather/pedometer/health ownership; a fresh local resource benchmark sizes the existing full PNG service. Railway is a comparison candidate, not a selected subscription or verified fix. No new import, runtime change or paid service was created. The image split remains an offline candidate with unresolved appearance/native-lifecycle gates.

@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "kind": "offline-mask-payload-and-quantization-only",
+  "baseline": "30de2d60d1b385f046f7abb9df24266374d4e82d",
+  "dimensions": [
+    3306,
+    1558
+  ],
+  "rows": [
+    {
+      "at": "2026-10-06T04:30:00Z",
+      "maskPNGBytes": 143707,
+      "fullResolution": {
+        "changedPixels": 9286,
+        "maxChannelDifference": 1,
+        "meanAbsoluteChannelDifference": 0.0006863728012578627
+      },
+      "composedThenResizedWidth367": {
+        "changedPixels": 183,
+        "maxChannelDifference": 1,
+        "meanAbsoluteChannelDifference": 0.0009922666204658928
+      }
+    },
+    {
+      "at": "2026-10-06T20:00:00Z",
+      "maskPNGBytes": 144218,
+      "fullResolution": {
+        "changedPixels": 6838,
+        "maxChannelDifference": 1,
+        "meanAbsoluteChannelDifference": 0.0005197950537151756
+      },
+      "composedThenResizedWidth367": {
+        "changedPixels": 141,
+        "maxChannelDifference": 1,
+        "meanAbsoluteChannelDifference": 0.0007612627511510817
+      }
+    },
+    {
+      "at": "2026-03-20T12:00:00Z",
+      "maskPNGBytes": 110081,
+      "fullResolution": {
+        "changedPixels": 8071,
+        "maxChannelDifference": 1,
+        "meanAbsoluteChannelDifference": 0.000591629280510973
+      },
+      "composedThenResizedWidth367": {
+        "changedPixels": 150,
+        "maxChannelDifference": 1,
+        "meanAbsoluteChannelDifference": 0.0008400140702356765
+      }
+    },
+    {
+      "at": "2026-06-21T00:00:00Z",
+      "maskPNGBytes": 108130,
+      "fullResolution": {
+        "changedPixels": 8985,
+        "maxChannelDifference": 1,
+        "meanAbsoluteChannelDifference": 0.0006589981364518966
+      },
+      "composedThenResizedWidth367": {
+        "changedPixels": 208,
+        "maxChannelDifference": 1,
+        "meanAbsoluteChannelDifference": 0.0011340189948181633
+      }
+    },
+    {
+      "at": "2026-12-21T12:00:00Z",
+      "maskPNGBytes": 121281,
+      "fullResolution": {
+        "changedPixels": 9760,
+        "maxChannelDifference": 1,
+        "meanAbsoluteChannelDifference": 0.0007198954404292348
+      },
+      "composedThenResizedWidth367": {
+        "changedPixels": 188,
+        "maxChannelDifference": 1,
+        "meanAbsoluteChannelDifference": 0.0010080168842828117
+      }
+    }
+  ],
+  "limits": [
+    "No native Widgy mask or blend schema has been verified.",
+    "This measures an 8-bit solar mask and reconstructs with the approved formula in JavaScript.",
+    "Reconstruction precedes resize; native independently sampled layers are NOT modeled.",
+    "The full opacity mask still decodes into a full-size surface on many pipelines; PNG size is not memory use.",
+    "Coastal engraving and lights require the approved sequential operations and rounding.",
+    "Marker, city, timestamp, corner clipping and color-profile conversions are excluded.",
+    "A lossless mask file does not mean its 8-bit solar-weight quantization preserves final pixels.",
+    "No runtime code, template or approved master changed; not ready for device import."
+  ]
+}
