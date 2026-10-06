@@ -1,0 +1,33 @@
+{
+  "revision": "map-mask-live-1",
+  "mapDimensions": [
+    3306,
+    1558
+  ],
+  "maskDimensions": [
+    522,
+    246
+  ],
+  "stampBand": {
+    "top": 1444,
+    "height": 114,
+    "left": "D = day mask time",
+    "right": "N = night mask time",
+    "timeZone": "Asia/Jerusalem"
+  },
+  "files": {
+    "day.png": {
+      "width": 3306,
+      "height": 1558,
+      "bytes": 3182413,
+      "sha256": "2ce2ee2e828ceb36008a34f1507f46ef2d1b580c2bb9767e7ae1ce43656bedb5"
+    },
+    "night.png": {
+      "width": 3306,
+      "height": 1558,
+      "bytes": 4506450,
+      "sha256": "29c823658a419722e815aba13f53ef56bddf753a4fd08a66230fba150f58e498"
+    }
+  },
+  "note": "Temporary bitmap freshness diagnostic only. Exact comparison-derived map pixels above the stamp strip; no approved master modification. No location or real-time clock layer."
+}
