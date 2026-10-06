@@ -1,5 +1,36 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Owner storage constraint — 2026-10-06 17:14 Israel
+
+The owner does not want accumulated images on the phone and requests cloud
+storage. Stop the proposed growing Photos-album automation. The prior successful
+album A-to-B/navigation result remains valid evidence, not the final architecture.
+No photos are deleted and no new account, paid resource or runtime change is made.
+
+The map renderer already runs on Vercel. Adding remote object storage alone does
+not establish the fast local-consumer behavior for Web URL sources. Official
+Vercel Blob public-storage documentation supports hosted image URLs and browser
+conditional requests, with a minimum configurable cache lifetime of60seconds;
+it does not prove Widgy sends conditional requests or updates a stable URL quickly.
+No direct-URL speed or cache-retention promise follows from these service features.
+Source: https://vercel.com/docs/vercel-blob/public-storage (checked2026-10-06).
+
+Next bounded-storage candidate: one fixed-name PNG in iCloud Drive, overwritten
+rather than appended. iCloud Drive is accessible through Files (Apple source:
+https://support.apple.com/en-us/118443). A local downloaded copy/cache can remain;
+cloud storage is not zero device storage. Do not claim exactly one native cache.
+The owner's Image->System menu visibly includes Files, but live image replacement
+through that source has NOT been tested. It may import a snapshot or lose access
+when replaced. Existing album evidence cannot substitute for a Files A-to-B test.
+
+Smallest next setup: inspect the native Shortcut Save File action's expanded
+options for an explicit destination, stable filename and overwrite behavior.
+Use a dedicated map-only folder/file. Then test one existing PNG and a later PNG
+at that same path through an isolated native Files image consumer, confirming
+both freshness and fast Calendar-to-Home navigation. Preserve the album control.
+Do not invent native bookmarks/IDs, automatic cleanup or a reliable schedule.
+The no-accumulation/cloud constraint takes precedence over the earlier next step.
+
 ## Latest result — album replacement with fast navigation, 2026-10-06 17:11 Israel
 
 The earlier 15:26 speed result was for a fixed Photos image: the 16:20 source

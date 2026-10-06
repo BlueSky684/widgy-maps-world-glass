@@ -1,5 +1,16 @@
 ## Current checkpoint — local image transitions reported very fast, 2026-10-06 15:26 Asia/Jerusalem
 
+## Current checkpoint — no photo accumulation, cloud requested, 2026-10-06 17:14 Asia/Jerusalem
+
+Owner rejects growing local-photo storage. Pause the Photos-album producer setup,
+keep its successful manual replacement/navigation evidence as a control. Consider
+one overwritten PNG in iCloud Drive with native Files consumption, but actual
+Files refresh and bookmark persistence are unverified; cloud may keep a local
+copy. Inspect native Save File options before specifying fields. Remote Vercel
+storage does not by itself reproduce local navigation speed. No resource was
+provisioned, photo deleted or runtime changed. See the latest storage-constraint
+section in `map-local-album-handoff-2026-10-06.md`.
+
 ## Current checkpoint — newest-album replacement and fast navigation, 2026-10-06 17:11 Asia/Jerusalem
 
 Read `map-local-album-handoff-2026-10-06.md`. The first unsuccessful replacement
