@@ -5,7 +5,10 @@ Status: implementation and import-controller tests pass; runtime commit
 Five public files (new page, both transition modules, template and unchanged
 Persistent1 control page) return HTTP200 with correct content types and exact
 local bytes. See `map-mask-appeared-off-1-public-verification.json`. Native
-result pending.
+result received: see `map-mask-appeared-off-1-video-2026-10-06.md`. The12:38
+recording exposes a black/white mask on both Home returns, so the visual gate
+fails. At12:42 the owner reports navigation is fast without delays: retain this
+as a partial success and current fast baseline, not a blanket failed speed test.
 
 ## Reason for this trial
 

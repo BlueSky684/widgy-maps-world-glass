@@ -1,3 +1,9 @@
+## Current checkpoint — fast navigation, visible mask remains, 2026-10-06 12:42 Asia/Jerusalem
+
+Read `map-mask-appeared-off-1-video-2026-10-06.md`. The owner's7.67-second APPEARED OFF recording shows a raw-looking black/white mask on both Home returns before the final map. D/N both read12:35 when complete; no epoch advance in the clip. This is a visual failure, not a measured touch-latency result. At12:42:53 the owner explicitly clarifies **the transition to the map is fast without delays**. Record partial success: keep Appeared Off1 as the current fast comparison and investigate the remaining display defect. Do not automatically roll back, dismiss the speed report, abandon masks or substitute the full-widget test.
+
+No runtime change followed the recording. Preserve source cadence, assets and the fast baseline. Next bounded question: an alpha-based mask representation without a visible white grayscale plane, evaluated offline before any new phone trial. Native color/sampling/partial-source behavior is unverified; hiding white by substituting black is not a visual fix. No further arbitrary group or blanket animation variants; no paid-server conclusion. Full Home, Calendar, weather and fitness integration remain pending.
+
 ## Current checkpoint — complete native appeared-Off trial, 2026-10-06 12:29 Asia/Jerusalem
 
 The owner supplied IMG_9939/9940 and a new19,070-byte Persistent1 export. Group84020 and shape84040 appeared-Off use source747; image84011 uses736. The group option explicitly disables child animations. Stored Auto/Interpolate remain unchanged, but their effective behavior can be overridden. No explicit disappeared field is captured or guessed. No further capability export is needed for this trial.
