@@ -1,6 +1,6 @@
 {
   "regions": ["fra1"],
-  "buildCommand": "node tools/build-map-cache.mjs && node tools/build-home-map-static-diagnostic.mjs && node tools/build-map-mask-compare.mjs",
+  "buildCommand": "node tools/build-map-cache.mjs && node tools/build-home-map-static-diagnostic.mjs && node tools/build-map-mask-compare.mjs && node tools/build-map-mask-live.mjs",
   "outputDirectory": ".",
   "functions": {
     "api/calendar-widget.js": {
@@ -13,6 +13,9 @@
       "maxDuration": 60
     },
     "api/marker.js": {
+      "maxDuration": 10
+    },
+    "api/solar-mask.js": {
       "maxDuration": 10
     },
     "api/home-map.js": {

@@ -1,3 +1,4 @@
 node_modules/
 work/
 /assets/diagnostics/map-mask-compare-1/*.png
+/assets/diagnostics/map-mask-live-1/*.png
