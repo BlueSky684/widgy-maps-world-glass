@@ -32,3 +32,19 @@ No evidence yet verifies the required arbitrary-image mask. Do not equate Plus L
 ## Continue after the screenshot
 
 If an applicable operation exists, capture a tiny harmless native example, then build an isolated split on the existing minimal Home/Calendar diagnostic. Gate on full approved appearance and actual image freshness, followed by repeated native transitions. If no suitable operation is exposed, do not keep inventing split variants: return to a ready-image delivery comparison or an independently updated local snapshot path, retaining the previous contrary evidence for CDN and Files. Whole-widget source ownership remains documented in `whole-widget-delivery-2026-10-06.md`.
+
+## Effects screenshots received at 07:48:57 Asia/Jerusalem
+
+The owner supplied IMG_9912–IMG_9919. The images are visible directly in the conversation despite failed automatic local-path reads; no additional Library retrieval was necessary. Do not copy the displayed location into reports or test requests.
+
+Observed on the 21-layer map diagnostic:
+- Object Alpha100%, Blend Mode Normal, Blur0, Edges Rounding0%, Stretching Yes and Clip To Frame Yes.
+- Layer Contents Updated Animation: Interpolate.
+- Layer Appeared Transition: Opacity.
+- Layer Disappeared Transition: Reversed 'In' Transition.
+- The captured Effects sections do not show an explicit image-mask source control. The Blend Mode selector itself is NOT open. The screenshots therefore confirm a blend-mode setting, but neither its available modes nor arbitrary mask support.
+- The editor still displays MAP TIME07:01:13 while the phone clock is07:47–07:48. This is evidence of the displayed editor bitmap only, not a fresh-render test, download count or measured Home transition. Images14.7MB is an editor label, not measured process RSS.
+
+No controlled animation-off trial was found in the current investigation notes. The three animation settings are a new candidate to isolate, not a diagnosis of the stall. The current blend is Normal, so historical reports of a non-default blend/transition interaction do not directly explain this baseline.
+
+Next minimal input: the available choices inside Blend Mode, currently Normal. Do not request another scroll through all Effects or alter image source/cache/animation simultaneously. Keep these observed defaults as the control for a later isolated animation test if needed. No image/export/native settings were modified by the assistant.
