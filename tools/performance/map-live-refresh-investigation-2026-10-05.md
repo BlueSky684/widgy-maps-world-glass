@@ -1,5 +1,20 @@
 ## Current checkpoint — local image transitions reported very fast, 2026-10-06 15:26 Asia/Jerusalem
 
+## Current checkpoint — newest-album replacement and fast navigation, 2026-10-06 17:11 Asia/Jerusalem
+
+Read `map-local-album-handoff-2026-10-06.md`. The first unsuccessful replacement
+used a fixed Image Library source, shown by the16:20 screenshot. After the native
+album picker setup, baseline MAP TIME15:31:41 changed to17:07:26 in the17:08 Home
+screenshot. The owner confirms Calendar→Home triggered the update and twice
+confirms fast transitions. This passes the small consumer's manually supplied
+album replacement/navigation gate. Automatic download, unattended/locked runs,
+no-navigation refresh, original-byte retention and full Home remain untested.
+Next is a separate three-action native Shortcut: URL, Get Contents of URL(GET),
+Save to Photo Album to the same dedicated album; first run then device observation.
+Do not add reload, resizing, old-photo deletion or new animation changes without
+a demonstrated need. No five-minute timer guarantee and no native JSON invention.
+No runtime changes; prior controls and masters preserved.
+
 Owner reports very fast transitions after the Photos/local consumer setup. Preserve this qualitative success; no exact newest-album binding, A→B freshness, original-byte retention, background automation or full Home integration is yet proven. Next add a later complete server PNG B to the same album while retaining A, observe the existing widget without manual reload or source edits, then test two transitions if B appears. If unchanged, inspect the actual provider/album before diagnosing scheduling or adding Reload. See `map-local-album-handoff-2026-10-06.md`. No runtime change or new import.
 
 ## Current checkpoint — complete PNG/local album setup accepted, 2026-10-06 14:50 Asia/Jerusalem

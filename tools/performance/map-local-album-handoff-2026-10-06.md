@@ -1,5 +1,44 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Latest result — album replacement with fast navigation, 2026-10-06 17:11 Israel
+
+The earlier 15:26 speed result was for a fixed Photos image: the 16:20 source
+screenshot showed `Image Library (With PNG Transparency)` selected. That also
+explains why the first attempted album replacement was inconclusive.
+At16:25 the owner reached the native Albums picker after being instructed to
+select `Image Library - Newest Photo From Album (With PNG Transparency)`.
+The dedicated album is displayed as `Widgy Map Local Tes`.
+At16:27 the Home widget showed MAP TIME15:31:41, establishing the new baseline.
+After the owner was asked to save a fresh PNG to that same album, the 17:08
+Home screenshot shows MAP TIME17:07:26 and the changed day/night composition.
+At17:10:38 the owner explicitly says the update happened when tapping Calendar
+and then Home. At17:10:59 and17:11:25 they confirm transitions remain fast.
+
+This is a positive manual producer-to-album replacement and qualitative
+navigation result in the small consumer. It does not establish exact latency,
+background refresh while remaining on Home, automatic scheduling, locked-device
+execution, original-byte retention in Photos/Widgy, or full Home performance.
+No native source JSON or album identifier has been extracted or invented.
+
+Next: build a separate native Shortcut with URL -> Get Contents of URL (GET)
+-> Save to Photo Album, using the existing full PNG endpoint and the selected
+album. Verify one actual run and the resulting MAP TIME through normal navigation.
+Keep the existing images until the new frame is validated; no automatic deletion,
+blank placeholder, Render Widgy action, image resizing, conversion, or new reload
+step is introduced in this initial producer test. Reload is not yet demonstrated
+necessary for this navigation-based refresh. Scheduling/locked execution and
+last-good-image retention under failed acquisition are separate remaining gates.
+Do not attach downloading to each Home tap or promise a five-minute timer.
+
+Apple primary sources checked on2026-10-06:
+- https://support.apple.com/he-il/guide/shortcuts/apd58d46713f/ios documents URL
+  input, Get Contents of URL and GET requests.
+- https://support.apple.com/he-il/guide/shortcuts/apdaf74d75a5/ios documents saving
+  photos into a specified album. Exact on-device fields remain screenshot-led.
+
+No runtime, approved master, template, animation setting or hosting plan changed.
+Raw phone screenshots and personal album listings are not stored in this repo.
+
 2026-10-06, after the owner agreed at14:48 Israel to the distinct local-image route.
 Branch f50-widget-test; baseline401df3632713bcd319a23526d095356c0d695c6c.
 
