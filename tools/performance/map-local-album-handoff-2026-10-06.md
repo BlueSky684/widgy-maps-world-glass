@@ -1,5 +1,39 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Current result — fixed-file replacement and fast navigation, 2026-10-06 20:50 Israel
+
+The owner returned to the Shortcuts/iCloud route after reviewing web alternatives.
+The working native Shortcut downloads the complete server PNG using URL -> Get
+Contents of URL -> Save File. It does not use Render Widgy Widget To Image.
+The expanded Save File screenshot shows destination Shortcuts, Ask Where to Save
+off, subpath `map-current.png`, and Overwrite If File Exists on. The instructed
+destination is iCloud Drive/Shortcuts; the full destination-picker path was not
+independently captured. No Photos action is part of this producer.
+
+The initial output and native consumer show MAP TIME 20:16:42. After a later
+manual Shortcut run, the Home screen shows 20:48:08. The owner explicitly confirms
+that the image updated without editing Widgy or reselecting the source, and that
+Calendar -> Home remains fast and retains the new timestamp. This supersedes the
+earlier untested-Files status below: same-file replacement and qualitative fast
+navigation now have a positive native-device result in the small test consumer.
+
+The test URL keeps explicit empty lat/lon and renders no device location. Its
+server PNG was separately verified as 3306x1558. Native byte preservation, refresh
+while staying on Home, scheduled or locked-device execution, failed-download
+recovery, cache retention, and performance in the full widget remain unverified.
+Do not infer a timer, zero local storage, or full-widget success from this result.
+
+Next: add one native Get Current Location action to the update Shortcut, then
+derive latitude, longitude and city from that location. The existing renderer
+can composite marker, coordinates and city into the PNG. Verify native numeric
+formatting and city language before connecting the URL; the explicit-coordinate
+server path does not reverse geocode. Use the same saved city for Calendar only
+after its binding is verified. Keep acquisition outside Home/Calendar taps.
+Automatic scheduling follows the location test and is not configured yet.
+
+No runtime, approved master, widget layout or service plan changed. Raw device
+images and personal coordinates are not committed.
+
 ## Owner storage constraint — 2026-10-06 17:14 Israel
 
 The owner does not want accumulated images on the phone and requests cloud
