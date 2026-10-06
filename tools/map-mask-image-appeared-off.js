@@ -1,5 +1,4 @@
-// Preparation only: not connected to an import page. Group/shape transition
-// serialization must be captured before a composition-wide trial is released.
+// Image-only helper for the composition-wide map-mask-appeared-off diagnostic.
 // Native Persistent1 export 2026-10-06 12:17 Asia/Jerusalem, image84011,
 // following a screenshot-confirmed Layer Appeared Transition = Off.
 // This is NOT Layer Contents Updated Animation or an explicit Out setting.

@@ -35,4 +35,4 @@ const invalid = structuredClone(before);
 flatten(invalid['1']).find(n => n.d0 === 84011).z = '13';
 assert.throws(() => withMapMaskImageAppearedOff(invalid),/unexpected_image_84011/);
 assert.throws(() => withMapMaskImageAppearedOff(withMapMaskImageAppearedOff(before)),/unexpected_image_/);
-console.log('PASS: native image Off mapping; exact four-field isolation; input unchanged; reject wrong types/existing effects. Group and shape capability still pending.');
+console.log('PASS: native image Off mapping; exact four-field isolation; input unchanged; reject wrong types/existing effects.');

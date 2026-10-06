@@ -1,0 +1,26 @@
+{
+  "capturedAt": "2026-10-06T12:28:58+03:00",
+  "exportBytes": 19070,
+  "exportSha256": "372b42edf43fae2e629bb6e780276dd1734c95a933fd3223203b6d69f52cefc4",
+  "widget": "Widgy Map Mask Persistent 1",
+  "setting": "Layer Appeared Transition",
+  "image": {
+    "nodeID": 84011,
+    "type": "5",
+    "label": "Off",
+    "r0": {"a": [{"b": 736, "a": -1, "c": 0, "d": 736}], "b": 0}
+  },
+  "group": {
+    "nodeID": 84020,
+    "type": "13",
+    "label": "Off [Will Disable All Child Animations]",
+    "r0": {"b": 0, "a": [{"d": 747, "a": -1, "b": 747, "c": 0}]}
+  },
+  "shape": {
+    "nodeID": 84040,
+    "type": "2",
+    "label": "Off",
+    "r0": {"a": [{"d": 747, "a": -1, "c": 0, "b": 747}], "b": 0}
+  },
+  "limits": "No explicit disappeared-transition serialization captured. Native group Off affects child animations. Screenshots and exports are capability evidence, not a measured navigation improvement."
+}

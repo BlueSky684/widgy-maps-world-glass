@@ -1,3 +1,9 @@
+## Current checkpoint — complete native appeared-Off trial, 2026-10-06 12:29 Asia/Jerusalem
+
+The owner supplied IMG_9939/9940 and a new19,070-byte Persistent1 export. Group84020 and shape84040 appeared-Off use source747; image84011 uses736. The group option explicitly disables child animations. Stored Auto/Interpolate remain unchanged, but their effective behavior can be overridden. No explicit disappeared field is captured or guessed. No further capability export is needed for this trial.
+
+Read `map-mask-appeared-off-1-review.md`. A separate Appeared Off1 copy applies the exact type-specific native field to all eight map nodes, with no other changes beyond identifying text. Full-document reversal to generated Persistent1, native-fixture mapping and real copy/download/failure/recovery controller tests pass. Public deployment must be verified before handoff. Device result pending: APPEARED OFF heading; complete simultaneous D/N map without black-day blink on ordinary Home returns; blank Calendar; speed and matching advancing stamps. The existing control pages, sources, assets, scripts and hierarchy are unchanged. Do not repeat hierarchy experiments, assume zero latency or migrate hosting.
+
 ## Current checkpoint — native appeared-Off image field captured, 2026-10-06 12:17 Asia/Jerusalem
 
 Read `map-mask-appeared-transition-2026-10-06.md`. The owner's current screenshots explicitly warn that blends and transitions on a layer or across its group break blend modes. A native Persistent1 export identifies image Layer Appeared Transition Off as `r0={b:0,a:[{d:736,a:-1,b:736,c:0}]}` on day mask84011 only. All image sources/frames/blends and three variables match baseline. Do not conflate this with the failed content-animation Off trial; Interpolate remains unchanged.
