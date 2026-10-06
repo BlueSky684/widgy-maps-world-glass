@@ -1,5 +1,38 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Export blocker — PNG validated; two native sources fail, 2026-10-06 23:34 Israel
+
+The owner prioritizes restoring JSON export before the proposed shared Calendar
+city binding. Export remains unresolved; no native Files serialization was obtained.
+
+The uploaded map-current.png is a valid 3306x1558, 8-bit RGBA PNG of 4,272,509
+bytes. Every PNG chunk CRC passed, zlib and full pixel decoding passed, and the
+embedded sRGB ICC profile parsed successfully. No trailing bytes or corruption
+were found. A separately saved map-export-test.png uses alternative lossless
+encoding (4,190,914 bytes); decoded RGBA pixels and ICC bytes are exactly identical.
+No server upload limit was established; do not claim that size caused HTTP 422.
+
+After the alternative encoding trial, the 23:29 screenshot still reports HTTP 422
+for Layer 240 / HOME / Home Hero World Map / Both Modes / Files in the full widget.
+After selecting Image Library (With PNG Transparency), the 23:33 screenshot
+explicitly names that new source and reports the same HTTP 422. Thus this failure
+is not unique to the Files source. Do not repeat either completed trial or assert
+that image-library export is a verified workaround. The active original should
+keep its proven Files binding to map-current.png; the photo source is diagnostic
+only and does not follow Shortcut file overwrites.
+
+Next proposed recovery: in an export-only duplicate, remove only Home Hero World
+Map and attempt JSON export. This has NOT been performed or verified yet. It is
+an incomplete backup workaround, not a permanent export fix. Preserve the working
+widget and Shortcut. If export succeeds, inspect the current native document and
+restore/rebind the map explicitly after edits/import; never invent Files bookmarks.
+If another image layer fails, retain its exact error rather than deleting unrelated
+content indiscriminately. Do not change Vercel runtime or approved assets speculatively.
+
+The proposed shared city-current.txt mechanism remains unimplemented. Manual map
+refresh in the full widget remains verified; automation is still not configured.
+Uploaded images and personal location information are not included in this repo.
+
 ## Current result — manual refresh works in full widget, 2026-10-06 22:58 Israel
 
 The owner explicitly reports running the update Shortcut and seeing the time
