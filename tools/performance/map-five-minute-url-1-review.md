@@ -46,3 +46,7 @@ The preparation page now asks for ordinary active-use transitions, observation o
 The owner reports restored perceived speed after rolling back the unsuccessful Interpolate→Off trial. The preceding screenshot identifies the control as Refresh Clock. Retain that copy and assign the separate Five Minute1 import for the next behavioral check. No Five Minute1 phone result exists yet.
 
 Re-ran `node tools/test-map-five-minute-url.mjs`: all64 synthetic cases and public copy/import/failure flows pass. Fresh public HTTPS requests return200 and bytes identical to local for the preparation HTML4436 bytes, controller2540 bytes, and transform2011 bytes. The Hebrew page uses ordinary active-use and natural-break observations; the older timed six-minute procedure above is superseded. Runtime, provider settings, renderer and infrastructure were not changed in this handoff.
+
+## First reported phone result — 2026-10-06 08:47:22 Asia/Jerusalem
+
+Owner reports advancing time, relatively fast transitions and no serious slowdown noticed. This is a positive initial qualitative result for this candidate, not a measured no-delay guarantee or long-term freshness/idle/location certification. Preserve this minimal copy as the working comparison. The next integration candidate is documented in `home-five-minute-map-1-review.md`; full-widget speed remains unverified.

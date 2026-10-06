@@ -1,5 +1,11 @@
 # Live map refresh without blocking Home — investigation checkpoint
 
+## Current checkpoint — initial live-map success, 2026-10-06 08:47 Asia/Jerusalem
+
+The owner reports advancing map time, relatively fast transitions and no serious slowdown in Map Five Minute1. This is the first reported phone result for THIS candidate: promising under the accepted occasional-delay tradeoff, not a zero-delay or full-widget guarantee. Retain the working minimal copy.
+
+Read `home-five-minute-map-1-review.md`. The new separate Home Five Minute Map1 restores the full Map Sync Recovery1 layout and data around the exact tested minimal map script, identical map image and exact native primary coordinates. Full1514 layers/81 variables, Calendar/weather/fitness and existing placeholder tabs are preserved; both custom city lookups remain bypassed, with coordinates temporarily on the Home map. Code/private-export flow tests pass with synthetic data. Public deployment verification is required before handoff; native full-widget result pending. Do not repeat animation-off or claim masking/paid hosting is now required. Latest evidence supersedes the earlier no-phone-result checkpoints below.
+
 ## Current checkpoint — restored speed, 2026-10-06 08:40 Asia/Jerusalem
 
 The owner confirms that speed returned following the requested rollback to Interpolate and Normal. At08:14 IMG_9922 identified the tested copy as the minimal Refresh Clock diagnostic; the assistant clarified testing the assigned widget on the iPhone Home Screen. Read the latest section of `map-mask-capability-2026-10-06.md`. Close the animation-off trial; no live-refresh solution or native mask support has been established.
