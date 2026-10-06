@@ -1,6 +1,6 @@
 {
   "regions": ["fra1"],
-  "buildCommand": "node tools/build-map-cache.mjs && node tools/build-home-map-static-diagnostic.mjs",
+  "buildCommand": "node tools/build-map-cache.mjs && node tools/build-home-map-static-diagnostic.mjs && node tools/build-map-mask-compare.mjs",
   "outputDirectory": ".",
   "functions": {
     "api/calendar-widget.js": {
