@@ -1,5 +1,31 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Color-profile trial failed — 2026-10-07 00:04 Israel
+
+The owner reports the same export error for map-srgb-test.png. Replacing only
+iCCP with sRGB is therefore NOT sufficient. Do not repeat this completed trial,
+implement that metadata change as a fix, or describe it as successful.
+
+Next prepared diagnostic: map-lossless-under4m.png, based on the failed static
+map. Its PNG filtering/compression and IDAT packing were changed; it is now
+3,992,384 bytes versus 4,075,465. Dimensions remain 3306x1558, mode remains RGBA,
+every decoded pixel including alpha matches exactly, and ALL non-IDAT chunks
+(including original ICC profile and DPI) are byte-identical. Full decoding and
+chunk CRC checks passed. No pixel/color reduction, resizing or flattening.
+
+This is the first supplied map trial below 4,000,000 decimal bytes. The previously
+failed static PNG was already below 4 MiB, so do not conflate those thresholds.
+There is NO documented/proven upload limit. A successful result would implicate
+encoding/size handling, not prove a specific size threshold: compression and
+chunk packing changed together, and the actual native upload body is unknown.
+A failure would not rule out a smaller size threshold or a dimension limit.
+The native export result for this new candidate remains pending.
+
+No production renderer/Shortcut/approved master was changed. The working Files
+refresh remains intact. A permanent producer change requires a positive native
+result and must handle varying future frames, not merely fit this one sample.
+Installed Widgy version/build is still unknown.
+
 ## Positive Files export control — 2026-10-06 23:58 Israel
 
 The owner reports selecting IMG_7352.PNG through Files and successfully exporting
