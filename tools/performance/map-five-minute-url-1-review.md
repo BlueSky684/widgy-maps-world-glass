@@ -40,3 +40,9 @@ Preview page: https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.verc
 Owner explicitly accepts occasional delay when a new map is loaded after idle, but rejects repeated delays on ordinary Home taps while using the phone. This changes the acceptance criterion and authorizes a bounded freshness/reuse tradeoff. No phone result exists yet for Five Minute1; re-use its existing code instead of inventing another interval/export.
 
 The preparation page now asks for ordinary active-use transitions, observation of the first refreshed MAP TIME and following returns, and the next natural return after a break. It does not ask for a six-minute timed wait. Widget JS/provider/PNG/backend remain unchanged. The page explicitly retains exact-coordinate URL churn and wall-clock-boundary limits. This does not detect idle or ensure one fetch per five minutes. Do not ask the owner to select No Caching or Files for this trial.
+
+## Handoff rechecked — 2026-10-06 after 08:40 Asia/Jerusalem
+
+The owner reports restored perceived speed after rolling back the unsuccessful Interpolate→Off trial. The preceding screenshot identifies the control as Refresh Clock. Retain that copy and assign the separate Five Minute1 import for the next behavioral check. No Five Minute1 phone result exists yet.
+
+Re-ran `node tools/test-map-five-minute-url.mjs`: all64 synthetic cases and public copy/import/failure flows pass. Fresh public HTTPS requests return200 and bytes identical to local for the preparation HTML4436 bytes, controller2540 bytes, and transform2011 bytes. The Hebrew page uses ordinary active-use and natural-break observations; the older timed six-minute procedure above is superseded. Runtime, provider settings, renderer and infrastructure were not changed in this handoff.

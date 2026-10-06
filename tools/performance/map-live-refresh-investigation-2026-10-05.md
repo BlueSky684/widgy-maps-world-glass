@@ -1,5 +1,11 @@
 # Live map refresh without blocking Home — investigation checkpoint
 
+## Current checkpoint — restored speed, 2026-10-06 08:40 Asia/Jerusalem
+
+The owner confirms that speed returned following the requested rollback to Interpolate and Normal. At08:14 IMG_9922 identified the tested copy as the minimal Refresh Clock diagnostic; the assistant clarified testing the assigned widget on the iPhone Home Screen. Read the latest section of `map-mask-capability-2026-10-06.md`. Close the animation-off trial; no live-refresh solution or native mask support has been established.
+
+Next: the existing Map Five Minute1 candidate, still without a reported phone result. Preserve the restored Refresh Clock copy and import/assign Five Minute1 separately, leaving its prepared cached Web URL source intact. This is a behavior/tradeoff trial, not a single-variable comparison with the owner's manually modified No Caching copy. Judge actual advancing MAP TIME and fast subsequent ordinary Home returns. Exact-coordinate changes may alter the URL sooner, and a first return at a time-bucket boundary may still stall. No timed idle chore or arbitrary interval increase. Current code verification passed64 synthetic cases and the copy/import/failure flows; server, renderer, assets and hosting remain unchanged.
+
 ## Next concrete gate — small-mask capability, 2026-10-06
 
 Update08:11:27: In response to the animation-off trial, the owner says the transition feels slower. Record as a subjective negative result; exact settings and map freshness were not independently confirmed. Requested rollback to Interpolate with Blend Mode0/Normal. Rollback result pending. Do not repeat the same Off trial or treat it as an improvement. Verify restoration before another device change; no new image split, runtime change, or service migration is justified by this result.
