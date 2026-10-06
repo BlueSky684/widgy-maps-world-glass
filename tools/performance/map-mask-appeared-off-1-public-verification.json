@@ -1,0 +1,48 @@
+{
+  "verifiedAt": "2026-10-06T09:34:58.806492+00:00",
+  "runtimeCommit": "7cb061306eca7e9f043ed04a94ecfd60ceb8ddd4",
+  "base": "https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app",
+  "files": [
+    {
+      "path": "tools/widgy-map-mask-appeared-off-1.html",
+      "status": 200,
+      "bytes": 10564,
+      "sha256": "b2561df5a3fbf2a98a2f74c34ee217540a8eedd6d28063b5da522b4187df3c85",
+      "matchesLocal": true,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "path": "tools/map-mask-appeared-off.js",
+      "status": 200,
+      "bytes": 2608,
+      "sha256": "696f7be501e6d778a39f4773fe08599f7a5f9e857f4f51783139606bf9e719d5",
+      "matchesLocal": true,
+      "contentType": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "tools/map-mask-image-appeared-off.js",
+      "status": 200,
+      "bytes": 1072,
+      "sha256": "c1d66799b8da76d06a56420b96449218fda80a1fb4193d24805f3df8ddb2653b",
+      "matchesLocal": true,
+      "contentType": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "tools/Widgy_Home_Glass_Calendar_C16.json",
+      "status": 200,
+      "bytes": 1247757,
+      "sha256": "5cff50eedac44e575ee766b30cec6875d614bb907e4ab0f632c91be503ce83cd",
+      "matchesLocal": true,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "path": "tools/widgy-map-mask-persistent-1.html",
+      "status": 200,
+      "bytes": 10267,
+      "sha256": "ac90725e4e835dd6a998e2cdf23a84ab08446640756bf51f5fe307bf04910f09",
+      "matchesLocal": true,
+      "contentType": "text/html; charset=utf-8"
+    }
+  ],
+  "limits": "HTTP byte identity and local import-controller test; native Widgy result pending."
+}

@@ -1,7 +1,11 @@
 # Map Mask Appeared Off1 — 2026-10-06
 
-Status: implementation and import-controller tests pass; public deployment
-verification required before handoff; native result pending.
+Status: implementation and import-controller tests pass; runtime commit
+`7cb061306eca7e9f043ed04a94ecfd60ceb8ddd4` has a successful Vercel deployment.
+Five public files (new page, both transition modules, template and unchanged
+Persistent1 control page) return HTTP200 with correct content types and exact
+local bytes. See `map-mask-appeared-off-1-public-verification.json`. Native
+result pending.
 
 ## Reason for this trial
 
