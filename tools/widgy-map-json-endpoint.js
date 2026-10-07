@@ -20,7 +20,7 @@ try {
   if (!response.ok) throw new Error('source_unavailable');
   const data = await response.json();
   const image = new URL(data.image);
-  if (image.protocol !== 'https:' || !['A', 'B'].includes(data.revision)) {
+  if (image.protocol !== 'https:' || !['A', 'B', 'C'].includes(data.revision)) {
     throw new Error('unexpected_source');
   }
   status.textContent = `המקור זמין: תמונת בדיקה ${data.revision}. אפשר להעתיק את הקישור.`;
