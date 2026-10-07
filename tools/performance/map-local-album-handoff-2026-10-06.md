@@ -1,5 +1,27 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Confirmed app version; four-part full-quality diagnostic prepared — 2026-10-07 morning
+
+Owner confirms Widgy 27.0.1 installed from App Store, not TestFlight. Do not ask
+again. Current App Store release notes do not explicitly identify a matching
+422 export fix; targeted public search found no verified matching fix.
+
+Prepared widgy-map-four-parts.zip, containing four exact 1653x779 crops of the
+uploaded static 3306x1558 map (not the live personal map). Original RGBA pixels,
+ICC and DPI retained. Exact reassembly verified byte-for-byte against decoded
+original RGBA, and ZIP integrity passed. Tile sizes in reading order:
+1-top-left.png 1,309,594 bytes; 2-top-right.png 1,536,777;
+3-bottom-left.png 572,319; 4-bottom-right.png 561,090.
+ZIP 3,980,234 bytes. No resize, quantization or flattening.
+
+Next phone test: only in disposable test widget, use four Image layers, one
+Files tile per layer, and export once with all four present. Overlap/placement
+is immaterial for this upload-only diagnostic; precise final layout comes later.
+Result PENDING. This tests a possible lossless partition approach, not a proven
+fix or known server limit. If successful, still verify actual arrangement,
+refresh and navigation performance before adopting it; coordinated four-file
+Shortcut update is not implemented. No production or Shortcut changes made.
+
 ## Morning quarter-map export inspected — 2026-10-07 07:14 Israel
 
 Owner supplied the successful quarter-map native JSON. Its image source is
