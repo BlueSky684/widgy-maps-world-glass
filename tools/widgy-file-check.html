@@ -1,0 +1,9 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; base-uri 'none'; form-action 'none'"><title>בדיקת קריאת קובץ ב־Widgy</title><style>body{margin:0;background:#12181e;color:#f4f7fa;font:18px/1.65 system-ui;padding:28px 22px}main{max-width:460px;margin:auto}h1{font-size:26px}button{width:100%;padding:18px;background:#c5ff0a;color:#111;border:0;border-radius:14px;font:600 18px system-ui;cursor:pointer}li{margin:14px 0}code{direction:ltr;unicode-bidi:isolate}p{color:#c4cdd5}</style></head><body><main><h1>בדיקת קריאת קובץ</h1><p>זהו קובץ טקסט זעיר עם 13 תווים. הוא מיועד לבדיקה ב־Map Check 3 בלבד.</p><button id="save">הורדת קובץ הבדיקה</button><p id="status" role="status" aria-live="polite"></p><ol><li>שמור את <code>widgy-file-check.txt</code> באותה תיקייה מקומית שבה שמרת את קובץ המפה.</li><li>ב־<b>Map Check 3</b>, פתח Edit Widget ← {} ← <code>map_png_base64</code> ← Files, ובחר את קובץ הבדיקה.</li><li>צא מהעורך ופתח שוב את פרטי הווידג׳ט. שלח צילום של שורת DATA.</li></ol><p>אם הקובץ נקרא, אמור להופיע <code>OTHER | 13</code>. אם לא נטען תוכן, יופיע <code>EMPTY | 0</code>. המפה עצמה תהיה ריקה בבדיקה הזאת, כי הקובץ מכיל טקסט רגיל.</p></main><script>
+const testText="WIDGY_FILE_OK";
+document.getElementById("save").addEventListener("click",()=>{
+const url=URL.createObjectURL(new Blob([testText],{type:"text/plain;charset=utf-8"}));
+const a=document.createElement("a");a.href=url;a.download="widgy-file-check.txt";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
+document.getElementById("status").textContent="לאחר ההורדה, שמור את הקובץ באותה תיקייה תחת ״באייפון שלי״.";
+});
+</script></body></html>
