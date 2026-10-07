@@ -1,5 +1,31 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Four-part Files export PASSED and hosted images checked — 2026-10-07 07:28 Israel
+
+Owner supplied native JSON after putting all four crops into four Image layers
+in Eriaera. JSON contains four Web URL images; all four successfully downloaded
+and decoded. Each hosted image remains 1653x779 RGBA (no resizing). Layer order:
+0 bottom-right: 599,086 bytes, decoded pixels EXACT;
+1 top-left: 1,490,296 bytes, 102 pixels differ, max RGB difference 12;
+2 top-right: 1,536,007 bytes, 97 pixels differ, max RGB difference 12;
+3 bottom-left: 724,588 bytes, 13 pixels differ, max RGB difference 1.
+Every alpha value and ALL opaque RGB pixels match original crops exactly.
+All differences are confined to non-opaque edge pixels. Do not call the hosted
+exports entirely pixel-identical/lossless against original. Source crop ZIP
+itself reconstructs original RGBA exactly. Compared against ZIP-contained crops
+because an unpacked local source tile unexpectedly failed decode; archive
+source crops decoded successfully, as did all four downloaded hosted images.
+
+This establishes successful four-part export of the complete static map through
+Files on Widgy 27.0.1 App Store. It does not establish exact cause/limit behind
+full-image 422, working dynamic four-file updates, fast navigation or final
+layout. Current test screenshot has stretched map; no final aspect ratio yet.
+Next implementation gate: correct four-part geometry in a separate test copy,
+then coordinated updates from one complete map frame and check navigation.
+Do not modify the working one-file Shortcut/full widget before that is ready.
+Uploaded JSON changes Files references to hosted Web URL in exported copy;
+do not mistake reimported URL layers for preserved dynamic local bindings.
+
 ## Confirmed app version; four-part full-quality diagnostic prepared — 2026-10-07 morning
 
 Owner confirms Widgy 27.0.1 installed from App Store, not TestFlight. Do not ask
