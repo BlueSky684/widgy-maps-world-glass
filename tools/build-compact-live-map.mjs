@@ -1,0 +1,23 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {LIVE_MAP_ORIGIN} from '../lib/widgy-live-map.js';
+const [input,output]=process.argv.slice(2);
+if(!input||!output||input===output)throw Error('Provide distinct input/output paths');
+const original=JSON.parse(fs.readFileSync(input,'utf8')),w=structuredClone(original);
+const walk=ns=>ns.flatMap(n=>[n,...(n.z==='13'?walk(n['1']):[])]);
+assert.equal(w['3'],'Widgy Compact Structure 1');assert.equal(walk(w['1']).length,1289);assert.equal(w['36'].length,40);
+const map=walk(w['1']).find(n=>n.d0===82316);assert.equal(map['1'],'JSON Endpoint');
+const prior=structuredClone(map);
+const template=JSON.parse(fs.readFileSync(new URL('./Widgy_Home_Glass_Calendar_C16.json',import.meta.url)));
+const frame=walk(template['1']).find(n=>n.d0===6170);
+for(const key of ['b','c','d','e'])map[key]=structuredClone(frame[key]);
+map['2']=LIVE_MAP_ORIGIN+'/api/widgy-live-map?view=image';
+map['8']=LIVE_MAP_ORIGIN+'/api/widgy-live-map';
+map.s='Home Hero World Map';
+w['3']='Widgy Compact Live Map 1';
+w['4']='Compact Structure 1 with the original approved Home map frame restored. Native JSON image endpoint selects the current server UTC minute. Full lossless 3306x1558 map, no personal marker or custom GPS lookup. New minute images render on demand; repeat requests can reuse caches. Native refresh cadence and transition speed require phone verification.';
+const restored=structuredClone(w),r=walk(restored['1']).find(n=>n.d0===82316);
+for(const key of ['b','c','d','e','2','8','s']){delete r[key];if(Object.hasOwn(prior,key))r[key]=prior[key];}
+restored['3']=original['3'];restored['4']=original['4'];assert.deepEqual(restored,original);
+fs.writeFileSync(output,JSON.stringify(w));
+console.log(JSON.stringify({layers:1289,variables:40,frameRestored:true,imageSize:[3306,1558],locationMarker:false,bytes:fs.statSync(output).size}));
