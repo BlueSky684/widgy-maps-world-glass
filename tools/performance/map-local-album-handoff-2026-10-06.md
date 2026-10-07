@@ -1,3 +1,9 @@
+## Direct binding still empty; local-file comparison pending — 2026-10-07 17:39 Israel
+
+IMG_0055 Map Check 3 preview before entering editor: CHECK 3 DIRECT; DATA: EMPTY | 0 | 17:38:37; image blank. This change did not resolve missing variable input. Native data-URI decoding with a populated variable is still untested, so do not infer that Web URL rejects data URIs.
+
+Owner independently suspects iCloud. Next controlled comparison: COPY the existing map-current-base64.txt from iCloud Drive/Shortcuts to a folder under On My iPhone, preserving the original and Shortcut. In Map Check 2 (known synchronous image script that renders in editor), reselect only that local file for map_png_base64, then leave editor and inspect DATA and image. Use Check 2 to avoid the unverified native data-URI image provider confound. This is not yet a permanent path change or Shortcuts modification. A positive local result would justify testing Shortcut overwrite/refresh at that path; a failure would leave Files-variable evaluation or access-scope issues unresolved. Do not claim iCloud itself is proven defective.
+
 ## File re-selection did not resolve empty preview — 2026-10-07 17:31 Israel
 
 Owner reports completing explicit re-selection of map-current-base64.txt in Map Check 2. On leaving the editor, the image disappears again and DATA returns 0. Do not repeat file re-selection as the next fix.
