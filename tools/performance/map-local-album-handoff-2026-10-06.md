@@ -1,3 +1,11 @@
+## Map disappearance: isolated widget also affected — 2026-10-07
+
+The latest full export (133749) still loses its map after removal of the empty Custom Text data item. The latest isolated export (134338, Widgy Full Map Variable Test) also loses its map. Initial display/export success did not establish runtime reliability; full-widget complexity is not an established cause.
+
+Published tools/widgy-map-check-copy.html: a browser-local JSON patcher with no file uploads. It creates Map Check 1 (isolated) or Home Check 1 (full), adding a native text probe for map_png_base64: EMPTY, UNRESOLVED, PNG HEADER, or OTHER, with character length and evaluation time. PNG HEADER verifies only the prefix, not full validity. The extra large-string probe may itself affect timing/memory, so results are diagnostic evidence only. Map JavaScript and file binding are preserved. For the full widget it restores original map frame x=28.32, y=202.7163126436782, width=1543.36, height=727.3305747126436 from tools/widgy-v129.json. Node VM validation on both exports confirmed only intended changes; native runtime validation remains pending.
+
+Next: import a diagnostic copy of the latest isolated JSON and capture the CHECK 1 line outside the editor when the image disappears. Do not infer memory limits or a permanent fix yet. Private exports and bookmarks were not published.
+
 # Complete server PNG to a native album source: initial handoff
 
 ## Full-widget integration: intermittent map — 2026-10-07 16:22 Israel
