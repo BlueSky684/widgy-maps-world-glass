@@ -28,6 +28,14 @@
     }
   },
   "headers": [{
+    "source": "/tools/widgy-map-source.json",
+    "headers": [
+      {"key":"Cache-Control","value":"no-store, max-age=0"},
+      {"key":"CDN-Cache-Control","value":"no-store"},
+      {"key":"Vercel-CDN-Cache-Control","value":"no-store"},
+      {"key":"X-Content-Type-Options","value":"nosniff"}
+    ]
+  }, {
     "source": "/tools/calendar-connect(.*)",
     "headers": [
       {"key":"Cache-Control","value":"private, no-store"},
