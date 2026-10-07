@@ -1,5 +1,31 @@
 # Complete server PNG to a native album source: initial handoff
 
+## DPI-only full map FAILED — 2026-10-07 07:46 Israel
+
+Owner screenshot IMG_0017 shows Eriaera, one Image layer, Both Modes / Files,
+Image Upload Failed, server rejected HTTP 422 for map-full-72dpi-test.png.
+Changing pHYs alone to 72.009 dpi is therefore NOT a fix. Do not repeat it.
+User requires a SINGLE full-quality map image and rejects permanent tiling.
+No permanent solution established. Remaining causal uncertainty is in native
+export processing/request or server validation, inaccessible via exported JSON.
+Need server rejection detail or developer confirmation for root-cause certainty;
+do not assert an undocumented numeric size limit. Native version confirmed
+27.0.1 App Store. No further arbitrary metadata trial is currently justified.
+
+Developer escalation evidence, if owner elects to send (NOT sent):
+- New one-image widget reproduces HTTP 422 with valid 3306x1558 RGBA map.
+- Same full map fails via Files and Photos with PNG transparency.
+- Source URL layers export successfully.
+- Same-size RGBA flat blue control exports even as 4,326,777-byte PNG.
+- Quarter-map on blue exports; hosted output 2411x1136, 1,026,698 bytes.
+- All four exact 1653x779 crops export together; hosted sizes total 4,349,977
+  bytes, individual sizes 599086/1490296/1536007/724588; dimensions unchanged.
+- ICC replacement, lossless compression below 4,000,000 bytes, and DPI-only
+  change all fail for whole map. PNG integrity verified.
+Ask developer for actual validation failure/body/log and per-image processed
+payload rules, and a supported single-image full-resolution remedy. Do not
+publish private user exports/images or send messages without authorization.
+
 ## Owner requires ONE complete map file; DPI-only trial — 2026-10-07 07:43 Israel
 
 Owner rejects four-part map as the permanent approach. Keep the four-part
