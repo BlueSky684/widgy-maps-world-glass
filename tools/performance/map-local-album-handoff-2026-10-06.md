@@ -1,3 +1,11 @@
+## Local file confirmed; input still intermittent — 2026-10-07 17:53 Israel
+
+Owner supplied Map Check 3 export (145241, 5,525,508 bytes). Private export and native bookmark are not published. Native bookmark now resolves to an iPhone app-container Documents/map-current-base64.txt location; previous export resolved to Mobile Documents/iCloud Shortcuts. The local selection is real. One map variable remains, source Files/Files, type String. Image source remains Web URL with data:image/png;base64,${widgy.map_png_base64}, exactly as intended. No remaining image JS. The retained source field25 is still the OLD 5,433,956-character static fixture, not current file content and not a fallback to apply.
+
+IMG_0056 Create-list thumbnail shows CHECK 3 DIRECT and DATA: PNG HEADER | 5280504 | 17:46:29, with map visible. IMG_0057 widget DETAILS preview (not editor) shows EMPTY | 0 | 17:47:00. Owner describes re-entering editor, but attached second screen is details. Local relocation has not established stability; don't attribute this solely to iCloud. The populated thumbnail is consistent with native data-URI rendering but may be cached; it is not proof of fresh live resolution on each render.
+
+Next isolated control: tools/widgy-file-check.html creates a plain-text download widgy-file-check.txt with exactly WIDGY_FILE_OK (13 ASCII bytes, no newline). Owner saves it in SAME local folder, selects it only in Map Check 3 map_png_base64 Files source, and exits/reopens details. Existing DATA probe should show OTHER | 13 if input loads, EMPTY | 0 if not; blank map is expected because input is plain text. No new widget patch, image processing, original-file edits or Shortcut changes. This distinguishes whether a tiny Files input also fails. A pass would implicate size/content-sensitive behavior but does not establish a numeric limit; a failure would strengthen general Files-variable access/evaluation suspicion. Native result pending.
+
 ## Direct binding still empty; local-file comparison pending — 2026-10-07 17:39 Israel
 
 IMG_0055 Map Check 3 preview before entering editor: CHECK 3 DIRECT; DATA: EMPTY | 0 | 17:38:37; image blank. This change did not resolve missing variable input. Native data-URI decoding with a populated variable is still untested, so do not infer that Web URL rejects data URIs.
