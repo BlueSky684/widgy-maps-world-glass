@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+<title>Widgy — Map JSON Navigation 1</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#0b1119;color:#eef3f8}
+*{box-sizing:border-box}body{margin:0;padding:28px 20px}main{max-width:570px;margin:4vh auto}
+h1{font-size:clamp(28px,7vw,40px);line-height:1.25}p,li{line-height:1.75;color:#c4d0dc}
+section{padding:22px;border:1px solid #334557;border-radius:22px;background:#121d28;margin:24px 0}
+button,.download{font:inherit;border-radius:12px;padding:15px 18px;cursor:pointer}
+#copy{width:100%;border:0;background:#c3e8ff;color:#0a2435;font-weight:700}
+button:disabled{opacity:.6;cursor:wait}a{color:#bde4ff;text-underline-offset:4px}
+.download{display:block;text-align:center;margin-top:12px}#retry{background:transparent;color:#bde4ff;border:1px solid #4c6477}
+#status{min-height:50px;margin-top:0}.error{color:#ffb8ad!important}.note{font-size:14px}
+ol{padding-inline-start:24px}li{margin:12px 0}[hidden]{display:none!important}:focus-visible{outline:3px solid #9ddeff;outline-offset:4px}
+</style>
+<script type="module" src="./widgy-map-json-navigation.js?v=1"></script>
+</head><body><main>
+<h1>בדיקת מהירות עם המפה החיצונית</h1>
+<p>עותק קטן עם שתי לשוניות: <b dir="ltr">Home</b> מציג את מפת הבדיקה המלאה, ו־<b dir="ltr">Calendar</b> מציג כיתוב קבוע. מקור התמונה מוגדר מראש לפי ה־JSON שיוצא בהצלחה.</p>
+<section aria-label="העתקת הווידג׳ט">
+<p id="status" role="status" aria-live="polite">מכין את עותק הבדיקה…</p>
+<button id="copy" type="button" disabled>העתקת ווידג׳ט הבדיקה</button>
+<a id="download" class="download" download="Widgy_Map_JSON_Navigation_1.json" hidden>הורדת קובץ לייבוא</a>
+<button id="retry" type="button" hidden>ניסיון נוסף</button>
+</section>
+<ol>
+<li>העתק את הווידג׳ט. ב־Widgy בחר <b dir="ltr">Import → Import URL Or JSON</b> והדבק. שם העותק: <b dir="ltr">Widgy Map JSON Navigation 1</b>.</li>
+<li>הצב אותו במקום שבו ביצעת את בדיקות המעבר הקודמות, והמתן שהמפה תיטען בשלמותה.</li>
+<li>עבור שלוש פעמים בין <b dir="ltr">Home</b> ל־<b dir="ltr">Calendar</b>, ובדוק אם החזרה למפה מהירה.</li>
+<li>המתן דקה בלי לגעת, ועבור שוב ל־Calendar ובחזרה. דווח אם החזרה הראשונה איטית או שהמפה נעלמת.</li>
+</ol>
+<p><b>כל ההגדרות מוכנות.</b> אין צורך להוסיף דבר ב־<span dir="ltr">{}</span> או לפתוח את מקור התמונה בעורך.</p>
+<p class="note">זו מפה קבועה לצורך בדיקת המהירות. מיקום אישי, עדכון יום/לילה ואירועי יומן אינם חלק מהעותק הזה. הצלחה בבדיקה הקטנה עדיין דורשת בדיקה בווידג׳ט המלא.</p>
+</main></body></html>
