@@ -1,5 +1,31 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Live map refresh visible on Home screen — 2026-10-07 14:10 Israel
+
+Owner reports "הסתדר" (resolved) and IMG_0034 shows the actual Home-screen
+test widget over the phone wallpaper with the Widgy label, live English city,
+and MAP TIME 2026-10-07 14:08:43 ISRAEL. This advances from the prior 13:09:53
+frame: a newer map now renders outside the editor through the current test.
+Initial file-backed JSON export was already verified at 13:44. Do not repeat
+the earlier static render/export tests.
+
+At 14:07 IMG_0033 showed map-current.png updated to 14:07 while the Base64 text
+still showed 13:10. Owner then reported resolution; the exact corrective action
+was not described. We had instructed running "הצגת תוכן" (without 2), dismissing
+Show Content so encoding/saving can finish, and checking the widget without
+reselecting the file. Do not invent a confirmed failure cause, claim unattended
+automation is configured, or assume refresh latency has been measured.
+
+Next integration should preserve the owner's current full-widget edits by
+working in a separate native copy (Edit As A Copy); do not overwrite the active
+full widget or assume the repository baseline contains their manual changes.
+Full-widget navigation/performance remains unverified for this new source.
+
+At 14:10 owner says a reply from the Widgy developer has arrived. Contents
+have not been provided yet. Request the reply as text or screenshot and review
+it before deciding the next implementation step. No message sending authorized.
+
+
 ## File-backed Base64 variable renders and exports — 2026-10-07 13:44 Israel
 
 Current result: owner confirms the map loaded after selecting the text file as
