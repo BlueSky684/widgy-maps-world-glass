@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Widgy — בדיקת מקור תמונה חיצוני</title>
+  <style>
+    :root{color-scheme:dark;font-family:system-ui,sans-serif;background:#0b1119;color:#eef3f8}
+    *{box-sizing:border-box}body{margin:0;padding:28px 20px}main{max-width:600px;margin:4vh auto}
+    h1{font-size:clamp(28px,7vw,40px);line-height:1.25}p,li{line-height:1.75;color:#c4d0dc}
+    section{padding:22px;border:1px solid #334557;border-radius:22px;background:#121d28;margin:24px 0}
+    button{font:inherit;cursor:pointer;border:0;border-radius:12px;padding:15px 20px;background:#c3e8ff;color:#0a2435;font-weight:700;width:100%}
+    button:disabled{opacity:.6;cursor:wait}a{color:#bde4ff;text-underline-offset:4px}
+    textarea{direction:ltr;text-align:left;width:100%;min-height:100px;padding:12px;border-radius:10px;border:1px solid #4c6477;background:#0b1119;color:#eef3f8;font:14px/1.5 monospace;margin:14px 0;resize:vertical}
+    ol{padding-inline-start:24px}li{margin:12px 0}code{direction:ltr;unicode-bidi:isolate}.note{font-size:14px}#status{min-height:28px;margin:14px 0 0}
+    :focus-visible{outline:3px solid #9ddeff;outline-offset:4px}
+  </style>
+  <script type="module" src="./widgy-map-json-endpoint.js?v=1"></script>
+</head>
+<body><main>
+  <h1>בדיקת מקור תמונה חיצוני</h1>
+  <p>המפה בבדיקה קבועה, בגודל המלא <b dir="ltr">3306 × 1558</b>. המטרה כרגע: לראות שהיא נשארת מוצגת ושאפשר לייצא את הווידג׳ט. לאחר מכן נבדוק עדכון דרך אותו קישור.</p>
+  <section aria-label="כתובת מקור התמונה">
+    <button id="copy" type="button" disabled>העתקת הקישור ל־JSON Endpoint</button>
+    <label for="endpoint"><p>אפשר גם להעתיק ידנית:</p></label>
+    <textarea id="endpoint" readonly spellcheck="false" aria-label="כתובת JSON Endpoint">https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/tools/widgy-map-source.json</textarea>
+    <p id="status" role="status" aria-live="polite">בודק שהמקור זמין…</p>
+  </section>
+  <ol>
+    <li>צור ב־Widgy ווידג׳ט חדש בגודל <b dir="ltr">Large</b>, והוסף שכבה מסוג <b dir="ltr">Image</b>.</li>
+    <li>בלשונית התמונה בחר <b dir="ltr">Web And Maps → JSON Endpoint</b>.</li>
+    <li>הדבק את הקישור שלמעלה בשדה כתובת המקור, והפעל את הבדיקה. בבורר הנתונים בחר את השדה <b dir="ltr">image</b> שמכיל כתובת תמונה, ואשר.</li>
+    <li>שמור וצא מהעורך. בדוק שהמפה מופיעה גם מחוץ לעורך. היכנס וצא שלוש פעמים.</li>
+    <li>נסה <b dir="ltr">Share Widget → Export As JSON</b>. אם מתקבלת שגיאה, שמור את הנוסח שלה.</li>
+  </ol>
+  <p><b>ב־<code>{}</code> לא מוסיפים משתנים.</b> הקישור הזה מיועד לשדה <span dir="ltr">JSON Endpoint</span> בשכבת התמונה; הוא אינו קובץ ווידג׳ט לייבוא.</p>
+  <p class="note">בחר את המפתח <code>image</code>, לא את <code>revision</code>. זו בדיקת מפה קבועה ללא מיקום אישי. השעה ומצב היום/לילה עדיין אינם מתעדכנים.</p>
+  <p><a href="./widgy-map-source.json">פתיחת מקור ה־JSON</a> · <a href="./widgy-map-static-only.html?v=map-static-only-1">עותק קטן עם ניווט להשוואה בהמשך</a></p>
+</main></body>
+</html>
