@@ -1,3 +1,14 @@
+## Confirmed empty script input outside editor — 2026-10-07 17:20 Israel
+
+Map Check 2 native observations:
+- IMG_0052 preview: CHECK 2 READY; DATA: EMPTY | 0 | 17:15:42.
+- User opened editor Variables {} without reselecting the file. IMG_0053: image appears; DATA: PNG HEADER | 5280504 | 17:17:44. Map image stamp is 16:16:23, distinct from diagnostic evaluation time.
+- Exiting editor makes image disappear again. IMG_0054: CHECK 2 READY; DATA: EMPTY | 0 | 17:20:40.
+
+This establishes the interpolated script input is empty in the preview and populated in the Variables editor. It does not distinguish native Files fetching/permission scope, variable dependency evaluation or import/bookmark behavior. Do not claim file corruption, a confirmed memory limit, or a fix. The originally requested explicit file re-selection has NOT occurred; owner only opened Variables. Next smallest action: actually reselect map-current-base64.txt in the Files data source of map_png_base64 in Map Check 2, then exit and inspect DATA. If still empty, investigate direct native variable dependency/data-source registration or local-vs-iCloud access; do not repeat image encoding tests.
+
+Independent firsthand report found (search returned full post, direct open failed): https://www.reddit.com/r/widgy/comments/1wnznyy/image_shows_only_when_editing/ — September 23 2026, iCloud txt -> variable -> asynchronous JavaScript image; image works in editor but not widget or in-app preview. Their file stores a URL, not a Base64 PNG. No verified fix or developer response obtained. This supports a similar symptom, not identical cause. widgy.me/help is an unrelated browser dashboard and must not be treated as documentation for the iOS app.
+
 ## Diagnostic visibility correction — 2026-10-07 17:08 Israel
 
 IMG_0050 shows Map Check 1 loaded with a blank white preview, 2 layers, 2 data sources and 1 variable. This does not establish the file variable state: the first diagnostic mistakenly used white text on the isolated widget's white background. Corrected tools/widgy-map-check-copy.html to create Map Check 2 with black isolated diagnostic text and a separate static CHECK 2 READY marker. DATA remains a separate JavaScript-backed text layer. Full Home diagnostic retains white text on its dark background. Original file binding and image script are unchanged; geometry restoration remains as previously documented. Node validation confirmed independent static marker, contrast choice and preservation of other input content. User should select the original isolated export (134338), import Map Check 2, and capture the preview; native result pending. Do not infer missing data from the all-white Check 1 screenshot.
