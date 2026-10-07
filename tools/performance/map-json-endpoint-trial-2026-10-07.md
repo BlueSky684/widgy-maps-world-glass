@@ -50,3 +50,15 @@ Prepare `Full Widget External Map Test 1` from the latest available full private
 The local builder asserts exact whole-document equality after restoring the allowed provider fields, two removed variable definitions and identifying name/description. Output: 1,514 layers, 80 variables, 1,101,726 bytes. Private input/output and any calendar URLs are not published in GitHub. The output is delivered privately. `/tools/widgy-private-json-copy.html` reads a user-selected local file and copies the exact JSON text to the clipboard; it does not upload or fetch file contents, and its CSP prohibits connect requests.
 
 Full-widget native gate: import as a separate copy, confirm full-map visibility, test Home/Calendar transitions including first return after two minutes idle. This copy retains C's fixed public map without a personal marker; it does not yet integrate live map preparation or storage. If the full widget is slower, existing calendar city/network dependencies remain candidates; do not blame the external image without a matched comparison. Original full widget and active Shortcut are preserved.
+
+
+## Full-widget structural optimization requested
+
+Before delivery of Full Widget External Map Test 1, the owner required reducing
+Calendar variables and excessive layers. The1514-layer test file was not delivered.
+See `compact-structure-1-review.md`:225 separator drawings consolidated;25 dot
+URL scripts share one minute clock;14 single-use text sources inlined;2 dead
+step variables pruned. Candidate1289layers/40variables versus original1514/82.
+Local equivalence/geometry checks pass; native rendering and full-widget latency
+remain untested. The map remains the fixed external test image. Today badge
+and day-progress native redesign still require verified export capabilities.
