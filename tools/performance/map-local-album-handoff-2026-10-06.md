@@ -1,5 +1,38 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Full-widget integration: intermittent map — 2026-10-07 16:22 Israel
+
+Owner integrated into native copy titled Widgy Native Steps Ring 2. String
+map_png_base64 now has a native Files source pointing to map-current-base64.txt.
+The initial image editor used Async + No main() with a synchronous main(), causing
+Timeout. After selecting ordinary Javascript and Run, IMG_0045/0047 show a map
+inside the full widget editor. IMG_0048 then shows the same dashboard without
+the map; owner says entering/leaving the editor causes intermittent visibility.
+Do NOT report full-widget integration, reliability, or performance as passed.
+
+Owner supplied full JSON (1,146,504 bytes, valid format 29, 82 variables).
+Private upload and its native bookmarks/URLs must not be committed or published.
+Inspection:
+- Exactly one Javascript map image, titled Full Map Embedded PNG.
+- Its 156-character main() exactly matches the successful isolated test.
+- In this export image field 2 is absent; the earlier isolated successful export
+  had a populated PNG data URL there. This difference is evidence only, not a
+  proven explanation of runtime behavior.
+- The current map variable has TWO data items: empty Custom Text/Text followed
+  by Files/Files. The successful isolated export had ONLY Files/Files.
+- Native bookmark raw-deflate decoded to 1652 bytes; exact filename confirmed.
+- No duplicate Javascript map layer found. Other image sources are 27 Web URLs.
+- Current map frame came from isolated test: x default 0, y 300, w 1600, h 800;
+  screenshot shows it lower than original Home map window. Geometry not fixed.
+- Image-memory header is 38.8 MB. Do not infer a platform limit or memory cause.
+
+Next controlled phone step: remove only the empty Text [Custom Text] data row
+inside map_png_base64, leaving the existing Files source and selection intact.
+Then re-evaluate normal editor exit/reentry. This is a configuration alignment
+with the passing test, NOT a proven fix. Avoid adding a static fallback that
+could disguise failure to refresh. Full-widget navigation test remains pending.
+
+
 ## Developer reply received — 2026-10-07 14:12 Israel
 
 Owner supplied IMG_0035.png in the adjacent chat and asked us to read it.
