@@ -1,5 +1,22 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Owner requires ONE complete map file; DPI-only trial — 2026-10-07 07:43 Israel
+
+Owner rejects four-part map as the permanent approach. Keep the four-part
+success as diagnostic evidence ONLY. Do not proceed with tile positioning or
+multi-file Shortcut changes. Goal: one full-quality complete map, fixed local
+file refresh and normal export without before/after source swapping.
+
+Prepared map-full-72dpi-test.png from original static map: only pHYs changed
+from 1000x1000 pixels/metre (25.4 dpi) to 2835x2835 (72.009 dpi), with new CRC.
+All other chunk bytes, including every IDAT and ICC, unchanged. 4,075,465 bytes,
+3306x1558 RGBA. Full decode and exact decoded pixel + ICC equality passed.
+This isolates density metadata without resampling or color/alpha changes.
+DPI as cause is speculative; successful blue/quarter controls had original DPI,
+so no claim that 25.4 universally fails. No repeated completed test. Native
+full-image DPI-only export result PENDING. User to select in a one-image
+throwaway widget via System > Files and export JSON. No runtime changes.
+
 ## Four-part Files export PASSED and hosted images checked — 2026-10-07 07:28 Israel
 
 Owner supplied native JSON after putting all four crops into four Image layers
