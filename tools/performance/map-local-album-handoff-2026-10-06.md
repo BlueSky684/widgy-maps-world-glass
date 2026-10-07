@@ -1,5 +1,62 @@
 # Complete server PNG to a native album source: initial handoff
 
+## File-backed Base64 variable renders and exports — 2026-10-07 13:44 Israel
+
+Current result: owner confirms the map loaded after selecting the text file as
+the variable source and JSON export succeeded. IMG_0032 shows the live map,
+an English city and MAP TIME 2026-10-07 13:09:53 ISRAEL. This is initial file
+binding/render/export success; replacement refresh without reselecting the file,
+current live rendering on the actual Home screen, and navigation remain pending.
+Do not repeat static image/export diagnostics.
+
+Earlier at 12:38 owner confirmed the Custom Text variable test both displayed
+on the Home screen and exported. They later requested the import link again;
+the newly imported test is the one configured through the screenshots below.
+Copy page: tools/widgy-full-map-variable-copy.html (same existing branch URL).
+Static public map remains a fixture only; current live export is private and is
+NOT to be committed or published.
+
+Shortcut ownership explicitly established by user:
+- Working/final shortcut: "הצגת תוכן" (without 2).
+- Backup: "הצגת תוכן 2"; leave untouched.
+The existing location/English-city lookup and Vercel map download are preserved.
+Existing Save File still overwrites map-current.png in iCloud Drive/Shortcuts.
+Added Encode Base64 of the map download's Contents of URL, line breaks None.
+Added Save File of that Base64 output in Shortcuts/map-current-base64.txt:
+Ask Where to Save OFF; Overwrite If File Exists ON.
+IMG_0026 confirms the text file exists (5.3 MB, 13:10) alongside the PNG.
+Existing Show Content/Quick Look precedes encoding, so it must be dismissed
+for the shortcut to finish. No unattended schedule is configured.
+
+Observed native UI binding path (no invented serialized bookmark):
+Widgy Full Map Variable Test -> Edit Widget -> Variables {} ->
+map_png_base64 -> Text [Custom Text] row -> Replace -> Files in left column ->
+Files in right column -> choose map-current-base64.txt with native file picker.
+Owner completed this path and supplied a 10,898,515-byte JSON export at 13:43.
+Private attachment file_00000000124481f49f7ecd0952ffdffd was downloaded and parsed.
+Native source verified:
+- variable name map_png_base64, source fields 5=Files and 6=Files;
+- source field 31 contains the native compressed file reference; decompression
+  confirms the exact filename map-current-base64.txt. Do not synthesize or publish it.
+- source field 25 still retains the old 5,433,956-character Custom Text base64,
+  matching the public static fixture SHA. It is residual serialized text, not
+  proof of current live content; do not blindly use it when inspecting this export.
+- image source remains Javascript; unchanged 156-character synchronous main()
+  returns data:image/png;base64 from the variable.
+- image field 2 contains a DIFFERENT live PNG result, 3,966,121 bytes,
+  3306x1558 RGBA, successfully decoded. Original live download bytes were not
+  supplied separately, so exact source-byte equality was not tested.
+- export root format 0=30 (previous prepared test 29); do not infer app version.
+
+Next gate: run the working shortcut again, dismiss its map preview so text saving
+finishes, then inspect the assigned test widget on the actual Home screen for a
+new MAP TIME without reselecting the file or replacing the variable. A stale
+widget first requires distinguishing reload timing from file-binding failure.
+Only after refresh is proven proceed to a separate full-widget integration and
+navigation check. Preserve one complete full-quality PNG, fixed bounded storage,
+no export-time source swaps, no active full-widget changes at this stage.
+
+
 ## Embedded full map PASSED; variable bridge prepared — 2026-10-07 11:08 Israel
 
 Owner confirms export success at 10:34 and correct displayed whole map at 11:07.
