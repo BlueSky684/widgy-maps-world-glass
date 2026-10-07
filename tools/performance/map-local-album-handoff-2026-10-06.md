@@ -1,5 +1,36 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Embedded full map PASSED; variable bridge prepared — 2026-10-07 11:08 Israel
+
+Owner confirms export success at 10:34 and correct displayed whole map at 11:07.
+This validates the single full PNG returned directly by synchronous Javascript
+for static rendering and JSON export on their Widgy 27.0.1 App Store setup.
+Do not repeat that test. Dynamic local updates and navigation remain unproven.
+
+Next isolated copy page: tools/widgy-full-map-variable-copy.html, commit
+b59a839f6e25caa8510d62f8a009291939264cf9 on f50-widget-test.
+Only one image and one String variable map_png_base64. Moves the exact public
+static PNG base64 into Custom Text variable, uses 156-character synchronous
+image main() to return data URL. Empty/unresolved variable returns empty string;
+no fallback image that could falsely pass. Local VM JSON generation and byte-exact
+PNG roundtrip passed; resulting JSON 5,434,965 bytes. Native import/render/export
+PENDING. Check outside editor on Home screen, not only editor preview.
+
+Why this gate: September 23, 2026 user report says file-backed variable + async
+image script displays only in editor; no verified resolution located:
+https://www.reddit.com/r/widgy/comments/1wnznyy/image_shows_only_when_editing/
+This new test retains synchronous main(), unlike that report. Existing Oct4
+full-dashboard Custom Text variable -> Web URL base64 trial FAILED AT IMPORT;
+this is isolated one-variable -> Javascript image, not repeating that route.
+
+Owner asks if continuing yesterday's Shortcuts solution: YES. Preserve existing
+Shortcut Vercel download -> overwrite map-current.png. Candidate next step is
+encode downloaded PNG bytes as one-line base64 into fixed local text file, then
+select it as variable source on device. Not yet configured or proven; no guessed
+file permission/bookmark fields, no automatic scheduling, no growing album,
+no changes to active full widget or Shortcut, no before/after-export source swaps.
+
+
 ## Chrome copy delivery — 2026-10-07 10:30 Israel
 
 Published tools/widgy-full-map-embedded-copy.html on f50-widget-test, commit
