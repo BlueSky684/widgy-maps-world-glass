@@ -1,3 +1,7 @@
+## Diagnostic visibility correction — 2026-10-07 17:08 Israel
+
+IMG_0050 shows Map Check 1 loaded with a blank white preview, 2 layers, 2 data sources and 1 variable. This does not establish the file variable state: the first diagnostic mistakenly used white text on the isolated widget's white background. Corrected tools/widgy-map-check-copy.html to create Map Check 2 with black isolated diagnostic text and a separate static CHECK 2 READY marker. DATA remains a separate JavaScript-backed text layer. Full Home diagnostic retains white text on its dark background. Original file binding and image script are unchanged; geometry restoration remains as previously documented. Node validation confirmed independent static marker, contrast choice and preservation of other input content. User should select the original isolated export (134338), import Map Check 2, and capture the preview; native result pending. Do not infer missing data from the all-white Check 1 screenshot.
+
 ## Map disappearance: isolated widget also affected — 2026-10-07
 
 The latest full export (133749) still loses its map after removal of the empty Custom Text data item. The latest isolated export (134338, Widgy Full Map Variable Test) also loses its map. Initial display/export success did not establish runtime reliability; full-widget complexity is not an established cause.
