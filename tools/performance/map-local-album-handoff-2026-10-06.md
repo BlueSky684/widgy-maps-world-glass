@@ -1,5 +1,38 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Creative single-image route: embedded PNG feasibility — 2026-10-07 10:06 Israel
+
+Owner sent developer email themselves at 08:05; response pending. At 10:06
+owner explicitly requested further creative investigation in the meantime.
+Continue preserving ONE complete full-quality image, fast navigation, bounded
+storage, no imagegen, no repeated completed tests, no production edits yet.
+
+New candidate: PNG data URL returned by one native Javascript image source.
+Historical primary community example:
+https://www.reddit.com/r/widgy/comments/1fvf17h/
+A commenter proposes base64 images returned via sendToWidgy. This is a lead,
+NOT validated Widgy 27.0.1 support. Another prior user reported base64 failures:
+https://www.reddit.com/r/widgy/comments/1973jip/ . Keep native result uncertain.
+File URLs/JS filesystem access are not assumed supported; historical sandbox
+report at https://www.reddit.com/r/widgy/comments/xh7ufa/ .
+
+Prepared PRIVATE deliverable widgy-full-map-embedded-test.json, 5,434,531 bytes.
+One image layer, name Widgy Full Map Embedded Test. Root derived from owner's
+one-image Eriaera export; Javascript source schema (1=Javascript, 22=main code)
+from existing native Home Glass source. Returns data:image/png;base64 of exact
+original static full map (4,075,465 bytes, 3306x1558 RGBA), SHA256:
+c4ccdacd84dec137bd46c6061a4f5b69ed4d210e5cec0bc5e2d08865ffc17df9.
+Original PNG bytes fully preserved. JSON parsing, base64 roundtrip, JS main()
+execution and returned payload hash verified locally. No network call in script.
+No native rendering/export, dynamic update or performance result yet. Result
+PENDING. This tests whether embedded source avoids automatic image upload;
+do not claim that it does or that static success is a finished live solution.
+Future local-text-variable binding to replace one base64 text file would need
+native feasibility proof and memory/refresh testing; not implemented or promised.
+Do not publish embedded personal/uploaded image JSON to repo or invent .widgy
+binary format. Deliver as private JSON; existing Import JSON clipboard route
+is established, file-import acceptance for plain JSON is not independently proven.
+
 ## DPI-only full map FAILED — 2026-10-07 07:46 Israel
 
 Owner screenshot IMG_0017 shows Eriaera, one Image layer, Both Modes / Files,
