@@ -1,5 +1,17 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Chrome copy delivery — 2026-10-07 10:30 Israel
+
+Published tools/widgy-full-map-embedded-copy.html on f50-widget-test, commit
+a5e47b98afe21e4399919f1420a41c7073b0470d; Vercel GitHub status success.
+The page fetches the already-public generated static diagnostic PNG, validates
+SHA-256 c4ccdacd84dec137bd46c6061a4f5b69ed4d210e5cec0bc5e2d08865ffc17df9,
+and assembles the embedded test JSON locally, with Clipboard API and legacy fallback.
+Public fixture verified identical to the prior supplied static PNG (4,075,465 bytes).
+No uploaded user PNG or embedded JSON was committed. Native rendering/export remains pending.
+URL: https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/tools/widgy-full-map-embedded-copy.html
+
+
 ## Creative single-image route: embedded PNG feasibility — 2026-10-07 10:06 Israel
 
 Owner sent developer email themselves at 08:05; response pending. At 10:06
