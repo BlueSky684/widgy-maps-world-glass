@@ -1,3 +1,11 @@
+## File re-selection did not resolve empty preview — 2026-10-07 17:31 Israel
+
+Owner reports completing explicit re-selection of map-current-base64.txt in Map Check 2. On leaving the editor, the image disappears again and DATA returns 0. Do not repeat file re-selection as the next fix.
+
+Prepared tools/widgy-map-direct-copy.html (Map Check 3 / Home Check 3). It accepts the original single-map export or previous Check 1/2 export, keeps the same Files variable and bookmark, and changes the map image from Javascript to Web URL with literal data:image/png;base64, followed by the native variable token. Removes only image field22 (JS source), replaces image field2 with that native binding. Diagnostic JavaScript is retained and static marker reads CHECK 3 DIRECT. No re-encoding, tiling, remote map fetch, asset publication or file upload. Full-widget frame restoration is the same as Check 2. The native Web URL variable field/schema was verified against the existing successful constant-URL test; native data-URI decoding and Files-variable evaluation in this mode are NOT verified. This is a targeted hypothesis about dependency discovery/variable evaluation in image JavaScript, not a confirmed permanent fix.
+
+Node checks using both private exports and generated Check 2 inputs verify exact allowed delta, unchanged variable/bookmark, and input immutability. Native gate: import Map Check 3 from the same original isolated export, inspect image and DATA before opening editor, then after exit. If DATA gains PNG HEADER but image absent, investigate native data-URI handling rather than claiming file still empty. If DATA remains EMPTY, direct binding did not resolve variable availability. Do not claim JSON export passes until owner verifies after native display works. Original Check 2 helper retained.
+
 ## Confirmed empty script input outside editor — 2026-10-07 17:20 Israel
 
 Map Check 2 native observations:
