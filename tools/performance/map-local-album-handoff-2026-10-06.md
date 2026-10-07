@@ -1,5 +1,19 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Developer reply received — 2026-10-07 14:12 Israel
+
+Owner supplied IMG_0035.png in the adjacent chat and asked us to read it.
+The screenshot's extracted text was read in full. Developer Bojan Drvarek says:
+"Large images are not supported when sharing."
+No numeric threshold, definition of size, root-cause detail, or promised fix is
+provided. Do not infer a 4 MB threshold or claim the native upload path is fixed.
+The successful single-image file-text -> variable -> synchronous Javascript
+path remains a workaround with native rendering/export and a newer Home-screen
+frame observed. Full-widget integration and performance remain pending.
+Do not treat email UI suggested replies as part of the developer's reply.
+No external message has been sent by the assistant.
+
+
 ## Live map refresh visible on Home screen — 2026-10-07 14:10 Israel
 
 Owner reports "הסתדר" (resolved) and IMG_0034 shows the actual Home-screen
