@@ -1,5 +1,23 @@
 # Complete server PNG to a native album source: initial handoff
 
+## Morning quarter-map export inspected — 2026-10-07 07:14 Israel
+
+Owner supplied the successful quarter-map native JSON. Its image source is
+Web URL on Widgy's image storage, like the previous blue-control export.
+Downloaded and visually verified the referenced PNG: 1,026,698 bytes,
+2411x1136 RGBA; sRGB, EXIF and DPI metadata. SHA256:
+6879ddfebaba6a62dd44751aa781635fbd1782c82d9a5ba52438e5437ae7d9fc.
+The source diagnostic was 1,630,238 bytes, 3306x1558 RGBA. The hosted blue
+control was 60,423 bytes at the SAME 2411x1136 dimensions. Real map detail
+therefore survives successful export, with the same output dimensions as blue.
+No precise upload threshold or permanent repair is proven. Failure payloads
+remain unavailable; hosted byte sizes are not necessarily request-body sizes.
+JSON root field 9 differs (155 versus previous 140); semantics unverified,
+so do not infer an app upgrade/version from it. Installed Widgy version remains
+unknown. Next request: actual Widgy version and whether App Store or TestFlight,
+to establish the affected build before prescribing further image changes.
+No production code, Shortcut or approved image changes.
+
 ## Final diagnostic PASSED; stop for tonight — 2026-10-07 00:31 Israel
 
 Owner reports "זה עובד" (it works) for widgy-map-detail-test.png selected
