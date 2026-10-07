@@ -22,6 +22,10 @@
       "maxDuration": 10,
       "includeFiles": "assets/earth/**"
     },
+    "api/widgy-live-map.js": {
+      "maxDuration": 10,
+      "includeFiles": "assets/earth/{Terrain_Master_3306x1558.png,Night_Lights_Master_3306x1558.png,Widget_Asset_Contract.json,render-cache-r6.bin.gz,BarlowCondensed-Regular.ttf,BarlowCondensed-Medium.ttf,OFL.txt}"
+    },
     "api/night-map.js": {
       "maxDuration": 10,
       "includeFiles": "assets/earth/{Terrain_Master_3306x1558.png,Night_Lights_Master_3306x1558.png,Widget_Asset_Contract.json,render-cache-r6.bin.gz,BarlowCondensed-Regular.ttf,BarlowCondensed-Medium.ttf,OFL.txt}"
