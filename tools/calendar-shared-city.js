@@ -1,3 +1,5 @@
+// RETIRED after IMG_0094 on 2026-10-08: Calendar city is blank on Home Screen.
+// Kept only to reproduce the rejected trial. Do not ship this dependency.
 // Read the percent-encoded city already returned by the unchanged map source.
 // This runs as a synchronous Script source. Native dependency scheduling must
 // still be verified on the phone; this is not an in-memory-cache assumption.

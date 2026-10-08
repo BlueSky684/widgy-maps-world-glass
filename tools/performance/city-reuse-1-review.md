@@ -1,5 +1,31 @@
 # City Reuse Test 1 — 2026-10-08
 
+## RETIRED at 16:24 — Calendar city missing on Home Screen
+
+IMG_0094 shows Calendar on the iPhone Home Screen: location icon and date are
+visible, city/country text is blank. After the requested native check, this
+candidate has not preserved the required dynamic Calendar location display.
+The new synchronous dependency on the asynchronous map variable is not accepted
+for release. This does not prove the exact native evaluation or fallback cause;
+passing VM substitution tests did not establish actual native dependency support.
+
+Restore Calendar's independent asynchronous city source using the exact full
+stable v5 export, including the corrected gauge order. The existing trial copy
+page now loads `widgy-city-reuse-recovery-1.enc.json` through controller v2 under
+the same owner fragment key. Its title/instructions explicitly describe the
+recovery and identify `Widgy Stable Map + Native Day Gauge Test`. The dedicated
+stable page is untouched. Stable bytes:917066; SHA-256:
+`e99b0036a462fb8729126517669f6fff6e622f1133542d9551edd41c289c703a`.
+
+The failed transform and ciphertext are retained only for reproducibility.
+Recovery restores a previous source, not a proven speed gain or a demonstrated
+fix for intermittent map disappearance. Native city visibility must still be
+confirmed. No map, GPS, clock, layout, server caching or diagnostics is changed.
+Exact-copy, wrong-key/tamper, manual fallback, document-integrity checks and the
+configured build pass before preview publication; production is untouched.
+
+The sections below are the historical trial record.
+
 ## Phone update at 15:48–15:50 Asia/Jerusalem
 
 IMG_0091 shows the Widgy overview named City Reuse Test 1 with a black/empty map
@@ -77,7 +103,7 @@ stable payload remain unchanged.
 - Configured Vercel build passes before publication. The change adds only
   candidate tools, its encrypted payload and this audit; server code is unchanged.
 
-## Phone gate
+## Original phone gate — closed by missing-city report
 
 Import as a separate **Widgy City Reuse Test 1** and assign it on the Home Screen.
 After its initial load, make three ordinary Calendar-to-Home-and-back switches.
