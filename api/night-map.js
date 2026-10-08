@@ -11,11 +11,23 @@ const syntheticCDNQuery = new URLSearchParams('mode=live&width=3306&presentation
 
 // This route is opt-in. Existing widget endpoints retain their behavior.
 export default async function handler(req, res) {
+  const requestStarted = performance.now();
+  // Native black-image reports cannot be diagnosed from render errors alone.
+  // Do not record the URL, query, coordinates, city, headers or image content.
+  // Vercel supplies the request ID around each line, including timed-out calls.
+  const method = req.method === 'HEAD' ? 'HEAD' : !req.method || req.method === 'GET' ? 'GET' : 'OTHER';
+  const report = (phase, details = {}) => console.info(JSON.stringify({
+    event: 'night_map_response_v1', phase, method,
+    elapsedMs: Math.round((performance.now() - requestStarted) * 10) / 10,
+    ...details
+  }));
+  report('started');
   res.setHeader('Cache-Control', 'private, no-store, max-age=0');
   res.setHeader('CDN-Cache-Control', 'no-store');
   res.setHeader('Vercel-CDN-Cache-Control', 'no-store');
   if (req.method && !['GET', 'HEAD'].includes(req.method)) {
     res.setHeader('Allow', 'GET, HEAD');
+    report('prepared', {status: 405, bodyBytes: 0});
     return res.status(405).end();
   }
   const url = parseMapRequest(req.url);
@@ -24,10 +36,15 @@ export default async function handler(req, res) {
   // Widgy's t= cache buster never controls the solar instant.
   const validISO = fixed === null || /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/.test(fixed);
   const date = fixed === null ? new Date() : new Date(fixed);
-  if (!validISO || !Number.isFinite(date.getTime()) || date.getUTCFullYear() < 1900 || date.getUTCFullYear() > 2100)
+  if (!validISO || !Number.isFinite(date.getTime()) || date.getUTCFullYear() < 1900 || date.getUTCFullYear() > 2100) {
+    report('rejected', {status: 400, reason: 'invalid_instant'});
     return res.status(400).json({error: 'at must be an ISO instant with a timezone, between 1900 and 2100'});
+  }
   const width=Number(url.searchParams.get('width') || 3306);
-  if(![3306,1653,1102].includes(width))return res.status(400).json({error:'Unsupported image width'});
+  if(![3306,1653,1102].includes(width)){
+    report('rejected', {status: 400, reason: 'invalid_width'});
+    return res.status(400).json({error:'Unsupported image width'});
+  }
   const location = resolveLocation(url, req.headers);
   const presentation = url.searchParams.get('presentation') === 'glass' ? 'glass' : 'default';
   const atlas = url.searchParams.get('atlas') === 'r6' ? 'r6' : 'f50';
@@ -76,9 +93,17 @@ export default async function handler(req, res) {
     res.setHeader('X-Map-Rendered-At', entry.renderedAt);
     res.setHeader('X-Map-Location-Source', location?.source || 'unavailable');
     const tags = String(req.headers?.['if-none-match'] || '').split(',').map(s => s.trim().replace(/^W\//, ''));
-    if (reuse && (tags.includes(entry.etag) || tags.includes('*'))) return res.status(304).end();
+    const notModified = reuse && (tags.includes(entry.etag) || tags.includes('*'));
+    // "prepared" is server evidence only: it does not assert network delivery
+    // or that Widgy decoded/displayed the image. A PNG above the platform body
+    // budget can still fail after the function adapter processes this response.
+    report('prepared', {status: notModified ? 304 : 200, cache: result.state,
+      pngBytes: entry.png.length, bodyBytes: notModified || method === 'HEAD' ? 0 : entry.png.length,
+      conditional: tags.length > 0 && tags[0] !== '', precomputed: precomputedState()});
+    if (notModified) return res.status(304).end();
     return req.method === 'HEAD' ? res.status(200).end() : res.status(200).send(entry.png);
   } catch (error) {
+    report('failed', {status: 500, reason: 'render_or_response_failed'});
     console.error('Day/night render failed:', error.message);
     return res.status(500).json({error: 'Map rendering unavailable'});
   }
