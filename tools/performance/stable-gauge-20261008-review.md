@@ -1,5 +1,27 @@
 # Stable map and native day gauge — 2026-10-08
 
+## Correction after IMG_0090 (15:22 Asia/Jerusalem)
+
+The native gauge fill was hidden by the Home chrome image. The merged export
+placed chrome at sibling 53 and the gauge at 54; Widgy's list is front-to-back.
+The approved chrome's pixels covering the gauge frame are all alpha 255.
+The previously working `Widgy_Native_Day_Gauge_1.json` has the gauge at 53 and
+chrome at 54. Its gauge object exactly equals the combined export's object.
+
+Correction: swap only these two adjacent sibling positions. A full-document
+comparison after reversing that swap must equal the previous export, including
+all map data, scripts, variables, geometry, colors and gauge configuration.
+No gauge settings or image pixels changed. The source is now Library version 5,
+still 917,066 bytes, SHA-256
+`e99b0036a462fb8729126517669f6fff6e622f1133542d9551edd41c289c703a`.
+The copy page uses payload `widgy-stable-gauge-20261008-v2.enc.json` and JS v2.
+Layer-order/opaque-overlap checks, exact decryption/copy regression, navigation,
+script syntax and the configured build passed before preview publication.
+The original structural checks missed visible occlusion; this regression now
+checks the actual approved background and working gauge's ordering.
+
+The sections below document the original version 4 investigation.
+
 Branch: `f50-widget-test`. Production is not promoted or modified.
 
 ## Exact recovered export and copy page
