@@ -13,6 +13,7 @@ export function clientMaxAge(snapshot,providerUntil,instant=Date.now()){
     snapshot.validUntil-instant,snapshot.home.validUntil-instant)/1000));
 }
 export default async function handler(req,res) {
+  const started=performance.now();
   privateHeaders(res);
   let nativeFields=false;
   try {
@@ -32,6 +33,7 @@ export default async function handler(req,res) {
     const key=createHash('sha256').update(`${token}:${window.month.toISODate()}`).digest('hex');
     for(const [id,value] of cache) if(value.until<Date.now()) cache.delete(id);
     let entry=cache.get(key);
+    const providerCache=entry?'REUSE':'MISS';
     if(!entry){
       if(cache.size>=50)cache.delete(cache.keys().next().value);
       entry={pending:readEvents(state,window),until:Date.now()+60000};cache.set(key,entry);
@@ -43,6 +45,8 @@ export default async function handler(req,res) {
       const maxAge=clientMaxAge(snapshot,entry.until);
       if(maxAge>0)res.setHeader('Cache-Control',`private, max-age=${maxAge}, must-revalidate`);
       res.setHeader('Content-Type','application/json; charset=utf-8');
+      res.setHeader('X-Calendar-Provider-Cache',providerCache);
+      res.setHeader('Server-Timing',`calendar;dur=${(performance.now()-started).toFixed(1)}`);
       return req.method==='HEAD'?res.status(200).end():res.status(200).json(nativeFields?widgyFields(snapshot):snapshot);
     }
     const pngKey=bounds==='grid'?'pngGrid':'png';
@@ -53,6 +57,8 @@ export default async function handler(req,res) {
     const remaining=Math.max(0,Math.floor((entry.until-Date.now())/1000));
     res.setHeader('Cache-Control',`private, max-age=${Math.min(30,remaining)}, must-revalidate`);
     res.setHeader('Content-Type','image/png');
+    res.setHeader('X-Calendar-Provider-Cache',providerCache);
+    res.setHeader('Server-Timing',`calendar;dur=${(performance.now()-started).toFixed(1)}`);
     res.setHeader('X-Calendar-Generated-For',window.month.toFormat('yyyy-MM'));
     return req.method==='HEAD'?res.status(200).end():res.status(200).send(png);
   } catch(error) {
