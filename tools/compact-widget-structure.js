@@ -21,7 +21,7 @@ export function variableReferences(object, variables) {
   }
   return found;
 }
-function pruneUnused(w) {
+export function pruneUnused(w) {
   const vs=w['36'], root=clone(w); delete root['36'];
   const live=variableReferences(root,vs);
   let changed=true;
@@ -30,7 +30,7 @@ function pruneUnused(w) {
   const removed=vs.filter(v=>!live.has(v['1'])).map(v=>v['1']);
   w['36']=vs.filter(v=>live.has(v['1']));return removed;
 }
-function shareDotsClock(w) {
+export function shareDotsClock(w) {
   const dots=w['36'].filter(v=>/^calendar_dots_url_(m|p)\d+$/.test(v['1']));
   ensure(dots.length===25,'Expected 25 month dot variables');
   const nodes=flatten(w['1']), changes=[];
