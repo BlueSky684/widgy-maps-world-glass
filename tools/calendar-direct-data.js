@@ -1,5 +1,8 @@
 import {flatten, inlineSingleTextSources} from './compact-widget-structure.js';
 
+// RETIRED: owner's 2026-10-08 22:34 screenshot shows an empty Calendar city row.
+// Preserve for reproduction only; unchanged source objects do not prove native
+// rendering. Cause remains unverified. Keep Compact Stable as the last control.
 // Start from the working city/fallback baseline, never the retired direct-city copy.
 export function withCalendarDirectData(input) {
   if (input['3'] !== 'Widgy Calendar Compact Stable Test 1' ||
