@@ -45,3 +45,53 @@ Use the already imported Calendar Compact Stable Test1. No replacement import
 or copy page is required. A normal Home–Calendar–Home pair provides a fresh
 native window; do not claim the diagnostic itself improves speed. Production
 is unchanged. Preserve this baseline's approved design and exact GPS.
+
+## Deployment and synthetic verification
+
+Preview deployment dpl_H6TEm9aMNRp6rifNDRaLUPbiLwyd is READY at runtime commit
+d3be5a2eca01c0033cdb866220bbcb364d982658, branch f50-widget-test, target null.
+The configured build and full-resolution PNG regression passed. Three agent
+GETs at 21:34:16–21:34:49 Israel returned complete decodable 3306x1558 PNGs,
+4,365,680 bytes each, identical by SHA256 comparison. The logs correctly record
+first/first, same/same, then changed/same with minute_stamp only. Warm handlers
+took 0.9 and 0.7 ms. This validates the observer, not phone speed.
+Exclude request IDs qtlht-1791484455807-47ef8f851098,
+wn6qc-1791484477917-7f09d267532f and g5rpx-1791484487845-fdb4b03bc42c from
+native attribution. No owner coordinates or calendar credentials were replayed.
+
+## Native result — owner completion at 21:36:52 Israel
+
+The owner completed the requested two Home–Calendar–Home cycles on the installed
+copy. They did not report new subjective timing or map appearance in this reply.
+The 21:35–21:37 log window was queried again after indexing time; it contains
+only one map image request, at 21:36:20.688, prepared at 21:36:21.565:
+HTTP200, MISS, 876.8 ms, 4,362,688 bytes, conditional=false, same warm instance
+227bb613-0fdb-481d-880c-b3310b47ffac. Its first/first comparison supplies no
+native repeated-URL pair. The previous coordinates/city change is relative to
+the synthetic agent request, not evidence of native location jitter.
+
+There is therefore no observed origin image re-request on every transition in
+this run. Do not infer that the image was never decoded/rendered again, that
+all bytes reached the phone, or that changing URL timestamps is the culprit.
+
+There were seven city-cache reads: two MISSes at 21:36:18.524/20.034, then five
+HITs at 21:36:26.982/30.392/33.542/36.814/39.175. The HIT handler times were
+0.1–0.4 ms. They establish continuing client-to-server city requests despite
+warm city data, not seven external geocoder calls or seven unique taps. The
+two MISSes preceded the first map write to the process city cache. No client
+lookup duration trace is present, so its end-to-end wait remains unmeasured.
+
+Calendar today returned one provider MISS (483.9 ms, including 416.5 ms provider
+wait) followed by six REUSE responses (6.7–8.3 ms). One offset0 dots response
+took 83.3 ms and contained 7,513 bytes. No all-month network fan-out is shown.
+
+Code inspection confirms Calendar's synchronous city extraction depends on
+the asynchronous map_request, whose server-cache HIT path still awaits fetch
+and response.json before sendToWidgy. A source definition shared between tabs
+is not a proven retained client value. City HTTP HITs already allow private
+caching for the remaining original observation lifetime; simply adding cache
+headers is not a new fix. No verified persistent native city-value API has yet
+been established. Any next client change must preserve matching dynamic city,
+exact GPS and approved appearance and avoid re-running earlier native/mixed
+URL experiments without new evidence. No new export or runtime change follows
+from this measurement alone; keep the current functional baseline.
