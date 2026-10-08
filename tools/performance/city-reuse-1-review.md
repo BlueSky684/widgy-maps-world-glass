@@ -1,0 +1,66 @@
+# City Reuse Test 1 — 2026-10-08
+
+Work branch: f50-widget-test. Stable control: deb632c58d1dee311b770fe1c7d9c52ce905065b,
+with the corrected native day-gauge order. Production remains unchanged.
+
+## Finding and narrow experiment
+
+The stable export independently reverse-geocodes in `map_request` and
+`calendar_city_prefix`. Each can wait for its own network operation. Both have
+best-effort global caches, but native JS-context persistence/sharing and actual
+request counts are unmeasured. The stable map image uses only Web URL
+`${widgy.map_request}`. No Shortcuts URI, iCloud file or `map-current.png`
+reference remains in this export; its legacy map-refresh Shortcut is unnecessary
+for this copy. An older local-file widget may still require it.
+
+This separate candidate replaces only Calendar's city source mode and script.
+It synchronously extracts the percent-encoded city from `${widgy.map_request}`,
+using the same decoding, control-character removal, 80-code-unit cap and comma
+suffix as the old Calendar completion callback. The existing native city
+fallback stays intact for absent/unresolved/invalid city values. The map's city
+lookup, exact-coordinate handling, live time, minute URL stamp, map image,
+3306x1558 PNG, server caches and rendering are unchanged. Every layer and every
+other variable is unchanged. The corrected gauge remains ahead of the chrome.
+
+This removes Calendar's independent fetch implementation. It does **not** prove
+one physical network request per native update: Widgy may re-evaluate the map
+variable for each consumer. The new dependency may also affect native scheduling.
+It does not eliminate Home's first geocoder wait, and is not claimed to fix map
+disappearance. Do not promote based only on source/VM tests.
+
+Unlike earlier no-city or mixed-source image experiments, this retains the
+original working map binding and custom city lookup. No city is hard-coded,
+no test coordinates enter the export, and no timers or shared globals are added.
+
+## Artifact and verification
+
+Separate full JSON: `Widgy_City_Reuse_Test_1.json`, 913,161 bytes.
+SHA-256: `c2f91ce96eff550e16a74d2597b1fc6034fed8db407a83e403ea05f7b0b481ad`.
+Private plaintext and the copy-page decryption key are excluded from Git.
+The new page uses AES-GCM/gzip and a per-candidate fragment key, with exact size
+and SHA-256 validation before enabling Copy Full JSON. The stable page and
+stable payload remain unchanged.
+
+- `test-calendar-shared-city.mjs` passes on the public template and the exact
+  stable private export. Restoring the two source fields and metadata yields
+  full-document deep equality. The input is unchanged.
+- Parser tests cover Unicode, punctuation, escaped text, missing/unresolved
+  input, malformed encoding, and original sanitization. The original map
+  algorithm runs against mocked geocoder responses, cache hits, failures,
+  mismatched coordinates and unavailable GPS; no external provider is called.
+- Both stable and candidate copy controllers pass actual encryption/integrity
+  and exact clipboard-string tests, missing/wrong-key/tamper rejection, and
+  manual selection fallback. Candidate retains 1,415 unique layer IDs, valid
+  navigation, 89 parseable scripts, and one native day gauge.
+- Configured Vercel build passes before publication. The change adds only
+  candidate tools, its encrypted payload and this audit; server code is unchanged.
+
+## Phone gate
+
+Import as a separate **Widgy City Reuse Test 1** and assign it on the Home Screen.
+After its initial load, make three ordinary Calendar-to-Home-and-back switches.
+Report whether the wait improved, stayed the same or worsened; whether the city
+stays correct on both tabs; and whether the map disappears. Keep the stable
+copy available. No stopwatch, GPS upload, calendar disclosure or video is needed.
+Native result pending. Continue based on this result, without declaring a
+successful end-to-end speed improvement or adding another confounding change.
