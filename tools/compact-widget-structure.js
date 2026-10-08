@@ -56,11 +56,12 @@ export function shareDotsClock(w) {
   w['36']=w['36'].filter(v=>!names.has(v['1']));w['36'].splice(at,0,tick);
   return changes;
 }
-function inlineSingleTextSources(w){
+export function inlineSingleTextSources(w, accept = () => true){
   const changed=[];
   // Only unformatted String variables with a single text consumer, no native
   // visibility/UUID consumers, and no other variable consumers are eligible.
   for(const v of [...w['36']]){
+    if(!accept(v))continue;
     if(v['2']!==0 || !/^(calendar_|steps_label$)/.test(v['1']))continue;
     const allowed=new Set(['z','s','d','e','66']);
     if(Object.keys(v['3']).some(k=>!allowed.has(k)) || v['3']['66']?.length!==1)continue;
