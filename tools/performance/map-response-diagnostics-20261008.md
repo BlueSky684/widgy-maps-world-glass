@@ -157,4 +157,7 @@ month/grid dots response prepared in72.4ms,7,513bytes,REUSE. Only offset0 was
 observed. No phone-side geocoder requests or duration can be inferred from
 these server records. The owner has reported completing the transitions, but
 has not yet said whether the second Home return remained slow in this round.
-Clarify that observation before another performance variant or new import.
+At18:13:50 the owner clarified that the second return was significantly slower.
+This is a subjective native result despite server reuse, not a measured phone
+duration. The next scoped city-stage timing copy is documented in
+city-timing-1-review.md; do not ask this same completed question again.

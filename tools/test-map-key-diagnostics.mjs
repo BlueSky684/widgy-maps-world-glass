@@ -4,7 +4,7 @@ import {execFileSync} from 'node:child_process';
 import {randomUUID} from 'node:crypto';
 import vm from 'node:vm';
 import {createMapRenderCache} from '../lib/map-render-cache.js';
-import {compareMapRequestKeys} from '../lib/map-request-key-diagnostics.js';
+import {compareMapRequestKeys, readCityTimingTrace} from '../lib/map-request-key-diagnostics.js';
 import {parseMapRequest} from '../lib/native-map-request.js';
 import {resolveLocation} from '../lib/map-astronomy-location.js';
 
@@ -14,7 +14,7 @@ const route = readFileSync(new URL('../api/night-map.js', import.meta.url), 'utf
 const parent = execFileSync('git', ['show', '910cf71ced7ed8086286f84cebe26866d5986647:api/night-map.js'], {encoding:'utf8'});
 function instance(source) {
   const logs = []; let renders = 0;
-  const context = {Date:Clock, Buffer, URLSearchParams, randomUUID, compareMapRequestKeys,
+  const context = {Date:Clock, Buffer, URLSearchParams, randomUUID, compareMapRequestKeys, readCityTimingTrace,
     performance:{now:()=>now}, console:{info:line=>logs.push(JSON.parse(line)), error(){}},
     parseMapRequest, resolveLocation, REVISION:'synthetic', precomputedState:()=> 'HIT',
     createMapRenderCache:()=>createMapRenderCache({now:()=>now}),
@@ -87,4 +87,11 @@ assert.equal(other.logs.at(-1).previousKeyComparison,'first');
 const logText = JSON.stringify([...after.logs,...other.logs]);
 for (const secret of ['PRIVATE_CITY_SENTINEL','OTHER_PRIVATE_CITY','PRIVATE_TOKEN_SENTINEL','lat=', 'lon=', '0.00001', first.headers.etag])
   assert(!logText.includes(secret),'No sensitive request/key/image contents in logs');
+await compare({city_trace_v1:'fetch:2345'});
+assert.equal(prepared().clientCityPath,'fetch');
+assert.equal(prepared().clientCityScriptMs,2345);
+assert.equal(prepared().cache,'HIT','Client timing must not change render-cache identity');
+await compare({city_trace_v1:'PRIVATE_UNTRUSTED_SENTINEL'});
+assert.equal(prepared().clientCityPath,undefined);
+assert(!JSON.stringify(after.logs).includes('PRIVATE_UNTRUSTED_SENTINEL'));
 console.log('PASS: parent-equivalent responses, exact GPS/city changes, minute crossing, expiry, bypass, concurrent coalescing, independent instance identity and private diagnostic fields.');
