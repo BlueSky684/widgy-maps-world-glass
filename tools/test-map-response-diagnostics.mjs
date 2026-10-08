@@ -1,3 +1,4 @@
+import {createCityReuseCache} from '../lib/city-reuse-cache.js';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
@@ -10,7 +11,7 @@ import {compareMapRequestKeys, readCityTimingTrace} from '../lib/map-request-key
 let now=Date.parse('2026-10-08T12:54:00Z'), fail=false, renders=0;
 const logs=[];
 class Clock extends Date {constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}}
-const context={Date:Clock,URLSearchParams,Buffer,randomUUID,compareMapRequestKeys,readCityTimingTrace,performance:{now:()=>now},
+const context={Date:Clock,URLSearchParams,createCityReuseCache:()=>createCityReuseCache({now:()=>now}),Buffer,randomUUID,compareMapRequestKeys,readCityTimingTrace,performance:{now:()=>now},
   console:{info(line){logs.push(JSON.parse(line));},error(){}},
   parseMapRequest,resolveLocation,REVISION:'diagnostic-test',precomputedState:()=> 'HIT',
   createMapRenderCache:()=>createMapRenderCache({now:()=>now}),

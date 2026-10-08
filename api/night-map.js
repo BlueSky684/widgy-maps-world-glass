@@ -4,8 +4,10 @@ import {createMapRenderCache} from '../lib/map-render-cache.js';
 import {precomputedState} from '../lib/map-precomputed.js';
 import {randomUUID} from 'node:crypto';
 import {compareMapRequestKeys, readCityTimingTrace} from '../lib/map-request-key-diagnostics.js';
+import {createCityReuseCache} from '../lib/city-reuse-cache.js';
 
 const cachedRender = createMapRenderCache();
+const cachedCity = createCityReuseCache();
 // Opaque process-local identity distinguishes separate warm caches. It is not
 // derived from the device, location, request, or deployment credentials.
 const instance = randomUUID();
@@ -18,6 +20,21 @@ const syntheticCDNQuery = new URLSearchParams('mode=live&width=3306&presentation
 // This route is opt-in. Existing widget endpoints retain their behavior.
 export default async function handler(req, res) {
   const requestStarted = performance.now();
+  const url = parseMapRequest(req.url);
+  if (url.searchParams.get('city_cache_v1') === 'read') {
+    res.setHeader('Cache-Control', 'private, no-store, max-age=0');
+    res.setHeader('CDN-Cache-Control', 'no-store');
+    res.setHeader('Vercel-CDN-Cache-Control', 'no-store');
+    if (req.method && !['GET', 'HEAD'].includes(req.method)) {
+      res.setHeader('Allow', 'GET, HEAD');
+      return res.status(405).end();
+    }
+    const result = cachedCity.read(url), status = result.state === 'INVALID' ? 400 : 200;
+    if (result.state === 'HIT') res.setHeader('Cache-Control', `private, max-age=${result.remainingSeconds}, must-revalidate`);
+    console.info(JSON.stringify({event:'city_cache_response_v1', state:result.state, status, instance,
+      elapsedMs:Math.round((performance.now() - requestStarted) * 10) / 10}));
+    return req.method === 'HEAD' ? res.status(status).end() : res.status(status).json({state:result.state, ...(result.entry ? {entry:result.entry} : {})});
+  }
   const instanceRequest = ++instanceRequests;
   // Native black-image reports cannot be diagnosed from render errors alone.
   // Do not record the URL, query, coordinates, city, headers or image content.
@@ -37,7 +54,6 @@ export default async function handler(req, res) {
     report('prepared', {status: 405, bodyBytes: 0});
     return res.status(405).end();
   }
-  const url = parseMapRequest(req.url);
   const fixed = url.searchParams.get('at');
   // An explicit fixed UTC instant is for reproducible geometric checks only.
   // Widgy's t= cache buster never controls the solar instant.
@@ -53,6 +69,7 @@ export default async function handler(req, res) {
     return res.status(400).json({error:'Unsupported image width'});
   }
   const location = resolveLocation(url, req.headers);
+  cachedCity.remember(url);
   const presentation = url.searchParams.get('presentation') === 'glass' ? 'glass' : 'default';
   const atlas = url.searchParams.get('atlas') === 'r6' ? 'r6' : 'f50';
   try {

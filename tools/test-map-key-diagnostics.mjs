@@ -1,3 +1,4 @@
+import {createCityReuseCache} from '../lib/city-reuse-cache.js';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
@@ -14,7 +15,7 @@ const route = readFileSync(new URL('../api/night-map.js', import.meta.url), 'utf
 const parent = execFileSync('git', ['show', '910cf71ced7ed8086286f84cebe26866d5986647:api/night-map.js'], {encoding:'utf8'});
 function instance(source) {
   const logs = []; let renders = 0;
-  const context = {Date:Clock, Buffer, URLSearchParams, randomUUID, compareMapRequestKeys, readCityTimingTrace,
+  const context = {Date:Clock, Buffer, URLSearchParams,createCityReuseCache:()=>createCityReuseCache({now:()=>now}), randomUUID, compareMapRequestKeys, readCityTimingTrace,
     performance:{now:()=>now}, console:{info:line=>logs.push(JSON.parse(line)), error(){}},
     parseMapRequest, resolveLocation, REVISION:'synthetic', precomputedState:()=> 'HIT',
     createMapRenderCache:()=>createMapRenderCache({now:()=>now}),
