@@ -2,8 +2,14 @@ import {renderHomeMap, resolveLocation, REVISION} from '../lib/home-map-day-nigh
 import {parseMapRequest} from '../lib/native-map-request.js';
 import {createMapRenderCache} from '../lib/map-render-cache.js';
 import {precomputedState} from '../lib/map-precomputed.js';
+import {randomUUID} from 'node:crypto';
+import {compareMapRequestKeys} from '../lib/map-request-key-diagnostics.js';
 
 const cachedRender = createMapRenderCache();
+// Opaque process-local identity distinguishes separate warm caches. It is not
+// derived from the device, location, request, or deployment credentials.
+const instance = randomUUID();
+let instanceRequests = 0, previousCacheKey = null, previousCacheRequestAt = null;
 // CDN delivery trial is restricted to one public synthetic map. Real device
 // locations, city text, extra/duplicate parameters and normal exports remain
 // private. This response never depends on request IP or calendar data.
@@ -12,12 +18,13 @@ const syntheticCDNQuery = new URLSearchParams('mode=live&width=3306&presentation
 // This route is opt-in. Existing widget endpoints retain their behavior.
 export default async function handler(req, res) {
   const requestStarted = performance.now();
+  const instanceRequest = ++instanceRequests;
   // Native black-image reports cannot be diagnosed from render errors alone.
   // Do not record the URL, query, coordinates, city, headers or image content.
   // Vercel supplies the request ID around each line, including timed-out calls.
   const method = req.method === 'HEAD' ? 'HEAD' : !req.method || req.method === 'GET' ? 'GET' : 'OTHER';
   const report = (phase, details = {}) => console.info(JSON.stringify({
-    event: 'night_map_response_v1', phase, method,
+    event: 'night_map_response_v1', phase, method, instance, instanceRequest,
     elapsedMs: Math.round((performance.now() - requestStarted) * 10) / 10,
     ...details
   }));
@@ -60,8 +67,16 @@ export default async function handler(req, res) {
     // Reuse for at most 60 seconds from the actual render, even across a
     // wall-clock minute boundary. GPS, city, style and size still key the cache.
     const render = () => renderHomeMap({date, location, width, presentation, diagnostic, atlas});
+    const cacheKey = JSON.stringify([REVISION, width, presentation, atlas, diagnostic, location]);
+    let keyDiagnostic = {previousKeyComparison: 'bypass', previousKeyChanges: [], previousRequestAgeMs: null};
+    if (reuse) {
+      keyDiagnostic = {...compareMapRequestKeys(previousCacheKey, cacheKey),
+        previousRequestAgeMs: previousCacheRequestAt === null ? null : Math.round(requestStarted - previousCacheRequestAt)};
+      previousCacheKey = cacheKey;
+      previousCacheRequestAt = requestStarted;
+    }
     const result = reuse ? await cachedRender(
-      JSON.stringify([REVISION, width, presentation, atlas, diagnostic, location]),
+      cacheKey,
       {expiresAt: date.getTime() + 60000, renderedAt: date.toISOString(), render}
     ) : {entry: {png: await render(), renderedAt: date.toISOString()}, state: 'BYPASS'};
     const {entry} = result;
@@ -97,7 +112,7 @@ export default async function handler(req, res) {
     // "prepared" is server evidence only: it does not assert network delivery
     // or that Widgy decoded/displayed the image. A PNG above the platform body
     // budget can still fail after the function adapter processes this response.
-    report('prepared', {status: notModified ? 304 : 200, cache: result.state,
+    report('prepared', {status: notModified ? 304 : 200, cache: result.state, ...keyDiagnostic,
       pngBytes: entry.png.length, bodyBytes: notModified || method === 'HEAD' ? 0 : entry.png.length,
       conditional: tags.length > 0 && tags[0] !== '', precomputed: precomputedState()});
     if (notModified) return res.status(304).end();

@@ -33,7 +33,7 @@ server preparation only; it does not measure transfer or Widgy rendering.
 Provider wait includes awaiting an already in-flight request, not necessarily
 a new external call. A warm REUSE does not prove cache sharing across instances.
 The 25 possible offsets allow investigation of hidden-month traffic without
-recording the owner's actual calendar dates or querying private calendars.
+recording the owner's actual calendar dates or adding provider queries.
 
 There is no widget export/copy-page, map, city, navigation, artwork, event
 selection, HTTP caching, authentication or provider algorithm change. The
@@ -51,3 +51,25 @@ before publishing on `f50-widget-test`; production remains unchanged.
 
 Next correlate ordinary Home/Calendar transitions with prepared server records.
 Do not claim a speed fix from instrumentation or ask for another full import.
+
+## Observed native transitions, 17:45–17:48 Asia/Jerusalem
+
+The owner completed the requested Home/Calendar transitions and reported done
+at17:48:26. The runtime window14:43–14:48:58Z contains no agent HTTP probes.
+At17:17 an earlier, separate agent check used the installed today URL once;
+its body was not printed or saved. It must not be counted as a native request.
+
+In the native window, eight repeated today responses reused provider data and
+prepared in6.7–11.1ms. The two MISS responses prepared in676.7ms and254.0ms;
+provider waits were618.6ms and235.5ms respectively. One dots request used the
+current month, bounds=grid, REUSE, prepared in75.1ms and produced7,513bytes.
+All observed Calendar requests used offset0; there is no observed fetch of
+all25 month panes in this window. Provider-type counts were2Google,2iCloud,
+1holiday. These are selected-source counts, not repeated external-call counts.
+No matching runtime errors were returned. A fast prepared response does not
+measure native GPS/geocoding, network transfer, decoding or display latency.
+
+The map prepared four200/MISS images in about39seconds at17:47–17:48, each
+roughly4.07MB and739–846ms. This supports investigating repeated map work; it
+does not prove identical requests, actual downloads, or the black-frame cause.
+See map-response-diagnostics-20261008.md for the next diagnostic boundary.

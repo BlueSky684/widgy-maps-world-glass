@@ -8,6 +8,8 @@ import {renderHomeMap} from '../lib/home-map-day-night.js';
 import {createMapRenderCache} from '../lib/map-render-cache.js';
 import {parseMapRequest} from '../lib/native-map-request.js';
 import {resolveLocation} from '../lib/map-astronomy-location.js';
+import {randomUUID} from 'node:crypto';
+import {compareMapRequestKeys} from '../lib/map-request-key-diagnostics.js';
 assert.equal(mapRefreshStamp(new Date('2026-10-05T18:38:18Z')),'MAP TIME 2026-10-05 21:38:18 ISRAEL');
 assert.equal(mapRefreshStamp(new Date('2026-12-01T18:38:18Z')),'MAP TIME 2026-12-01 20:38:18 ISRAEL');
 assert.throws(()=>mapRefreshStamp(new Date('invalid')),/invalid_map_date/);
@@ -16,7 +18,7 @@ assert.throws(()=>mapRefreshStamp(new Date('invalid')),/invalid_map_date/);
 // cache/parser/resolver. This does not emulate Widgy or make network requests.
 let now=Date.parse('2026-10-05T18:00:00Z'),renders=[];
 class ControlledDate extends Date{constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}}
-const ctx={Date:ControlledDate,Buffer,URLSearchParams,performance:{now:()=>now},console,
+const ctx={Date:ControlledDate,Buffer,URLSearchParams,randomUUID,compareMapRequestKeys,performance:{now:()=>now},console,
  parseMapRequest,resolveLocation,REVISION:'test',precomputedState:()=> 'test',
  createMapRenderCache:()=>createMapRenderCache({now:()=>now}),
  async renderHomeMap(options){

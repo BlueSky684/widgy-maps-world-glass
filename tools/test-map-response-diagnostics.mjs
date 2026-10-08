@@ -4,11 +4,13 @@ import vm from 'node:vm';
 import {createMapRenderCache} from '../lib/map-render-cache.js';
 import {parseMapRequest} from '../lib/native-map-request.js';
 import {resolveLocation} from '../lib/map-astronomy-location.js';
+import {randomUUID} from 'node:crypto';
+import {compareMapRequestKeys} from '../lib/map-request-key-diagnostics.js';
 
 let now=Date.parse('2026-10-08T12:54:00Z'), fail=false, renders=0;
 const logs=[];
 class Clock extends Date {constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}}
-const context={Date:Clock,URLSearchParams,Buffer,performance:{now:()=>now},
+const context={Date:Clock,URLSearchParams,Buffer,randomUUID,compareMapRequestKeys,performance:{now:()=>now},
   console:{info(line){logs.push(JSON.parse(line));},error(){}},
   parseMapRequest,resolveLocation,REVISION:'diagnostic-test',precomputedState:()=> 'HIT',
   createMapRenderCache:()=>createMapRenderCache({now:()=>now}),
@@ -44,5 +46,13 @@ const text=JSON.stringify(logs);
 for(const value of ['PRIVATE_CITY_SENTINEL','PRIVATE_TOKEN_SENTINEL','PRIVATE_AGENT_SENTINEL','lat=','lon=','synthetic PNG bytes',first.res.headers.etag])
   assert(!text.includes(value),'Diagnostics must exclude request and image content');
 const keys=new Set(['event','phase','method','elapsedMs','status','cache','pngBytes','bodyBytes','conditional','precomputed','reason']);
+for (const key of ['instance','instanceRequest','previousKeyComparison','previousKeyChanges','previousRequestAgeMs']) keys.add(key);
 for(const entry of logs)for(const key of Object.keys(entry))assert(keys.has(key),'Unexpected logged field');
+assert.equal(first.logs[1].previousKeyComparison,'first');
+assert.equal(first.logs[1].previousRequestAgeMs,null);
+assert.equal(repeat.logs[1].previousKeyComparison,'same');
+assert.equal(repeat.logs[1].previousRequestAgeMs,0);
+assert.equal(first.logs[0].instance,repeat.logs[1].instance);
+assert.equal(repeat.logs[0].instanceRequest,first.logs[0].instanceRequest+1);
+assert.match(first.logs[0].instance,/^[0-9a-f-]{36}$/);
 console.log('PASS: safe start/response/error diagnostics; unchanged MISS/HIT/304/HEAD and private cache behavior; rejected requests; render-failure recovery; no query/location/city/token/header/image content in logs.');
