@@ -1,5 +1,54 @@
 # Calendar Direct Data Test 1 — 2026-10-08
 
+## Outcome: failed city-display gate; retired as a candidate
+
+At 22:34 Asia/Jerusalem the owner identifies IMG_0104.jpeg as the latest
+version. Calendar shows its pin but no city or country text. The date, grid,
+separators, dots and empty-day panel are visible. The screenshot does not
+establish Home-map behavior, transition speed or populated-event rendering.
+Do not count this as a successful optimization or request more trials tonight.
+Keep Calendar Compact Stable Test 1 as the last known working control and the
+older Native Steps Ring 2 backup. Compact Stable is not proven immune to the
+intermittent city/map issues. Retain this candidate only for reproduction.
+
+Rechecked the actual delivered 915426-byte JSON, SHA256
+26fad1361d77da5349e30e16cbf586a3487e9c613cfdaca14b40d6a3a573f8eb:
+it exactly equals the tested transform of Compact Stable. The whole-document
+whitelist test passes, including every retained variable, city layer, fallback
+guard and Home node. This verifies file structure, not native rendering.
+Neither source equality nor this screenshot establishes whether the data-source
+move caused the blank city, or an existing intermittent binding problem recurred.
+Do not blame Widgy, the network, or the nine moved fields as a proven cause.
+
+Preview dpl_6hRFu7bCrp93MVKG1yHzp7PH4HJ5 was READY at source commit
+5f258a5dd578c4ae0bc56d48c2b369ea0aa6b9e4, target null. The three public copy
+files matched local bytes over HTTP 200. The synthetic 0,0/Example agent probe
+completed 19:27:28.747 UTC, request
+sfo1::fra1::x9stz-1791487645190-22c58cb8db38, with a complete nonblack
+3306x1558 PNG of 4359983 bytes. Exclude it from native observations.
+
+Read-only logs for 19:28:00–19:35:30 UTC, with no agent map/provider requests
+inside that window, show:
+
+- 26 city-cache responses: two MISS then 24 HIT; HIT server time 0.1–0.4 ms.
+  HIT logs do not prove Calendar received or displayed the city, and contain no
+  per-widget-copy attribution or raw city/location.
+- Four prepared map responses, all 200/full-body/nonconditional: three MISS
+  at 999.3, 945.5 and 961.8 ms, then HIT at 1 ms. PNGs are 4348076–4349763
+  bytes. The last request changes only minute_stamp but reuses identical image
+  bytes. The first previous-key comparison includes the earlier synthetic
+  probe and is not evidence of user movement. Prepared is not phone delivery.
+- 26 today-data responses: two provider MISS at 448.7 and 264.7 ms and 24
+  REUSE at 5.5–10.4 ms. Two offset-zero dot responses at 76.6 and 1.4 ms,
+  each 7513 bytes. All selected responses are 200. These server timings are
+  not end-to-end phone timings or a controlled per-copy speed comparison.
+
+Next investigation must isolate city data availability, variable substitution
+and fallback visibility in the native widget before more speed variants. No
+new widget, backend change or production publication accompanies this record.
+
+## Original trial and prepublication checks
+
 At22:18 Israel the owner requests one final test before sleep. Direct City1
 failed its city-display gate and remains retired. Start from the exact current
 Compact Stable1 export, not the country-only candidate. Its source SHA256 is
