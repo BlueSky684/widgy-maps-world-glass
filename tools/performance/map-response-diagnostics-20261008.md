@@ -126,3 +126,35 @@ absence of sensitive sentinels in logs. Existing diagnostic tests and actual
 full-size PNG regression must pass, followed by the configured build before
 publishing only the f50-widget-test preview. A synthetic deployed pair will
 check the new log fields; native observations remain necessary for attribution.
+
+## Native follow-up reported done at18:10:11 Asia/Jerusalem
+
+Diagnostics97d4b8b were published to previewdpl_6Qk7vwrAAiPR8Q74ts1qAGChRr51,
+READY at18:07:10. Production remained3ff3cd9. Local response-equivalence,
+concurrency, privacy, real full-size PNG regression and configured build passed.
+Two separate agent probes at18:07:34/44 used synthetic0,0/Example: MISS869.6ms,
+then HIT0.7ms, with identical delivered4,101,971-byte3306x1558 PNGs. These are
+agent requests, not native evidence. They precede and affect the next-key
+comparison; do not attribute their location differences to phone GPS jitter.
+
+In the subsequent native-only18:08–18:10:25 window:
+
+| Request start (Israel) | Prepared ms | Cache | Previous key | PNG/body bytes |
+| --- | ---: | --- | --- | ---: |
+| 18:09:45.431 | 860.9 | MISS | changed from agent synthetic request120.842s earlier | 4098212 |
+| 18:10:03.075 | 0.5 | HIT | same,17.643s after preceding native request | 4098212 |
+
+Both native requests used the same opaque instance ID. The second proves the
+normalized coordinates, city and rendering options were identical for THIS
+pair and that the existing render cache was used. It was still an unconditional
+200 response with the full PNG body prepared. No phone transfer/decode time or
+native display result is established by this. It neither explains the earlier
+four-MISS window nor supports rounding GPS or increasing cache TTL now.
+
+Calendar in this same window prepared its first today response in243.8ms
+(providerMISS229.3ms wait), then fourREUSE responses in8.0–10.4ms. One current
+month/grid dots response prepared in72.4ms,7,513bytes,REUSE. Only offset0 was
+observed. No phone-side geocoder requests or duration can be inferred from
+these server records. The owner has reported completing the transitions, but
+has not yet said whether the second Home return remained slow in this round.
+Clarify that observation before another performance variant or new import.
