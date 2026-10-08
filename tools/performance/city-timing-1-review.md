@@ -70,7 +70,24 @@ done. No coordinate screenshot, manual stopwatch, video or provider setup.
 Correlate only subsequent native requests, excluding the agent's synthetic probe.
 After diagnosis return to the normal copy; this is not a performance fix.
 
-## Offline codec check, not adopted
+## Native city measurement, 18:57 Israel
+
+The owner reports completion at18:57:41. In the native-only18:40–18:57:58
+window on b19aad7, the two map responses report clientCityPath=fetch and
+clientCityScriptMs=618/605. The GPS/city/options key is identical and both
+requests use instance97451da6-7813-42ee-b121-f927a721407a. The first map is
+MISS1497.3ms at18:57:13.921; the second is HIT0.6ms at18:57:23.899. Both
+prepare HTTP200,4,170,206-byte full PNG bodies, with no conditional request.
+This confirms repeated accepted external city lookup in these executions;
+it does not establish why the best-effort JS memory was unused or explain
+the full perceived Home wait. The changing timing suffix remains a native
+image-cache confound. Calendar initially takes800.4ms, dots83.5ms, then
+today REUSE6.2–8.2ms. No agent request occurs in this correlation window.
+
+Next opt-in trial is documented in server-city-cache-1-review.md. Do not keep
+the timing copy installed as a speed fix.
+
+## Offline codec check, not adopted (details)
 
 Using the unchanged renderer at synthetic0,0/Example and2026-10-08T15:10:00Z,
 the PNG is4,106,607bytes. Pillow12.3.0 WebP lossless with exact=True and the
