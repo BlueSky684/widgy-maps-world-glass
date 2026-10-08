@@ -1,5 +1,36 @@
 # City Reuse Test 1 — 2026-10-08
 
+At 17:08 the owner reports no perceived Calendar transition speed improvement
+with the city now visible. Do not promote sharing as a performance fix or remove
+the working city path on this evidence. Next inspect actual Calendar request
+latency/counts; see `calendar-response-diagnostics-20261008.md`.
+
+## Follow-up at 16:54–16:56 — city visible in the unchanged trial
+
+The owner supplied native export `20261008-135420` (949,056 bytes), titled
+`Widgy City Reuse Test 1`, then confirmed that the city is currently visible.
+IMG_0096 shows `Ashdod, Israel` in Calendar on the Home Screen. Inspection of
+the supplied export finds all 81 variables identical to the original trial;
+after decoding native custom-shape JSON, the only document difference is the
+next-ID field `a2` (82316 to 82318). There are still 1,415 layer/group nodes.
+The independent-city recovery payload was therefore not the source of this
+export. Do not describe the observed city return as a recovery-code success.
+
+The current Calendar city script already extracts the encoded city from
+`map_request` and contains no fetch or reverse-geocoder. One custom geocoder
+implementation remains, in the map source. This is a source-code fact, not
+proof of one physical lookup per native refresh: variable re-evaluation and
+JS-context cache retention remain unmeasured.
+
+The screenshot cannot distinguish the shared-map city path from the native
+Location/City fallback, because both intentionally have the same appearance.
+It also supplies no timing or movement/freshness result. The earlier blank-city
+observation still stands, but the stronger inference that the dependency never
+works is unwarranted. Preserve the owner's currently working copy while checking
+ordinary Calendar transition latency and recurrence. Do not send another import
+or restore the shared trial as the copy-page default solely from this screenshot.
+The existing recovery page and server code remain unchanged.
+
 ## RETIRED at 16:24 — Calendar city missing on Home Screen
 
 IMG_0094 shows Calendar on the iPhone Home Screen: location icon and date are
