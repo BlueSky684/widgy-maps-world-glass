@@ -1,0 +1,137 @@
+{
+  "kind": "current-private-export-redacted-dependency-audit",
+  "title": "Widgy Server City Cache Test 1",
+  "layers": 1415,
+  "variables": 81,
+  "javascriptSources": 88,
+  "unreachableVariables": [
+    "steps_goal",
+    "steps_progress"
+  ],
+  "calendarJSONBindings": 39,
+  "calendarUniqueURLCount": 1,
+  "calendarDotURLScripts": 25,
+  "calendarSeparatorRectangles": 300,
+  "mapConsumers": [
+    {
+      "id": 6170,
+      "name": "Home Hero World Map"
+    }
+  ],
+  "mapVariableConsumers": [
+    "calendar_city_prefix"
+  ],
+  "tabs": [
+    {
+      "tab": "HOME",
+      "layers": 141,
+      "variables": [
+        "Latitude",
+        "Longitude",
+        "calendar_home_count",
+        "calendar_home_event_word",
+        "calendar_home_meta",
+        "calendar_home_title",
+        "day_greeting",
+        "day_progress",
+        "map_latitude_max5",
+        "map_longitude_max5",
+        "map_request",
+        "steps_label",
+        "steps_today",
+        "wx_status",
+        "wx_wind_speed"
+      ]
+    },
+    {
+      "tab": "CALENDAR",
+      "layers": 1222,
+      "variables": [
+        "Latitude",
+        "Longitude",
+        "calendar_bridge_count",
+        "calendar_bridge_ready",
+        "calendar_city_prefix",
+        "calendar_dots_url_m1",
+        "calendar_dots_url_m10",
+        "calendar_dots_url_m11",
+        "calendar_dots_url_m12",
+        "calendar_dots_url_m2",
+        "calendar_dots_url_m3",
+        "calendar_dots_url_m4",
+        "calendar_dots_url_m5",
+        "calendar_dots_url_m6",
+        "calendar_dots_url_m7",
+        "calendar_dots_url_m8",
+        "calendar_dots_url_m9",
+        "calendar_dots_url_p0",
+        "calendar_dots_url_p1",
+        "calendar_dots_url_p10",
+        "calendar_dots_url_p11",
+        "calendar_dots_url_p12",
+        "calendar_dots_url_p2",
+        "calendar_dots_url_p3",
+        "calendar_dots_url_p4",
+        "calendar_dots_url_p5",
+        "calendar_dots_url_p6",
+        "calendar_dots_url_p7",
+        "calendar_dots_url_p8",
+        "calendar_dots_url_p9",
+        "calendar_event_1_all_day",
+        "calendar_event_1_color",
+        "calendar_event_1_detail_icon",
+        "calendar_event_1_end",
+        "calendar_event_1_location",
+        "calendar_event_1_start",
+        "calendar_event_1_title",
+        "calendar_event_1_title_layout",
+        "calendar_event_2_all_day",
+        "calendar_event_2_color",
+        "calendar_event_2_detail_icon",
+        "calendar_event_2_end",
+        "calendar_event_2_location",
+        "calendar_event_2_start",
+        "calendar_event_2_title",
+        "calendar_event_2_title_layout",
+        "calendar_event_3_all_day",
+        "calendar_event_3_color",
+        "calendar_event_3_detail_icon",
+        "calendar_event_3_end",
+        "calendar_event_3_location",
+        "calendar_event_3_start",
+        "calendar_event_3_title",
+        "calendar_event_3_title_layout",
+        "calendar_event_4_all_day",
+        "calendar_event_4_color",
+        "calendar_event_4_detail_icon",
+        "calendar_event_4_end",
+        "calendar_event_4_location",
+        "calendar_event_4_start",
+        "calendar_event_4_title",
+        "calendar_event_4_title_layout",
+        "calendar_month_layouts",
+        "calendar_native_city",
+        "calendar_remaining_today",
+        "calendar_today_cell",
+        "map_latitude_max5",
+        "map_longitude_max5",
+        "map_request"
+      ]
+    },
+    {
+      "tab": "WEATHER",
+      "layers": 24,
+      "variables": []
+    },
+    {
+      "tab": "FITNESS",
+      "layers": 24,
+      "variables": []
+    }
+  ],
+  "limits": [
+    "Definition counts are not runtime evaluations or requests.",
+    "No endpoint URLs, user GPS, city, event text or credentials included.",
+    "Earlier native static-map, local-image and half-resolution trials showed no perceived benefit; do not repeat as a new solution."
+  ]
+}
