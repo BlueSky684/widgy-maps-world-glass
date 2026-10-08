@@ -1,5 +1,27 @@
 # City Reuse Test 1 — 2026-10-08
 
+## Phone update at 15:48–15:50 Asia/Jerusalem
+
+IMG_0091 shows the Widgy overview named City Reuse Test 1 with a black/empty map
+frame; the native day-gauge fill is visible. The owner then reports that the map
+returned and says this is the previous stable map version. It remains unclear
+whether it returned in the same candidate or after switching widget copies.
+Do not label this a permanent failure or attribute it uniquely to the new
+dependency. The narrow recent preview error/fatal log query returned no groups;
+that does not establish successful native image requests.
+
+A recovery page was prepared locally, then canceled before any GitHub/Vercel
+publication when the return was reported. The active deployment remains 8e09f53;
+the stable and trial copy pages remain as previously published. Next establish
+which widget copy recovered before choosing a rollback or another experiment.
+
+At 15:54 the owner clarified: re-entering the same widget in Widgy caused the
+image to load. IMG_0092 also shows the same blank map in the older Native Steps
+Ring copy (1,253 layers + 261 groups, 81 variables). Thus the new Calendar
+dependency is not the sole explanation. Its speed benefit remains unverified;
+neither a new import nor a rollback is needed for the next server-diagnostic gate.
+See `map-response-diagnostics-20261008.md`.
+
 Work branch: f50-widget-test. Stable control: deb632c58d1dee311b770fe1c7d9c52ce905065b,
 with the corrected native day-gauge order. Production remains unchanged.
 
