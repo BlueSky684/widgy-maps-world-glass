@@ -33,6 +33,22 @@ persistence and native HTTP image cache behavior remain unmeasured.
 
 ## Diagnostic change
 
+Observed native follow-up: IMG_0093 at16:10 still shows blank map inside Widgy.
+The owner clarified at16:13 that all map-disappearance checks so far were inside
+the app, with no Home Screen check yet. At16:10:11.445 the handler started and at
+16:10:13.146 prepared HTTP200/MISS with4,019,774 PNG/body bytes in1701.5ms, without
+a conditional request. This is temporally correlated server preparation, not
+proof of phone delivery or display. It rules out a304 for that recorded request.
+
+At16:24 IMG_0094 shows Calendar city missing on the actual Home Screen. That
+rejects the separate city-sharing trial; see its recovery note. It does not show
+the map, so Home Screen map disappearance remains unestablished. Between16:23:17
+and16:23:47 the diagnostic recorded four200/MISS responses, each about4.02MB,
+with preparation durations1454.1,793.7,840.4,810.3ms. Key/location changes versus
+separate function instances are not distinguishable from the privacy-preserving
+records. Do not claim GPS jitter, redundant same-key downloads, or cache failure
+as proven causes from these counts.
+
 Add structured `night_map_response_v1` records at request start and response
 preparation/error. Record only the normalized method, elapsed milliseconds,
 status, cache outcome, PNG/body byte counts, presence of a conditional request,
