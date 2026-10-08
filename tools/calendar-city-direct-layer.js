@@ -1,6 +1,8 @@
 import {flatten, variableReferences} from './compact-widget-structure.js';
 import {calendarCityFromMap} from './calendar-shared-city.js';
 
+// RETIRED 2026-10-08 22:13 Israel: native screenshot IMG_0103 shows country only.
+// Retained for reproduction, not further delivery. Use Compact Stable baseline.
 // Compatibility/performance probe, not a replacement for the normal export.
 // No persistent JS storage or native scheduling behavior is assumed.
 export function withCalendarCityDirectLayer(input) {
