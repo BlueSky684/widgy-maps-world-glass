@@ -1,3 +1,4 @@
+import {createMapURLDiagnostics} from '../lib/map-url-diagnostics.js';
 import {createCityReuseCache} from '../lib/city-reuse-cache.js';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -15,7 +16,7 @@ const route = readFileSync(new URL('../api/night-map.js', import.meta.url), 'utf
 const parent = execFileSync('git', ['show', '910cf71ced7ed8086286f84cebe26866d5986647:api/night-map.js'], {encoding:'utf8'});
 function instance(source) {
   const logs = []; let renders = 0;
-  const context = {Date:Clock, Buffer, URLSearchParams,createCityReuseCache:()=>createCityReuseCache({now:()=>now}), randomUUID, compareMapRequestKeys, readCityTimingTrace,
+  const context = {Date:Clock, Buffer, URLSearchParams,createMapURLDiagnostics,createCityReuseCache:()=>createCityReuseCache({now:()=>now}), randomUUID, compareMapRequestKeys, readCityTimingTrace,
     performance:{now:()=>now}, console:{info:line=>logs.push(JSON.parse(line)), error(){}},
     parseMapRequest, resolveLocation, REVISION:'synthetic', precomputedState:()=> 'HIT',
     createMapRenderCache:()=>createMapRenderCache({now:()=>now}),
@@ -42,11 +43,17 @@ const prepared = () => after.logs.at(-1);
 const first = await compare();
 assert.equal(prepared().previousKeyComparison,'first');
 assert.equal(prepared().instanceRequest,1);
+assert.equal(prepared().urlForRenderKey,'first');
 now += 2000;
 const nextMinute = await compare({t:'next-minute'});
 assert.equal(nextMinute.headers['x-map-cache'],'HIT');
 assert.equal(prepared().previousKeyComparison,'same','Timestamp query is not a render-cache key');
 assert.equal(prepared().previousRequestAgeMs,2000);
+assert.equal(prepared().urlForRenderKey,'changed');
+assert.equal(prepared().imageForRenderKey,'same');
+assert.deepEqual(prepared().urlChangesForRenderKey,['minute_stamp']);
+await compare({t:'next-minute'});
+assert.equal(prepared().urlForRenderKey,'same');
 await compare({}, {'if-none-match':first.headers.etag});
 await compare({}, {}, 'HEAD');
 await compare({lat:'0.00001'});

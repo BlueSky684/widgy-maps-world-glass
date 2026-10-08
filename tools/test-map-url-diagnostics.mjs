@@ -1,0 +1,24 @@
+import assert from 'node:assert/strict';
+import {createMapURLDiagnostics} from '../lib/map-url-diagnostics.js';
+
+let time=10000;
+const observe=createMapURLDiagnostics({maxEntries:2,now:()=>time});
+const input={key:'PRIVATE_RENDER_KEY',rawURL:'/api/night-map?lat=0&lon=0&city=PRIVATE_CITY&city_cache_scope=PRIVATE_SCOPE&t=100&city_cache_time=500',etag:'PRIVATE_ETAG'};
+const results=[];
+const call=changes=>{const r=observe({...input,...changes});results.push(r);return r;};
+assert.deepEqual(call({}),{urlForRenderKey:'first',imageForRenderKey:'first',urlChangesForRenderKey:[]});
+assert.deepEqual(call({}),{urlForRenderKey:'same',imageForRenderKey:'same',urlChangesForRenderKey:[]});
+assert.deepEqual(call({rawURL:input.rawURL.replace('t=100','t=101')}),{urlForRenderKey:'changed',imageForRenderKey:'same',urlChangesForRenderKey:['minute_stamp']});
+assert.deepEqual(call({rawURL:input.rawURL.replace('t=100','t=101').replace('time=500','time=600')}).urlChangesForRenderKey,['city_observation_time']);
+assert.deepEqual(call({rawURL:input.rawURL.replace('t=100','t=101').replace('time=500','time=600')+'&city_trace_v1=fetch:123'}).urlChangesForRenderKey,['city_timing_trace']);
+call({});
+assert.deepEqual(call({etag:'NEW_PRIVATE_ETAG'}),{urlForRenderKey:'same',imageForRenderKey:'changed',urlChangesForRenderKey:[]});
+call({key:'second'});call({});call({key:'third'});
+assert.equal(call({key:'second'}).urlForRenderKey,'first','History is bounded LRU');
+time+=3600000;assert.equal(call({}).urlForRenderKey,'first','History expires');
+assert.deepEqual(call({rawURL:'x'.repeat(16385)}),{});
+assert.deepEqual(call({etag:undefined}),{});
+assert.deepEqual(createMapURLDiagnostics({now:()=>{throw Error('diagnostic failure')}})(input),{});
+assert(!JSON.stringify(results).includes('PRIVATE'),'Output contains no raw data or digests');
+assert.equal(createMapURLDiagnostics()(input).urlForRenderKey,'first','New instance has no history');
+console.log('PASS: distinguish URL changes from image changes, classify minute/observation/trace without values, bounded expiring history, instance isolation and diagnostic failures leave delivery unaffected.');

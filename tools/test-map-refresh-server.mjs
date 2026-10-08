@@ -1,3 +1,4 @@
+import {createMapURLDiagnostics} from '../lib/map-url-diagnostics.js';
 import {createCityReuseCache} from '../lib/city-reuse-cache.js';
 import assert from 'node:assert/strict';
 import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
@@ -19,7 +20,7 @@ assert.throws(()=>mapRefreshStamp(new Date('invalid')),/invalid_map_date/);
 // cache/parser/resolver. This does not emulate Widgy or make network requests.
 let now=Date.parse('2026-10-05T18:00:00Z'),renders=[];
 class ControlledDate extends Date{constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}}
-const ctx={Date:ControlledDate,Buffer,URLSearchParams,createCityReuseCache:()=>createCityReuseCache({now:()=>now}),randomUUID,compareMapRequestKeys,readCityTimingTrace,performance:{now:()=>now},console,
+const ctx={Date:ControlledDate,Buffer,URLSearchParams,createMapURLDiagnostics,createCityReuseCache:()=>createCityReuseCache({now:()=>now}),randomUUID,compareMapRequestKeys,readCityTimingTrace,performance:{now:()=>now},console,
  parseMapRequest,resolveLocation,REVISION:'test',precomputedState:()=> 'test',
  createMapRenderCache:()=>createMapRenderCache({now:()=>now}),
  async renderHomeMap(options){

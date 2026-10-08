@@ -79,3 +79,28 @@ Confirm map/city, then Calendar separator lines/event dots and one next-month
 and return action. Finally compare two Home–Calendar–Home cycles. Ask for visual
 regressions and whether speed improves. Do not declare a performance win from
 the structural reduction. No unnecessary older comparison import is required.
+
+## Native outcome — 21:21 Israel
+
+The owner confirms the map loaded and Calendar lines/dots look correct. Entry
+to Calendar might be very slightly quicker, but not noticeably/significantly.
+Keep this as the current structurally simpler baseline, not a demonstrated
+speed fix. Home-return speed and next-month traversal were not separately
+reported in this reply; do not invent those results or infer all-month coverage.
+
+In the21:17–21:22 native-only log window on28c86b1, map responses were prepared
+HTTP200 with4,350,960–4,351,924-byte full bodies, conditional=false. Two warm
+responses took0.9/0.6ms; fresh renders took826.2–863.8ms. Coordinate changes
+occurred between some native requests; a return to a previously rendered key
+was still a HIT. The first native request's previous-key change from the agent
+synthetic probe is not evidence of native GPS jitter. The later same-key MISS
+was past the actual image lifetime; the preceding HIT did not extend expiry.
+City reads include22HITs and2MISSes. Calendar today REUSE was5.1–10.4ms;
+provider MISSes468.5/306.9ms; dots offset0 took83.2/50.9ms. No requests for all25
+month dot images are demonstrated. These are handler durations, not phone times.
+
+The21:16 agent probe delivered a complete decoded3306x1558PNG of4,350,146bytes,
+request75tt4-1791483379517-84ccdad07b48, and exact deployed copy-page bytes.
+Exclude it from native correlation. The current private export and copy URL
+remain unchanged. No additional import is needed for the next server-only
+URL/image identity diagnostic; see map-url-diagnostics-20261008.md.

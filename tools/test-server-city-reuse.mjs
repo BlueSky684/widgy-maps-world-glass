@@ -1,3 +1,4 @@
+import {createMapURLDiagnostics} from '../lib/map-url-diagnostics.js';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
@@ -15,7 +16,7 @@ let now=start, geocodes=0, reads=0, renders=0;
 class Clock extends Date {constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}}
 const logs=[];
 function instance() {
-  const ctx={Date:Clock,URLSearchParams,Buffer,randomUUID,compareMapRequestKeys,readCityTimingTrace,
+  const ctx={Date:Clock,URLSearchParams,createMapURLDiagnostics,Buffer,randomUUID,compareMapRequestKeys,readCityTimingTrace,
     performance:{now:()=>now},console:{info:s=>logs.push(JSON.parse(s)),error(){}},
     parseMapRequest,resolveLocation,REVISION:'synthetic',precomputedState:()=> 'HIT',
     createCityReuseCache:()=>createCityReuseCache({now:()=>now}),

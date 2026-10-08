@@ -5,9 +5,11 @@ import {precomputedState} from '../lib/map-precomputed.js';
 import {randomUUID} from 'node:crypto';
 import {compareMapRequestKeys, readCityTimingTrace} from '../lib/map-request-key-diagnostics.js';
 import {createCityReuseCache} from '../lib/city-reuse-cache.js';
+import {createMapURLDiagnostics} from '../lib/map-url-diagnostics.js';
 
 const cachedRender = createMapRenderCache();
 const cachedCity = createCityReuseCache();
+const observeMapURL = createMapURLDiagnostics();
 // Opaque process-local identity distinguishes separate warm caches. It is not
 // derived from the device, location, request, or deployment credentials.
 const instance = randomUUID();
@@ -129,7 +131,8 @@ export default async function handler(req, res) {
     // "prepared" is server evidence only: it does not assert network delivery
     // or that Widgy decoded/displayed the image. A PNG above the platform body
     // budget can still fail after the function adapter processes this response.
-    report('prepared', {status: notModified ? 304 : 200, cache: result.state, ...keyDiagnostic, ...readCityTimingTrace(url),
+    const urlDiagnostic = reuse && method === 'GET' ? observeMapURL({key:cacheKey, rawURL:req.url, etag:entry.etag}) : {};
+    report('prepared', {status: notModified ? 304 : 200, cache: result.state, ...keyDiagnostic, ...urlDiagnostic, ...readCityTimingTrace(url),
       pngBytes: entry.png.length, bodyBytes: notModified || method === 'HEAD' ? 0 : entry.png.length,
       conditional: tags.length > 0 && tags[0] !== '', precomputed: precomputedState()});
     if (notModified) return res.status(304).end();
