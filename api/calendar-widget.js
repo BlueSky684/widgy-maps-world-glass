@@ -14,6 +14,16 @@ export function clientMaxAge(snapshot,providerUntil,instant=Date.now()){
 }
 export default async function handler(req,res) {
   const started=performance.now();
+  const method=req.method==='GET'?'GET':req.method==='HEAD'?'HEAD':'OTHER';
+  // Log bounded operational fields only: never URLs, tokens, event content,
+  // source identifiers, credentials, coordinates or request headers.
+  const trace={};
+  let stage='validation';
+  const report=(phase,details={})=>console.info(JSON.stringify({
+    event:'calendar_response_v1',phase,method,
+    elapsedMs:Math.round((performance.now()-started)*10)/10,...trace,...details
+  }));
+  report('started');
   privateHeaders(res);
   let nativeFields=false;
   try {
@@ -30,16 +40,27 @@ export default async function handler(req,res) {
     const raw=url.searchParams.get('offset') || '0';
     if (!/^-?\d{1,2}$/.test(raw) || (view==='today' && Number(raw)!==0)) throw new BridgeError('invalid_month');
     const now=new Date(),window=monthWindow({offset:Number(raw),zone:state.zone,now});
+    Object.assign(trace,{view,bounds,offset:Number(raw),
+      validationMs:Math.round((performance.now()-started)*10)/10,
+      sources:{google:state.sources.filter(s=>s.provider==='google').length,
+        icloud:state.sources.filter(s=>s.provider==='icloud').length,
+        holidays:state.sources.filter(s=>s.provider==='apple-holidays').length}});
     const key=createHash('sha256').update(`${token}:${window.month.toISODate()}`).digest('hex');
     for(const [id,value] of cache) if(value.until<Date.now()) cache.delete(id);
     let entry=cache.get(key);
     const providerCache=entry?'REUSE':'MISS';
+    trace.providerCache=providerCache;
+    stage='provider';
+    const providerStarted=performance.now();
     if(!entry){
       if(cache.size>=50)cache.delete(cache.keys().next().value);
       entry={pending:readEvents(state,window),until:Date.now()+60000};cache.set(key,entry);
       entry.pending.catch(()=>cache.delete(key));
     }
     const events=await entry.pending;
+    trace.providerWaitMs=Math.round((performance.now()-providerStarted)*10)/10;
+    stage='response';
+    const responseStarted=performance.now();
     if(view==='today'){
       const snapshot=widgetSnapshot(events,window,new Date());
       const maxAge=clientMaxAge(snapshot,entry.until);
@@ -47,7 +68,9 @@ export default async function handler(req,res) {
       res.setHeader('Content-Type','application/json; charset=utf-8');
       res.setHeader('X-Calendar-Provider-Cache',providerCache);
       res.setHeader('Server-Timing',`calendar;dur=${(performance.now()-started).toFixed(1)}`);
-      return req.method==='HEAD'?res.status(200).end():res.status(200).json(nativeFields?widgyFields(snapshot):snapshot);
+      const body=nativeFields?widgyFields(snapshot):snapshot;
+      report('prepared',{status:200,responseMs:Math.round((performance.now()-responseStarted)*10)/10});
+      return req.method==='HEAD'?res.status(200).end():res.status(200).json(body);
     }
     const pngKey=bounds==='grid'?'pngGrid':'png';
     if(!entry[pngKey])entry[pngKey]=renderDots(events,window,{bounds});
@@ -60,8 +83,11 @@ export default async function handler(req,res) {
     res.setHeader('X-Calendar-Provider-Cache',providerCache);
     res.setHeader('Server-Timing',`calendar;dur=${(performance.now()-started).toFixed(1)}`);
     res.setHeader('X-Calendar-Generated-For',window.month.toFormat('yyyy-MM'));
+    report('prepared',{status:200,responseMs:Math.round((performance.now()-responseStarted)*10)/10,
+      pngBytes:png.length,bodyBytes:method==='HEAD'?0:png.length});
     return req.method==='HEAD'?res.status(200).end():res.status(200).send(png);
   } catch(error) {
+    report('failed',{status:error instanceof BridgeError?error.status:502,stage});
     return res.status(error instanceof BridgeError?error.status:502).json({
       ...(nativeFields?widgyFields(null):{}),error:error instanceof BridgeError?error.code:'calendar_read_failed'});
   }
