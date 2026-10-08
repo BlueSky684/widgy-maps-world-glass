@@ -37,7 +37,7 @@ async function load() {
     return;
   }
   try {
-    const response = await fetch('./widgy-gauge-1.enc.json', { credentials: 'omit', referrerPolicy: 'no-referrer' });
+    const response = await fetch('./widgy-gauge-1-clean.enc.json', { credentials: 'omit', referrerPolicy: 'no-referrer' });
     if (!response.ok) throw new Error('load_failed');
     const envelope = await response.json();
     if (envelope.v !== 1) throw new Error('version');
