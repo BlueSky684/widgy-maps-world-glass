@@ -37,7 +37,7 @@ async function load() {
     message('פתח את הקישור המלא מהשיחה כדי לטעון את הקובץ.', true); return;
   }
   try {
-    const response = await fetch('./widgy-stable-gauge-20261008.enc.json', {credentials:'omit', referrerPolicy:'no-referrer'});
+    const response = await fetch('./widgy-stable-gauge-20261008-v2.enc.json', {credentials:'omit', referrerPolicy:'no-referrer'});
     if (!response.ok) throw Error('load_failed');
     const envelope = await response.json();
     if (envelope.v !== 1) throw Error('version');
