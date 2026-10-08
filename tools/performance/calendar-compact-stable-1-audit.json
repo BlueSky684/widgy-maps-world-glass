@@ -1,0 +1,872 @@
+{
+  "before": {
+    "nodes": 1415,
+    "variables": 81,
+    "separatorDrawings": 300,
+    "dotURLScripts": 25
+  },
+  "after": {
+    "nodes": 1190,
+    "variables": 55,
+    "separatorDrawings": 75,
+    "dotClockScripts": 1
+  },
+  "separatorChanges": [
+    {
+      "group": 81125,
+      "kept": 81129,
+      "removed": [
+        81130,
+        81131
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81132,
+      "kept": 81136,
+      "removed": [
+        81137,
+        81138,
+        81139
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81140,
+      "kept": 81144,
+      "removed": [
+        81145,
+        81146,
+        81147,
+        81148
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81156,
+      "kept": 81160,
+      "removed": [
+        81161,
+        81162
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81163,
+      "kept": 81167,
+      "removed": [
+        81168,
+        81169,
+        81170
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81171,
+      "kept": 81175,
+      "removed": [
+        81176,
+        81177,
+        81178,
+        81179
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81187,
+      "kept": 81191,
+      "removed": [
+        81192,
+        81193
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81194,
+      "kept": 81198,
+      "removed": [
+        81199,
+        81200,
+        81201
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81202,
+      "kept": 81206,
+      "removed": [
+        81207,
+        81208,
+        81209,
+        81210
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81218,
+      "kept": 81222,
+      "removed": [
+        81223,
+        81224
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81225,
+      "kept": 81229,
+      "removed": [
+        81230,
+        81231,
+        81232
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81233,
+      "kept": 81237,
+      "removed": [
+        81238,
+        81239,
+        81240,
+        81241
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81249,
+      "kept": 81253,
+      "removed": [
+        81254,
+        81255
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81256,
+      "kept": 81260,
+      "removed": [
+        81261,
+        81262,
+        81263
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81264,
+      "kept": 81268,
+      "removed": [
+        81269,
+        81270,
+        81271,
+        81272
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81280,
+      "kept": 81284,
+      "removed": [
+        81285,
+        81286
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81287,
+      "kept": 81291,
+      "removed": [
+        81292,
+        81293,
+        81294
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81295,
+      "kept": 81299,
+      "removed": [
+        81300,
+        81301,
+        81302,
+        81303
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81311,
+      "kept": 81315,
+      "removed": [
+        81316,
+        81317
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81318,
+      "kept": 81322,
+      "removed": [
+        81323,
+        81324,
+        81325
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81326,
+      "kept": 81330,
+      "removed": [
+        81331,
+        81332,
+        81333,
+        81334
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81342,
+      "kept": 81346,
+      "removed": [
+        81347,
+        81348
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81349,
+      "kept": 81353,
+      "removed": [
+        81354,
+        81355,
+        81356
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81357,
+      "kept": 81361,
+      "removed": [
+        81362,
+        81363,
+        81364,
+        81365
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81373,
+      "kept": 81377,
+      "removed": [
+        81378,
+        81379
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81380,
+      "kept": 81384,
+      "removed": [
+        81385,
+        81386,
+        81387
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81388,
+      "kept": 81392,
+      "removed": [
+        81393,
+        81394,
+        81395,
+        81396
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81404,
+      "kept": 81408,
+      "removed": [
+        81409,
+        81410
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81411,
+      "kept": 81415,
+      "removed": [
+        81416,
+        81417,
+        81418
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81419,
+      "kept": 81423,
+      "removed": [
+        81424,
+        81425,
+        81426,
+        81427
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81435,
+      "kept": 81439,
+      "removed": [
+        81440,
+        81441
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81442,
+      "kept": 81446,
+      "removed": [
+        81447,
+        81448,
+        81449
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81450,
+      "kept": 81454,
+      "removed": [
+        81455,
+        81456,
+        81457,
+        81458
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81466,
+      "kept": 81470,
+      "removed": [
+        81471,
+        81472
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81473,
+      "kept": 81477,
+      "removed": [
+        81478,
+        81479,
+        81480
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81481,
+      "kept": 81485,
+      "removed": [
+        81486,
+        81487,
+        81488,
+        81489
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 80393,
+      "kept": 80390,
+      "removed": [
+        80391,
+        80392
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 80399,
+      "kept": 80395,
+      "removed": [
+        80396,
+        80397,
+        80398
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 80406,
+      "kept": 80401,
+      "removed": [
+        80402,
+        80403,
+        80404,
+        80405
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81504,
+      "kept": 81508,
+      "removed": [
+        81509,
+        81510
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81511,
+      "kept": 81515,
+      "removed": [
+        81516,
+        81517,
+        81518
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81519,
+      "kept": 81523,
+      "removed": [
+        81524,
+        81525,
+        81526,
+        81527
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81535,
+      "kept": 81539,
+      "removed": [
+        81540,
+        81541
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81542,
+      "kept": 81546,
+      "removed": [
+        81547,
+        81548,
+        81549
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81550,
+      "kept": 81554,
+      "removed": [
+        81555,
+        81556,
+        81557,
+        81558
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81566,
+      "kept": 81570,
+      "removed": [
+        81571,
+        81572
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81573,
+      "kept": 81577,
+      "removed": [
+        81578,
+        81579,
+        81580
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81581,
+      "kept": 81585,
+      "removed": [
+        81586,
+        81587,
+        81588,
+        81589
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81597,
+      "kept": 81601,
+      "removed": [
+        81602,
+        81603
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81604,
+      "kept": 81608,
+      "removed": [
+        81609,
+        81610,
+        81611
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81612,
+      "kept": 81616,
+      "removed": [
+        81617,
+        81618,
+        81619,
+        81620
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81628,
+      "kept": 81632,
+      "removed": [
+        81633,
+        81634
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81635,
+      "kept": 81639,
+      "removed": [
+        81640,
+        81641,
+        81642
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81643,
+      "kept": 81647,
+      "removed": [
+        81648,
+        81649,
+        81650,
+        81651
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81659,
+      "kept": 81663,
+      "removed": [
+        81664,
+        81665
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81666,
+      "kept": 81670,
+      "removed": [
+        81671,
+        81672,
+        81673
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81674,
+      "kept": 81678,
+      "removed": [
+        81679,
+        81680,
+        81681,
+        81682
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81690,
+      "kept": 81694,
+      "removed": [
+        81695,
+        81696
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81697,
+      "kept": 81701,
+      "removed": [
+        81702,
+        81703,
+        81704
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81705,
+      "kept": 81709,
+      "removed": [
+        81710,
+        81711,
+        81712,
+        81713
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81721,
+      "kept": 81725,
+      "removed": [
+        81726,
+        81727
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81728,
+      "kept": 81732,
+      "removed": [
+        81733,
+        81734,
+        81735
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81736,
+      "kept": 81740,
+      "removed": [
+        81741,
+        81742,
+        81743,
+        81744
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81752,
+      "kept": 81756,
+      "removed": [
+        81757,
+        81758
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81759,
+      "kept": 81763,
+      "removed": [
+        81764,
+        81765,
+        81766
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81767,
+      "kept": 81771,
+      "removed": [
+        81772,
+        81773,
+        81774,
+        81775
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81783,
+      "kept": 81787,
+      "removed": [
+        81788,
+        81789
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81790,
+      "kept": 81794,
+      "removed": [
+        81795,
+        81796,
+        81797
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81798,
+      "kept": 81802,
+      "removed": [
+        81803,
+        81804,
+        81805,
+        81806
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81814,
+      "kept": 81818,
+      "removed": [
+        81819,
+        81820
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81821,
+      "kept": 81825,
+      "removed": [
+        81826,
+        81827,
+        81828
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81829,
+      "kept": 81833,
+      "removed": [
+        81834,
+        81835,
+        81836,
+        81837
+      ],
+      "rectangles": 5
+    },
+    {
+      "group": 81844,
+      "kept": 81848,
+      "removed": [
+        81849,
+        81850
+      ],
+      "rectangles": 3
+    },
+    {
+      "group": 81851,
+      "kept": 81855,
+      "removed": [
+        81856,
+        81857,
+        81858
+      ],
+      "rectangles": 4
+    },
+    {
+      "group": 81859,
+      "kept": 81863,
+      "removed": [
+        81864,
+        81865,
+        81866,
+        81867
+      ],
+      "rectangles": 5
+    }
+  ],
+  "dots": [
+    {
+      "layer": 82254,
+      "originalVariable": "calendar_dots_url_m12"
+    },
+    {
+      "layer": 82255,
+      "originalVariable": "calendar_dots_url_m11"
+    },
+    {
+      "layer": 82256,
+      "originalVariable": "calendar_dots_url_m10"
+    },
+    {
+      "layer": 82257,
+      "originalVariable": "calendar_dots_url_m9"
+    },
+    {
+      "layer": 82258,
+      "originalVariable": "calendar_dots_url_m8"
+    },
+    {
+      "layer": 82259,
+      "originalVariable": "calendar_dots_url_m7"
+    },
+    {
+      "layer": 82260,
+      "originalVariable": "calendar_dots_url_m6"
+    },
+    {
+      "layer": 82261,
+      "originalVariable": "calendar_dots_url_m5"
+    },
+    {
+      "layer": 82262,
+      "originalVariable": "calendar_dots_url_m4"
+    },
+    {
+      "layer": 82263,
+      "originalVariable": "calendar_dots_url_m3"
+    },
+    {
+      "layer": 82264,
+      "originalVariable": "calendar_dots_url_m2"
+    },
+    {
+      "layer": 82265,
+      "originalVariable": "calendar_dots_url_m1"
+    },
+    {
+      "layer": 82266,
+      "originalVariable": "calendar_dots_url_p0"
+    },
+    {
+      "layer": 82267,
+      "originalVariable": "calendar_dots_url_p1"
+    },
+    {
+      "layer": 82268,
+      "originalVariable": "calendar_dots_url_p2"
+    },
+    {
+      "layer": 82269,
+      "originalVariable": "calendar_dots_url_p3"
+    },
+    {
+      "layer": 82270,
+      "originalVariable": "calendar_dots_url_p4"
+    },
+    {
+      "layer": 82271,
+      "originalVariable": "calendar_dots_url_p5"
+    },
+    {
+      "layer": 82272,
+      "originalVariable": "calendar_dots_url_p6"
+    },
+    {
+      "layer": 82273,
+      "originalVariable": "calendar_dots_url_p7"
+    },
+    {
+      "layer": 82274,
+      "originalVariable": "calendar_dots_url_p8"
+    },
+    {
+      "layer": 82275,
+      "originalVariable": "calendar_dots_url_p9"
+    },
+    {
+      "layer": 82276,
+      "originalVariable": "calendar_dots_url_p10"
+    },
+    {
+      "layer": 82277,
+      "originalVariable": "calendar_dots_url_p11"
+    },
+    {
+      "layer": 82278,
+      "originalVariable": "calendar_dots_url_p12"
+    }
+  ],
+  "pruned": [
+    "steps_goal",
+    "steps_progress"
+  ]
+}
