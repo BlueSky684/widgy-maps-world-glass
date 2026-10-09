@@ -80,22 +80,29 @@ All 20 local raster comparisons are byte-identical at 367, 707, 1134 and
 1600 px. Whole-document restoration verifies only these five runs changed.
 This validates geometry and a reference rasterizer, not the native renderer.
 
-## Map drawing resources
+## Map drawing resources — candidate withheld
 
-The latest renderer still rasterizes identical text and rounded-corner alpha
-on each new GPS image. A bounded deterministic resource cache now retains
-those resources only: at most 32 entries / 4 MiB, with at most four tracked
-pending keys. Failed and oversized resources are not cached. Key includes
-text, font weight, size and color. These immutable resource buffers do not
-change GPS, solar instants, marker position, city selection or response TTL.
-No entire live map or private calendar snapshot gains extra freshness.
+A bounded deterministic cache for text and corner alpha was implemented and
+benchmarked. It passed 12 exact local PNG/pixel fixtures and five cache-bound
+checks, but improved two local cases only modestly and slightly regressed a
+long-label case. Historical measurements remain in
+`render-resources-1-benchmark.json`; these are not delivered improvements.
 
-Twelve approved fixtures retain exact PNG bytes, decoded pixels, dimensions
-and color profile. Five tests cover key separation, LRU entry/byte bounds,
-coalescing, failures and pending bounds. Alternating six-run local comparisons
-are recorded in `render-resources-1-benchmark.json`; two cases improve modestly
-and the long-label case is slightly slower. Do not promote this as a universal
-speed increase or extrapolate it to the phone.
+Live preview verification found 2,762 differing pixels confined to synthetic
+city/coordinate text compared with the local fixture. The underlying map and
+marker were identical; the no-location fixture retained its exact PNG hash.
+An existing Fontconfig warning suggests an environment difference but does
+not prove it. Access to the previous immutable preview for a live-to-live
+comparison was blocked by automatic review because a shareable access link
+would expose a protected deployment. No access settings were weakened.
+
+Rather than deliver an optimization with this unresolved visual comparison,
+the final API and map renderer are byte-for-byte restored from baseline
+7f768cafdebf46e1f9d878c5934dd54372cef05f. GPS, solar time, full 3306×1558
+lossless PNG, fonts, marker, city lookup, cadence and response cache are
+unchanged. The delivered changes are confined to native widget computation,
+navigation and vector composition. The experimental cache helper and its
+standalone benchmark/test code are removed; git history preserves the work.
 
 ## Investigated but rejected / unresolved
 
