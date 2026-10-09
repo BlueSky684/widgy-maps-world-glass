@@ -47,7 +47,7 @@ async function load() {
     message('פתח את הקישור המלא מהשיחה כדי לטעון את הקובץ.', true); return;
   }
   try {
-    const response = await fetch('./widgy-weather-premium-7.enc.json', {credentials:'omit', referrerPolicy:'no-referrer'});
+    const response = await fetch('./widgy-weather-premium-8.enc.json', {credentials:'omit', referrerPolicy:'no-referrer'});
     if (!response.ok) throw Error('load_failed');
     const envelope = await response.json();
     if (envelope.v !== 1) throw Error('version');
@@ -58,7 +58,7 @@ async function load() {
     if (raw.byteLength !== envelope.bytes || hash !== envelope.sha256) throw Error('integrity');
     const value = new TextDecoder('utf-8',{fatal:true}).decode(raw);
     const widget = JSON.parse(value);
-    if (!Array.isArray(widget['1']) || widget['3'] !== 'Widgy Weather Premium 7') throw Error('widget');
+    if (!Array.isArray(widget['1']) || widget['3'] !== 'Widgy Weather Premium 8') throw Error('widget');
     compactPayload = value;
     linePayload = formatJSONLines(value);
     // Validate the display-oriented representation before enabling copy. The
