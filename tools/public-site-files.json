@@ -18,6 +18,7 @@
     "assets/fonts/home-glass-clock/OFL.txt",
     "assets/home-glass/Home_Glass_Chrome_C8.png",
     "assets/weather-premium/chrome-r1.png",
+    "assets/weather-premium/chrome-r2.png",
     "tools/Widgy_Home_Glass_Calendar_C16.json",
     "tools/calendar-connect-today.js",
     "tools/calendar-connect-widget.js",
@@ -50,6 +51,7 @@
     "tools/widgy-stable-copy.js",
     "tools/widgy-stable-gauge-20261008-v2.enc.json",
     "tools/widgy-weather-premium-1.enc.json",
+    "tools/widgy-weather-premium-2.enc.json",
     "tools/widgy-weather-premium-copy.html",
     "tools/widgy-weather-premium-copy.js"
   ]
