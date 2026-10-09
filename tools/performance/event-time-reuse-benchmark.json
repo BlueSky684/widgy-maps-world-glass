@@ -1,0 +1,71 @@
+{
+  "pass": true,
+  "indexCases": 36,
+  "snapshotCases": 2700,
+  "pngs": 6,
+  "cacheInvalidationAndIsolation": true,
+  "baseline": "c2a80846fc091070a528ad32df4cc494b6520ee5",
+  "bench": [
+    {
+      "events": 10,
+      "kind": "cold day index; fresh objects, cloning excluded",
+      "beforeMs": 1.6247460000001865,
+      "afterMs": 1.6615320000000793
+    },
+    {
+      "events": 100,
+      "kind": "cold day index; fresh objects, cloning excluded",
+      "beforeMs": 4.395997999999963,
+      "afterMs": 3.370044000000007
+    },
+    {
+      "events": 500,
+      "kind": "cold day index; fresh objects, cloning excluded",
+      "beforeMs": 14.192295999999942,
+      "afterMs": 11.531911000000036
+    },
+    {
+      "events": 0,
+      "kind": "warm snapshot; same prepared day index",
+      "beforeMs": 0.035292999999910535,
+      "afterMs": 0.029505000000426662
+    },
+    {
+      "events": 10,
+      "kind": "warm snapshot; same prepared day index",
+      "beforeMs": 0.07495299999982308,
+      "afterMs": 0.03337099999998827
+    },
+    {
+      "events": 100,
+      "kind": "warm snapshot; same prepared day index",
+      "beforeMs": 0.21021599999994578,
+      "afterMs": 0.04844299999967916
+    },
+    {
+      "events": 500,
+      "kind": "warm snapshot; same prepared day index",
+      "beforeMs": 0.41981200000009267,
+      "afterMs": 0.037145999999665946
+    },
+    {
+      "events": 10,
+      "kind": "same-day warm snapshot",
+      "beforeMs": 0.23009700000011435,
+      "afterMs": 0.036194000000250526
+    },
+    {
+      "events": 100,
+      "kind": "same-day warm snapshot",
+      "beforeMs": 1.4843949999999495,
+      "afterMs": 0.05287899999984802
+    },
+    {
+      "events": 500,
+      "kind": "same-day warm snapshot",
+      "beforeMs": 7.231947000000218,
+      "afterMs": 0.09202800000002753
+    }
+  ],
+  "nativeLatencyMeasured": false
+}
