@@ -47,7 +47,7 @@ native conditional branches. It is not a claim that Widgy skips hidden images.
 
 ## Verification before publication
 
-Eight automated suites cover input validation, complete documented weather code
+Nine automated suites cover input validation, complete documented weather code
 mapping, null values, day/night/severe-weather priority, local dates/midnight,
 Kathmandu offset, repeated DST hours, missing coverage, stale provider data,
 single-flight/cache/failure/expiry, PNG dimensions and content, HTTP method/HEAD/
@@ -57,7 +57,7 @@ Whole-document comparison permits only Weather plus title/description/maximum
 ID metadata changes. Home, Calendar, Fitness, shared Home/Calendar group, all
 variables, fonts, live map, native clock/gauges and navigation are byte-equivalent
 as JSON objects. Existing Weather tap actions remain exact. Cleanup checks
-preserve 187 existing runtime/design files and all five prior encrypted exports.
+preserve 186 existing runtime/design files and all five prior encrypted exports.
 
 New encrypted JSON: 925595 bytes, SHA256
 ea2adbd230a9ff0dc80570b4f913f8cfc6bcfe153ee1e9c8659834c79d19329e.
@@ -70,3 +70,13 @@ copy-runtime tests passed; deployed page/browser verification is a separate
 release check. Native Widgy itself has not run in this environment. Visuals and
 refresh timing on the owner's iPhone remain to be confirmed. Keep Lean Clock
 and Data 1 as backup. Production is outside this change's scope.
+
+
+### Deployment function limit
+
+The first Preview build hit the Hobby plan's 12-function limit. The Weather
+handler now lives in `lib/weather/handler.js`; a narrow `/api/weather-panel`
+rewrite dispatches through `api/fetch-probe.js`. Ordinary fetch-probe responses
+and headers are covered by regression tests. This keeps 12 deployed functions
+without changing map/calendar handlers or any production routing. The public
+Weather URL and encrypted widget payload remain identical.

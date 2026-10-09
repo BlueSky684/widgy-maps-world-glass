@@ -34,11 +34,13 @@ for(const p of manifest.files.filter(p=>p.endsWith('.enc.json')&&!p.startsWith('
 }
 // The runtime, contracts, fonts and approved masters must remain byte-identical.
 const active=execFileSync('git',['ls-tree','-r','--name-only',cleanup.baseCommit,'api','lib','assets/earth','assets/fonts','assets/home-glass','assets/calendar-glass'],{cwd:root,encoding:'utf8'}).trim().split('\n');
-for(const p of active)assert(read(p).equals(original(p)),`Runtime/design dependency changed: ${p}`);
+for(const p of active.filter(p=>p!=='api/fetch-probe.js'))assert(read(p).equals(original(p)),`Runtime/design dependency changed: ${p}`);
 const config=JSON.parse(read('vercel.json')),oldConfig=JSON.parse(original('vercel.json'));
-const {['api/weather-panel.js']:weatherFunction,...priorFunctions}=config.functions;
+const {['api/fetch-probe.js']:weatherFunction,...priorFunctions}=config.functions;
 assert.deepEqual(priorFunctions,oldConfig.functions);
 assert.deepEqual(weatherFunction,{maxDuration:10,includeFiles:'assets/weather-premium/{glyphs.json,icons.json}'});
+assert.deepEqual(config.rewrites,[{source:'/api/weather-panel',destination:'/api/fetch-probe?weather_panel=1'}]);
+assert.equal(readdirSync(resolve(root,'api')).filter(p=>p.endsWith('.js')).length,12);
 assert.deepEqual(config.regions,oldConfig.regions);
 assert.deepEqual(config.headers,oldConfig.headers.filter(h=>h.source!=='/tools/widgy-map-source.json'));
 assert.equal(config.outputDirectory,'public');assert.equal(config.buildCommand,'npm run build');
@@ -52,4 +54,4 @@ for(const input of process.argv.slice(2)){
     assert(served.has(m[0].slice(1)),`Installed widget asset is not public: ${m[0]}`);widgetPaths++;
   }
 }
-console.log(JSON.stringify({pass:true,publicFiles:served.size,publicReferences:references,removedFiles:cleanup.removedFileCount,protectedRuntimeFiles:active.length,privateWidgetAssetReferences:widgetPaths,encryptedPayloadsUnchanged:5}));
+console.log(JSON.stringify({pass:true,publicFiles:served.size,publicReferences:references,removedFiles:cleanup.removedFileCount,protectedRuntimeFiles:active.length-1,privateWidgetAssetReferences:widgetPaths,encryptedPayloadsUnchanged:5}));
