@@ -103,4 +103,11 @@ assert.equal(prepared().cache,'HIT','Client timing must not change render-cache 
 await compare({city_trace_v1:'PRIVATE_UNTRUSTED_SENTINEL'});
 assert.equal(prepared().clientCityPath,undefined);
 assert(!JSON.stringify(after.logs).includes('PRIVATE_UNTRUSTED_SENTINEL'));
+const withoutCountry = await compare();
+const withCountry = await compare({country_name:'PRIVATE_COUNTRY_SENTINEL'});
+assert.deepEqual(withCountry.body, withoutCountry.body, 'Country metadata cannot change image contents');
+assert.equal(withCountry.headers.etag, withoutCountry.headers.etag);
+assert.equal(withCountry.headers['x-map-cache'], 'HIT', 'Country metadata cannot invalidate the render cache');
+assert.equal(prepared().previousKeyComparison, 'same');
+assert(!JSON.stringify(after.logs).includes('PRIVATE_COUNTRY_SENTINEL'));
 console.log('PASS: parent-equivalent responses, exact GPS/city changes, minute crossing, expiry, bypass, concurrent coalescing, independent instance identity and private diagnostic fields.');
