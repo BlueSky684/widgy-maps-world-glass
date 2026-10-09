@@ -7,3 +7,9 @@ Restore seven original nodes 6193/80209/6140/6141/6142/6143/6144: fitness icon, 
 1175 to 1182 nodes; same 55 variables, clock/header/events/weather, map/GPS/city, full Calendar, navigation and other tabs. Day progress/sunrise/sunset and remaining full chrome stay absent. Reverse-diff test against actual Events Addback export confirms no other change. Pixel extraction visually inspected, IDs/navigation/scripts/encrypted clipboard/fallback and full configured build checked. Native performance/output remain unverified.
 
 Phone: retain Events Addback Test 1. After initial load compare three Calendar-to-Home returns each, report unchanged/slightly slower/clearly slower and fitness card correctness. Preview branch only; production unchanged.
+
+## Owner outcome — 2026-10-09 08:27–08:28 Asia/Jerusalem
+Owner reported additional slowdown, then clarified it still does not feel as slow as the full version. Magnitude is subjective and not quantified. No evidence of a single dominant component yet. Next paired addition is the native day gauge and sunrise/sunset group.
+
+### Owner clarification — 08:29 Israel
+Owner then explicitly withdrew confidence in the full-version comparison: perhaps equally slow; cannot tell without measuring seconds. Treat the full-versus-fitness speed difference as UNKNOWN. Prior subjective reports do not establish effect size, statistical significance, cumulative causation, or an optimization.
