@@ -1,5 +1,10 @@
 # Native City Ungated Test 1 — 2026-10-09
 
+SUPERSEDED BEFORE DELIVERY: owner requires Ashkelon spelling. Use Native City
+Spelling Test 1 instead. No phone outcome exists for this ungated candidate.
+Preview cancellation arrived too late (400); public copy files are removed
+from the branch in the superseding commit.
+
 After Direct City and Direct Data failed native city-display gates, isolate
 Calendar location visibility and source substitution on Compact Stable.
 The existing main row depends on nonempty calendar_city_prefix; its fallback
