@@ -4,6 +4,7 @@ import {monthWindow,renderDots} from '../lib/calendar-bridge/dots.js';
 import {readEvents} from '../lib/calendar-bridge/providers.js';
 import {widgetSnapshot} from '../lib/calendar-bridge/widget-data.js';
 import {widgyFields} from '../lib/calendar-bridge/widgy-fields.js';
+import {preparedDaysFor} from '../lib/calendar-bridge/prepared-days.js';
 
 const cache=new Map();
 export function clientMaxAge(snapshot,providerUntil,instant=Date.now()){
@@ -61,8 +62,11 @@ export default async function handler(req,res) {
     trace.providerWaitMs=Math.round((performance.now()-providerStarted)*10)/10;
     stage='response';
     const responseStarted=performance.now();
+    const preparedDays=preparedDaysFor(entry,events,window);
     if(view==='today'){
-      const snapshot=widgetSnapshot(events,window,new Date());
+      // Reuse date parsing, ordering and overlap indexing, not the timed Home
+      // snapshot: NOW/NEXT EVENT and generatedAt still use the current instant.
+      const snapshot=widgetSnapshot(events,window,new Date(),preparedDays);
       const maxAge=clientMaxAge(snapshot,entry.until);
       if(maxAge>0)res.setHeader('Cache-Control',`private, max-age=${maxAge}, must-revalidate`);
       res.setHeader('Content-Type','application/json; charset=utf-8');
@@ -73,7 +77,7 @@ export default async function handler(req,res) {
       return req.method==='HEAD'?res.status(200).end():res.status(200).json(body);
     }
     const pngKey=bounds==='grid'?'pngGrid':'png';
-    if(!entry[pngKey])entry[pngKey]=renderDots(events,window,{bounds});
+    if(!entry[pngKey])entry[pngKey]=renderDots(events,window,{bounds,preparedDays});
     const png=await entry[pngKey];
     // Reuse month dots on the device within the same provider freshness window.
     // privateHeaders continues to forbid shared/CDN caching of private calendars.

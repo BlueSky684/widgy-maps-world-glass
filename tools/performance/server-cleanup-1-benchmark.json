@@ -1,0 +1,110 @@
+{
+  "baseline": "513d5fcbac89725465557dd145517fc13adf5207",
+  "environment": "local Node v24.19.0",
+  "method": "Warm alternating order; no network or phone. Map regenerates each image. Calendar reuses one unchanged provider entry and recalculates current-time snapshot.",
+  "map": [
+    {
+      "date": "2026-10-09T06:30:00Z",
+      "samples": [
+        {
+          "before": 517.907,
+          "after": 400.107
+        },
+        {
+          "after": 392.538,
+          "before": 515.048
+        },
+        {
+          "before": 486.672,
+          "after": 371.828
+        },
+        {
+          "after": 386.412,
+          "before": 468.462
+        }
+      ],
+      "beforeMedianMs": 515.048,
+      "afterMedianMs": 392.538,
+      "reductionPercent": 23.8
+    },
+    {
+      "date": "2026-03-20T12:00:00Z",
+      "samples": [
+        {
+          "before": 458.371,
+          "after": 355.591
+        },
+        {
+          "after": 372.268,
+          "before": 452.658
+        },
+        {
+          "before": 457.921,
+          "after": 342.339
+        },
+        {
+          "after": 341.141,
+          "before": 456.704
+        }
+      ],
+      "beforeMedianMs": 457.921,
+      "afterMedianMs": 355.591,
+      "reductionPercent": 22.3
+    },
+    {
+      "date": "2026-06-21T00:00:00Z",
+      "samples": [
+        {
+          "before": 493.599,
+          "after": 356.291
+        },
+        {
+          "after": 362.764,
+          "before": 488.506
+        },
+        {
+          "before": 441.921,
+          "after": 360.601
+        },
+        {
+          "after": 352.485,
+          "before": 451.275
+        }
+      ],
+      "beforeMedianMs": 488.506,
+      "afterMedianMs": 360.601,
+      "reductionPercent": 26.2
+    }
+  ],
+  "calendar": [
+    {
+      "syntheticEvents": 0,
+      "repeatedRequests": 30,
+      "beforeMedianMs": 1.65,
+      "afterMedianMs": 0.044,
+      "reductionPercent": 97.3
+    },
+    {
+      "syntheticEvents": 10,
+      "repeatedRequests": 30,
+      "beforeMedianMs": 1.971,
+      "afterMedianMs": 0.043,
+      "reductionPercent": 97.8
+    },
+    {
+      "syntheticEvents": 100,
+      "repeatedRequests": 30,
+      "beforeMedianMs": 4.144,
+      "afterMedianMs": 0.17,
+      "reductionPercent": 95.9
+    },
+    {
+      "syntheticEvents": 500,
+      "repeatedRequests": 30,
+      "beforeMedianMs": 14.05,
+      "afterMedianMs": 0.376,
+      "reductionPercent": 97.3
+    }
+  ],
+  "nativeLatencyMeasured": false
+}

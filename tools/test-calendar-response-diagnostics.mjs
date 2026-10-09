@@ -7,6 +7,7 @@ import {BridgeError,privateHeaders} from '../lib/calendar-bridge/security.js';
 import {monthWindow} from '../lib/calendar-bridge/dots.js';
 import {widgetSnapshot} from '../lib/calendar-bridge/widget-data.js';
 import {widgyFields} from '../lib/calendar-bridge/widgy-fields.js';
+import {preparedDaysFor} from '../lib/calendar-bridge/prepared-days.js';
 
 const before=execFileSync('git',['show','6a8689058105cdfed629506c14de4879acef43b9:api/calendar-widget.js'],{encoding:'utf8'});
 const after=readFileSync(new URL('../api/calendar-widget.js',import.meta.url),'utf8');
@@ -16,7 +17,7 @@ function setup(code){
   class Clock extends Date {constructor(...args){super(...(args.length?args:[time]));}static now(){return time;}}
   const state={zone:'Asia/Jerusalem',sources:[{provider:'google',id:'PRIVATE_CALENDAR_ID',color:0},
     {provider:'apple-holidays',id:'il_he',color:1}],google:{refresh:'PRIVATE_REFRESH'}};
-  const context={Date:Clock,performance,Buffer,createHash,BridgeError,privateHeaders,monthWindow,widgetSnapshot,widgyFields,
+  const context={Date:Clock,performance,Buffer,createHash,BridgeError,privateHeaders,monthWindow,widgetSnapshot,widgyFields,preparedDaysFor,
     origin:()=> 'https://example.test',URL,console:{info:line=>logs.push(JSON.parse(line))},
     unseal:async token=>{if(token==='invalid')throw new BridgeError('unauthorized',401);return state;},
     readEvents:async()=>{reads++;if(fail)throw Error('PRIVATE_PROVIDER_ERROR');return [{

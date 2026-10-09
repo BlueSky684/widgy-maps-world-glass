@@ -52,3 +52,10 @@ Warm each copy once. Record three Calendar-to-Home cycles per named copy on the
 phone Home Screen, waiting for each transition to settle. First ask whether the
 dot appears before or together with the destination content. Keep the original
 copies. No production deployment is authorized.
+
+## Owner outcome — 2026-10-09 09:11 Asia/Jerusalem
+
+Owner reports the dot appears only when the card loads, not immediately at the
+touch. It cannot serve as the start timestamp for native transition latency.
+At 09:14 the owner requested independent investigation instead of more phone
+trials. Do not request more tap-dot timing tests; see server-cleanup-1-review.md.

@@ -1,0 +1,236 @@
+{
+  "baselineCommit": "513d5fcbac89725465557dd145517fc13adf5207",
+  "cases": [
+    {
+      "width": 3306,
+      "presentation": "glass",
+      "atlas": "r6",
+      "location": null,
+      "diagnostic": false,
+      "id": "october-null",
+      "date": "2026-10-09T06:30:00Z",
+      "expected": {
+        "bytes": 4067399,
+        "pngSHA256": "7c6a5a5ae812327865bda946fee7dce8afb6fe4ee1205ee1b38a78b7043a9815",
+        "rgbaSHA256": "4fd1d537fcb8e74e8aa20226336241d594af125e0c674ccfbefd11aecaf0073c",
+        "width": 3306,
+        "height": 1558
+      }
+    },
+    {
+      "width": 3306,
+      "presentation": "glass",
+      "atlas": "r6",
+      "location": {
+        "latitude": 0,
+        "longitude": 0,
+        "city": "Synthetic Test",
+        "source": "coordinates"
+      },
+      "diagnostic": false,
+      "id": "march-glass",
+      "date": "2026-03-20T12:00:00Z",
+      "expected": {
+        "bytes": 3954123,
+        "pngSHA256": "7bc72b805f67b260d11ca4176961dfefd186457176bb734b36186b5aba95275d",
+        "rgbaSHA256": "391204a331838e8c3dab5ef3de2aec78775070cb2b04b4021a0086251ec3a34f",
+        "width": 3306,
+        "height": 1558
+      }
+    },
+    {
+      "width": 3306,
+      "presentation": "glass",
+      "atlas": "r6",
+      "location": {
+        "latitude": 85,
+        "longitude": -180,
+        "city": "Synthetic Northern Edge",
+        "source": "coordinates"
+      },
+      "diagnostic": false,
+      "id": "june-edge",
+      "date": "2026-06-21T00:00:00Z",
+      "expected": {
+        "bytes": 4181545,
+        "pngSHA256": "353d006298a3c8938553cbffa2bbf8cf699d76e32e396bda68ba65e5b81506bf",
+        "rgbaSHA256": "e459392f12034a2b13dc31274658693d807563c2c6e7b3a4b5d0c3a62ade695e",
+        "width": 3306,
+        "height": 1558
+      }
+    },
+    {
+      "width": 3306,
+      "presentation": "glass",
+      "atlas": "r6",
+      "location": {
+        "latitude": -61,
+        "longitude": 180,
+        "city": "Synthetic Southern Edge",
+        "source": "coordinates"
+      },
+      "diagnostic": false,
+      "id": "december-edge",
+      "date": "2026-12-21T12:00:00Z",
+      "expected": {
+        "bytes": 4203238,
+        "pngSHA256": "0265dc420215ebe5be86964bac7020df51e76036976e31a06bfc244736134fd5",
+        "rgbaSHA256": "13baca6964d0cd94e526becf6fb22e934fb49bc17969932283d954e709151a7a",
+        "width": 3306,
+        "height": 1558
+      }
+    },
+    {
+      "width": 3306,
+      "presentation": "glass",
+      "atlas": "r6",
+      "location": {
+        "latitude": -12.3456789,
+        "longitude": 145.1234567,
+        "source": "coordinates"
+      },
+      "diagnostic": false,
+      "id": "coordinates-only",
+      "date": "2026-10-09T06:30:00Z",
+      "expected": {
+        "bytes": 4085155,
+        "pngSHA256": "df16a7f5f804bc109760da42d0db16b8d76b7880a07fbd0cd1f08fcf8be7afa6",
+        "rgbaSHA256": "f516ffe24e9060e145fcdbda4ae8f02af6eb5b6c40cdb6badecddedb92e43cfe",
+        "width": 3306,
+        "height": 1558
+      }
+    },
+    {
+      "width": 3306,
+      "presentation": "glass",
+      "atlas": "r6",
+      "location": {
+        "latitude": 45.123456,
+        "longitude": 160.987654,
+        "city": "Synthetic very long city label & <escaped> example for resizing",
+        "source": "coordinates"
+      },
+      "diagnostic": false,
+      "id": "long-label",
+      "date": "2026-10-09T06:30:00Z",
+      "expected": {
+        "bytes": 4095091,
+        "pngSHA256": "44cb94c47deda1ef283570dcfc92afcd6a5ded417750b20f7bf3e6988e645ad7",
+        "rgbaSHA256": "0adc5aa15c083bc756d9f5b7764779d3ed7890454a9e378e6f2c81c8d64a07d7",
+        "width": 3306,
+        "height": 1558
+      }
+    },
+    {
+      "width": 3306,
+      "presentation": "glass",
+      "atlas": "r6",
+      "location": {
+        "latitude": -90,
+        "longitude": 0,
+        "city": "Synthetic",
+        "source": "coordinates"
+      },
+      "diagnostic": false,
+      "id": "outside-projection",
+      "date": "2026-10-09T06:30:00Z",
+      "expected": {
+        "bytes": 4067399,
+        "pngSHA256": "7c6a5a5ae812327865bda946fee7dce8afb6fe4ee1205ee1b38a78b7043a9815",
+        "rgbaSHA256": "4fd1d537fcb8e74e8aa20226336241d594af125e0c674ccfbefd11aecaf0073c",
+        "width": 3306,
+        "height": 1558
+      }
+    },
+    {
+      "width": 3306,
+      "presentation": "default",
+      "atlas": "f50",
+      "location": {
+        "latitude": 0,
+        "longitude": 0,
+        "city": "Synthetic",
+        "source": "coordinates"
+      },
+      "diagnostic": false,
+      "id": "default-f50",
+      "date": "2026-10-09T06:30:00Z",
+      "expected": {
+        "bytes": 4039134,
+        "pngSHA256": "9e0fe2e7c6fd78e97968796de28b371da278ea7ed36e3b274eab7d211bacae9b",
+        "rgbaSHA256": "b32fd377fc996b34529d48e67cd76737e6e59eae55b3dd2fab292e37df12d992",
+        "width": 3306,
+        "height": 1558
+      }
+    },
+    {
+      "width": 3306,
+      "presentation": "glass",
+      "atlas": "r6",
+      "location": {
+        "latitude": 0,
+        "longitude": 0,
+        "city": "Synthetic",
+        "source": "coordinates"
+      },
+      "diagnostic": true,
+      "id": "location-diagnostic",
+      "date": "2026-10-09T06:30:00Z",
+      "expected": {
+        "bytes": 4073841,
+        "pngSHA256": "599f5daa32b3b0099856f8969869dceec32384f0b5211aa0b0174f7a5d9ee763",
+        "rgbaSHA256": "06d50b78ec5e16b09e07e386edd2c1fe77982f39a45c11970d903a76f218aab7",
+        "width": 3306,
+        "height": 1558
+      }
+    },
+    {
+      "width": 3306,
+      "presentation": "glass",
+      "atlas": "r6",
+      "location": null,
+      "diagnostic": "refresh-v1",
+      "id": "refresh-diagnostic",
+      "date": "2026-10-09T06:30:00Z",
+      "expected": {
+        "bytes": 3997841,
+        "pngSHA256": "9d0195fdee406e46076622c6fc2eba4e227f9f5f0197e6ef46f60c63edb4a773",
+        "rgbaSHA256": "56ddeb914162054b168837f91c678a5f0e421b89cf9115a04c09bbd6a6928cfb",
+        "width": 3306,
+        "height": 1558
+      }
+    },
+    {
+      "width": 1653,
+      "presentation": "glass",
+      "atlas": "r6",
+      "location": null,
+      "diagnostic": false,
+      "id": "legacy-half-width",
+      "date": "2026-10-09T06:30:00Z",
+      "expected": {
+        "bytes": 1253539,
+        "pngSHA256": "9e41cf3162a9ad6fa2737bf3e5d8c45d79809b0e8495d508ef722e1017e8cf29",
+        "rgbaSHA256": "0eb341fe3e1768d3cee007e96b26fb7f914f1fab1ec112adb77e06412751bfee",
+        "width": 1653,
+        "height": 779
+      }
+    },
+    {
+      "width": 1102,
+      "presentation": "glass",
+      "atlas": "r6",
+      "location": null,
+      "diagnostic": false,
+      "id": "legacy-third-width",
+      "date": "2026-10-09T06:30:00Z",
+      "expected": {
+        "bytes": 584846,
+        "pngSHA256": "2517c81adeefd5ccb66aa7e7911907e485ff255f5e8985cf2ba4437cf92c3ac1",
+        "rgbaSHA256": "57ca74a240186524e19ad317e96e96af75935b2e0a2544282636dead1ffc1e02",
+        "width": 1102,
+        "height": 519
+      }
+    }
+  ]
+}
