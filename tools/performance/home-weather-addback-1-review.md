@@ -9,3 +9,6 @@ Restore Home top-level weather nodes 80029, 80028, 80049, 6130–6134 from Nativ
 Checks: transform reversibility against actual Source Addback export; unique layer IDs/navigation targets; embedded script syntax; exact encrypted clipboard bytes, missing/wrong key and tamper rejection, manual-copy fallback; configured project build. Original chrome region visually inspected; native appearance/speed remains to be tested.
 
 Phone protocol: keep Source Addback Test 1 next to Weather Addback Test 1. After initial loading, compare three Calendar → Home returns each; report whether fast return remains or slowdown returns, weather appearance and Calendar city. No stopwatch required. No improvement/cause claim before outcome. Preview branch only; production unchanged.
+
+## Owner outcome — 2026-10-09 07:54 Asia/Jerusalem
+Owner: still a fast transition. Weather-card restoration did not produce a noticeable slowdown in this run. No numeric timing or separate native visual confirmation was supplied. This does not establish performance under every condition or clear cumulative interactions. Next paired experiment adds the original clock/header group only.
