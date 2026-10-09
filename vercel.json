@@ -1,7 +1,9 @@
 {
-  "regions": ["fra1"],
-  "buildCommand": "node tools/build-map-cache.mjs && node tools/build-home-map-static-diagnostic.mjs && node tools/build-map-mask-compare.mjs && node tools/build-map-mask-live.mjs",
-  "outputDirectory": ".",
+  "regions": [
+    "fra1"
+  ],
+  "buildCommand": "npm run build",
+  "outputDirectory": "public",
   "functions": {
     "api/calendar-widget.js": {
       "maxDuration": 60
@@ -31,28 +33,31 @@
       "includeFiles": "assets/earth/{Terrain_Master_3306x1558.png,Night_Lights_Master_3306x1558.png,Widget_Asset_Contract.json,render-cache-r6.bin.gz,BarlowCondensed-Regular.ttf,BarlowCondensed-Medium.ttf,OFL.txt}"
     }
   },
-  "headers": [{
-    "source": "/tools/widgy-map-source.json",
-    "headers": [
-      {"key":"Cache-Control","value":"no-store, max-age=0"},
-      {"key":"CDN-Cache-Control","value":"no-store"},
-      {"key":"Vercel-CDN-Cache-Control","value":"no-store"},
-      {"key":"X-Content-Type-Options","value":"nosniff"}
-    ]
-  }, {
-    "source": "/tools/calendar-connect(.*)",
-    "headers": [
-      {"key":"Cache-Control","value":"private, no-store"},
-      {"key":"Referrer-Policy","value":"no-referrer"},
-      {"key":"X-Content-Type-Options","value":"nosniff"},
-      {"key":"X-Frame-Options","value":"DENY"},
-      {"key":"Content-Security-Policy","value":"default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' blob:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"}
-    ]
-  }],
-  "rewrites": [
-    {"source":"/tools/widgy-v78.html","destination":"/tools/widgy-v77.html"},
-    {"source":"/tools/widgy-v78.json","destination":"/tools/widgy-v77.json"},
-    {"source":"/tools/widgy-v80.html","destination":"/tools/widgy-v77.html"},
-    {"source":"/tools/widgy-v80.json","destination":"/tools/widgy-v77.json"}
+  "headers": [
+    {
+      "source": "/tools/calendar-connect(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' blob:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+        }
+      ]
+    }
   ]
 }

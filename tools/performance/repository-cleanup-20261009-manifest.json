@@ -1,0 +1,1627 @@
+{
+  "baseCommit": "ce97f6bb0c179e9e02ef13f9f015fad71c87aa86",
+  "removedFileCount": 324,
+  "removedBytes": 28135138,
+  "removedFiles": [
+    {
+      "path": ".github/workflows/build-v133-night.yml",
+      "bytes": 1575,
+      "sha256": "4948cc859fc8140c53382b32b739a43edb658ecade91634d1a4018fb3fe2b494"
+    },
+    {
+      "path": ".github/workflows/build-v135-night.yml",
+      "bytes": 1614,
+      "sha256": "4d1af6194389297ede677f554f514e75bb37a643d3409021d365b1803f6e2da9"
+    },
+    {
+      "path": ".github/workflows/build-v136-night.yml",
+      "bytes": 1600,
+      "sha256": "812398dbccf22b3cbaca4b942c8bcea2fc944b98fe5eec21b9d9168180d5b8e3"
+    },
+    {
+      "path": ".github/workflows/build-v137-night.yml",
+      "bytes": 1619,
+      "sha256": "352775e9a6dee16a05d7c9b69fd8978db3db792acf5bc665097e955fc3790156"
+    },
+    {
+      "path": ".github/workflows/build-v139-night.yml",
+      "bytes": 1615,
+      "sha256": "7828a34367b3c5af6ebd4a11c4ce403b5c9a0e011ad5373da6a951cb27201a8d"
+    },
+    {
+      "path": ".github/workflows/build-v140-night.yml",
+      "bytes": 1685,
+      "sha256": "5f61002df14891e65ae7430b6563ed6faad5a319228c85492724c78fe2bd5153"
+    },
+    {
+      "path": ".github/workflows/build-v141-night.yml",
+      "bytes": 1686,
+      "sha256": "0803118c11ec8949cc722f70300ff5dd65a1dac6824de462371b2a91ded2a327"
+    },
+    {
+      "path": ".github/workflows/test-v133-render.yml",
+      "bytes": 710,
+      "sha256": "61bede0aeab7f08f37dfc06cddbbbee313242a22aee90b35b28277b030da1b36"
+    },
+    {
+      "path": ".github/workflows/test-v134-render.yml",
+      "bytes": 694,
+      "sha256": "0530af019985efcc66d954f8e451eac11b8156357092c510958bad43bf0a1796"
+    },
+    {
+      "path": ".github/workflows/test-v135-render.yml",
+      "bytes": 794,
+      "sha256": "9d31229a4ecd1ff755156787d81dcd849178d6cc5d195364251e96682e10a9f4"
+    },
+    {
+      "path": ".github/workflows/test-v136-render.yml",
+      "bytes": 791,
+      "sha256": "3db7f9bba68442c5457e80760f5824870c337b264670824426e4247fb22f636b"
+    },
+    {
+      "path": ".github/workflows/test-v137-render.yml",
+      "bytes": 800,
+      "sha256": "e5349bd25f83523a38c07108b252eb18fb9b1a20d02fead9e709e13388fe9e4a"
+    },
+    {
+      "path": ".github/workflows/test-v138-technical.yml",
+      "bytes": 689,
+      "sha256": "abc40a6f537d98426f670bd091ea3e9a97e875be12311ae97478e363bc6a2096"
+    },
+    {
+      "path": ".github/workflows/test-v139-technical.yml",
+      "bytes": 775,
+      "sha256": "efc4e92eec29370ae7d045f60364e314c3e6f4bbbae9787d983622fd7a8cb413"
+    },
+    {
+      "path": ".github/workflows/test-v140-technical.yml",
+      "bytes": 869,
+      "sha256": "51bb809643eb784b2e01af0be582d0c7763a86d84c4c97c758d344eb15017019"
+    },
+    {
+      "path": ".github/workflows/test-v141-technical.yml",
+      "bytes": 865,
+      "sha256": "16625e68ba5df041ee9228b5a8d8d9deedcdae46ad986e82ce209ec0207026d7"
+    },
+    {
+      "path": ".github/workflows/test-v142-pixel.yml",
+      "bytes": 562,
+      "sha256": "e56f4ba3df3895ae05e9a8349efc5b51bafb01ed4115eda04d37572def7d1d02"
+    },
+    {
+      "path": "tools/Widgy_Home_Glass_Calendar_C1.json",
+      "bytes": 541008,
+      "sha256": "b2eac2779ff03a7e9110ecc97f52dc5f566f9f2ba873e7bd06f2d57f7bd7dc81"
+    },
+    {
+      "path": "tools/Widgy_Home_Glass_Calendar_C10.json",
+      "bytes": 1100223,
+      "sha256": "1d2e171f801f774d5b7916a57e6a4c9d9fd7779a4e019d42b6b8b4fc35eff99a"
+    },
+    {
+      "path": "tools/Widgy_Home_Glass_Calendar_C11.json",
+      "bytes": 1104087,
+      "sha256": "f17944543241352b006e8cfa6c9f64775d64f7a44710e0e88f253f899b7498eb"
+    },
+    {
+      "path": "tools/Widgy_Home_Glass_Calendar_C12.json",
+      "bytes": 1104436,
+      "sha256": "e9aab71f3825f9b4cc8d8dbef8f77aadfcd215d0707f63c1c778b09fdac67203"
+    },
+    {
+      "path": "tools/Widgy_Home_Glass_Calendar_C13.json",
+      "bytes": 1153698,
+      "sha256": "36b252901c1fb6b7bb0724e85938b0663e8482442da8ebf572173e4e54b0da6b"
+    },
+    {
+      "path": "tools/Widgy_Home_Glass_Calendar_C14.json",
+      "bytes": 1161931,
+      "sha256": "b042df336f74814f2b0159a40de48d98587531107cce6ae7fcf1186bcd2239c8"
+    },
+    {
+      "path": "tools/Widgy_Home_Glass_Calendar_C15.json",
+      "bytes": 1161865,
+      "sha256": "56c42fb906803d29fdb2b5c3348bd3ebc9274da5cd24e73060a3476a38f392f3"
+    },
+    {
+      "path": "tools/Widgy_Home_Glass_Calendar_C1_Draft.json",
+      "bytes": 540977,
+      "sha256": "89cf85bfa3296101b66c6f8ac5c39123e697ee05eb178fd2dcb9e383436b26c4"
+    },
+    {
+      "path": "tools/Widgy_Home_Glass_Calendar_C2.json",
+      "bytes": 554283,
+      "sha256": "9ccdde01a1b2214bb52b6ad41044edc1a25e599eb31e015319d81078f39e1ae8"
+    },
+    {
+      "path": "tools/Widgy_Home_Glass_Calendar_C3.json",
+      "bytes": 937206,
+      "sha256": "baa648e29e1632977ebe91b1487117190f5e92facd9329934c3cab1aff1ffb37"
+    },
+    {
+      "path": "tools/Widgy_Home_Glass_Calendar_C4.json",
+      "bytes": 1226554,
+      "sha256": "59dea096014def01592c0ffa7908354a3b787c2810a7b721c66642389d313e7d"
+    },
+    {
+      "path": "tools/Widgy_Home_Glass_Calendar_C5.json",
+      "bytes": 1217781,
+      "sha256": "c0195f6e65ee9d5ef338ca8abfce9be5a870737c17443a36b6b58daead195f5b"
+    },
+    {
+      "path": "tools/Widgy_Home_Glass_Calendar_C6.json",
+      "bytes": 1217888,
+      "sha256": "bcefc69a015d9a729e28e2724ef35920320270639d1bff1242c653bac1711c81"
+    },
+    {
+      "path": "tools/Widgy_Home_Glass_Calendar_C7.json",
+      "bytes": 1214003,
+      "sha256": "98c6027b96c481b1e6131ad95f1ba975fc732c82326feb077cd33fb35a7bd896"
+    },
+    {
+      "path": "tools/Widgy_Home_Glass_Calendar_C8.json",
+      "bytes": 1150092,
+      "sha256": "e99b8cdb18eb58a748d7251ac94fdd3ab982c0a3b8353cc7e254fa8f9f981868"
+    },
+    {
+      "path": "tools/Widgy_Home_Glass_Calendar_C9.json",
+      "bytes": 1100660,
+      "sha256": "2cab567c39879e17d0ba91881b1fa3a40c07475846797254541757fa361e59d1"
+    },
+    {
+      "path": "tools/build-widgy-v100.mjs",
+      "bytes": 5704,
+      "sha256": "da25104cbbb014d33bb9634b7df7f3316844def806237f689e4cd1565502d3d3"
+    },
+    {
+      "path": "tools/build-widgy-v101.mjs",
+      "bytes": 4005,
+      "sha256": "af5ce593d79f05ac72b2770fba75d5791e62719acad29ba387947577f2826695"
+    },
+    {
+      "path": "tools/build-widgy-v102.mjs",
+      "bytes": 4418,
+      "sha256": "5e9ebf04a7dd7f1be6a533d97032af712e1ddb749debc127aad1cc5d07f5bd09"
+    },
+    {
+      "path": "tools/build-widgy-v103.mjs",
+      "bytes": 6934,
+      "sha256": "d2a0b496e7ce358660f6fb176831f2c2258393c1ff5a4782c9704baddd5ef4f2"
+    },
+    {
+      "path": "tools/build-widgy-v104.mjs",
+      "bytes": 2738,
+      "sha256": "5cb0632573d4939037743de435efe28a1514d7ca749ce1b07b0dd3adc0ef9279"
+    },
+    {
+      "path": "tools/build-widgy-v105.mjs",
+      "bytes": 2347,
+      "sha256": "c8ca5126ad9585f74aafc440e3537634bbfd0f05576d86e4f57d6e005eb8defe"
+    },
+    {
+      "path": "tools/build-widgy-v106.mjs",
+      "bytes": 4517,
+      "sha256": "cd170efcfee31a6261a435020bb51cd590c2500193ac3a50dd05a03eb7070c87"
+    },
+    {
+      "path": "tools/build-widgy-v107.mjs",
+      "bytes": 4921,
+      "sha256": "1edc6f51f069496d0ffb881d73b9a8ba441cae1191cdcd73d84cee02df25ae5f"
+    },
+    {
+      "path": "tools/build-widgy-v108.mjs",
+      "bytes": 12075,
+      "sha256": "17df4beb8612a5b37a51577c8f14146be697ed9c3d488b40d0047488e2343cca"
+    },
+    {
+      "path": "tools/build-widgy-v109.mjs",
+      "bytes": 10757,
+      "sha256": "bb062063279c2d917ab75a2b450faa86bc2d14d639c2798c10713b00766aa384"
+    },
+    {
+      "path": "tools/build-widgy-v110.mjs",
+      "bytes": 7845,
+      "sha256": "2d09574081799c0fda87f4cbddc94e05728b45f8aac33ef65c9db51c924ab847"
+    },
+    {
+      "path": "tools/build-widgy-v111.mjs",
+      "bytes": 5727,
+      "sha256": "7322b7e647e7539a335d092466c16da36582a86a167d31253dd29f5e3d9963dd"
+    },
+    {
+      "path": "tools/build-widgy-v112.mjs",
+      "bytes": 3913,
+      "sha256": "34c5209e7a5b872923438a07992d946f4dc28b9447120de038d197a35b158500"
+    },
+    {
+      "path": "tools/build-widgy-v113.mjs",
+      "bytes": 4194,
+      "sha256": "cd7f466a2df37108dff2312d8706e18827293b37b3f89986af56d5f353ba893a"
+    },
+    {
+      "path": "tools/build-widgy-v114.mjs",
+      "bytes": 3460,
+      "sha256": "e4c29a013fda1620f2e4850010c670ec92b86ae9aca6c7365eb4286eb5a50af3"
+    },
+    {
+      "path": "tools/build-widgy-v115.mjs",
+      "bytes": 3692,
+      "sha256": "1e2498de80f2d24a61ec932dd4ba3c2db8d62639b5899c7c2567d9c4974ba687"
+    },
+    {
+      "path": "tools/build-widgy-v116.mjs",
+      "bytes": 3555,
+      "sha256": "f0f693edf479510377625545f25b823f8321b5eb76c594e5b540bf3d517369f3"
+    },
+    {
+      "path": "tools/build-widgy-v117.mjs",
+      "bytes": 4106,
+      "sha256": "302b9bf06f7b5964520e5cadfbbdb1f3d25cd7da59ee4ed6a086c85edd77588e"
+    },
+    {
+      "path": "tools/build-widgy-v118.mjs",
+      "bytes": 4559,
+      "sha256": "f9c12d6e1965d118ee1e665196e96c9f83d5f713207ce8f475d1bec98625cc24"
+    },
+    {
+      "path": "tools/build-widgy-v119.mjs",
+      "bytes": 5514,
+      "sha256": "0eb0ec61e2c933e09d083fa61bf2d25f6e7da0f385b85558ea91f5348992483f"
+    },
+    {
+      "path": "tools/build-widgy-v120.mjs",
+      "bytes": 4350,
+      "sha256": "7481636517b45e5f051ffc88e09fc342b41b7c25f0e224f02cd4b856e06d351b"
+    },
+    {
+      "path": "tools/build-widgy-v121.mjs",
+      "bytes": 4122,
+      "sha256": "0aea3a0b5d953865f2eda8f1b74a5e5beb1671a15ec507b6b8e12532a7b5c874"
+    },
+    {
+      "path": "tools/build-widgy-v122.mjs",
+      "bytes": 3188,
+      "sha256": "0ab7a09a305ff47e12029f5f703dc90974612451963b52fb1b51ba1c3f31babe"
+    },
+    {
+      "path": "tools/build-widgy-v123.mjs",
+      "bytes": 3623,
+      "sha256": "411e772c9e2068a63a2c8c96d0a781b80e35baad526f5222bde68ccd3ffac898"
+    },
+    {
+      "path": "tools/build-widgy-v124.mjs",
+      "bytes": 3582,
+      "sha256": "575dc4b6bde67bd151258247b0e6ccb7bf2c76954da8f88325c20e9b690ba7b3"
+    },
+    {
+      "path": "tools/build-widgy-v125.mjs",
+      "bytes": 3106,
+      "sha256": "88cd4fee445517e4179d52bb1bdfe4a944a48e9169c64fdb7e9ce42cac90dd5c"
+    },
+    {
+      "path": "tools/build-widgy-v127.mjs",
+      "bytes": 3612,
+      "sha256": "23637ef7afcc556f4391fdf3f6c41559ccd6ddc75127f03d6c9ad19c99ca2fb6"
+    },
+    {
+      "path": "tools/build-widgy-v128.mjs",
+      "bytes": 3317,
+      "sha256": "03a624ab364f3c18849b48cae04f2d35009ebc0be3718ecab241c30773552b66"
+    },
+    {
+      "path": "tools/build-widgy-v129.mjs",
+      "bytes": 3586,
+      "sha256": "08aafe84890faf8d90f6d310dc54a3201bf440aaf814459d8443216c77568b33"
+    },
+    {
+      "path": "tools/build-widgy-v130.mjs",
+      "bytes": 3802,
+      "sha256": "92aa11c9403f585a066f3a5150fea5e586136aca967c13152d4621b21ac38768"
+    },
+    {
+      "path": "tools/build-widgy-v131.mjs",
+      "bytes": 1249,
+      "sha256": "4425d918d2b7e59b31f3eb98bee8938ff8013780ede24733011d5ddc023cce7d"
+    },
+    {
+      "path": "tools/build-widgy-v132.mjs",
+      "bytes": 1199,
+      "sha256": "f41e011352b1b75b960b2fac174315c75858f24df1d5f981a8f200438a0f7508"
+    },
+    {
+      "path": "tools/build-widgy-v133.mjs",
+      "bytes": 888,
+      "sha256": "8d42417a347eca81376caf0c8fdfe59ecf2860bf3b342e7de0712481ee5e2325"
+    },
+    {
+      "path": "tools/build-widgy-v74.mjs",
+      "bytes": 5990,
+      "sha256": "388675f4d7a53343181906e76f98f163167816f66e087aacb508b6204998b07c"
+    },
+    {
+      "path": "tools/build-widgy-v75.mjs",
+      "bytes": 4929,
+      "sha256": "1f4181f5e518d6cff21b560de7060093ad24910eefd533f27bb17ac7cf4caf67"
+    },
+    {
+      "path": "tools/build-widgy-v76.mjs",
+      "bytes": 3000,
+      "sha256": "a7ee83f2bb0f6a57c9a747014c19b1e87a4d4221c8970ae7524c9b8ca4b54bf0"
+    },
+    {
+      "path": "tools/build-widgy-v77.mjs",
+      "bytes": 2421,
+      "sha256": "717fd38344bc1562095769b2525d4f2ca38e7993a7b519384df92e00818b5b67"
+    },
+    {
+      "path": "tools/build-widgy-v78.mjs",
+      "bytes": 323,
+      "sha256": "074a615c65d3031dcdc99a08171377e6c81721727d780acdced7e0a2385495c3"
+    },
+    {
+      "path": "tools/build-widgy-v79.mjs",
+      "bytes": 2546,
+      "sha256": "dc4d841ab3e4a5da32371f19c25cb16fa0dd880cdcb6bf37fcedad7465794c26"
+    },
+    {
+      "path": "tools/build-widgy-v80.mjs",
+      "bytes": 301,
+      "sha256": "67ff1d95c0105f0d8b060f7599ef69985ac80a5acde4d55d29ef31123a67bf9d"
+    },
+    {
+      "path": "tools/build-widgy-v81.mjs",
+      "bytes": 3447,
+      "sha256": "a60bfc41a0d86d2531782a5ca8459011ba8fb662c7e7dfe06428d3a6f560f3b0"
+    },
+    {
+      "path": "tools/build-widgy-v82.mjs",
+      "bytes": 2903,
+      "sha256": "5664d03d150e1f50cbf0733efee24e22a4cf66f55ebc17068bd27cf362fd321f"
+    },
+    {
+      "path": "tools/build-widgy-v83.mjs",
+      "bytes": 4003,
+      "sha256": "daf2dd33ff7e792a17ad96eb3115b662a96fb67d7e312753aa1f45024fabdef0"
+    },
+    {
+      "path": "tools/build-widgy-v84.mjs",
+      "bytes": 3682,
+      "sha256": "cb9c9b49c5c85e1a8a5334b53b0aed0d43d72fb80f415a1f3d0d3ec9d700e097"
+    },
+    {
+      "path": "tools/build-widgy-v85.mjs",
+      "bytes": 4147,
+      "sha256": "8ee4e04d2ba568f523fd9b98f8254a0373bcc13308dbaa0ff931c8c95b725289"
+    },
+    {
+      "path": "tools/build-widgy-v86.mjs",
+      "bytes": 5514,
+      "sha256": "855ac0cf8a837642b427764b7b6553c783f6623d906e52d42f0a0447e84e27d4"
+    },
+    {
+      "path": "tools/build-widgy-v87.mjs",
+      "bytes": 5763,
+      "sha256": "9c1c8f441f9a17bc5d24f74414124feb6613fdc7091b4754f640b49a5075b803"
+    },
+    {
+      "path": "tools/build-widgy-v88.mjs",
+      "bytes": 6220,
+      "sha256": "be9fec6d6943d268e74fe551d16cd7aa7144755795b98eaa1fa8819f49da03d7"
+    },
+    {
+      "path": "tools/build-widgy-v89.mjs",
+      "bytes": 4199,
+      "sha256": "9406e6bc0cabb70831388fd234653da5a19be90f07acc3939cf5687b1f90ce72"
+    },
+    {
+      "path": "tools/build-widgy-v90.mjs",
+      "bytes": 4272,
+      "sha256": "72d85af2f9937caf0f5f3bf15abed5ccc7169e922bc04e1878b42aedbbbe01de"
+    },
+    {
+      "path": "tools/build-widgy-v91.mjs",
+      "bytes": 4727,
+      "sha256": "9a2af046b2f4df86c6a1005223b3ef96a50f8653e83621bfbcf8b9b69719e52d"
+    },
+    {
+      "path": "tools/build-widgy-v92.mjs",
+      "bytes": 6855,
+      "sha256": "5b6470f84b5af0681d265426175dd596f51eb93b3c45cde19a2de6bf90036d37"
+    },
+    {
+      "path": "tools/build-widgy-v93.mjs",
+      "bytes": 6400,
+      "sha256": "10f590b2a2d1126b3b02286acb2951c6a18803d95aad28b3567ea49492eb2cda"
+    },
+    {
+      "path": "tools/build-widgy-v94.mjs",
+      "bytes": 5182,
+      "sha256": "c89a0ce87a06938edd018978f8d07ab49bed8ca52e6688807023dc9f669743a6"
+    },
+    {
+      "path": "tools/build-widgy-v95.mjs",
+      "bytes": 3122,
+      "sha256": "374081151e5704d410f2296d39dd1faaf7560b6cb18ba6767bf9f362a805957e"
+    },
+    {
+      "path": "tools/build-widgy-v96.mjs",
+      "bytes": 5620,
+      "sha256": "13b9c92fd0ccd4b0cc4691718a851707e611208e4cf9f533e601224e6a532c67"
+    },
+    {
+      "path": "tools/build-widgy-v97.mjs",
+      "bytes": 5516,
+      "sha256": "a5fc792a3a32c41a882610e863e92c6092b9cd609c1920c1da3890cb2aebe77c"
+    },
+    {
+      "path": "tools/build-widgy-v98.mjs",
+      "bytes": 3588,
+      "sha256": "6de6c0fbdbcc56c185f94ff3c7027aa179eedfae09555bf5bea136eb900fb769"
+    },
+    {
+      "path": "tools/build-widgy-v99.mjs",
+      "bytes": 3945,
+      "sha256": "ce571bf534f86998703b06044bfe51fdebbb8b321111a859e2225aa9524ac188"
+    },
+    {
+      "path": "tools/build_widgy_calendar_c1.mjs",
+      "bytes": 12209,
+      "sha256": "7afb11f087b73af441df9bb7fbae5e4c7db430ff012490807abff17f11655466"
+    },
+    {
+      "path": "tools/build_widgy_calendar_c10.mjs",
+      "bytes": 3844,
+      "sha256": "e5370c93eedfeeec1e76e92b5866a2838fc3024322ad86c43272e3600274a6ce"
+    },
+    {
+      "path": "tools/build_widgy_calendar_c11.mjs",
+      "bytes": 7522,
+      "sha256": "887550dbd4f5d8a29bea703c91ecd96012704c29e26a22fa14cc8eb3110e5ffa"
+    },
+    {
+      "path": "tools/build_widgy_calendar_c12.mjs",
+      "bytes": 5749,
+      "sha256": "205da71f6a3e23998f33dbc6faf6858c83d543560243e58ed99c6c3cec90582e"
+    },
+    {
+      "path": "tools/build_widgy_calendar_c13.mjs",
+      "bytes": 11951,
+      "sha256": "27845c6b1240134cf6703e6f50c2bd197a2e6cda3183cd07d7a0514b9554079d"
+    },
+    {
+      "path": "tools/build_widgy_calendar_c14.mjs",
+      "bytes": 4806,
+      "sha256": "70d9e0f7cfb9b718877d53bb6c8ac3110adebb59318fbc002e82fca39a87c9ce"
+    },
+    {
+      "path": "tools/build_widgy_calendar_c15.mjs",
+      "bytes": 3603,
+      "sha256": "04a469629aa74c810bd8555662dc10da4e431fb1153eaf5ea61d5b478aa6f9e1"
+    },
+    {
+      "path": "tools/build_widgy_calendar_c16.mjs",
+      "bytes": 6995,
+      "sha256": "ee415149d9e76f49ad09c05b9179efab81fd078211dfaef048907b030b3d122c"
+    },
+    {
+      "path": "tools/build_widgy_calendar_c2.mjs",
+      "bytes": 6395,
+      "sha256": "197dd0742aa33aa3de6cac405cdaebd56b7ba5e6d4b6a0e7ff7d574acaa9f696"
+    },
+    {
+      "path": "tools/build_widgy_calendar_c3.mjs",
+      "bytes": 5661,
+      "sha256": "8258467dd8761038ccb032f35e7e4ad7e87255ab6e638324fccb522c795eef94"
+    },
+    {
+      "path": "tools/build_widgy_calendar_c4.mjs",
+      "bytes": 6146,
+      "sha256": "077e08f7acd1828ce6ccb59099959b3e972837a4644b1ac422c5682ddc7419ce"
+    },
+    {
+      "path": "tools/build_widgy_calendar_c5.mjs",
+      "bytes": 3207,
+      "sha256": "1bb26cf0b7ede5ffc58f67ce2f486ef09884ba2bd55c43950cceadee9b4c9714"
+    },
+    {
+      "path": "tools/build_widgy_calendar_c6.mjs",
+      "bytes": 2521,
+      "sha256": "7a157f6f5823e6fa57c4f3c89f7a25600fc3d5c77a86a054f1fbd9bd9503c8b6"
+    },
+    {
+      "path": "tools/build_widgy_calendar_c7.mjs",
+      "bytes": 4558,
+      "sha256": "a7434d85b1506fb711f6ca1366fd70b2f8ba958e1e2c44275e216859ec993686"
+    },
+    {
+      "path": "tools/build_widgy_calendar_c8.mjs",
+      "bytes": 9169,
+      "sha256": "0dc76bc2abc898356008516d66f4b990d833569ba68522212c3c1d9efeaf6279"
+    },
+    {
+      "path": "tools/build_widgy_calendar_c9.mjs",
+      "bytes": 3445,
+      "sha256": "f279cfa8436fac91c740fb0c2024cb454b3d6f24f7516bf41874c71efd4057cd"
+    },
+    {
+      "path": "tools/build_widgy_calendar_dot_probe.mjs",
+      "bytes": 3613,
+      "sha256": "3fce30250fcdd4f0f37b905f4597a00645a68501874421d61b91ae8cece4f94b"
+    },
+    {
+      "path": "tools/test-dynamic-map-v124.mjs",
+      "bytes": 3885,
+      "sha256": "db20dee6784a006ef138cc7951f0611c22af82c91643b929f9311bf1ef1b1a3e"
+    },
+    {
+      "path": "tools/test-reference-map-v127.mjs",
+      "bytes": 3457,
+      "sha256": "90c84b76a0b61f015dccea284c79ac3dc7d83b6aaba9ca2eb8763bffa066b147"
+    },
+    {
+      "path": "tools/test-widgy-v110.mjs",
+      "bytes": 3063,
+      "sha256": "ca3de66dca2cef783130bbc493aa7b9a273431485e499a34bead2c909f1d7a0e"
+    },
+    {
+      "path": "tools/test_widgy_calendar_c10.mjs",
+      "bytes": 2833,
+      "sha256": "d35919192fbe292421a5b56442d9ba62c2f0d6363b93567f7809fd695ddf320f"
+    },
+    {
+      "path": "tools/test_widgy_calendar_c13.mjs",
+      "bytes": 3927,
+      "sha256": "99ed13b898b0814d96c470cf5df800e3bacace9dfcce14785ab1c8bdff150761"
+    },
+    {
+      "path": "tools/test_widgy_calendar_c4.mjs",
+      "bytes": 4246,
+      "sha256": "640849069fa1ec141540a6773a21c94c39459917a5948229b51937eecb314901"
+    },
+    {
+      "path": "tools/test_widgy_calendar_c5.mjs",
+      "bytes": 3619,
+      "sha256": "e5b690edb215194d062a558cd7ae4040d263f3fb2dbd133d23a8d1013bcadc98"
+    },
+    {
+      "path": "tools/test_widgy_calendar_c6.mjs",
+      "bytes": 11388,
+      "sha256": "daffea0f781fc9b342eb2f17416ca3e949d4bc3f71fe65282acd18f6b5640bbb"
+    },
+    {
+      "path": "tools/test_widgy_calendar_c7.mjs",
+      "bytes": 5070,
+      "sha256": "082f07265cb678022747b0d304a7384c65fd8948c1fcb11712a47e8c422f779d"
+    },
+    {
+      "path": "tools/test_widgy_calendar_c8.mjs",
+      "bytes": 6583,
+      "sha256": "fb770f493b3ccdb1397dde9dff5fe46621661662dff898f1f04d6672d219936b"
+    },
+    {
+      "path": "tools/test_widgy_calendar_c9.mjs",
+      "bytes": 4442,
+      "sha256": "d7dc451c173ea10a8d8fb32ac909cc3adf0faeeb08a4cde02edba1d7ed024009"
+    },
+    {
+      "path": "tools/widgy-calendar-c8-diagnostic.html",
+      "bytes": 4925,
+      "sha256": "d8abe5101c88704f4895491cfcc613ba983af83de88743c42a5cb7a923deee71"
+    },
+    {
+      "path": "tools/widgy-calendar-c9-diagnostic.html",
+      "bytes": 4925,
+      "sha256": "d81b71b485d1684467e8e68a4264747252ac9b7168628f39c6861906871feae3"
+    },
+    {
+      "path": "tools/widgy-calendar-compact-stable-1.enc.json",
+      "bytes": 112622,
+      "sha256": "c84bca1bcd18b0c235ea89583f1140adeb0e1d29d0f6d7d3730910aaf7b4955f"
+    },
+    {
+      "path": "tools/widgy-calendar-compact-stable-copy.html",
+      "bytes": 3451,
+      "sha256": "4b803f597d15925de5cce30968a00d4c335eea0b1dee3773c1a50ce142ec7415"
+    },
+    {
+      "path": "tools/widgy-calendar-compact-stable-copy.js",
+      "bytes": 3139,
+      "sha256": "a8355477519fd126375d65ed5617350c69990519e71b5039506bbbe333a93c92"
+    },
+    {
+      "path": "tools/widgy-calendar-direct-city-1.enc.json",
+      "bytes": 110175,
+      "sha256": "1d4d47ed47247a9130ad5410a101e5c32402f3d064501205bb44fcedbc1b8397"
+    },
+    {
+      "path": "tools/widgy-calendar-direct-city-copy.html",
+      "bytes": 3477,
+      "sha256": "37f2a1050ee38233581618f580bf4c24fa852f64b489a878e62a78fa69d0dca6"
+    },
+    {
+      "path": "tools/widgy-calendar-direct-city-copy.js",
+      "bytes": 3130,
+      "sha256": "eca1124592ac60d9c09ba27c26d09cef3431a73e17bf558fa0bcf84f3ce32c61"
+    },
+    {
+      "path": "tools/widgy-calendar-direct-data-1.enc.json",
+      "bytes": 108808,
+      "sha256": "95bc7cc8521b612b96acef0858c6b0d740486ac345d31821b5323fa9757c5475"
+    },
+    {
+      "path": "tools/widgy-calendar-direct-data-copy.html",
+      "bytes": 3492,
+      "sha256": "31868b8048124442f08c83b246008779a1459e7c28d0ba1c64f609cafd49f306"
+    },
+    {
+      "path": "tools/widgy-calendar-direct-data-copy.js",
+      "bytes": 3130,
+      "sha256": "f2e34d7d829da156d78979e4bf87bcb5019042ced68a95fba6b1f2aaf21df10c"
+    },
+    {
+      "path": "tools/widgy-calendar-dot-position-check.html",
+      "bytes": 3823,
+      "sha256": "e3280d56d5d28a393799e13a930856d91fe9dae3c80cff9309b5f92ffb6879a0"
+    },
+    {
+      "path": "tools/widgy-city-reuse-1.enc.json",
+      "bytes": 125919,
+      "sha256": "3c8c030b80bde373c7df94484027687581e84784bfb1ebda1dec91aaf94eba54"
+    },
+    {
+      "path": "tools/widgy-city-reuse-copy.html",
+      "bytes": 2856,
+      "sha256": "de8dbe12da22561934fc555b8e61448072f1fd9672326c969da9965d944e10a4"
+    },
+    {
+      "path": "tools/widgy-city-reuse-copy.js",
+      "bytes": 3126,
+      "sha256": "cfec7e7578759e05804145f6ece2d3cdb4d1455fd9a6c40b5bde3d046f798070"
+    },
+    {
+      "path": "tools/widgy-city-reuse-recovery-1.enc.json",
+      "bytes": 125984,
+      "sha256": "0e8c58fb790b7e8ff2b86e31af2fcd7ca57430a0b62ee80211dca4c14afd22c9"
+    },
+    {
+      "path": "tools/widgy-city-timing-1.enc.json",
+      "bytes": 113240,
+      "sha256": "4297c28797486c010022777be922af4a808cf6dca9581f86d03743efb188a9f5"
+    },
+    {
+      "path": "tools/widgy-city-timing-copy.html",
+      "bytes": 3153,
+      "sha256": "8c40d188027c2392ecb399cf43b686e62055e136fbcb1ac03a3335fdf16d1ec0"
+    },
+    {
+      "path": "tools/widgy-city-timing-copy.js",
+      "bytes": 3103,
+      "sha256": "214b5fc488309f1eb12334e52c4adc53efa20f60ad7c3f82ad6afff3682b398c"
+    },
+    {
+      "path": "tools/widgy-day-tap-dot-1.enc.json",
+      "bytes": 110556,
+      "sha256": "c4abc05050eba6e9c978326ec259b7b779a269e613a7f2f1be72f4d96d8be2db"
+    },
+    {
+      "path": "tools/widgy-day-tap-dot-copy.html",
+      "bytes": 3287,
+      "sha256": "2e58b2665ff0d396af747ec7f738cdb394d792a8cf8c0dd1d562550d4b596660"
+    },
+    {
+      "path": "tools/widgy-day-tap-dot-copy.js",
+      "bytes": 3103,
+      "sha256": "c24ead9e6c3689990b0615ef015641cf6252d08593db9cfe8505ca94855f9ff3"
+    },
+    {
+      "path": "tools/widgy-full-tap-dot-1.enc.json",
+      "bytes": 110611,
+      "sha256": "cc245e031532bc944e681fd8cf1229a20f5c9cc69386b4805df7186925554d6e"
+    },
+    {
+      "path": "tools/widgy-full-tap-dot-copy.html",
+      "bytes": 3311,
+      "sha256": "f7392d0c33dacd00e27c1522f01bd9d55a0d8a56acd75119dc41144a4589dfa8"
+    },
+    {
+      "path": "tools/widgy-full-tap-dot-copy.js",
+      "bytes": 3106,
+      "sha256": "01b09d08c978718ff37935f2901c8ac773c4b4a34a5bb317d6a61069a9b52e01"
+    },
+    {
+      "path": "tools/widgy-gauge-1-clean.enc.json",
+      "bytes": 139313,
+      "sha256": "8e4ad705412b152bb6d6f1477f376616e3a3dfe0d0039d27cefd768af8ffd5df"
+    },
+    {
+      "path": "tools/widgy-gauge-1.enc.json",
+      "bytes": 134685,
+      "sha256": "c02adb95a7c3c5389fb3b8ed509c4b850ba91a0536db26fe2b33394db20d279b"
+    },
+    {
+      "path": "tools/widgy-home-calendar-c1.html",
+      "bytes": 4118,
+      "sha256": "5de3e7af6681d3f10ff193b2622df6cce4ff0848b93ecf16aa639a04767c5a4f"
+    },
+    {
+      "path": "tools/widgy-home-calendar-c10.html",
+      "bytes": 5107,
+      "sha256": "aab5ee0d3b95aa6c20316e8d2f326b90ef2e3cfbd0b1d27905d720ce1ef23406"
+    },
+    {
+      "path": "tools/widgy-home-calendar-c11.html",
+      "bytes": 5006,
+      "sha256": "2eb9c8743fb3ca64a624c89ba307d6d0a938cfa4ef3c19764fed014ad961c697"
+    },
+    {
+      "path": "tools/widgy-home-calendar-c12.html",
+      "bytes": 5078,
+      "sha256": "de9e2788f84c2770f852475578635d42a3214e8bcc50a9813166ec2242c2295d"
+    },
+    {
+      "path": "tools/widgy-home-calendar-c13.html",
+      "bytes": 5288,
+      "sha256": "3af30a1c923a0b12dbfd21afa30af29b5d70e0ae776427e5de8639e49563bf96"
+    },
+    {
+      "path": "tools/widgy-home-calendar-c14.html",
+      "bytes": 5065,
+      "sha256": "2c562251975a1f5afc82d1e003b7be64b641b881cce4596f165bf5f3f8263701"
+    },
+    {
+      "path": "tools/widgy-home-calendar-c15.html",
+      "bytes": 5022,
+      "sha256": "2d2a0f7a4dcc6d9db074112fd88a6214939d5b0918eae53f8993c0cf704713f9"
+    },
+    {
+      "path": "tools/widgy-home-calendar-c2.html",
+      "bytes": 4149,
+      "sha256": "f8ba7ae874623964949f37ec301370bb78b6b6e80c5efe96822151f33e6b29b7"
+    },
+    {
+      "path": "tools/widgy-home-calendar-c3.html",
+      "bytes": 5406,
+      "sha256": "63e9553b3969b0541766c81bd1da815b1b4bca593e4a7fd07664cab0f98b5937"
+    },
+    {
+      "path": "tools/widgy-home-calendar-c4.html",
+      "bytes": 4241,
+      "sha256": "b5c75d60347642c7786f7b55795f6b68f4c8614a204189d501376b1e070d91fc"
+    },
+    {
+      "path": "tools/widgy-home-calendar-c5.html",
+      "bytes": 4327,
+      "sha256": "12a01e481d93b72836595adf23966b90e51983533249b23ba8851eb3aa78adb8"
+    },
+    {
+      "path": "tools/widgy-home-calendar-c6.html",
+      "bytes": 4465,
+      "sha256": "5f6734854cbda9b2ec6ef475bf47e4e1767230b467f705fa3e7f617cea4aac07"
+    },
+    {
+      "path": "tools/widgy-home-calendar-c7.html",
+      "bytes": 4588,
+      "sha256": "23102b10267a9ea83b0fba3a42bbe4a88be3fa8702ba3c861a0933fc64634078"
+    },
+    {
+      "path": "tools/widgy-home-calendar-c8.html",
+      "bytes": 4728,
+      "sha256": "e650b29ae0c5937711515bb1f396dc1684de014654262d9a4b2b241d21cb6660"
+    },
+    {
+      "path": "tools/widgy-home-calendar-c9.html",
+      "bytes": 4784,
+      "sha256": "ea951b985f68b61042b2904ac5a16f20370d874d3ad6a3b5dbe7c9458c185e77"
+    },
+    {
+      "path": "tools/widgy-home-calendar-runtime-1.enc.json",
+      "bytes": 116904,
+      "sha256": "09e5684ae07fc19b5db0396902b41ed62966a4c51ee0b170b840b21e4a653ebe"
+    },
+    {
+      "path": "tools/widgy-home-calendar-runtime-copy.html",
+      "bytes": 3247,
+      "sha256": "840525a01eb20713940074c3019bb98b7fe164681491a39d3c2a5d083d0eea33"
+    },
+    {
+      "path": "tools/widgy-home-calendar-runtime-copy.js",
+      "bytes": 3136,
+      "sha256": "33178c646fc7cec25254b9b062cf61cd1b52ae294dc3e34d3071254d20d813c0"
+    },
+    {
+      "path": "tools/widgy-home-clock-addback-1.enc.json",
+      "bytes": 108432,
+      "sha256": "d02767c94c88225d23e0352b21a3179dab8190d757fa5956127fcba5815d2c56"
+    },
+    {
+      "path": "tools/widgy-home-clock-addback-copy.html",
+      "bytes": 3327,
+      "sha256": "37e137d5d5da2e1fce9e183a984d9ab6b5e75f9c019bf4f530c0e60cffca257b"
+    },
+    {
+      "path": "tools/widgy-home-clock-addback-copy.js",
+      "bytes": 3124,
+      "sha256": "c41911012a0e527c151443e80fb92bce8739329e6bb5ae38fa66e8799e7a4d3d"
+    },
+    {
+      "path": "tools/widgy-home-day-addback-1.enc.json",
+      "bytes": 110503,
+      "sha256": "569d2697fb906702e4227771096c5610404680ff4cdd70afd67149f185211560"
+    },
+    {
+      "path": "tools/widgy-home-day-addback-copy.html",
+      "bytes": 3339,
+      "sha256": "cdf6400e5fc3db8defe6c63859eb094baeeaf5abd0459b38b62d66d3141c15b4"
+    },
+    {
+      "path": "tools/widgy-home-day-addback-copy.js",
+      "bytes": 3118,
+      "sha256": "6ff3411814aa347861db6a25e149457a8b3df26d390c80cf43642114cc2f41e3"
+    },
+    {
+      "path": "tools/widgy-home-events-addback-1.enc.json",
+      "bytes": 109101,
+      "sha256": "59a1353b64f9ca323701b137a15961c58d7d8aa555d62daed65409adfd7452d3"
+    },
+    {
+      "path": "tools/widgy-home-events-addback-copy.html",
+      "bytes": 3308,
+      "sha256": "f0649fb5e008f88c73ca1955ff0e5239d2caf7eda8abc115967b539b5623fe33"
+    },
+    {
+      "path": "tools/widgy-home-events-addback-copy.js",
+      "bytes": 3127,
+      "sha256": "076ca81b561db8bb9cbc0b06222c0b830da0002df5bc8e99db70163f70d8fd60"
+    },
+    {
+      "path": "tools/widgy-home-fitness-addback-1.enc.json",
+      "bytes": 109829,
+      "sha256": "58eb94db04122cdff2706d66331d47ebdd874ae634877928d8dd08958c77db06"
+    },
+    {
+      "path": "tools/widgy-home-fitness-addback-copy.html",
+      "bytes": 3306,
+      "sha256": "5a35b3b3f5add2831ccd3b22830738d3b03badb35431e2ac1cc4661c0aa3a8ff"
+    },
+    {
+      "path": "tools/widgy-home-fitness-addback-copy.js",
+      "bytes": 3130,
+      "sha256": "768fe7cb2e0d670d2a673dfecb8d76f7c2827788cf13aa1f0c1b65aa8bf03eec"
+    },
+    {
+      "path": "tools/widgy-home-source-addback-1.enc.json",
+      "bytes": 87717,
+      "sha256": "048ac985e6d0a74556d4b13756a39f1e6205fe8753264694130181970398d2dc"
+    },
+    {
+      "path": "tools/widgy-home-source-addback-copy.html",
+      "bytes": 3296,
+      "sha256": "bc7c302e8f108b6472c5614f933585785cb73dee7cfd1de1f2ecf855a8254b38"
+    },
+    {
+      "path": "tools/widgy-home-source-addback-copy.js",
+      "bytes": 3127,
+      "sha256": "bd30c98e06f7d965340dadc87dbe63429279a6d80999b279f82117043b4c941c"
+    },
+    {
+      "path": "tools/widgy-home-weather-addback-1.enc.json",
+      "bytes": 107331,
+      "sha256": "8e8b534f2de85ef8c59e339c7a8ca44ed52021213232019e73043b19a3963613"
+    },
+    {
+      "path": "tools/widgy-home-weather-addback-copy.html",
+      "bytes": 3363,
+      "sha256": "4d341ff1f011d2dd8e8b135fc85df746f8ac978648aa2c955ce31fd3f461dea2"
+    },
+    {
+      "path": "tools/widgy-home-weather-addback-copy.js",
+      "bytes": 3130,
+      "sha256": "54656db6acc1bf6cbe3ad4f61fe9d45f9390e41eac34dd2975f5f62163bd3e24"
+    },
+    {
+      "path": "tools/widgy-live-map-only-home-1.enc.json",
+      "bytes": 86851,
+      "sha256": "46505f20cf5f9201af75972596e6bac6048313cbf4cf768f013efc525a3474a9"
+    },
+    {
+      "path": "tools/widgy-live-map-only-home-copy.html",
+      "bytes": 3419,
+      "sha256": "e3df6f60808b549a671aeb4adfbd601d06269ab870cf5a9e7a3ea230a2111ea1"
+    },
+    {
+      "path": "tools/widgy-live-map-only-home-copy.js",
+      "bytes": 3124,
+      "sha256": "3ebf38ff58a6418df217db44a5fdb116924b6b158d085d5e10ad6739ccb4fa88"
+    },
+    {
+      "path": "tools/widgy-native-city-front-1.enc.json",
+      "bytes": 110405,
+      "sha256": "44e4ea0a27daf42607a51abc74a9bb3aacb3b2cad4ed74a775c3f1922c144d01"
+    },
+    {
+      "path": "tools/widgy-native-city-front-copy.html",
+      "bytes": 3303,
+      "sha256": "c12ac7edf6e7f4327f065bcdc807559d1806ecf18a84942c4dca3a4550557806"
+    },
+    {
+      "path": "tools/widgy-native-city-front-copy.js",
+      "bytes": 3124,
+      "sha256": "7fdc0d2e3e660fcc5ecc86b66598cd9f0d3b152923c548afc42bcd95c72472cf"
+    },
+    {
+      "path": "tools/widgy-native-city-spelling-1.enc.json",
+      "bytes": 110399,
+      "sha256": "709ebb29e6df7052edda2bdae88a6bdc70d983d1278c17633dd2dd9c3eada985"
+    },
+    {
+      "path": "tools/widgy-native-city-spelling-copy.html",
+      "bytes": 3307,
+      "sha256": "42bd87673cab7ded10efd0f2a878136140b5a4eea2cedc82cdf6110dc8d2662c"
+    },
+    {
+      "path": "tools/widgy-native-city-spelling-copy.js",
+      "bytes": 3130,
+      "sha256": "13b2fee86784ee14aa026b960fb7cca6ff2099e0a987c569c4d787121445e64b"
+    },
+    {
+      "path": "tools/widgy-ready-copy.html",
+      "bytes": 2439,
+      "sha256": "83fbddaaf784da5d2586f7ffa9ad428ef8256d9a464585808b6367e95f18c45c"
+    },
+    {
+      "path": "tools/widgy-ready-copy.js",
+      "bytes": 2674,
+      "sha256": "8168012fae2cb5b807b5a7e1d86d0929d4cb30d4b7f2643aa0ac1ad107f13944"
+    },
+    {
+      "path": "tools/widgy-server-city-1.enc.json",
+      "bytes": 113511,
+      "sha256": "8912886b1cd2dfcfd13071570c501e802bdef3a446a5d35c96d7b2ef9cd1b90c"
+    },
+    {
+      "path": "tools/widgy-server-city-copy.html",
+      "bytes": 3347,
+      "sha256": "ceb6df68f77ed326ec0a90c29411539cd8602c45b04791dc4cdd8857fe54f4f0"
+    },
+    {
+      "path": "tools/widgy-server-city-copy.js",
+      "bytes": 3109,
+      "sha256": "d2d1e4215de9c399861639e3ce868a487fbb1d3620781d1908e3efe597efba57"
+    },
+    {
+      "path": "tools/widgy-shared-home-calendar-1.enc.json",
+      "bytes": 109521,
+      "sha256": "15cd24c4eaa9b69163f5c12a63c2b227010fc013681032257cf276eeda030aaa"
+    },
+    {
+      "path": "tools/widgy-shared-home-calendar-copy.html",
+      "bytes": 3471,
+      "sha256": "6d2fa5f5f1591556612d7152129ebc48bb86ba14d54e26e55f3b81f286dcb5df"
+    },
+    {
+      "path": "tools/widgy-shared-home-calendar-copy.js",
+      "bytes": 3133,
+      "sha256": "22e07c97b32fd02b2f0d59cb9b19b9f87c51c74773af1ec8e6203b600ecae54a"
+    },
+    {
+      "path": "tools/widgy-stable-gauge-20261008.enc.json",
+      "bytes": 133433,
+      "sha256": "d81cdbf0e672c798e585328f31334eec78bb463cb51512fa7b3f9b34ab903b34"
+    },
+    {
+      "path": "tools/widgy-v100.html",
+      "bytes": 18851,
+      "sha256": "dbc9e2c7dcb933b6a395155b18a9c14738ae8ad475ecf33187f8baddcf542152"
+    },
+    {
+      "path": "tools/widgy-v100.json",
+      "bytes": 92834,
+      "sha256": "cd6e87d2c34806ac668c960afcb75565140a646f5b7101bbe717c1c73e02a16a"
+    },
+    {
+      "path": "tools/widgy-v101.html",
+      "bytes": 19349,
+      "sha256": "9e835749510cc4b1aa5a43cdb2ad0b0da50e3041d25415001aa1d9ed2af14714"
+    },
+    {
+      "path": "tools/widgy-v101.json",
+      "bytes": 94624,
+      "sha256": "f48d0136778507e609c1208f110dd13db9591810f264f2df28d6794ed19ac26e"
+    },
+    {
+      "path": "tools/widgy-v102.html",
+      "bytes": 21769,
+      "sha256": "5035bc5a812a47b5330d93b5760fbd5d733598a3fe03de435443e7d0fe6c3c00"
+    },
+    {
+      "path": "tools/widgy-v102.json",
+      "bytes": 100746,
+      "sha256": "df91e90ab6983d83ee1c6de97a884da2f114d9d6c4d76083a49e542370490fa7"
+    },
+    {
+      "path": "tools/widgy-v103.html",
+      "bytes": 24412,
+      "sha256": "068c5d5e7f2c783f61677b8852a964ba2cbff055f85a8d2809f41703d6487636"
+    },
+    {
+      "path": "tools/widgy-v103.json",
+      "bytes": 106963,
+      "sha256": "427bdd159efc842f033c2523da52148af601a2b19cf698491217ff075818cc9e"
+    },
+    {
+      "path": "tools/widgy-v104.html",
+      "bytes": 24079,
+      "sha256": "7303d7d119bb71236b2d0983713d6cd37efc70f3abebd4a690f62e725704300c"
+    },
+    {
+      "path": "tools/widgy-v104.json",
+      "bytes": 106611,
+      "sha256": "178ea2d2e1c37fc99fead5ee5c3e68356d48d85baede77e28894eb4546948f09"
+    },
+    {
+      "path": "tools/widgy-v105.html",
+      "bytes": 23918,
+      "sha256": "79b67d2b1c36aad222d6bdea454cf18533e99869cb804caabf1ff00496bedfb7"
+    },
+    {
+      "path": "tools/widgy-v105.json",
+      "bytes": 106399,
+      "sha256": "c82de6a51a03c4de66406f76a56a29fb64dffd4fdda4243386cf1d9f396ad761"
+    },
+    {
+      "path": "tools/widgy-v106.html",
+      "bytes": 28322,
+      "sha256": "23f7f409699cdaa0c1fa3d07637c49aaeb7e5dc5927aa68f6ea753386c9b5402"
+    },
+    {
+      "path": "tools/widgy-v106.json",
+      "bytes": 107680,
+      "sha256": "1fd144e511b2f8f1c8876b6c4373b0710d3c2a451adcf296cddd84d29cfcca07"
+    },
+    {
+      "path": "tools/widgy-v107.html",
+      "bytes": 28772,
+      "sha256": "1ec331fc558a3fd7853c829cdd524fcc115b57996d8b8948007cd3248ae27414"
+    },
+    {
+      "path": "tools/widgy-v107.json",
+      "bytes": 108201,
+      "sha256": "f08ff30689d29c24463ce6649d7903f560270fd17449d02c59420ffaa68e3c43"
+    },
+    {
+      "path": "tools/widgy-v108.html",
+      "bytes": 31387,
+      "sha256": "874ea6d8c1c82b84e3e08aabe41521ae41cb0733854756f6129a8be5af24e853"
+    },
+    {
+      "path": "tools/widgy-v108.json",
+      "bytes": 132600,
+      "sha256": "42a9cea5f2874159402726d302819982d66c9f5ebb2e36eb231d8b8fc2080837"
+    },
+    {
+      "path": "tools/widgy-v109.html",
+      "bytes": 31636,
+      "sha256": "ec50575f19d01b99f429b7ac2ee2dd651e51e4ac1e693e307090ba90784fee60"
+    },
+    {
+      "path": "tools/widgy-v109.json",
+      "bytes": 132914,
+      "sha256": "9a622a164490b1d0c4ef1dbc4ba0951eb5dfb05952cbf185e25f264114edbf10"
+    },
+    {
+      "path": "tools/widgy-v110.html",
+      "bytes": 34870,
+      "sha256": "436f7112d6b84d58002c42e8d23cc01447585f6be30c8820e60672af2b648ae1"
+    },
+    {
+      "path": "tools/widgy-v110.json",
+      "bytes": 171401,
+      "sha256": "1c4b79c11836a88c7b184e4fef52c42a83dc2e006209c7c2ed5846ab95d78c17"
+    },
+    {
+      "path": "tools/widgy-v111.html",
+      "bytes": 35394,
+      "sha256": "e57ba3d5b3cca0aa1158b40b1c1741c1f4ae2d648a3ec81c9a931b47176c1136"
+    },
+    {
+      "path": "tools/widgy-v111.json",
+      "bytes": 172088,
+      "sha256": "325b4c11ff7277b507a822f96ec84de118b258f5fe4e86995bc6e5c4796bd243"
+    },
+    {
+      "path": "tools/widgy-v112.html",
+      "bytes": 35633,
+      "sha256": "13716cce6ce39ccf3054195244b1f25247c6b9724b20d6201f38b13f36730695"
+    },
+    {
+      "path": "tools/widgy-v112.json",
+      "bytes": 172462,
+      "sha256": "a04de77a1c27a0d4c0038f30336abf6c1dd42851753f443ec8aafdaa810bbfd0"
+    },
+    {
+      "path": "tools/widgy-v113.html",
+      "bytes": 36055,
+      "sha256": "cd9f13c0ea97649e735a5b0995e06a8d99dd42a74c4aabf3dba66980dcd26ce1"
+    },
+    {
+      "path": "tools/widgy-v114.html",
+      "bytes": 36300,
+      "sha256": "e931e1f6e8ce07862e3e7b34981addd4b2737cadf913713b9902831c575a08f2"
+    },
+    {
+      "path": "tools/widgy-v114.json",
+      "bytes": 173389,
+      "sha256": "8324b4c5f245105398985b9d86eeb6113e5c617d02a877a2de3e1d6ba89b5ce1"
+    },
+    {
+      "path": "tools/widgy-v115.html",
+      "bytes": 36479,
+      "sha256": "3c303810ee312eba97f5fe0fcead584416e32ed7ac2c318ddeb3dc779ebf2bc1"
+    },
+    {
+      "path": "tools/widgy-v115.json",
+      "bytes": 173737,
+      "sha256": "71a0851742c6317d118450e957ef12bf95fd1cbca10cc43697548c0a1a37dc1d"
+    },
+    {
+      "path": "tools/widgy-v116.html",
+      "bytes": 36640,
+      "sha256": "e12ce9609f9d5e9cc1a3957e98de4991fe22205d3e6584d444b33112440e0405"
+    },
+    {
+      "path": "tools/widgy-v116.json",
+      "bytes": 173982,
+      "sha256": "5443eb299eab92c667516f7384e704c000b18d289624f5d27ceac8b71ed8f845"
+    },
+    {
+      "path": "tools/widgy-v117.html",
+      "bytes": 36782,
+      "sha256": "413be64a82d2a92b36f9dba5473009893cae6e7e56812e67fe76bef67619ac36"
+    },
+    {
+      "path": "tools/widgy-v117.json",
+      "bytes": 174236,
+      "sha256": "f9d45e287ef65c8817c65dc9474a068242d45fe1c3f1e161f8828fb23bb40c9f"
+    },
+    {
+      "path": "tools/widgy-v118.html",
+      "bytes": 35190,
+      "sha256": "703deca2f5b4ce9fdd1aeb2fdc5a5a3f56c4c54cd8eb5f3faa7a2b9c2e8fe2e9"
+    },
+    {
+      "path": "tools/widgy-v118.json",
+      "bytes": 171886,
+      "sha256": "88a1756481b368e944cdc957f6b50803f046fbf0ea820af56cfe9ea228993730"
+    },
+    {
+      "path": "tools/widgy-v119.html",
+      "bytes": 35428,
+      "sha256": "66b301eaea7ff7073b8f2a3d2ae1427fd2a5bc525c953893e3fd522ec5aa421f"
+    },
+    {
+      "path": "tools/widgy-v119.json",
+      "bytes": 172201,
+      "sha256": "4cecf9df0dd5b0878366acb86073018286c26ae95121ef54ff14ada155fad013"
+    },
+    {
+      "path": "tools/widgy-v120.html",
+      "bytes": 35522,
+      "sha256": "3c19ae949c0006a6cfa23b3fddabeb7fbaac792b42f417aba661b2cb3f671389"
+    },
+    {
+      "path": "tools/widgy-v120.json",
+      "bytes": 172293,
+      "sha256": "57c6a2aa43311b51b3b8039523efe8573369d42a76bfdd901c75922ca80bdfc2"
+    },
+    {
+      "path": "tools/widgy-v121.html",
+      "bytes": 35483,
+      "sha256": "7ec5d9984f92ca08e554ecab0932ed004189a054ff115d01b9c0f0a4824ca30f"
+    },
+    {
+      "path": "tools/widgy-v121.json",
+      "bytes": 172292,
+      "sha256": "306cdc63b99fe08fc3d439355aaad518afdea660353bf22783cf94048393e07e"
+    },
+    {
+      "path": "tools/widgy-v122.html",
+      "bytes": 35376,
+      "sha256": "f6407218d616294f233a1bdff97f210d92474d4bc6da908cc1191cfae0975973"
+    },
+    {
+      "path": "tools/widgy-v122.json",
+      "bytes": 172148,
+      "sha256": "91e8cb2d3514ecb7eec095ff06d459e40d306fdec8c8c849d5e200eca713798d"
+    },
+    {
+      "path": "tools/widgy-v123.html",
+      "bytes": 35268,
+      "sha256": "73f090446e7b36b3d98504e9b1230ca7f081297e11f89464e4f18ef928f4d9a7"
+    },
+    {
+      "path": "tools/widgy-v123.json",
+      "bytes": 172017,
+      "sha256": "6b2e7c492eec7a2ce1747d97a40b863e75d799d02e5a39395fdf31a36cd69e87"
+    },
+    {
+      "path": "tools/widgy-v124.html",
+      "bytes": 35471,
+      "sha256": "e8389ff969a6076e76eb9dc29fab539495d1cf5b5244209dc342cf2ab6d474d2"
+    },
+    {
+      "path": "tools/widgy-v124.json",
+      "bytes": 172175,
+      "sha256": "f106d0469c6e352850afce66bf32797a4b73c19f020f7a5230f294fa121f9778"
+    },
+    {
+      "path": "tools/widgy-v125.html",
+      "bytes": 35279,
+      "sha256": "b0834973a1aa4fe6c07c0554b34dfdf9e653308b309fe65fbf519d20c0bf0353"
+    },
+    {
+      "path": "tools/widgy-v125.json",
+      "bytes": 171967,
+      "sha256": "48b0366e9f851c150c7acf4712e382bfac677ea65ef1cde4a8559ba353809906"
+    },
+    {
+      "path": "tools/widgy-v127.html",
+      "bytes": 35444,
+      "sha256": "dedae4ea55adaa32bbd3ec3da82f3288df2bfd48cf187f6a4bb37b19f4deb27f"
+    },
+    {
+      "path": "tools/widgy-v127.json",
+      "bytes": 172138,
+      "sha256": "3611414998f7c802f2b376c79a64068c0c49b0d7c01a701f8f6a37e5e84d9d87"
+    },
+    {
+      "path": "tools/widgy-v128.html",
+      "bytes": 35497,
+      "sha256": "9df9bbe5f94fe504c2959284209c59ff59b82528390158f6087207924e4d9c5d"
+    },
+    {
+      "path": "tools/widgy-v128.json",
+      "bytes": 172181,
+      "sha256": "8d99c05d81c850b1ab01c16ba9aac539e69421aafd88ba8e38f4675ce16c78a0"
+    },
+    {
+      "path": "tools/widgy-v129.html",
+      "bytes": 35752,
+      "sha256": "3d8209009f9fe64f8b50a2c5b66c0b1907332589ba79b39e82eb401e4489fd4b"
+    },
+    {
+      "path": "tools/widgy-v129.json",
+      "bytes": 172419,
+      "sha256": "5a7a79f60aacc4110c9198178cc3c26b10550692f6c0f00f20152fff700e7f8c"
+    },
+    {
+      "path": "tools/widgy-v130.html",
+      "bytes": 35716,
+      "sha256": "34326216d6deadd308da293db5f688c96363db0d9063208cd4916c04e2ac31a0"
+    },
+    {
+      "path": "tools/widgy-v130.json",
+      "bytes": 172359,
+      "sha256": "225c1665568e3c8a3c38c502c408c2c41f4beb0714b0441b45515c651f937196"
+    },
+    {
+      "path": "tools/widgy-v131.html",
+      "bytes": 3326,
+      "sha256": "df5a8cf527aa1d64dea337831a75ed10c18610065a9b2dca0f7513093170a0fc"
+    },
+    {
+      "path": "tools/widgy-v131.json",
+      "bytes": 172168,
+      "sha256": "55d884c3ca81e6b8e44b4e085f679f5a04a954eb3741d20c0af3dd88e3d0617e"
+    },
+    {
+      "path": "tools/widgy-v132.html",
+      "bytes": 3376,
+      "sha256": "5dd4ad2884f2ea64d76a53ff9dc7960c2f4d37bc95bdc572665817377c882e9e"
+    },
+    {
+      "path": "tools/widgy-v132.json",
+      "bytes": 172116,
+      "sha256": "9fdf7a0419ed68db0e7fe30d8a9118b43c7e95a78451981ebb225a3717175d14"
+    },
+    {
+      "path": "tools/widgy-v133.html",
+      "bytes": 3429,
+      "sha256": "2faa7ffe7557084caa20ae1098873efb59969d16cc96d95bf914bf22899446ba"
+    },
+    {
+      "path": "tools/widgy-v133.json",
+      "bytes": 172266,
+      "sha256": "c6be1bdc6b32a7db9cb85e96f7dfcc2c7583a85c4760de180d7f79003b3c547b"
+    },
+    {
+      "path": "tools/widgy-v134.html",
+      "bytes": 3358,
+      "sha256": "8cff3c55b35e5801000e23d1db99762820ef6b82efe9128b641f8cfb7c8fb243"
+    },
+    {
+      "path": "tools/widgy-v134.json",
+      "bytes": 172041,
+      "sha256": "b5890476ef481869dbe3a542dcd745d479848e1da6a8cb433ffa7d4dbb948935"
+    },
+    {
+      "path": "tools/widgy-v135.html",
+      "bytes": 3358,
+      "sha256": "d91352b68a7205c0468c241fc6a3f0f7156d1eb1fc52bcec2b2babab7b61b1fb"
+    },
+    {
+      "path": "tools/widgy-v135.json",
+      "bytes": 172216,
+      "sha256": "93e3ab078bc6b9e48b37051c3b0efd935134a4e68159d51ac4e7422a28d14fe2"
+    },
+    {
+      "path": "tools/widgy-v136.html",
+      "bytes": 3358,
+      "sha256": "7f6d86b4a186cb733f61ffae750fa7ae84563bc901539613b758e76a8fb60b08"
+    },
+    {
+      "path": "tools/widgy-v136.json",
+      "bytes": 172210,
+      "sha256": "1b50579b1cee7e202daeee38f65a54503675a4d47568ad014b3da0c564277b52"
+    },
+    {
+      "path": "tools/widgy-v137.html",
+      "bytes": 3358,
+      "sha256": "4ef08f469a18049eb7cd4d199944cdd481c87109e5d32de2084e01e4151486d1"
+    },
+    {
+      "path": "tools/widgy-v137.json",
+      "bytes": 172215,
+      "sha256": "77d78956f568dd830f8bae8e116b80ad6bffa635fe813f31bb458a6a204be7e3"
+    },
+    {
+      "path": "tools/widgy-v142.html",
+      "bytes": 3306,
+      "sha256": "7f3f6af33391fbecaef76e2d693d4cafae9ba39f6198783e3592fe7c530a33c8"
+    },
+    {
+      "path": "tools/widgy-v73.html",
+      "bytes": 6265,
+      "sha256": "00784a1f64f10eb95c04d0b18052b1380158d943421a8aab49005ccec77e45fc"
+    },
+    {
+      "path": "tools/widgy-v74.html",
+      "bytes": 11729,
+      "sha256": "cc38d56a80c768473f29065dbe0d80914dc76307d9e870f8e1af3afaafe4d43e"
+    },
+    {
+      "path": "tools/widgy-v74.json",
+      "bytes": 62287,
+      "sha256": "7dc311b15fdacf17604da75171b4c114667ec2443b274132762f106cbf5d1479"
+    },
+    {
+      "path": "tools/widgy-v75.html",
+      "bytes": 11981,
+      "sha256": "9b0ade5271b52405121f860b329df372fa904f309a2b6276f7aef66ae09c8cb2"
+    },
+    {
+      "path": "tools/widgy-v75.json",
+      "bytes": 65249,
+      "sha256": "bfbede6731dc61c59b573cf30557b47cad3b45d7b286ae6332d71ed0a91850eb"
+    },
+    {
+      "path": "tools/widgy-v76.html",
+      "bytes": 11248,
+      "sha256": "542597875abe46ea74fb72134e7da9b50fe1fc323aba6ad11be6ad85f614f9a9"
+    },
+    {
+      "path": "tools/widgy-v76.json",
+      "bytes": 57500,
+      "sha256": "eb42965b2513c3e8a0516beafe994ba61f2b8f5c37cce8a03be795ab380708ce"
+    },
+    {
+      "path": "tools/widgy-v77.html",
+      "bytes": 11258,
+      "sha256": "c3a91dadfee1eef9b9b1ffa6347785b513e288761b3d69d8df4fa94b5fc7d6e6"
+    },
+    {
+      "path": "tools/widgy-v77.json",
+      "bytes": 57517,
+      "sha256": "f91b47593f47c8a5b7a896b89991f27d4423ffbe0777c0d4ec753014803e7237"
+    },
+    {
+      "path": "tools/widgy-v79.html",
+      "bytes": 11725,
+      "sha256": "c76b331aaa7c3836aa90755ba4f6c5a86553b8918ed20ed1a91ca63a3f3990db"
+    },
+    {
+      "path": "tools/widgy-v79.json",
+      "bytes": 60547,
+      "sha256": "22ea9b3d4b0f1fc61d3666baf49e657978e995d92d32996cc53d32fc1fa0f817"
+    },
+    {
+      "path": "tools/widgy-v81.html",
+      "bytes": 13468,
+      "sha256": "1b3451f87794fe3ba3c5818be5a7f1bf490fe93a22b1b227a50fc16219b08faa"
+    },
+    {
+      "path": "tools/widgy-v81.json",
+      "bytes": 60893,
+      "sha256": "e87326be9d12257d72e342ee73f97b7c68cc188cacf272c929795fc9929189f8"
+    },
+    {
+      "path": "tools/widgy-v82.html",
+      "bytes": 13438,
+      "sha256": "b36ba022c9f0683bee8c23d896ba096c1db347f1cc35d2acde8f16e73a690af8"
+    },
+    {
+      "path": "tools/widgy-v82.json",
+      "bytes": 60851,
+      "sha256": "ccb45f73b5065d3363afcd6df598f0659f16e43949309b210eabbb99911ddc9f"
+    },
+    {
+      "path": "tools/widgy-v83.html",
+      "bytes": 14075,
+      "sha256": "8f2ebeceafa15140d0c230f012659cc85b7ca670bd3de4c9c5950b2fd0a1da75"
+    },
+    {
+      "path": "tools/widgy-v83.json",
+      "bytes": 61098,
+      "sha256": "728a861f136c97a34482a4a7ce0ae2b230b3017ea3e71c9458ca548fb4266161"
+    },
+    {
+      "path": "tools/widgy-v84.html",
+      "bytes": 14025,
+      "sha256": "0ff3fcdc785a962dfc87d6e98908b1789b0de8b51753ccaf0444edafe4f902f5"
+    },
+    {
+      "path": "tools/widgy-v84.json",
+      "bytes": 61031,
+      "sha256": "0c8b6ade42690e28f0d762c5bf62a7b7a54c0e3a1a0384649f73698f8d9ddbe3"
+    },
+    {
+      "path": "tools/widgy-v85.html",
+      "bytes": 14057,
+      "sha256": "f83ff398c19775407fdc20de0d37f48e9fb61a112b000b105a327c761ee3a9e1"
+    },
+    {
+      "path": "tools/widgy-v85.json",
+      "bytes": 61065,
+      "sha256": "b8216305e341b8882df568ebe9f821c09422f04a0bcfa28c298df78afc4a9fde"
+    },
+    {
+      "path": "tools/widgy-v86.html",
+      "bytes": 14031,
+      "sha256": "af88ba85a8c401b174fc00acdc3aa1fe04104f834751abf687ac0a8efdc89413"
+    },
+    {
+      "path": "tools/widgy-v86.json",
+      "bytes": 61067,
+      "sha256": "13994bf49437ca339c70605a4868e8637f6e24aaa2140c7c5fdc6860b820aed5"
+    },
+    {
+      "path": "tools/widgy-v87.html",
+      "bytes": 13977,
+      "sha256": "0d47a8999c8b190513c464ea326366ad2ead38d9c3e1df84353da6c317112ca3"
+    },
+    {
+      "path": "tools/widgy-v87.json",
+      "bytes": 61010,
+      "sha256": "75934444a08cd485346bf6fa86126086fd3316b13c4408fbc6ec7ea536aaa1ba"
+    },
+    {
+      "path": "tools/widgy-v88.html",
+      "bytes": 14041,
+      "sha256": "652de543afeb0709f5d0279aa23cbae2a4f387afa506c12b78e518b87761bba0"
+    },
+    {
+      "path": "tools/widgy-v88.json",
+      "bytes": 61060,
+      "sha256": "19003498572f81bc9b3000395277c157128c204122497fbcd53eec12be9e049a"
+    },
+    {
+      "path": "tools/widgy-v89.html",
+      "bytes": 14014,
+      "sha256": "e00b5916221f0cbce389f8445d045b5f7ad96434463fd014399d84da52b5fc01"
+    },
+    {
+      "path": "tools/widgy-v89.json",
+      "bytes": 61018,
+      "sha256": "bd6be2ffd2df7f910dfccee88220e7ec5f80febcfc2347d9fce35b698b9b333e"
+    },
+    {
+      "path": "tools/widgy-v90.html",
+      "bytes": 14055,
+      "sha256": "04dbcd0c7e7880c42d7c74da0955e01f8aaff4f51349fa260c84ec02741f4892"
+    },
+    {
+      "path": "tools/widgy-v90.json",
+      "bytes": 61083,
+      "sha256": "81d42f620a918d2d2c8b58647b7b927040a4f2f6fb143b1eb7b7bfa70921b8c9"
+    },
+    {
+      "path": "tools/widgy-v91.html",
+      "bytes": 14079,
+      "sha256": "c76b4e2e9a04c43299603f456af208c111453ef222599c1d936bdb50c6e74d5b"
+    },
+    {
+      "path": "tools/widgy-v91.json",
+      "bytes": 61082,
+      "sha256": "6fff19408a8e4c1d32d72500885ea4df5ec1bf0296f1e15d95aaa094ac28e0bd"
+    },
+    {
+      "path": "tools/widgy-v92.html",
+      "bytes": 14129,
+      "sha256": "1d955e6b8e4761425d689e28666f60f6434c7eeed3a17c093fce8309b42a8b4a"
+    },
+    {
+      "path": "tools/widgy-v92.json",
+      "bytes": 61160,
+      "sha256": "ee9bfb6fb597ad9ba25c94a0d2010677589bb82b367db91ddabc51f077dbcdef"
+    },
+    {
+      "path": "tools/widgy-v93.html",
+      "bytes": 14134,
+      "sha256": "d1ac0342a9c80a6ac57975b55a57221bde1836035703be1b77855e45a1c2e198"
+    },
+    {
+      "path": "tools/widgy-v93.json",
+      "bytes": 61255,
+      "sha256": "0de5a6bbe55bc862e8cc54e5cfb74ae8bb8e5c48f8766c289ec932406e89fc4d"
+    },
+    {
+      "path": "tools/widgy-v94.html",
+      "bytes": 14143,
+      "sha256": "72d46485960fa5d67d0538b0a732d81176b96a0a06bcefc6405a1e9ba3b275a4"
+    },
+    {
+      "path": "tools/widgy-v94.json",
+      "bytes": 61301,
+      "sha256": "fe48fefef614c264012bbc82789a8f9a335370df6512c85fca8d91df3a8630c1"
+    },
+    {
+      "path": "tools/widgy-v95.html",
+      "bytes": 14018,
+      "sha256": "454634ae3e753e39e882d01c38159a57da69dbb3eba20e69bd923e93c8b413e8"
+    },
+    {
+      "path": "tools/widgy-v95.json",
+      "bytes": 61151,
+      "sha256": "c605b0b67c31545be1593e8903aa64e54c6c5dba3a609733c0aecf873e29df6f"
+    },
+    {
+      "path": "tools/widgy-v96.html",
+      "bytes": 14070,
+      "sha256": "884c52d8734776eb3d490856248563bc486a3b576c90ccb277aa29c28948c675"
+    },
+    {
+      "path": "tools/widgy-v96.json",
+      "bytes": 61256,
+      "sha256": "2a6d35e93cbd490243d35635239234e474beff02c382100ee85e566cb032e011"
+    },
+    {
+      "path": "tools/widgy-v97.html",
+      "bytes": 14104,
+      "sha256": "10e07c8cbe1510d6deb9b68bbe7880465ac65dba335e2342800af5458b9df2f6"
+    },
+    {
+      "path": "tools/widgy-v97.json",
+      "bytes": 61283,
+      "sha256": "477e7d1e422cf8dcfc16991f116bcefe72db4c90b314f8cedb425248e58a257a"
+    },
+    {
+      "path": "tools/widgy-v98.html",
+      "bytes": 14426,
+      "sha256": "075a55220c293f550e677d79c9c9d344424e321a1c24ed702135afe676c4e758"
+    },
+    {
+      "path": "tools/widgy-v98.json",
+      "bytes": 82666,
+      "sha256": "85a1c62a48e4ebed74a4fe86f01abb9373c5d09cf6523c043f7b4091cd7584a5"
+    },
+    {
+      "path": "tools/widgy-v99.html",
+      "bytes": 14484,
+      "sha256": "ef64f014193a3a12028bc83872940b4d1c86cbc79c27c5b4eca21da43233f6bd"
+    },
+    {
+      "path": "tools/widgy-v99.json",
+      "bytes": 83437,
+      "sha256": "fcee1b7e47d8922772da561edfa0faad57571b244aad61284bc4fad89e918a0f"
+    }
+  ]
+}
