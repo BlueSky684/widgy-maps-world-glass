@@ -1,0 +1,70 @@
+{
+  "baseline": "Widgy Home Calendar Lighter Runtime 2",
+  "before": {
+    "nodes": 1194,
+    "variables": 67,
+    "homeDescendants": 124,
+    "weatherGroups": 41
+  },
+  "after": {
+    "nodes": 1187,
+    "variables": 61,
+    "homeDescendants": 117,
+    "weatherGroups": 37
+  },
+  "inlined": [
+    {
+      "name": "steps_label",
+      "layer": 6141,
+      "index": 0
+    },
+    {
+      "name": "calendar_home_count",
+      "layer": 6111,
+      "index": 0
+    },
+    {
+      "name": "calendar_home_event_word",
+      "layer": 80206,
+      "index": 0
+    },
+    {
+      "name": "calendar_home_title",
+      "layer": 6113,
+      "index": 0
+    },
+    {
+      "name": "calendar_home_meta",
+      "layer": 6112,
+      "index": 0
+    }
+  ],
+  "greeting": {
+    "kept": 6102,
+    "removed": [
+      80103,
+      80104,
+      80105
+    ],
+    "globalVariableRemoved": "day_greeting"
+  },
+  "unwrapped": [
+    {
+      "group": 80000,
+      "leaf": 7002
+    },
+    {
+      "group": 80014,
+      "leaf": 7003
+    },
+    {
+      "group": 80024,
+      "leaf": 7009
+    },
+    {
+      "group": 80037,
+      "leaf": 7008
+    }
+  ],
+  "nativeLatencyMeasured": false
+}
