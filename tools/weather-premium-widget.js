@@ -24,10 +24,10 @@ export function withWeatherPremium(source){
   // native fallback city, including Ashkelon spelling; no new geocoder/variable.
   const image=(name,url,y,h)=>({z:'5',d0:++id,s:name,'1':'Web URL','2':url,'3':true,b:scalar(0),c:scalar(y*1600/1184),d:scalar(1600),e:scalar(h*1600/1184)});
   weather['1']=[...taps,...top,...location,...nav,
-    image('Weather · Live current, six hours and five days',PREVIEW+'/api/weather-panel?lat=${widgy.map_latitude_max5}&lon=${widgy.map_longitude_max5}&v=2',240,804),
-    image('Weather · Approved glass with native navigation',PREVIEW+'/assets/weather-premium/chrome-r2.png',0,1184)];
-  widget['3']='Widgy Weather Premium 2';
-  widget['4']='Revision 2: original Home/Calendar native Barlow menu and figure.run icon; larger forecast icons and precipitation indicators. Approved Weather artwork and all eleven approved icons. Live Open-Meteo current conditions, next six model hours, and five-day forecast in Celsius/kmh. Shared forecast cache; native paired city/country and header. Home, Calendar, Fitness, all existing variables, live GPS/map and month navigation unchanged. Multiline full JSON copy. Keep Lean Clock and Data 1 as backup. On-device appearance and timing need verification.';
+    image('Weather · Live current, six hours and five days',PREVIEW+'/api/weather-panel?lat=${widgy.map_latitude_max5}&lon=${widgy.map_longitude_max5}&v=3',240,804),
+    image('Weather · Approved glass with native navigation',PREVIEW+'/assets/weather-premium/chrome-r3.png',0,1184)];
+  widget['3']='Widgy Weather Premium 3';
+  widget['4']='Revision 3: balanced current-conditions card, smaller temperature with attached Celsius unit, larger approved icon, compact aligned metrics, wind speed only. Original native navigation and enlarged forecast/rain icons retained. Approved Weather artwork and all eleven approved icons. Live Open-Meteo current conditions, next six model hours, and five-day forecast in Celsius/kmh. Shared forecast cache; native paired city/country and header. Home, Calendar, Fitness, all existing variables, live GPS/map and month navigation unchanged. Multiline full JSON copy. Keep Lean Clock and Data 1 as backup. On-device appearance and timing need verification.';
   widget.a2=Math.max(widget.a2,id);
   return widget;
 }

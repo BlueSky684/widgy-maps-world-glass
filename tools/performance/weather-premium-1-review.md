@@ -107,3 +107,23 @@ clipboard fallback / key / tamper tests passed for the new payload. R2 JSON:
 928690 bytes, SHA256 a045d4ff2cd6e3a7f0acf21bbb2b02f6c21de70fe4189560f04948f5d506fb7f.
 The existing owner key is reused with a fresh encryption IV; it is never saved
 in the repository. The same copy page now serves Widgy Weather Premium 2.
+
+
+## Revision 3 — balanced current-conditions card
+
+Reorganizes only the hero interior: temperature 110 → 82 cap height (−25%),
+approved icon 141 → 180 box (+28%), Celsius follows actual number width,
+condition text sits under the pair, and all six metrics have consistent aligned
+centers. Wind direction is omitted as requested; speed and km/h remain live.
+The hero frame size and position are exact. Native menus and all R2 forecast
+icon sizes are retained. No request, variable, layer, or provider was added.
+
+Nine Weather suites, private full-JSON round-trip/copy fallbacks, build and
+cleanup checks pass. Pixel checks confirm chrome outside the hero and live
+forecast/footer pixels remain identical to R2. Null, negative, zero and high
+temperatures were rendered without malformed text. The revised card was also
+visually inspected. Native iPhone review remains outstanding.
+
+R3 JSON: 928791 bytes; SHA256
+f569261aa0233f652c5747ac8d7d03b331b87aef4725d6a46fb7c498c2874cfc.
+AQI availability was investigated separately; AQI is not part of this revision.
