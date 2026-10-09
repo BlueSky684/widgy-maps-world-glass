@@ -30,3 +30,6 @@ Prepublication: exact document parity, 1063 unique layer IDs, 55 variables,
 Output 826386 bytes; SHA256
 4b1da43974f95ec51ac725aef660529b8db66c438a94205a3790128ab39cd8b6.
 No Home day gauge intentionally. Public ciphertext only, key outside Git.
+
+## Owner outcome — 2026-10-09 07:43 Asia/Jerusalem
+Owner reported no effect / same behavior. Home remains fast after restoration of the ten definitions. No numeric timing or new Calendar speed improvement was reported. This does not clear providers when active layers consume their data. Next paired experiment restores only the complete Home weather card.
