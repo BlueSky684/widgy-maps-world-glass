@@ -28,7 +28,7 @@ for(const p of manifest.files){
     assert(served.has(target),`${p} references missing public dependency ${target}`);references++;
   }
 }
-for(const p of manifest.files.filter(p=>p.endsWith('.enc.json'))){
+for(const p of manifest.files.filter(p=>p.endsWith('.enc.json')&&!p.startsWith('tools/widgy-weather-premium-'))){
   assert(read(p).equals(original(p)),`Rollback/current payload changed: ${p}`);
   const e=JSON.parse(read(p));assert.equal(e.v,1);assert(e.sha256&&e.bytes&&e.data&&e.iv);
 }
@@ -36,7 +36,10 @@ for(const p of manifest.files.filter(p=>p.endsWith('.enc.json'))){
 const active=execFileSync('git',['ls-tree','-r','--name-only',cleanup.baseCommit,'api','lib','assets/earth','assets/fonts','assets/home-glass','assets/calendar-glass'],{cwd:root,encoding:'utf8'}).trim().split('\n');
 for(const p of active)assert(read(p).equals(original(p)),`Runtime/design dependency changed: ${p}`);
 const config=JSON.parse(read('vercel.json')),oldConfig=JSON.parse(original('vercel.json'));
-assert.deepEqual(config.functions,oldConfig.functions);assert.deepEqual(config.regions,oldConfig.regions);
+const {['api/weather-panel.js']:weatherFunction,...priorFunctions}=config.functions;
+assert.deepEqual(priorFunctions,oldConfig.functions);
+assert.deepEqual(weatherFunction,{maxDuration:10,includeFiles:'assets/weather-premium/{glyphs.json,icons.json}'});
+assert.deepEqual(config.regions,oldConfig.regions);
 assert.deepEqual(config.headers,oldConfig.headers.filter(h=>h.source!=='/tools/widgy-map-source.json'));
 assert.equal(config.outputDirectory,'public');assert.equal(config.buildCommand,'npm run build');
 assert.equal(cleanup.removedFiles.length,cleanup.removedFileCount);
