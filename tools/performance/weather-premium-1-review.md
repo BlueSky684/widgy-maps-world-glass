@@ -236,3 +236,35 @@ Prior revision URLs preserve their appearance. On-device review is pending.
 
 R7 JSON: 929045 bytes, SHA256
 29b0a002e97a67e2c7418c3005219e61d598402fde9ed07cebb6a179729418de.
+
+## Revision 8 — equal hourly highlight padding
+
+IMG_0124 shows that R7's enlarged hourly icon sits close to the selected tile's
+left border. Center the approved icon and temperature as one visible group,
+using the icon bounds and Phenomena Bold ink bounds rather than text advance.
+Retain the 70-unit icon and normal 35-cap temperature, with a 10-unit gap and
+at least 10 units of side padding within the existing 144-unit tile. Only
+exceptionally wide readings shrink their number to fit; icon paths stay exact.
+The tile, hour label, rain row, daily icons and hero remain unchanged.
+
+Raster QA covers all eleven icon types and missing icons with 24, -88, 0 and
+missing temperature (48 cases). Minimum side padding is 10; left/right pixel
+padding differs by at most 0.5 logical units. Pixel regions outside the hourly
+icon/temperature band are identical to R7. A technical comparison was visually
+reviewed. All 15 Weather/AQI suites, multiline copy round-trip, public build,
+cleanup gate and diff check pass. No new layers, variables, providers or server
+functions. R8 JSON differs from R7 only in title, description and Weather URL.
+Native iPhone appearance remains to be checked by the owner.
+
+IMG_0123 was taken at 00:11 just after the local date changed. Read-only review
+confirms Home and all native variables are identical to the Lean Clock and
+Data baseline: steps_today and the native 10000-step ring both use Pedometer /
+Steps; distance uses Pedometer / Distance; calories use Health (Daily) / Active
+Energy Burned. The number formatter preserves zero and returns an em dash for
+missing/non-numeric input. No stored health readings or new network source were
+introduced. A partly filled ring with zero steps is inconsistent; asynchronous
+native refresh/cache at the day boundary is only a hypothesis, not a confirmed
+cause or a fixed issue. Do not fabricate missing distance/calories as zero.
+
+R8 JSON: 929145 bytes, SHA256
+e27d6844bd6a742a650f2e2d2d6065380ba68bad3010f324f98b9c694e06cae3.
