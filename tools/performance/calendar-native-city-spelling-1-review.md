@@ -1,5 +1,9 @@
 # Native City Spelling Test 1 — 2026-10-09
 
+FAILED: owner IMG_0105 at 07:22 shows no city/country and reports no speed
+improvement. A concrete stacking defect covers the native group with opaque
+chrome. Superseded by Spelling Test 2; see calendar-native-city-front-2-review.md.
+
 The owner explicitly requires Ashkelon at 07:07, before the ungated native
 candidate was delivered. Supersede that candidate; do not send its link.
 
