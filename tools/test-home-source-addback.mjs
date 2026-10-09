@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {withHomeSourceAddback} from './home-source-addback.js';
+import {variableReferences} from './compact-widget-structure.js';
+const full=JSON.parse(readFileSync(process.argv[2],'utf8'));
+const fast=JSON.parse(readFileSync(process.argv[3],'utf8'));
+const input=structuredClone(full),widget=withHomeSourceAddback(full);
+assert.deepEqual(full,input);
+assert.deepEqual(widget['36'],full['36']);
+const restored=widget['36'].filter(v=>!fast['36'].some(x=>x['0']===v['0']));
+assert.equal(restored.length,10);assert.equal(widget['36'].length,55);
+const reverted=structuredClone(widget);
+reverted['36']=structuredClone(fast['36']);reverted['3']=fast['3'];reverted['4']=fast['4'];
+assert.deepEqual(reverted,fast,'Only ten definitions and metadata differ from actual fast artifact');
+assert.equal(variableReferences(fast,restored).size,0,'No retained consumer of restored definitions');
+console.log(JSON.stringify({allLayersAndOtherFieldsExact:true,restoredDefinitions:restored.map(v=>v['1']),variables:55,fullCalendarExact:true,mapAndCityResolverExact:true,nativeEvaluationUnverified:true}));
