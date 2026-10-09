@@ -1,6 +1,7 @@
 // Separate full-widget candidate. Runs in the owner's browser; no requests.
 // Native image Javascript/key 22 comes from the user's native export recorded
-// in build-widgy-v113.mjs. This is synchronous URL construction, not fetching.
+// in the archived builder at ce97f6b (see repository-cleanup-20261009.md).
+// This is synchronous URL construction, not fetching.
 const flat=nodes=>nodes.flatMap(n=>[n,...(n.z==='13'?flat(n['1']):[])]);
 const fail=()=>{throw Error('unexpected_template');};
 

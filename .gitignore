@@ -2,3 +2,8 @@ node_modules/
 work/
 /assets/diagnostics/map-mask-compare-1/*.png
 /assets/diagnostics/map-mask-live-1/*.png
+
+/public/
+/assets/earth/render-cache-r6.bin.gz
+/assets/diagnostics/Home_Map_Static_3306x1558.png
+/assets/diagnostics/Home_Map_Static_1653x779.png
