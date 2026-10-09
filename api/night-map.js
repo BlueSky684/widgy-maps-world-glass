@@ -118,7 +118,7 @@ export default async function handler(req, res) {
     res.setHeader('Content-Type', 'image/png');
     res.setHeader('X-Map-Cache', result.state);
     res.setHeader('Server-Timing', `map;dur=${(performance.now()-started).toFixed(1)}`);
-    res.setHeader('X-Map-Performance', 'perf-6-direct-png');
+    res.setHeader('X-Map-Performance', 'perf-8-srgb-profile');
     res.setHeader('X-Map-Precomputed',precomputedState());
     res.setHeader('X-Map-Revision', REVISION);
     res.setHeader('X-Map-Atlas', atlas);

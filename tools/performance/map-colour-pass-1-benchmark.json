@@ -1,0 +1,107 @@
+{
+  "baseline": "bd930a85ca6c5ebf79beb0c0e50410d8c00efe6d",
+  "environment": "local Node v24.19.0",
+  "method": "Six warm pairs per solar instant, alternating order, precise synthetic coordinates changed each pair, fresh full rendering each time; no phone/network measurement.",
+  "cases": [
+    {
+      "date": "2026-10-09T08:00:00Z",
+      "samples": [
+        {
+          "before": 355.888,
+          "after": 316.346
+        },
+        {
+          "after": 302.844,
+          "before": 386.962
+        },
+        {
+          "before": 352.369,
+          "after": 304.171
+        },
+        {
+          "after": 309.364,
+          "before": 353.211
+        },
+        {
+          "before": 344.927,
+          "after": 297.822
+        },
+        {
+          "after": 312.566,
+          "before": 361.025
+        }
+      ],
+      "beforeMedianMs": 354.54949999999997,
+      "afterMedianMs": 306.7675,
+      "reductionPercent": 13.5,
+      "allPNGBytesExact": true
+    },
+    {
+      "date": "2026-03-20T12:00:00Z",
+      "samples": [
+        {
+          "before": 350.512,
+          "after": 298.537
+        },
+        {
+          "after": 316.728,
+          "before": 358.265
+        },
+        {
+          "before": 361.632,
+          "after": 292.069
+        },
+        {
+          "after": 308.344,
+          "before": 380.257
+        },
+        {
+          "before": 338.979,
+          "after": 314.733
+        },
+        {
+          "after": 299.121,
+          "before": 346.089
+        }
+      ],
+      "beforeMedianMs": 354.3885,
+      "afterMedianMs": 303.73249999999996,
+      "reductionPercent": 14.3,
+      "allPNGBytesExact": true
+    },
+    {
+      "date": "2026-06-21T00:00:00Z",
+      "samples": [
+        {
+          "before": 388.534,
+          "after": 298.741
+        },
+        {
+          "after": 302.291,
+          "before": 338.648
+        },
+        {
+          "before": 341.58,
+          "after": 312.597
+        },
+        {
+          "after": 292.044,
+          "before": 338.701
+        },
+        {
+          "before": 347.412,
+          "after": 316.828
+        },
+        {
+          "after": 308.959,
+          "before": 370.091
+        }
+      ],
+      "beforeMedianMs": 344.496,
+      "afterMedianMs": 305.625,
+      "reductionPercent": 11.3,
+      "allPNGBytesExact": true
+    }
+  ],
+  "nativeLatencyMeasured": false
+}
