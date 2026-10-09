@@ -1,0 +1,153 @@
+{
+  "approvedAt": "2026-10-09",
+  "scope": "All eleven revision 04 icons approved by user before Weather implementation",
+  "icons": {
+    "sun": {
+      "number": "01",
+      "label": "SUNNY",
+      "renderSHA256": {
+        "35": "b801e46f3123ab1c420f0ad501e5f53d18c3660326af3948cfdf52f839033630",
+        "46": "3b64493e0e868386d467fa406dc05b84263bd9a572d903b04a99e6f87aeea239",
+        "176": "d5980853ceb1fd63f9e8eadb0e5582d90e99faa25cafcd74830bbc3038dec6b9"
+      },
+      "runtimeCanonicalSHA256": {
+        "35": "00e57c47c0e022583e80072f71709ee573efaa6733643ba20756e7560497bbde",
+        "46": "c8e8ae1d2ac1be850ea1bcd81330689e0d5fdfbe98cfffa5ed242cfc5d656932",
+        "176": "f0e6d333c2a8adcd99f34167ee6232752d8008c855f493e0d0d08bd37f977184"
+      }
+    },
+    "partly": {
+      "number": "02",
+      "label": "PARTLY CLOUDY",
+      "renderSHA256": {
+        "35": "6c41faaa8bc024c7a28ae72f4a4b9f3e9558fc1f7f688dae39ee6bded96f5303",
+        "46": "2ad0d87471f039407ab6a4f6aaff7b36a6b79361cd0f436f397586c0178cde3a",
+        "176": "36dd0bf60872eb4c5d23414134101b8a3e1bf1c7395faf1df0bc62c37115be53"
+      },
+      "runtimeCanonicalSHA256": {
+        "35": "ae73b36772cc80a19bbaaca6266dd65c28f9c5d246895ddb5b02bf35e0f1cdd4",
+        "46": "7278cf83c722fb75db2941145f4f82c1d737e01614b1144d0d383cf05f2e2080",
+        "176": "fedd8e86878081bfa498d2672a722b26dd006134eb4628735739751346a77179"
+      }
+    },
+    "cloud": {
+      "number": "03",
+      "label": "CLOUDY",
+      "renderSHA256": {
+        "35": "1ab74dc2d25f73adf66f632f51ba0876c5a75e21161896e6b5ab7b3007373745",
+        "46": "b969c15171a02112ffc59755fa921b22cf5d6d907071ec5de6f4624223375a68",
+        "176": "1455327541674b7916a58d771eeded6d3d724dc51474fcd6e9e30538c195c904"
+      },
+      "runtimeCanonicalSHA256": {
+        "35": "25130c161eb67fd947e0ab916ed54040270d457b5657422ef6c985db47eb3c7c",
+        "46": "1ae0389648ec015edd3fb0c5ba5fe3e189b5d5cad52dbaa509ecf928eaa7ec2d",
+        "176": "5b9892dc641fbb0c78705d0c990900b82053815443796a771e86565fc021863d"
+      }
+    },
+    "light_rain": {
+      "number": "04",
+      "label": "LIGHT RAIN",
+      "renderSHA256": {
+        "35": "6fe16a3179998137e60c7272da72996d9fa80a800b58cb2afca71e4a90cb47c8",
+        "46": "810332a9c80909176401632f532dcb35b0d5ea7178098a8945e0a838fa5e4986",
+        "176": "cf8afce9f3d6936835b3ab5865d2a1619c7d4263d6ccf4de64f7e958fb14fbe8"
+      },
+      "runtimeCanonicalSHA256": {
+        "35": "53c8034f086ce9e57b752584b65fc90925fd8a213efc134a3b166e5672d224ec",
+        "46": "039af6a61746236cd3bc668c7e5327982bd8bfc374ca3eed559c88f9d677b6a3",
+        "176": "7b1d382597eea24a833d61c54af6994745376ada48fbf5b77e87c8d8de2d9010"
+      }
+    },
+    "heavy_rain": {
+      "number": "05",
+      "label": "HEAVY RAIN",
+      "renderSHA256": {
+        "35": "ed05812aa95b9f141d1dffbed3ce41c0c955b699e950ef5dc204f84816e9af8a",
+        "46": "15f655400485a448c1eaf41fdb62388a2361c24c76900a9c0078fad35aa64a4a",
+        "176": "42f65c4e5a6f9fa85aa89bb35131afe41132e2d99e4bd4ef1c6078ac314437fd"
+      },
+      "runtimeCanonicalSHA256": {
+        "35": "d46cca76a4e657bf58268dc49f0f9e0a34cc04cb9914508795205139881f8bd2",
+        "46": "6db6b9069f6d392e44fbadbb4b167aac4dfb489b22af65e99a5693d1f1e3a311",
+        "176": "bdda7e5f84c1fdfc836a7d5f6f8e646dd16083e7b9d3cc318d821232499e84f3"
+      }
+    },
+    "storm": {
+      "number": "06",
+      "label": "THUNDERSTORM",
+      "renderSHA256": {
+        "35": "00d6c33cd008a3b5c1973b793c8126945cc373bc55746f99656090478e39378b",
+        "46": "5d03469382feb36c7e9ef5137887902adc83ea96a71eff5a789dcf9dad57f979",
+        "176": "effea84a6eb5e50d4644eaee30dd9fb31bbd40d4ea32ffa5ac7eed16c07f6cdd"
+      },
+      "runtimeCanonicalSHA256": {
+        "35": "b9f94dc16bd9f2f89476132af84b92dce12de148c3e3159d9c1391a58431f2fa",
+        "46": "b9a84995f99c626f977c0f5b0624d69c3c9acd67cd06e0e1665313214b38b24d",
+        "176": "dd0b1ca577a7a0acafa57ea39bd977a6d074f8987b1d11506e28fdfea07cd33e"
+      }
+    },
+    "snow": {
+      "number": "07",
+      "label": "SNOW",
+      "renderSHA256": {
+        "35": "3a99348285af5b4c48cd74531ee112851a799d8b9225608d0b157dd7011c8319",
+        "46": "68e868df296e9e0d0d8e95362a329c65de74b7d4b07304ea07c71d3e069047a8",
+        "176": "b43e0da2223ea7c0e69834116031749bb7285fa7a25628d691c25917f3681003"
+      },
+      "runtimeCanonicalSHA256": {
+        "35": "5b59c47c477ca16dde99bc63f1970bd7e942bc994c7d2ffa54ae099c3f9837a4",
+        "46": "c1b223de27ed683ae1f7e6e10596954c501eb45f2a8d2cb19f2dbd7894bccf8e",
+        "176": "2f06a2206d16e15a0404c6cf233390d5e29b059558dc6ec6e846b83a031775f8"
+      }
+    },
+    "wind": {
+      "number": "09",
+      "label": "WINDY",
+      "renderSHA256": {
+        "35": "c829694388090d21315deb6ca2242ac8cb3cf91d3e7ffcb3ddc45fb6ebf95a39",
+        "46": "e8508dbaf2e29fabe13eb72ccad8cb7dbaf69eef2f1f04ea0c6a1e8597f84813",
+        "176": "9dd6d26bc55887bc19a98e3b34d813b65e04fb696b38285492aa3cc5291e2981"
+      },
+      "runtimeCanonicalSHA256": {
+        "35": "097b7b27515b8889e0222119641c229d0416156bfdae9d4aeddc5b303f705eda",
+        "46": "157bc68a6952e0b137083c4c1b1d88c8b559c5046968324b417668e66bcb19a3",
+        "176": "83f74c6ea351bc177e6c948c7ec0a11b087027cc374d5aa6b3bddff0571274bd"
+      }
+    },
+    "moon": {
+      "number": "10",
+      "label": "CLEAR NIGHT",
+      "renderSHA256": {
+        "35": "af2f9451321b26cc68fd5c5311c3af1059d12373f06dd02b17d11d8da43e965c",
+        "46": "bbd58c4c494945624489be6d46e228f4ed7fa5cc06a802b98f9f3102e8371c86",
+        "176": "ae6d8ae8f6584a064432c5735a33d54203529cf7ae7ac62f29842c3fa1d70e35"
+      },
+      "runtimeCanonicalSHA256": {
+        "35": "70f9f7536c7acc687043e57eea460b477c6b7ba0c1dde4e01578ab4cba5cfc31",
+        "46": "8a1557de769682ab76247067a8de2f42a8e161a9b2116d47ae7f95b920330a5d",
+        "176": "75f3788c1273799f7fa70c1fa1cb7a18556a69e39b094dfc394167444f02f31a"
+      }
+    },
+    "night_cloud": {
+      "number": "11",
+      "label": "CLOUDY NIGHT",
+      "renderSHA256": {
+        "35": "5e389be55a430bfd03fe7623cb7f993efb95cc7a4d1d53378db8ee37adfd5e4f",
+        "46": "12008544c731fc82259638650f57981419d2ca9df0e7d0ff07747e290b8c6c69",
+        "176": "64d30ee5184676857bb6f8de625b3e88f801e54edc483b5a268bd8b3592aa2f0"
+      },
+      "runtimeCanonicalSHA256": {
+        "35": "2f7e660b7b337770fee589255bd54e50729b042c95ae001db37182b59ea330ae",
+        "46": "7c4455125773072d762b308911fbcd090abf37ec08c5f85e5c2493adf5b54339",
+        "176": "95ee6b76df2140d98c4c46cabaf807b7f5290fe6f4f0bcf1530abb2131e8e9fd"
+      }
+    },
+    "fog": {
+      "runtimeCanonicalSHA256": {
+        "35": "2f56037a20120aa7769dd62df5d75279c9ade96553d1cbee90e7973946f61e25",
+        "46": "56c5536014881266a796f75b73c0944acd1ab5b0438a0ae17f2c28b86c879df2",
+        "176": "a2829f760f4b424ee1bebedca2ff019a53a0347ed5c5fbadaa9dfbec856e36f6"
+      }
+    }
+  }
+}

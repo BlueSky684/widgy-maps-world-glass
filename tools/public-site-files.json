@@ -10,12 +10,14 @@
     "tools/widgy-calendar-city-country-copy.html",
     "tools/widgy-home-direct-data-copy.html",
     "tools/widgy-home-calendar-runtime-navfix-copy.html",
-    "tools/widgy-stable-copy.html"
+    "tools/widgy-stable-copy.html",
+    "tools/widgy-weather-premium-copy.html"
   ],
   "files": [
     "assets/calendar-glass/Calendar_Glass_Chrome_C8.png",
     "assets/fonts/home-glass-clock/OFL.txt",
     "assets/home-glass/Home_Glass_Chrome_C8.png",
+    "assets/weather-premium/chrome-r1.png",
     "tools/Widgy_Home_Glass_Calendar_C16.json",
     "tools/calendar-connect-today.js",
     "tools/calendar-connect-widget.js",
@@ -46,6 +48,9 @@
     "tools/widgy-lean-clock-data-copy.js",
     "tools/widgy-stable-copy.html",
     "tools/widgy-stable-copy.js",
-    "tools/widgy-stable-gauge-20261008-v2.enc.json"
+    "tools/widgy-stable-gauge-20261008-v2.enc.json",
+    "tools/widgy-weather-premium-1.enc.json",
+    "tools/widgy-weather-premium-copy.html",
+    "tools/widgy-weather-premium-copy.js"
   ]
 }
