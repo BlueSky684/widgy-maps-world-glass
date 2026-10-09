@@ -22,14 +22,33 @@ test('background AQI fetch is single-flight, cached and bounded by age',async()=
   assert.equal((await get(-31.67,34.57)).value,null);
 });
 function response(){return {headers:{},status(v){this.statusCode=v;return this;},setHeader(k,v){this.headers[k]=v;},send(v){this.body=v;return this;},end(){return this;},json(v){this.body=v;return this;}};}
-test('Weather does not wait for unresolved AQI; zero is available; missing GPS does not request it',async()=>{
+test('Weather immediately uses cached AQI; zero is available; missing GPS does not request it',async()=>{
   let calls=0;const options=[];
-  const h=createWeatherHandler({forecast:async()=>({state:'fresh',cache:'HIT',data:{test:'aqi-r4'}}),airQuality:async()=>{calls++;return {value:null,state:'loading',refresh:new Promise(()=>{})};},render:async(_d,o)=>{options.push(o);return Buffer.from('aqi-nonblocking-check');}});
+  const h=createWeatherHandler({forecast:async()=>({state:'fresh',cache:'HIT',data:{test:'aqi-r4'}}),airQuality:async()=>{calls++;return {value:53,at:now,zone:'Asia/Jerusalem',state:'stale',refresh:new Promise(()=>{})};},render:async(_d,o)=>{options.push(o);return Buffer.from('aqi-nonblocking-check');}});
   const timeout=setTimeout(()=>{},1000);const r=await Promise.race([h({method:'GET',url:'/api/weather-panel?lat=31&lon=34&v=4',headers:{}},response()),new Promise((_r,reject)=>{setTimeout(()=>reject(Error('AQI blocked Weather')),100).unref();})]);clearTimeout(timeout);
-  assert.equal(r.statusCode,200);assert.equal(r.headers['X-AQI-State'],'loading');assert.equal(r.headers['Cache-Control'],'private, no-store');assert.equal(options[0].aqi.value,null);
+  assert.equal(r.statusCode,200);assert.equal(r.headers['X-AQI-State'],'stale');assert.match(r.headers['Cache-Control'],/max-age=300/);assert.equal(options[0].aqi.value,53);
   await h({method:'GET',url:'/api/weather-panel?lat=&lon=&v=4',headers:{}},response());assert.equal(calls,1);
   const zero=createWeatherHandler({forecast:async()=>({state:'fresh',cache:'HIT',data:{test:'aqi-zero'}}),airQuality:async()=>({value:0,at:now,zone:'Asia/Jerusalem',state:'fresh'}),render:async()=>Buffer.from('aqi-zero')});
   const z=await zero({method:'GET',url:'/api/weather-panel?lat=31&lon=34&v=4',headers:{}},response());assert.equal(z.headers['X-AQI-Value'],'0');assert.match(z.headers['Cache-Control'],/max-age=300/);
+});
+test('warm forecast with cold AQI includes the delayed number in its FIRST image',async()=>{
+  const pending=[],store=new Map();let release,calls=0,painted;
+  const airQuality=createAQIService({clock:()=>now,cache:{get:async k=>store.get(k),set:async(k,v)=>store.set(k,v)},flights:new Map(),schedule:p=>pending.push(p),fetcher:async()=>{calls++;await new Promise(r=>release=r);return new Response(JSON.stringify(raw(53)));}});
+  const h=createWeatherHandler({forecast:async()=>({state:'fresh',cache:'HIT',data:{test:'first-aqi'}}),airQuality,render:async(_d,o)=>{painted=o;return Buffer.from('first-number');}});
+  const first=h({method:'GET',url:'/api/weather-panel?lat=31.66&lon=34.59&v=4',headers:{}},response());
+  await new Promise(r=>setImmediate(r));
+  assert.equal(painted,undefined,'do not render a dash while the first AQI fetch is still in progress');
+  release();const r=await first;assert.equal(r.headers['X-AQI-Value'],'53');assert.equal(painted.aqi.value,53);assert.equal(calls,1);
+  await Promise.all(pending);assert.equal((await airQuality(31.66,34.59)).value,53);assert.equal(calls,1);
+});
+test('cold AQI wait is bounded; failure and timeout preserve forecast and never invent zero',async()=>{
+  for(const kind of ['timeout','rejection','unavailable']){
+    let painted;const refresh=kind==='timeout'?new Promise(()=>{}):kind==='rejection'?Promise.reject(Error('provider')):Promise.resolve({value:null,state:'unavailable'});
+    refresh.catch(()=>{});
+    const h=createWeatherHandler({aqiWaitMs:15,forecast:async()=>({state:'fresh',cache:'HIT',data:{test:'aqi-failure-'+kind}}),airQuality:async()=>({value:null,state:'loading',refresh}),render:async(d,o)=>{assert(d);painted=o;return Buffer.from('aqi-failure-'+kind);}});
+    const r=await Promise.race([h({method:'GET',url:'/api/weather-panel?lat=31&lon=34&v=5',headers:{}},response()),new Promise((_resolve,reject)=>{setTimeout(()=>reject(Error('cold wait is unbounded')),200).unref();})]);
+    assert.equal(r.statusCode,200);assert.equal(painted.revision,5);assert.equal(painted.aqi.value,null);assert.equal(r.headers['X-AQI-Value'],undefined);assert.equal(r.headers['Cache-Control'],'private, no-store');
+  }
 });
 test('AQI is numeric-only and color-coded; wind speed, high and low are retained',()=>{
   const data={zone:'Asia/Jerusalem',at:now,current:{temperature:25,feels:28,humidity:73,wind:8,direction:'NNE',uv:0,icon:'night_cloud',label:'Partly Cloudy'},hours:[],days:[{high:28,low:22}]};
