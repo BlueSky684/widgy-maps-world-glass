@@ -5,7 +5,8 @@ import sharp from 'sharp';
 import {coordinate,condition,uvLevel,normalizeForecast,providerURL} from '../lib/weather/model.js';
 import {createForecastService,FRESH_MS,STALE_MS} from '../lib/weather/service.js';
 import {renderSVG,renderPNG} from '../lib/weather/render.js';
-import {createWeatherHandler} from '../api/weather-panel.js';
+import {createWeatherHandler} from '../lib/weather/handler.js';
+import probeHandler from '../api/fetch-probe.js';
 import {withWeatherPremium} from './weather-premium-widget.js';
 
 function fixture(epoch=Date.parse('2026-10-09T10:30Z'),zone='Asia/Jerusalem',offset=10800){
@@ -78,4 +79,23 @@ test('latest full widget changes only Weather and metadata; all references resol
   for(const [,name] of JSON.stringify(widget).matchAll(/\$\{widgy\.([^}]+)\}/g))assert(names.has(name),name);
   assert.equal(widget['36'].length,original['36'].length);
   assert.equal(nodes.filter(n=>n.s?.startsWith('Weather · Live')).length,1);
+});
+
+test('shared function keeps probe behavior and routes only Weather requests',async()=>{
+  for(const method of ['GET','HEAD','OPTIONS','POST']){
+    const r=await probeHandler({method,url:'/api/fetch-probe?lat=31&lon=34'},response());
+    assert.equal(r.code,method==='POST'?405:method==='OPTIONS'?204:200);
+    assert.equal(r.headers['Cache-Control'],'private, no-store, max-age=0');
+    assert.equal(r.headers['Access-Control-Allow-Origin'],'*');
+    if(['GET','HEAD'].includes(method))assert.deepEqual(r.body,{probe:'WIDGY_FETCH_OK'});
+  }
+  for(const req of [
+    {url:'/api/weather-panel?lat=&lon='},
+    {url:'/api/fetch-probe?weather_panel=1&lat=&lon='},
+    {url:'/api/fetch-probe',query:{weather_panel:'1'}}
+  ]){
+    const r=await probeHandler({...req,method:'GET',headers:{}},response());
+    assert.equal(r.code,200);assert.equal(r.headers['Content-Type'],'image/png');
+    assert.equal(r.headers['X-Weather-State'],'location');assert(Buffer.isBuffer(r.body));
+  }
 });
