@@ -1,0 +1,1030 @@
+{
+  "schema": 1,
+  "baseline": "c2a80846fc091070a528ad32df4cc494b6520ee5",
+  "nodes": 1192,
+  "variables": 63,
+  "tabs": [
+    {
+      "name": "Shared Home and Calendar · Date and inactive navigation",
+      "nodes": 11,
+      "groups": 1
+    },
+    {
+      "name": "HOME",
+      "nodes": 118,
+      "groups": 38
+    },
+    {
+      "name": "CALENDAR",
+      "nodes": 1013,
+      "groups": 219
+    },
+    {
+      "name": "WEATHER",
+      "nodes": 25,
+      "groups": 1
+    },
+    {
+      "name": "FITNESS",
+      "nodes": 25,
+      "groups": 1
+    }
+  ],
+  "inventory": [
+    {
+      "name": "wx_status",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 37,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Weather (Now)",
+          "field": "Status (Full)"
+        }
+      ]
+    },
+    {
+      "name": "wx_wind_speed",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 4,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Weather (Now)",
+          "field": "Wind Speed"
+        }
+      ]
+    },
+    {
+      "name": "day_progress",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "steps_today",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 1,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Pedometer",
+          "field": "Steps"
+        }
+      ]
+    },
+    {
+      "name": "map_latitude_max5",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 0,
+      "variableConsumers": 1,
+      "providers": [
+        {
+          "provider": "Location",
+          "field": "Latitude (Decimal)"
+        }
+      ]
+    },
+    {
+      "name": "map_longitude_max5",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 0,
+      "variableConsumers": 1,
+      "providers": [
+        {
+          "provider": "Location",
+          "field": "Longitude (Decimal)"
+        }
+      ]
+    },
+    {
+      "name": "map_request",
+      "type": 0,
+      "dependsOn": [
+        "map_latitude_max5",
+        "map_longitude_max5"
+      ],
+      "chainDepth": 2,
+      "layerConsumers": 1,
+      "variableConsumers": 1,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Async + No main()"
+        }
+      ]
+    },
+    {
+      "name": "calendar_remaining_today",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 8,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_month_layouts",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 119,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_1_location",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 6,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_1_start",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 1,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_1_end",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 1,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_2_location",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 6,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_2_start",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 1,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_2_end",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 1,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_3_location",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 6,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_3_start",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 1,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_3_end",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 1,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_4_location",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 6,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_4_start",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 1,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_4_end",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 1,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_1_title",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 5,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_2_title",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 5,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_3_title",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 5,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_4_title",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 5,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_today_cell",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 95,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_native_city",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 4,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Location",
+          "field": "City"
+        }
+      ]
+    },
+    {
+      "name": "calendar_refresh_minute",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 25,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_bridge_ready",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 1,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_bridge_count",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 1,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_1_color",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 4,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_1_all_day",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_1_title_layout",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 3,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_2_color",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 4,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_2_all_day",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_2_title_layout",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 3,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_3_color",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 4,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_3_all_day",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_3_title_layout",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 3,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_4_color",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 4,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_4_all_day",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_4_title_layout",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 3,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_1_detail_icon",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 5,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_2_detail_icon",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 5,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_3_detail_icon",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 5,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_event_4_detail_icon",
+      "type": 2,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 5,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "JSON Endpoint",
+          "field": "Endpoint"
+        }
+      ]
+    },
+    {
+      "name": "calendar_month_name_0",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 3,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_month_name_1",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_month_name_2",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_month_name_3",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_month_name_4",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_month_name_5",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_month_name_6",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_month_name_7",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_month_name_8",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_month_name_9",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_month_name_10",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_month_name_11",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_year_previous",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 12,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_year_current",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 23,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_year_next",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 12,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    },
+    {
+      "name": "calendar_native_country",
+      "type": 0,
+      "dependsOn": [],
+      "chainDepth": 1,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Location",
+          "field": "Country"
+        }
+      ]
+    },
+    {
+      "name": "calendar_location_pair",
+      "type": 0,
+      "dependsOn": [
+        "map_request"
+      ],
+      "chainDepth": 3,
+      "layerConsumers": 2,
+      "variableConsumers": 0,
+      "providers": [
+        {
+          "provider": "Javascript",
+          "field": "Script"
+        }
+      ]
+    }
+  ],
+  "unusedVariables": [],
+  "eligibleSingleUseTextBindings": [
+    {
+      "name": "calendar_event_1_start",
+      "layer": 80409,
+      "index": 0
+    },
+    {
+      "name": "calendar_event_1_end",
+      "layer": 80410,
+      "index": 0
+    },
+    {
+      "name": "calendar_event_2_start",
+      "layer": 80418,
+      "index": 0
+    },
+    {
+      "name": "calendar_event_2_end",
+      "layer": 80419,
+      "index": 0
+    },
+    {
+      "name": "calendar_event_3_start",
+      "layer": 80427,
+      "index": 0
+    },
+    {
+      "name": "calendar_event_3_end",
+      "layer": 80428,
+      "index": 0
+    },
+    {
+      "name": "calendar_event_4_start",
+      "layer": 80436,
+      "index": 0
+    },
+    {
+      "name": "calendar_event_4_end",
+      "layer": 80437,
+      "index": 0
+    },
+    {
+      "name": "calendar_bridge_count",
+      "layer": 80350,
+      "index": 0
+    }
+  ],
+  "duplicateBindings": [
+    {
+      "provider": "Javascript",
+      "bindings": 26
+    },
+    {
+      "provider": "Date And Time",
+      "bindings": 289
+    },
+    {
+      "provider": "Custom Text",
+      "bindings": 153
+    },
+    {
+      "provider": "JSON Endpoint",
+      "bindings": 39
+    },
+    {
+      "provider": "Agenda (Today)",
+      "bindings": 2
+    },
+    {
+      "provider": "Sun And Moon",
+      "bindings": 2
+    },
+    {
+      "provider": "Weather (Now)",
+      "bindings": 6
+    },
+    {
+      "provider": "Pedometer",
+      "bindings": 2
+    },
+    {
+      "provider": "Health (Daily)",
+      "bindings": 1
+    },
+    {
+      "provider": "Location",
+      "bindings": 8
+    }
+  ],
+  "calendar": {
+    "months": 25,
+    "grids": 75,
+    "todayPositions": 95,
+    "todayDateDrawings": 285,
+    "jsonBindings": 39,
+    "jsonURLs": 1
+  },
+  "shapes": {
+    "libraries": 180,
+    "unusedItems": 0
+  },
+  "limits": [
+    "Counts describe stored definitions, not runtime scheduling or network requests.",
+    "Existing nine Calendar text inlining candidates were already tested and retired; not reapplied.",
+    "Today date overprints and alternate weather/month states are deliberate artwork.",
+    "Native Health/Pedometer/Weather scheduling and actual tap-to-display latency are not observable on this server."
+  ]
+}

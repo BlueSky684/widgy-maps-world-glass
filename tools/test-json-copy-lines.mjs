@@ -16,14 +16,15 @@ for(const value of [sample, '{"a":-0,"b":1.2300e+09,"c":9007199254740993,"escape
 }
 assert.throws(()=>formatJSONLines(null));assert.throws(()=>formatJSONLines('{}',0));
 
-const source=readFileSync('../outputs/Widgy_Calendar_City_Country_1.json','utf8');
+const [sourcePath='../outputs/Widgy_Calendar_City_Country_1.json',prefix='widgy-calendar-city-country',keyPath='../calendar-city-country-copy-key.json']=process.argv.slice(2);
+const source=readFileSync(sourcePath,'utf8');
 const formatted=formatJSONLines(source);
 assert.deepEqual(JSON.parse(formatted),JSON.parse(source));
 assert.equal(formatted.replaceAll('\n',''),source,'The real compact export changes only by inserted LF whitespace');
 assert.deepEqual(tokens(formatted),tokens(source));
-const key='key='+JSON.parse(readFileSync('../calendar-city-country-copy-key.json','utf8')).key;
-const envelope=readFileSync('tools/widgy-calendar-city-country-1.enc.json','utf8');
-const script=readFileSync('tools/widgy-calendar-city-country-copy.js','utf8').replace(/^import .*;\n/gm,'');
+const key='key='+JSON.parse(readFileSync(keyPath,'utf8')).key;
+const envelope=readFileSync('tools/'+prefix+'-1.enc.json','utf8');
+const script=readFileSync('tools/'+prefix+'-copy.js','utf8').replace(/^import .*;\n/gm,'');
 async function run(hash,{corrupt=false,deny=false,legacy=false}={}){
   const elements=new Map();
   const el=id=>{
