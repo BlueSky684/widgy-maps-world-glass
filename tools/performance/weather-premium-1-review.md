@@ -80,3 +80,30 @@ rewrite dispatches through `api/fetch-probe.js`. Ordinary fetch-probe responses
 and headers are covered by regression tests. This keeps 12 deployed functions
 without changing map/calendar handlers or any production routing. The public
 Weather URL and encrypted widget payload remain identical.
+
+## Revision 2 — menu consistency and small-icon legibility
+
+The first on-device screenshot exposed that the technical mockup's menu used
+Phenomena outlines and drawn symbols, unlike the real BarlowCondensed-Light /
+native-symbol menu. R2 removes all menu text/icons from the static chrome and
+clones the eight exact native Home/Calendar/shared navigation layers. Only
+Weather's selected color changes; the four tap actions remain exact. Regression
+checks compare font, glyph, frame, size, and every other visual property with
+the existing menu. The runner is the original `figure.run` symbol.
+
+Hourly icon boxes: 46 → 60 pixels (+30%); daily: 35 → 46 (+31%). Precipitation
+indicators: 13 → 20 and 12 → 18 (+54% / +50%). No approved icon path is changed.
+Visual inspection of the combined actual SVG/PNG confirms spacing and row fit.
+Header, city/country and menu remain native overlays and are verified in JSON;
+a new iPhone screenshot is still needed to confirm the final native rendering.
+
+Chrome R1 and the v=1 dynamic image preserve the prior import's appearance.
+R2 uses chrome-r2.png and v=2. There are no new network requests or variables;
+the only new native layers are the eight lightweight menu elements. Home,
+Calendar, Fitness and shared groups remain object-identical to the baseline.
+
+All nine Weather suites, cleanup/build gates, and exact multiline JSON copy /
+clipboard fallback / key / tamper tests passed for the new payload. R2 JSON:
+928690 bytes, SHA256 a045d4ff2cd6e3a7f0acf21bbb2b02f6c21de70fe4189560f04948f5d506fb7f.
+The existing owner key is reused with a fresh encryption IV; it is never saved
+in the repository. The same copy page now serves Widgy Weather Premium 2.

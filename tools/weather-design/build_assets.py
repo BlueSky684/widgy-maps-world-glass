@@ -14,7 +14,7 @@ exec(prefix,ns)
 original_text,original_rect=ns['text'],ns['rect']
 def text(s,x,y,*args,**kwargs):
     # Only typography which is invariant goes into the static chrome.
-    if y in [80,119,130,204,403,451,343,445,443,604,662,698]:return 0
+    if y in [80,119,130,204,403,451,343,445,443,604,662,698,1124]:return 0
     if y>=820 and y<=1020:return 0
     return original_text(s,x,y,*args,**kwargs)
 def rect(x,y,w,h,r=0,fill='none',stroke=None,sw=1,extra=''):
@@ -23,12 +23,15 @@ def rect(x,y,w,h,r=0,fill='none',stroke=None,sw=1,extra=''):
     if x==5 and y==12 and w==1125:return # outside-widget drop shadow
     return original_rect(x,y,w,h,r,fill,stroke,sw,extra)
 ns['text']=text;ns['rect']=rect
-ns['weather']=lambda kind,x,y,size=52,*a,**kw:ns['add'](family.render(kind,x,y,size)) if y==1109 else None
+original_drop=ns['drop']
+ns['drop']=lambda x,y,sz=13: original_drop(x,y,20 if sz==13 else 18)
+ns['nav_icon']=lambda *a,**kw: None
+ns['weather']=lambda *a,**kw: None
 ns['satin_definitions']=family.definitions
 body=body.split("(OUT/'Widgy_Weather_Premium_Technical.svg')",1)[0]
 exec('W,H=1207,1256'+body,ns)
 chrome=''.join(ns['parts']).replace('width="1207" height="1256" viewBox="0 0 1207 1256"','width="1135" height="1184" viewBox="36 36 1135 1184"')
-(TARGET/'chrome.svg').write_text(chrome)
+(TARGET/'chrome-r2.svg').write_text(chrome)
 
 # Portable outlined text. Pair kerning uses the exact same shaper as the mockup.
 chars=''.join(chr(i) for i in range(32,127))+'°−—·'

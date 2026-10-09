@@ -77,6 +77,17 @@ test('latest full widget changes only Weather and metadata; all references resol
   assert.equal(new Set(ids).size,ids.length);
   for(const n of nodes){if(n.o1)assert(variables.has(n.o1['0']));if(n['1a']?.startsWith('button_'))for(const v of n['1a'].slice(7).split(/[-,]/))assert(ids.includes(Number(v)),n.s);}
   for(const [,name] of JSON.stringify(widget).matchAll(/\$\{widgy\.([^}]+)\}/g))assert(names.has(name),name);
+  const weatherNodes=widget['1'].find(n=>n.d0===246)['1'];
+  const nav=weatherNodes.filter(n=>/ Nav (Icon|Label)$/.test(n.s));
+  assert.equal(nav.length,8);
+  for(const item of nav){
+    const sourceGroup=original['1'].find(n=>n.d0===(item.s.startsWith('HOME')?247:item.s.startsWith('CALENDAR')?245:83010));
+    const source=sourceGroup['1'].find(n=>n.s===item.s);
+    const visual=n=>Object.fromEntries(Object.entries(n).filter(([k])=>!['d0','f'].includes(k)));
+    assert.deepEqual(visual(item),visual(source),item.s);
+    const color=item.s.startsWith('WEATHER')?original['1'].find(n=>n.d0===245)['1'].find(n=>n.s==='HOME Nav Label').f:source.f;
+    assert.equal(item.f,color,item.s);
+  }
   assert.equal(widget['36'].length,original['36'].length);
   assert.equal(nodes.filter(n=>n.s?.startsWith('Weather · Live')).length,1);
 });
