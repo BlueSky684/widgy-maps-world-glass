@@ -22,6 +22,16 @@ function scripts(x,count){if(!x||typeof x!=='object')return;for(const [k,v]of Ob
 scripts(original,()=>oldScripts++);scripts(w,()=>newScripts++);
 assert.equal(oldScripts,61);assert.equal(newScripts,26);
 
+// Regression: native month buttons require their full original action lists.
+// The state model below alone missed the return-to-Home bug on the phone.
+assert.equal(report.actions.length,48);
+for(const action of report.actions){
+ assert.equal(newNodes.get(action.id)['1a'],oldNodes.get(action.id)['1a']);
+ const [show,hide]=newNodes.get(action.id)['1a'].slice(7).split('-').map(x=>x.split(',').map(Number));
+ assert(show.includes(247));assert(hide.includes(245));
+ assert.equal(action.after,33);assert.equal(action.preservedExactly,true);
+}
+
 // Exact drawing/style equality is checked separately from data substitution.
 const strip=n=>Object.fromEntries(Object.entries(n).filter(([k])=>!['d0','66','o1'].includes(k)));
 for(const c of report.captions){
@@ -93,5 +103,5 @@ assert.deepEqual(restored,original);
 const summary={pass:true,captionDateCases:dates,captionPairsChecked:dates*25,reachableManualStates:seen.size,navigationTransitions:transitions,
  scriptsBefore:oldScripts,scriptsAfter:newScripts,layersBefore:1180,layersAfter:1202,variablesBefore:52,variablesAfter:67,
  arrowTargetsBefore:report.actions.reduce((s,a)=>s+a.before,0),arrowTargetsAfter:report.actions.reduce((s,a)=>s+a.after,0),
- mapCityHomeAndCalendarSourcesUnchanged:true,nativeRuntimeExecuted:false};
+ completeOriginalMonthActionsRestored:48,mapCityHomeAndCalendarSourcesUnchanged:true,nativeRuntimeExecuted:false};
 console.log(JSON.stringify(summary));

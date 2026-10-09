@@ -35,8 +35,6 @@ export function withSharedCalendarComputation(original){
  const text=name=>[{'5':'Custom Text','6':'Text','25':'${widgy.'+name+'}'}];
  const captions=[],actions=[];
  const offsets=new Map(panes.map(p=>[p.d0,Number(p.s.split(' ').at(-1))]));
- const activeArrows=offset=>[offset===-12?81121:81493,offset===12?81841:81494];
- const arrowIDs=[81121,81493,81494,81841];
  for(const pane of panes){
   const offset=offsets.get(pane.d0);
   const month=pane['1'].find(n=>n.s==='Calendar Month'),year=pane['1'].find(n=>n.s==='Calendar Year');
@@ -54,27 +52,22 @@ export function withSharedCalendarComputation(original){
   pane['1'].splice(pane['1'].indexOf(year),1,...variants);
   captions.push({offset,month:month.d0,years:variants.map(n=>n.d0)});
 
-  // An arrow can be tapped in its own visible month pane. Do not repeatedly
-  // hide the 23 already-hidden month panes or the three inactive main tabs.
-  // Reset controls remain comprehensive and retain their exact old actions.
-  const state=new Map([[245,false],[247,true],[246,false],[195,false],
-   ...panes.map(p=>[p.d0,p===pane]),...arrowIDs.map(id=>[id,activeArrows(offset).includes(id)])]);
+  // Preserve complete exported native actions byte-for-byte. Widgy returned
+  // to Home when these lists omitted the explicit Calendar/Home states.
+  // A patch-style JS state model did not represent native button behavior.
   for(const n of pane['1'].filter(n=>/^Calendar · (Previous|Next) Month$/.test(n.s))){
    assert(n['1a']?.startsWith('button_'));
    const lists=n['1a'].slice(7).split('-').map(s=>s.split(',').map(Number));
    const target=offset+(n.s.includes('Previous')?-1:1);
    assert(lists[0].some(id=>offsets.get(id)===target));
-   for(const id of lists.flat())assert(state.has(id),'Unexpected arrow target');
-   const minimal=lists.map((ids,i)=>ids.filter(id=>state.get(id)!==(i===0)));
-   assert(minimal[0].length&&minimal[1].length);
-   actions.push({id:n.d0,offset,target,before:lists.flat().length,after:minimal.flat().length});
-   n['1a']='button_'+minimal.map(ids=>ids.join(',')).join('-');
+   assert(lists[0].includes(247)&&lists[1].includes(245));
+   actions.push({id:n.d0,offset,target,before:lists.flat().length,after:lists.flat().length,preservedExactly:true});
   }
  }
  assert.equal(actions.length,48);
  w.a2=next;
  w['3']='Widgy Shared Calendar Computation 1';
- w['4']='Full Home and Calendar without tap markers. Share 25 month-name calculations through 12 cyclic values and 25 year calculations through three relative-year values; existing layout calculation selects the year. Keep exact caption fonts/frames and all 25 months. Month arrows change only necessary visible states; reset behavior is unchanged. All Home artwork, map/city/GPS runtime, clock, gauges, Today badges, event sources and refresh rules preserved. 61 to 26 JavaScript definitions; native transition latency is not measured.';
+ w['4']='Full Home and Calendar without tap markers. Share 25 month-name calculations through 12 cyclic values and 25 year calculations through three relative-year values; existing layout calculation selects the year. Keep exact caption fonts/frames and all 25 months. Restore complete original month-arrow actions, including explicit Calendar and Home visibility. All Home artwork, map/city/GPS runtime, clock, gauges, Today badges, event sources and refresh rules preserved. 61 to 26 JavaScript definitions; native transition latency is not measured.';
  return {widget:w,report:{captions,actions,addedVariables,extraConditionalYearLabels:22,
   scriptsBefore:61,scriptsAfter:26,variablesBefore:52,variablesAfter:67,nodesBefore:1180,nodesAfter:1202}};
 }
