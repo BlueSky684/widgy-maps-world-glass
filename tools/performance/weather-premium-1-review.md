@@ -182,3 +182,30 @@ No new layers, variables, providers, assets, or deployed functions.
 
 R5 JSON: 928918 bytes, SHA256
 0ce90a642ff338865f986da8f45f388ed51fc362e9686e73206138dd816b75bf.
+
+## Revision 6 — current-condition composition and AQI caption
+
+Responds to IMG_0119: the condition caption was centered under both icon and
+temperature, visually detached from the number. R6 uses two columns, with the
+caption directly under the centered temperature-plus-Celsius group. The icon
+is optically centered against the two-line stack using visible artwork bounds.
+Only placement changes; all eleven approved icon paths, proportions and colors
+remain byte-identical. Temperature remains 82 cap height; caption 25, with a
+190-unit width bound for longer conditions. Negative/missing readings fit.
+
+The user requested AQI without US. Only the visible caption changes; the
+numeric data and standard US AQI color scale remain identical. Chrome R6 is
+exactly Chrome R4 with that one outlined text group replaced. Pixel comparison
+found changes only inside x=1929..2046, y=583..625 in the 2270px chrome. All
+other static pixels are identical. Dynamic pixels outside the hero's left
+condition area are also identical. Night, sunny/partly and negative/rain
+examples were technically rendered and visually inspected.
+
+15 Weather/AQI tests and the exact multiline copy tests pass. Native JSON
+comparison with R5 differs only in title, description and two image URLs.
+No new native layers, variables, sources or functions; the R5 first-load AQI
+fix is retained. Prior revision URLs keep their prior appearance. Native
+iPhone review of the revised composition remains outstanding.
+
+R6 JSON: 929001 bytes, SHA256
+fb2631ef18e0467734ac71a7e9123d077e2329c6c1ddf97ee4ad6164992507aa.
