@@ -155,3 +155,30 @@ Native Widgy layout verification remains on-device.
 
 R4 JSON: 928890 bytes, SHA256
 43db5e46e4a715d4f9eb1cf694179fcf2ad23e6325e43c815f8bb6469da1ca25.
+
+## Revision 5 — first-load AQI race fix
+
+IMG_0118 showed the AQI dash. Reproduced live by first priming only weather
+(v=3) for one grid cell, then requesting v=4: weather HIT / AQI loading with
+no numeric value; the next request returned AQI 53. The provider had valid
+data. The first PNG was finalized before the background AQI fetch resolved,
+and a static image response cannot repaint itself after waitUntil completes.
+
+Fix: only when AQI has no usable cached value, join its already-started fetch
+before rendering. Forecast and AQI start in parallel. A 4250 ms deadline from
+request start bounds this wait; the provider still has its own 4000 ms timeout.
+Usable cached values, including timestamped stale fallbacks, remain immediate.
+Provider failures/timeouts preserve weather and show an uncached dash. Numeric
+zero remains valid. The fix also applies to existing v=4 requests; v=5 uses a
+new image URL so an installed Widgy snapshot cannot hide the updated behavior.
+
+The focused regression failed before the fix and passed after it: a hot
+forecast plus delayed first AQI produces the number in its FIRST image. Six
+AQI tests cover this case, single-flight, cached speed, null/zero, expiry,
+rejection/timeout, all six colors, and preserved weather. Nine weather suites
+and the multiline copy round-trip pass. R5 has exactly the R4 visual layers,
+URLs aside; only title, description and dynamic Weather revision differ.
+No new layers, variables, providers, assets, or deployed functions.
+
+R5 JSON: 928918 bytes, SHA256
+0ce90a642ff338865f986da8f45f388ed51fc362e9686e73206138dd816b75bf.
