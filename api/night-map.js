@@ -6,6 +6,7 @@ import {randomUUID} from 'node:crypto';
 import {compareMapRequestKeys, readCityTimingTrace} from '../lib/map-request-key-diagnostics.js';
 import {createCityReuseCache} from '../lib/city-reuse-cache.js';
 import {createMapURLDiagnostics} from '../lib/map-url-diagnostics.js';
+import {observeMapResponseCompletion} from '../lib/map-response-completion.js';
 
 const cachedRender = createMapRenderCache();
 const cachedCity = createCityReuseCache();
@@ -48,6 +49,7 @@ export default async function handler(req, res) {
     ...details
   }));
   report('started');
+  observeMapResponseCompletion(res, report);
   res.setHeader('Cache-Control', 'private, no-store, max-age=0');
   res.setHeader('CDN-Cache-Control', 'no-store');
   res.setHeader('Vercel-CDN-Cache-Control', 'no-store');

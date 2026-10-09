@@ -1,4 +1,5 @@
 import {createMapURLDiagnostics} from '../lib/map-url-diagnostics.js';
+import {observeMapResponseCompletion} from '../lib/map-response-completion.js';
 import {createCityReuseCache} from '../lib/city-reuse-cache.js';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -13,10 +14,10 @@ import {resolveLocation} from '../lib/map-astronomy-location.js';
 let now = Date.parse('2026-10-08T14:47:59Z');
 class Clock extends Date {constructor(...args){super(...(args.length ? args : [now]));} static now(){return now;}}
 const route = readFileSync(new URL('../api/night-map.js', import.meta.url), 'utf8');
-const parent = execFileSync('git', ['show', '910cf71ced7ed8086286f84cebe26866d5986647:api/night-map.js'], {encoding:'utf8'});
+const parent = execFileSync('git', ['show', '7edf1016331e233dcb3ccdf02fe541d51b10345c:api/night-map.js'], {encoding:'utf8'});
 function instance(source) {
   const logs = []; let renders = 0;
-  const context = {Date:Clock, Buffer, URLSearchParams,createMapURLDiagnostics,createCityReuseCache:()=>createCityReuseCache({now:()=>now}), randomUUID, compareMapRequestKeys, readCityTimingTrace,
+  const context = {observeMapResponseCompletion,Date:Clock, Buffer, URLSearchParams,createMapURLDiagnostics,createCityReuseCache:()=>createCityReuseCache({now:()=>now}), randomUUID, compareMapRequestKeys, readCityTimingTrace,
     performance:{now:()=>now}, console:{info:line=>logs.push(JSON.parse(line)), error(){}},
     parseMapRequest, resolveLocation, REVISION:'synthetic', precomputedState:()=> 'HIT',
     createMapRenderCache:()=>createMapRenderCache({now:()=>now}),

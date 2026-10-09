@@ -8,11 +8,12 @@ import {parseMapRequest} from '../lib/native-map-request.js';
 import {resolveLocation} from '../lib/map-astronomy-location.js';
 import {randomUUID} from 'node:crypto';
 import {compareMapRequestKeys, readCityTimingTrace} from '../lib/map-request-key-diagnostics.js';
+import {observeMapResponseCompletion} from '../lib/map-response-completion.js';
 
 let now=Date.parse('2026-10-08T12:54:00Z'), fail=false, renders=0;
 const logs=[];
 class Clock extends Date {constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}}
-const context={Date:Clock,URLSearchParams,createMapURLDiagnostics,createCityReuseCache:()=>createCityReuseCache({now:()=>now}),Buffer,randomUUID,compareMapRequestKeys,readCityTimingTrace,performance:{now:()=>now},
+const context={observeMapResponseCompletion,Date:Clock,URLSearchParams,createMapURLDiagnostics,createCityReuseCache:()=>createCityReuseCache({now:()=>now}),Buffer,randomUUID,compareMapRequestKeys,readCityTimingTrace,performance:{now:()=>now},
   console:{info(line){logs.push(JSON.parse(line));},error(){}},
   parseMapRequest,resolveLocation,REVISION:'diagnostic-test',precomputedState:()=> 'HIT',
   createMapRenderCache:()=>createMapRenderCache({now:()=>now}),
