@@ -29,7 +29,7 @@ ns['nav_icon']=lambda *a,**kw: None
 ns['weather']=lambda *a,**kw: None
 ns['satin_definitions']=family.definitions
 body=body.split("(OUT/'Widgy_Weather_Premium_Technical.svg')",1)[0]
-# R3 keeps the approved outer card and all other sections; regroup only its hero.
+# R4 keeps the approved outer card and all other sections; regroup only its hero.
 a=body.index('panel(248,246,True)');b=body.index('panel(512,214)')
 body=body[:a]+"""panel(248,246,True)
 line(498,280,498,460,'#344750',1.4)
@@ -37,7 +37,7 @@ for x in [713,906]:
     line(x,286,x,356,'#344750',1)
     line(x,391,x,460,'#344750',1)
 line(529,374,1080,374,'#344750',1)
-for label,x in [('Feels Like',611),('High',804),('Low',994)]:
+for label,x in [('Feels Like',611),('High / Low',804),('US AQI',994)]:
     text(label,x,312,20,MUTED,anchor='middle')
 for label,x in [('Humidity',611),('Wind',804),('UV Index',994)]:
     text(label,x,407,20,MUTED,anchor='middle')
@@ -46,7 +46,7 @@ for label,x in [('Humidity',611),('Wind',804),('UV Index',994)]:
 
 exec('W,H=1207,1256'+body,ns)
 chrome=''.join(ns['parts']).replace('width="1207" height="1256" viewBox="0 0 1207 1256"','width="1135" height="1184" viewBox="36 36 1135 1184"')
-(TARGET/'chrome-r3.svg').write_text(chrome)
+(TARGET/'chrome-r4.svg').write_text(chrome)
 
 # Portable outlined text. Pair kerning uses the exact same shaper as the mockup.
 chars=''.join(chr(i) for i in range(32,127))+'°−—·'

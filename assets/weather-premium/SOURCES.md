@@ -34,3 +34,11 @@ and the Celsius unit follows the measured number width. Condition text is
 centered beneath the pair. Six metrics use aligned centers and tighter groups;
 wind shows speed in km/h only. Outside-card chrome and forecast pixels are
 unchanged. R1/R2 rendering is preserved through the versioned endpoint.
+
+Revision 4 adds current numeric US AQI from the separate Open-Meteo Air Quality
+API, backed by CAMS model data. Contract: https://open-meteo.com/en/docs/air-quality-api.
+This is regional modeled air quality, not a nearby station measurement. EPA /
+AirNow bands: https://www.airnow.gov/aqi/aqi-basics/. The number alone uses the
+six standard category hues, with lighter shades for contrast on dark glass.
+No extra category words appear in the widget. High and low share one cell.
+Open-Meteo/CAMS credit and independent weather/AQI timestamps are in the footer.
