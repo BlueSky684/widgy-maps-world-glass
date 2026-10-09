@@ -209,3 +209,30 @@ iPhone review of the revised composition remains outstanding.
 
 R6 JSON: 929001 bytes, SHA256
 fb2631ef18e0467734ac71a7e9123d077e2329c6c1ddf97ee4ad6164992507aa.
+
+## Revision 7 — caption alignment and forecast icon legibility
+
+The owner requested the condition caption a little farther right, aligned with
+25, and larger icons in both forecast sections. The hero caption now starts at
+the computed temperature start, rather than being centered under the entire
+number/unit group. For 25 this moves the caption about 16 units right. Its
+right bound remains 465, before the hero divider at 498.
+
+Hourly icons: nominal 60 to 70 (+16.7%), now centered on visible artwork.
+Hourly temperature shifts six units right to preserve spacing. Exhaustive
+width checks for -90 through 65 degrees give at least 4 units between the
+widest temperature and widest icon, inside the current column/highlight.
+Daily icons: nominal 46 to 56 (+21.7%) with a 40-unit visible-height limit in
+the existing 42-unit rows. Clouds, moon/cloud and rain grow most; tall sun,
+lightning and snow are height-limited. Approved paths/colors remain unchanged.
+
+All eleven icon types were raster-checked against every daily divider. The
+new composition was visually inspected with mixed forecast conditions. All
+15 Weather/AQI tests, exact multiline copy validation, public build and cleanup
+gates pass. R7 native JSON differs from R6 only in title, description and the
+live Weather URL revision. Chrome R6, hero icon, data sources, AQI fix, GPS,
+Home/Calendar/Fitness, layers, variables and navigation remain identical.
+Prior revision URLs preserve their appearance. On-device review is pending.
+
+R7 JSON: 929045 bytes, SHA256
+29b0a002e97a67e2c7418c3005219e61d598402fde9ed07cebb6a179729418de.
