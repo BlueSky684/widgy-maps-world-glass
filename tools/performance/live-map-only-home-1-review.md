@@ -1,5 +1,10 @@
 # Live Map Only Home Test 1 — 2026-10-09
 
+PHONE OUTCOME: at 07:34 the owner reports significantly faster return to Home.
+At 07:35 Calendar entry is unchanged, and Calendar city displays correctly.
+Preserve this as the fast control. No single removed source/layer is identified;
+the live map itself still has a cost. Home city agreement not separately stated.
+
 At 07:27 the owner explicitly requests the latest unchanged live map and city
 mechanism alone in Home, with Calendar complete, to investigate the cost of
 other Home content. Use Native City Spelling Test 2 as the matched full-Home
