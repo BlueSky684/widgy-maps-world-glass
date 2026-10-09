@@ -9,3 +9,6 @@ Clock/header/weather, existing cropped chrome, live map/GPS/city resolver, full 
 Verified: exact reverse diff against actual Clock Addback artifact, unique IDs and navigation, embedded script syntax, authenticated encrypted copy roundtrip and fallback, full configured project build. Native performance/events rendering remain unverified until phone test.
 
 Compare three Calendar-to-Home returns each after initial load against Clock Addback Test 1; report stays fast/slower plus event-summary correctness. If slowdown returns, result implicates this whole added group and its interaction with current content, not uniquely a provider. Preview f50-widget-test only; production untouched.
+
+## Owner outcome — 2026-10-09 08:13 Asia/Jerusalem
+Owner reports a further very slight slowdown in overall feel. No numeric timing, repeatability, separate Calendar entry or visual confirmation supplied. Possible cumulative cost remains a hypothesis; no individual bottleneck established. Next paired experiment restores the original fitness card.
