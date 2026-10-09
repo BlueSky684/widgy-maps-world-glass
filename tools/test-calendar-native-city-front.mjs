@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {createRequire} from 'node:module';
+import {withNativeCityFront} from './calendar-native-city-front.js';
+const sharp=createRequire(import.meta.url)('sharp');
+const input=JSON.parse(readFileSync(process.argv[2],'utf8')), original=structuredClone(input);
+const widget=withNativeCityFront(input);
+assert.deepEqual(input,original);
+const before=input['1'].find(n=>n.d0===247), after=widget['1'].find(n=>n.d0===247);
+const row=after['1'].find(n=>n.d0===81871);
+assert.deepEqual(row,before['1'].find(n=>n.d0===81871));
+assert.equal(after['1'].indexOf(row)+1,after['1'].findIndex(n=>n.d0===80338));
+assert(after['1'].indexOf(row)<after['1'].findIndex(n=>n.d0===80408));
+const restored=structuredClone(widget), cal=restored['1'].find(n=>n.d0===247);
+const group=cal['1'].find(n=>n.d0===81871);
+cal['1']=cal['1'].filter(n=>n!==group);
+cal['1'].splice(before['1'].findIndex(n=>n.d0===81871),0,group);
+restored['3']=input['3'];restored['4']=input['4'];
+assert.deepEqual(restored,input,'Only one layer ordering and metadata change');
+// Existing full-size chrome actually occludes the complete location bounding box.
+const asset=new URL('../assets/calendar-glass/Calendar_Glass_Chrome_C8.png',import.meta.url);
+const metadata=await sharp(asset.pathname).metadata();
+const scalar=k=>row[k].a[0].a;
+const left=Math.round(scalar('b')*metadata.width/1600),top=Math.round(scalar('c')*metadata.height/1600);
+const right=Math.round((scalar('b')+scalar('d'))*metadata.width/1600),bottom=Math.round((scalar('c')+scalar('e'))*metadata.height/1600);
+const alpha=await sharp(asset.pathname).ensureAlpha().extract({left,top,width:right-left,height:bottom-top}).extractChannel(3).raw().toBuffer();
+assert(alpha.every(v=>v===255),'Original background is opaque over the whole city row');
+console.log(JSON.stringify({exactSingleReorder:true,allSourcesConditionsAndGeometryUnchanged:true,cityBeforeOpaqueChrome:true,opaquePixels:alpha.length,nativeConfirmationPending:true}));
