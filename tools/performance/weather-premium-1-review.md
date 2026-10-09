@@ -268,3 +268,37 @@ cause or a fixed issue. Do not fabricate missing distance/calories as zero.
 
 R8 JSON: 929145 bytes, SHA256
 e27d6844bd6a742a650f2e2d2d6065380ba68bad3010f324f98b9c694e06cae3.
+
+## Revision 9 — cloud height and hourly breathing room
+
+Reviewed IMG_0126 and the R9 technical composite at 1135px. The large cloudy
+icon moves from center Y=371 to 359; size, geometry and colors stay exact.
+Following the owner's additional request, hourly icon-to-temperature spacing
+increases from 10 to 16 logical units for every condition, retaining shared
+visible-bounds centering and a minimum 10-unit tile margin. Normal 24-degree
+numbers remain at the approved size; exceptionally wide readings retain the
+existing fit constraint. Revision URLs 1–8 remain byte-identical (96 checks).
+
+Visual review covered current-condition alignment, metric columns, hourly
+spacing/highlight symmetry, daily rows/dividers, hierarchy and legibility.
+No further layout changes were warranted. Native header, location and menu
+were reviewed in the user's screenshot; technical composites omit those native
+layers. Attribution remains intentionally small. Final iPhone review is pending.
+
+48 raster combinations pass with minimum padding 10 and maximum left/right
+padding difference 0.5 logical units. Full-panel pixel checks across all eleven
+icons plus missing icon allow changes only in the main cloud and hourly pairs.
+15 Weather/AQI tests, public build, cleanup and diff checks pass. R8-to-R9 JSON
+comparison changes only title, description and Weather revision URL. All other
+native content, sources and navigation remain identical.
+
+The exact copy runtime verifies the R9 encrypted payload, 3311-line copy,
+compact toggle, fallback selection, absent/wrong keys and tamper rejection.
+Local browser verification could not run: Chromium is absent and its download
+returned an invalid archive. This is not reported as a passed browser test.
+Only encrypted payload is committed; private JSON and its key stay outside git.
+R9 JSON: 929252 bytes; SHA256
+fe84e639f4f91a2bf2b6195287f96a611d30fda3d26967e7b17278de6547c692.
+
+The post-midnight Home pedometer/ring discrepancy remains unconfirmed and
+unchanged, awaiting daytime activity. No Fitness changes are included.
