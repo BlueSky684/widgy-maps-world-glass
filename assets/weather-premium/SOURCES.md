@@ -12,7 +12,7 @@ The free endpoint is intended for this noncommercial personal test, not a
 commercial product. Credit appears beneath the forecast and on the copy page.
 
 The existing Home weather provider, GPS, map and private Calendar are unchanged.
-Versioned chrome-r1.png and chrome-r2.png are exposed as static public assets. Font glyphs and icon
+Versioned chrome-r1.png, chrome-r2.png and chrome-r3.png are exposed as static public assets. Font glyphs and icon
 source data are bundled with the Weather function; no remote font loading.
 
 Weather codes map to the eleven approved drawings. Overcast uses Cloudy artwork;
@@ -26,3 +26,11 @@ from the current Home/Calendar export, including figure.run. The static chrome
 contains no menu labels or icons. Hourly icon boxes grow 46 → 60 logical pixels;
 daily boxes 35 → 46; rain indicators 13 → 20 and 12 → 18. Approved icon geometry
 is untouched. The old chrome and v=1 panel remain available for imported R1.
+
+
+Revision 3 changes only the current-conditions card interior. The approved
+condition icon grows 141 → 180, primary temperature cap height shrinks 110 → 82,
+and the Celsius unit follows the measured number width. Condition text is
+centered beneath the pair. Six metrics use aligned centers and tighter groups;
+wind shows speed in km/h only. Outside-card chrome and forecast pixels are
+unchanged. R1/R2 rendering is preserved through the versioned endpoint.
