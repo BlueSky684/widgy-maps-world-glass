@@ -127,3 +127,31 @@ visually inspected. Native iPhone review remains outstanding.
 R3 JSON: 928791 bytes; SHA256
 f569261aa0233f652c5747ac8d7d03b331b87aef4725d6a46fb7c498c2874cfc.
 AQI availability was investigated separately; AQI is not part of this revision.
+
+## Revision 4 — numeric, category-colored US AQI
+
+Adds one number, labeled US AQI, in the space freed by combining High / Low.
+AQI color boundaries follow AirNow/EPA: 0–50 green, 51–100 yellow, 101–150 orange,
+151–200 red, 201–300 purple, 301+ maroon. Hues are lightened for the dark card;
+the caption remains neutral. No health category text replaces the number.
+Source: CAMS through Open-Meteo's current US AQI endpoint. No local-monitor claim.
+
+AQI cache is separate from weather: fresh for 15 minutes, rejects source times
+older than 90 minutes, deduplicates background fetches, four-second upstream
+timeout. waitUntil preserves refresh work after the PNG response. The handler
+includes a refresh only if it already finished while weather was loading;
+it does not await an unresolved provider request. Without usable data, a dash
+is shown and not device-cached; a later refresh can retrieve the ready number.
+Cached fallback values retain their actual timestamp and a cached footer label.
+All forecast, city, navigation, GPS, Home and Calendar sources are retained.
+No native image requests, variables, layers or deployed functions were added.
+
+Four focused AQI tests pass for numeric zero/null/schema/time validation, all
+six color boundaries, single-flight and stale/expired cache behavior, nonblocking
+Weather responses, GPS gating and numeric-only SVG output. The existing nine
+Weather suites, full JSON copy round-trip, build and cleanup gates also pass.
+Live provider test returned valid numeric AQI for the Ashkelon test grid cell.
+Native Widgy layout verification remains on-device.
+
+R4 JSON: 928890 bytes, SHA256
+43db5e46e4a715d4f9eb1cf694179fcf2ad23e6325e43c815f8bb6469da1ca25.
