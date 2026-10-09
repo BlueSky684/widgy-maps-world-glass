@@ -7,3 +7,6 @@ Add only 12 original Home nodes: header date divider 6190; greeting 6101/6102/80
 Verified transform against actual Weather Addback export: removing only the 12 additions and restoring title/description produces deep equality with control. Exact encrypted clipboard roundtrip, wrong/missing key and tamper rejection, manual fallback, IDs/navigation, script syntax, and configured full build checked before publication. Native rendering and speed require phone verification.
 
 After initial load, compare three Calendar-to-Home returns with Weather Addback Test 1. Ask if return remains fast or slows, and whether clock/greeting/date are correct. This tests the combined clock/header group, not one isolated provider. Preview f50-widget-test only; production untouched.
+
+## Owner outcome — 2026-10-09 08:05 Asia/Jerusalem
+Owner reported a very, very small slowdown, but still fast. Subjective change is not quantified or established as repeatable. Clock/header restoration has not reproduced the substantial full-Home delay in this run. Next paired addback is Home events/reminders.
