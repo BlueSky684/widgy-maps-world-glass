@@ -1,0 +1,26 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {withNativeCityUngated} from './calendar-native-city-ungated.js';
+import {flatten} from './compact-widget-structure.js';
+
+const input=JSON.parse(readFileSync(process.argv[2],'utf8'));
+const original=structuredClone(input), widget=withNativeCityUngated(input);
+assert.deepEqual(input,original);
+const before=input['1'].find(n=>n.d0===247), after=widget['1'].find(n=>n.d0===247);
+const row=after['1'].find(n=>n.d0===80337);
+assert(!Object.hasOwn(row,'o1'));
+assert(!JSON.stringify(row['66']).includes('${widgy.'));
+assert.deepEqual(row['66'],before['1'].find(n=>n.d0===81871)['1'][0]['66']);
+const restored=structuredClone(widget), cal=restored['1'].find(n=>n.d0===247);
+cal['1'][cal['1'].findIndex(n=>n.d0===80337)]=structuredClone(before['1'].find(n=>n.d0===80337));
+const index=before['1'].findIndex(n=>n.d0===81871);
+cal['1'].splice(index,0,structuredClone(before['1'][index]));
+restored['3']=input['3']; restored['4']=input['4'];
+assert.deepEqual(restored,input,'Only location source/guard/fallback and title/description change');
+assert.deepEqual(widget['36'],input['36'],'All variable sources and ordering unchanged');
+const nodes=flatten(widget['1']), ids=new Set(nodes.map(n=>n.d0));
+assert.equal(nodes.length,1187); assert.equal(ids.size,nodes.length);
+assert(!ids.has(81871)&&!ids.has(81869)&&!ids.has(81870));
+for(const n of nodes)if(n['1a']?.startsWith('button_'))for(const id of n['1a'].slice(7).split(/[-,]/).map(Number))assert(ids.has(id));
+assert.equal(nodes.filter(n=>n.s?.startsWith('Calendar Location')).length,1);
+console.log(JSON.stringify({exactDocumentWhitelist:true,allVariablesUnchanged:true,ungatedNativeCityCountry:true,layers:1187,variables:55,validNavigation:true,requiresPhoneCheck:true}));
