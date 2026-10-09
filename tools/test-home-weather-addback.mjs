@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {withHomeWeatherAddback,WEATHER_IDS} from './home-weather-addback.js';
+import {flatten} from './compact-widget-structure.js';
+const full=JSON.parse(readFileSync(process.argv[2])),control=JSON.parse(readFileSync(process.argv[3]));
+const untouched=structuredClone(full),w=withHomeWeatherAddback(full);assert.deepEqual(full,untouched);
+const h=w['1'].find(n=>n.d0===245),original=full['1'].find(n=>n.d0===245);
+for(const n of h['1'].filter(n=>WEATHER_IDS.has(n.d0)))assert.deepEqual(n,original['1'].find(o=>o.d0===n.d0));
+const c=structuredClone(h['1'].find(n=>n.d0===80309)),oc=original['1'].find(n=>n.d0===80309);c.s=oc.s;c['2']=oc['2'];assert.deepEqual(c,oc);
+const reversed=structuredClone(w);reversed['1'].find(n=>n.d0===245)['1']=reversed['1'].find(n=>n.d0===245)['1'].filter(n=>!WEATHER_IDS.has(n.d0)&&n.d0!==80309);reversed['3']=control['3'];reversed['4']=control['4'];assert.deepEqual(reversed,control);
+console.log(JSON.stringify({onlyWeatherCardAdded:true,weatherSourcesAndConditionsExact:true,allVariablesAndCalendarExact:true,mapGPSCityExact:true,layers:flatten(w['1']).length,variables:w['36'].length}));
