@@ -302,3 +302,27 @@ fe84e639f4f91a2bf2b6195287f96a611d30fda3d26967e7b17278de6547c692.
 
 The post-midnight Home pedometer/ring discrepancy remains unconfirmed and
 unchanged, awaiting daytime activity. No Fitness changes are included.
+
+## Revision 9.1 — time-varying Weather image URL
+
+IMG_0130 confirms the 08:38 phone still displays 01:00 Weather after the
+owner tried navigation and opening Widgy. Direct R9 endpoint requests at
+08:33/08:37 return fresh 08:30 data, hourly 08:00–13:00 and AQI 55 for the
+test Ashkelon cell. Both constant and unique-query requests return fresh data.
+Native image retention is suspected; Widgy's internal root cause is unproven.
+
+Append refresh=${widgy.calendar_refresh_minute} to the Weather image only.
+Reuse the existing pure local clock, already bound to Calendar image URLs;
+no new variables, timers, network scripts, providers, layers or render changes.
+This creates a different image URL when Widgy reevaluates it in a new minute.
+It cannot force iOS scheduling or guarantee background updates every minute.
+Extra image loads when the clock changes are possible; on-device freshness
+and navigation performance are release acceptance checks, not passed claims.
+
+Exact R9/9.1 document comparison allows only Weather URL, title and description.
+All variables and other native objects are identical. Clock checks confirm
+same-minute stability and next-minute change. All 15 Weather/AQI tests, exact
+3311-line copy (including fallbacks/key/tamper checks), build and cleanup pass.
+Only encrypted export is published. Keep v=9 renderer and all design assets.
+R9.1 JSON: 929512 bytes, SHA256
+cd3cf11ea43b092eb1312f3eb06af0dbb173f73459e3cb87a183362b2272bf7c.

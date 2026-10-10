@@ -4,6 +4,7 @@ const scalar=(value,kind=160)=>({a:[{a:value,b:kind,c:0,d:kind}],b:0});
 export function withWeatherPremium(source){
   const widget=structuredClone(source),weather=widget['1'].find(n=>n.d0===246),calendar=widget['1'].find(n=>n.d0===247),shared=widget['1'].find(n=>n.d0===83010),home=widget['1'].find(n=>n.d0===245);
   assert(weather&&calendar&&shared&&home,'Expected latest Lean Clock and Data widget');
+  assert(source['36'].some(v=>v['1']==='calendar_refresh_minute'),'Expected existing Calendar minute clock');
   let id=84000;
   function clone(node){const n=structuredClone(node);function visit(n){n.d0=++id;n.s=n.s?.replace(/Calendar/g,'Weather');if(Array.isArray(n['1']))n['1'].forEach(visit);}visit(n);return n;}
   const taps=weather['1'].filter(n=>n.z==='11');assert.equal(taps.length,4);
@@ -24,10 +25,10 @@ export function withWeatherPremium(source){
   // native fallback city, including Ashkelon spelling; no new geocoder/variable.
   const image=(name,url,y,h)=>({z:'5',d0:++id,s:name,'1':'Web URL','2':url,'3':true,b:scalar(0),c:scalar(y*1600/1184),d:scalar(1600),e:scalar(h*1600/1184)});
   weather['1']=[...taps,...top,...location,...nav,
-    image('Weather · Live current, six hours and five days',PREVIEW+'/api/weather-panel?lat=${widgy.map_latitude_max5}&lon=${widgy.map_longitude_max5}&v=9',240,804),
+    image('Weather · Live current, six hours and five days',PREVIEW+'/api/weather-panel?lat=${widgy.map_latitude_max5}&lon=${widgy.map_longitude_max5}&v=9&refresh=${widgy.calendar_refresh_minute}',240,804),
     image('Weather · Approved glass with native navigation',PREVIEW+'/assets/weather-premium/chrome-r6.png',0,1184)];
-  widget['3']='Widgy Weather Premium 9';
-  widget['4']='Revision 9: main cloudy icon raised by 12 logical units; hourly icon-to-temperature gap increased from 10 to 16 units; hourly icon and temperature centered together by visible bounds, with equal highlight side padding; condition caption aligned with the temperature left edge; larger optically centered hourly and daily icons with bounded daily height; AQI-only caption; preserves bounded first-load AQI fix; cached AQI refreshes in the background; combined high/low cell; balanced current-conditions card, smaller temperature with attached Celsius unit, larger approved icon, compact aligned metrics, wind speed only. Original native navigation and enlarged forecast/rain icons retained. Approved Weather artwork and all eleven approved icons. Live Open-Meteo current conditions, next six model hours, and five-day forecast in Celsius/kmh. Shared forecast cache; native paired city/country and header. Home, Calendar, Fitness, all existing variables, live GPS/map and month navigation unchanged. Multiline full JSON copy. Keep Lean Clock and Data 1 as backup. On-device appearance and timing need verification.';
+  widget['3']='Widgy Weather Premium 9.1';
+  widget['4']='Revision 9.1: Weather image URL reuses the existing local Calendar minute clock to invalidate an unchanged image URL when Widgy evaluates it; automatic refresh cadence remains controlled by Widgy/iOS. Revision 9 design retained: main cloudy icon raised by 12 logical units; hourly icon-to-temperature gap increased from 10 to 16 units; hourly icon and temperature centered together by visible bounds, with equal highlight side padding; condition caption aligned with the temperature left edge; larger optically centered hourly and daily icons with bounded daily height; AQI-only caption; preserves bounded first-load AQI fix; cached AQI refreshes in the background; combined high/low cell; balanced current-conditions card, smaller temperature with attached Celsius unit, larger approved icon, compact aligned metrics, wind speed only. Original native navigation and enlarged forecast/rain icons retained. Approved Weather artwork and all eleven approved icons. Live Open-Meteo current conditions, next six model hours, and five-day forecast in Celsius/kmh. Shared forecast cache; native paired city/country and header. Home, Calendar, Fitness, all existing variables, live GPS/map and month navigation unchanged. Multiline full JSON copy. Keep Lean Clock and Data 1 as backup. On-device appearance and timing need verification.';
   widget.a2=Math.max(widget.a2,id);
   return widget;
 }
