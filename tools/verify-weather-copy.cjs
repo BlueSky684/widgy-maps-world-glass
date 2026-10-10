@@ -1,7 +1,7 @@
 const {chromium}=require(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES+'/playwright');
 const fs=require('node:fs'),http=require('node:http'),path=require('node:path'),assert=require('node:assert/strict');
 (async()=>{
-  const root=process.cwd(),expected=JSON.parse(fs.readFileSync('../outputs/Widgy_Weather_Premium_9_1.json'));
+  const root=process.cwd(),expected=JSON.parse(fs.readFileSync('../outputs/Widgy_Weather_Premium_10.json'));
   const key=JSON.parse(fs.readFileSync('../outputs/weather-premium-copy-key.json')).key;
   const server=http.createServer((req,res)=>{
     const file=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);
@@ -23,7 +23,7 @@ const fs=require('node:fs'),http=require('node:http'),path=require('node:path'),
     assert.deepEqual(JSON.parse(copied),expected);assert(copied.split('\n').length>1000);
     await page.screenshot({path:'work/weather-copy-verified.png',fullPage:true});
     await page.locator('#multiline').uncheck();await page.locator('#copy').click();
-    assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),fs.readFileSync('../outputs/Widgy_Weather_Premium_9_1.json','utf8'));
+    assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),fs.readFileSync('../outputs/Widgy_Weather_Premium_10.json','utf8'));
     await page.goto(base+'/tools/widgy-weather-premium-copy.html');assert.equal(await page.locator('#copy').isDisabled(),true);
     await page.goto(base+'/tools/widgy-weather-premium-copy.html#key='+'A'.repeat(43));
     await page.waitForFunction(()=>document.querySelector('#status').textContent.includes('לא נטען'));assert.equal(await page.locator('#copy').isDisabled(),true);

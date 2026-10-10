@@ -326,3 +326,9 @@ same-minute stability and next-minute change. All 15 Weather/AQI tests, exact
 Only encrypted export is published. Keep v=9 renderer and all design assets.
 R9.1 JSON: 929512 bytes, SHA256
 cd3cf11ea43b092eb1312f3eb06af0dbb173f73459e3cb87a183362b2272bf7c.
+
+## Revision 10 — approved option B (2026-10-10)
+
+User approved option B in full. Main cloud center Y 359 -> 347 and partly-cloudy center Y 371 -> 359, size 180 unchanged. Other main icons unchanged. Only standalone hourly sun scales 70 -> 63 about its existing visible center; original temperature size/position and all other forecast artwork remain unchanged. Revision 9 URLs keep revision 9 rendering. Revision 10 retains the existing Calendar minute refresh URL variable from 9.1; sustained native background refresh remains under observation.
+
+Validation: exact raster comparison against both cloud and partly-cloudy option B mockups passed. Full private 9.1 vs 10 differs only in title/description and v=9 -> v=10 on the Weather image URL. All 15 Weather/AQI tests, multiline JSON token/decryption/copy/fallback checks, build and cleanup passed. No private plaintext or key included in public changes. Preview only, branch f50-widget-test. Native appearance acceptance pending import.
