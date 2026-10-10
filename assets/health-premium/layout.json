@@ -1,0 +1,401 @@
+{
+  "fields": [
+    {
+      "key": "date",
+      "x": 1084.6498599439774,
+      "y": 195,
+      "cap": 27,
+      "color": "#acb7c6",
+      "weight": "Regular",
+      "anchor": "end",
+      "width": 583.0532212885154
+    },
+    {
+      "key": "steps",
+      "x": 271.4173669467787,
+      "y": 354,
+      "cap": 87,
+      "color": "#f4f7fa",
+      "weight": "Bold",
+      "anchor": "start",
+      "width": 245.3893557422969
+    },
+    {
+      "key": "calories",
+      "x": 635.4453781512605,
+      "y": 319,
+      "cap": 31,
+      "color": "#f4f7fa",
+      "weight": "Bold",
+      "anchor": "middle",
+      "width": 159.1988795518207
+    },
+    {
+      "key": "distance",
+      "x": 819.9943977591035,
+      "y": 319,
+      "cap": 31,
+      "color": "#f4f7fa",
+      "weight": "Bold",
+      "anchor": "middle",
+      "width": 159.1988795518207
+    },
+    {
+      "key": "exercise",
+      "x": 1002.515406162465,
+      "y": 319,
+      "cap": 31,
+      "color": "#f4f7fa",
+      "weight": "Bold",
+      "anchor": "middle",
+      "width": 159.1988795518207
+    },
+    {
+      "key": "stand",
+      "x": 635.4453781512605,
+      "y": 410,
+      "cap": 31,
+      "color": "#f4f7fa",
+      "weight": "Bold",
+      "anchor": "middle",
+      "width": 159.1988795518207
+    },
+    {
+      "key": "goal",
+      "x": 819.9943977591035,
+      "y": 410,
+      "cap": 31,
+      "color": "#f4f7fa",
+      "weight": "Bold",
+      "anchor": "middle",
+      "width": 159.1988795518207
+    },
+    {
+      "key": "workouts",
+      "x": 1002.515406162465,
+      "y": 410,
+      "cap": 31,
+      "color": "#f4f7fa",
+      "weight": "Bold",
+      "anchor": "middle",
+      "width": 159.1988795518207
+    },
+    {
+      "key": "heart",
+      "x": 167.98879551820727,
+      "y": 644,
+      "cap": 34,
+      "color": "#f4f7fa",
+      "weight": "Bold",
+      "anchor": "middle",
+      "width": 235.24929971988794
+    },
+    {
+      "key": "hrv",
+      "x": 167.98879551820727,
+      "y": 671,
+      "cap": 19,
+      "color": "#acb7c6",
+      "weight": "Regular",
+      "anchor": "middle",
+      "width": 238.29131652661064
+    },
+    {
+      "key": "resting",
+      "x": 167.98879551820727,
+      "y": 696,
+      "cap": 17,
+      "color": "#acb7c6",
+      "weight": "Regular",
+      "anchor": "middle",
+      "width": 238.29131652661064
+    },
+    {
+      "key": "oxygen",
+      "x": 433.6582633053221,
+      "y": 644,
+      "cap": 34,
+      "color": "#f4f7fa",
+      "weight": "Bold",
+      "anchor": "middle",
+      "width": 235.24929971988794
+    },
+    {
+      "key": "sleep",
+      "x": 699.3277310924369,
+      "y": 644,
+      "cap": 33,
+      "color": "#f4f7fa",
+      "weight": "Bold",
+      "anchor": "middle",
+      "width": 239.30532212885151
+    },
+    {
+      "key": "breathing",
+      "x": 699.3277310924369,
+      "y": 698,
+      "cap": 23,
+      "color": "#f4f7fa",
+      "weight": "Bold",
+      "anchor": "middle",
+      "width": 238.29131652661064
+    },
+    {
+      "key": "cardio",
+      "x": 964.9971988795518,
+      "y": 644,
+      "cap": 34,
+      "color": "#f4f7fa",
+      "weight": "Bold",
+      "anchor": "middle",
+      "width": 235.24929971988794
+    },
+    {
+      "key": "day0",
+      "x": 56.44817927170868,
+      "y": 818,
+      "cap": 21,
+      "color": "#f4f7fa",
+      "weight": "Regular",
+      "anchor": "start",
+      "width": 87.20448179271708
+    },
+    {
+      "key": "steps0",
+      "x": 713.5238095238095,
+      "y": 818,
+      "cap": 23,
+      "color": "#f4f7fa",
+      "weight": "Regular",
+      "anchor": "end",
+      "width": 116.61064425770307
+    },
+    {
+      "key": "energy0",
+      "x": 875.7647058823529,
+      "y": 818,
+      "cap": 22,
+      "color": "#acb7c6",
+      "weight": "Regular",
+      "anchor": "start",
+      "width": 167.31092436974788
+    },
+    {
+      "key": "day1",
+      "x": 56.44817927170868,
+      "y": 849.5,
+      "cap": 21,
+      "color": "#f4f7fa",
+      "weight": "Regular",
+      "anchor": "start",
+      "width": 87.20448179271708
+    },
+    {
+      "key": "steps1",
+      "x": 713.5238095238095,
+      "y": 849.5,
+      "cap": 23,
+      "color": "#f4f7fa",
+      "weight": "Regular",
+      "anchor": "end",
+      "width": 116.61064425770307
+    },
+    {
+      "key": "energy1",
+      "x": 875.7647058823529,
+      "y": 849.5,
+      "cap": 22,
+      "color": "#acb7c6",
+      "weight": "Regular",
+      "anchor": "start",
+      "width": 167.31092436974788
+    },
+    {
+      "key": "day2",
+      "x": 56.44817927170868,
+      "y": 881,
+      "cap": 21,
+      "color": "#f4f7fa",
+      "weight": "Regular",
+      "anchor": "start",
+      "width": 87.20448179271708
+    },
+    {
+      "key": "steps2",
+      "x": 713.5238095238095,
+      "y": 881,
+      "cap": 23,
+      "color": "#f4f7fa",
+      "weight": "Regular",
+      "anchor": "end",
+      "width": 116.61064425770307
+    },
+    {
+      "key": "energy2",
+      "x": 875.7647058823529,
+      "y": 881,
+      "cap": 22,
+      "color": "#acb7c6",
+      "weight": "Regular",
+      "anchor": "start",
+      "width": 167.31092436974788
+    },
+    {
+      "key": "day3",
+      "x": 56.44817927170868,
+      "y": 912.5,
+      "cap": 21,
+      "color": "#f4f7fa",
+      "weight": "Regular",
+      "anchor": "start",
+      "width": 87.20448179271708
+    },
+    {
+      "key": "steps3",
+      "x": 713.5238095238095,
+      "y": 912.5,
+      "cap": 23,
+      "color": "#f4f7fa",
+      "weight": "Regular",
+      "anchor": "end",
+      "width": 116.61064425770307
+    },
+    {
+      "key": "energy3",
+      "x": 875.7647058823529,
+      "y": 912.5,
+      "cap": 22,
+      "color": "#acb7c6",
+      "weight": "Regular",
+      "anchor": "start",
+      "width": 167.31092436974788
+    },
+    {
+      "key": "day4",
+      "x": 56.44817927170868,
+      "y": 944,
+      "cap": 21,
+      "color": "#f4f7fa",
+      "weight": "Regular",
+      "anchor": "start",
+      "width": 87.20448179271708
+    },
+    {
+      "key": "steps4",
+      "x": 713.5238095238095,
+      "y": 944,
+      "cap": 23,
+      "color": "#f4f7fa",
+      "weight": "Regular",
+      "anchor": "end",
+      "width": 116.61064425770307
+    },
+    {
+      "key": "energy4",
+      "x": 875.7647058823529,
+      "y": 944,
+      "cap": 22,
+      "color": "#acb7c6",
+      "weight": "Regular",
+      "anchor": "start",
+      "width": 167.31092436974788
+    },
+    {
+      "key": "day5",
+      "x": 56.44817927170868,
+      "y": 975.5,
+      "cap": 21,
+      "color": "#f4f7fa",
+      "weight": "Regular",
+      "anchor": "start",
+      "width": 87.20448179271708
+    },
+    {
+      "key": "steps5",
+      "x": 713.5238095238095,
+      "y": 975.5,
+      "cap": 23,
+      "color": "#f4f7fa",
+      "weight": "Regular",
+      "anchor": "end",
+      "width": 116.61064425770307
+    },
+    {
+      "key": "energy5",
+      "x": 875.7647058823529,
+      "y": 975.5,
+      "cap": 22,
+      "color": "#acb7c6",
+      "weight": "Regular",
+      "anchor": "start",
+      "width": 167.31092436974788
+    },
+    {
+      "key": "day6",
+      "x": 56.44817927170868,
+      "y": 1007,
+      "cap": 21,
+      "color": "#c5ff0a",
+      "weight": "Bold",
+      "anchor": "start",
+      "width": 87.20448179271708
+    },
+    {
+      "key": "steps6",
+      "x": 713.5238095238095,
+      "y": 1007,
+      "cap": 23,
+      "color": "#f4f7fa",
+      "weight": "Regular",
+      "anchor": "end",
+      "width": 116.61064425770307
+    },
+    {
+      "key": "energy6",
+      "x": 875.7647058823529,
+      "y": 1007,
+      "cap": 22,
+      "color": "#acb7c6",
+      "weight": "Regular",
+      "anchor": "start",
+      "width": 167.31092436974788
+    }
+  ],
+  "rings": [
+    {
+      "key": "move",
+      "x": 154.80672268907563,
+      "y": 337,
+      "r": 77,
+      "color": "#ff2b80",
+      "width": 16,
+      "sx": 1.0140056022408963
+    },
+    {
+      "key": "exercise",
+      "x": 154.80672268907563,
+      "y": 337,
+      "r": 56,
+      "color": "#c5ff0a",
+      "width": 16,
+      "sx": 1.0140056022408963
+    },
+    {
+      "key": "stand",
+      "x": 154.80672268907563,
+      "y": 337,
+      "r": 35,
+      "color": "#15cbea",
+      "width": 16,
+      "sx": 1.0140056022408963
+    }
+  ],
+  "bars": [
+    {
+      "key": "steps",
+      "x": 177.11484593837534,
+      "y": 999,
+      "width": 410.672268907563
+    }
+  ]
+}
