@@ -15,7 +15,9 @@
 - Three native activity rings and one native today-steps gauge. Existing Home
   steps ring/source and Home activity data remain untouched.
 - Weather rendering revision 11 reduces only the standalone hero sun from 180
-  to 162 units, at the same centre. Revisions 1–10 retain their previous output.
+  to 138 units, at the same centre. The first on-device candidate used 162;
+  feedback requested a further reduction (162 → 138, about 14.8%). Revisions
+  1–10 retain their previous output; hourly/daily artwork remains unchanged.
 - Encrypted full-widget export and separate multiline Copy Full JSON page.
   No plaintext personalized export or decryption key belongs in the repository.
 
@@ -58,6 +60,14 @@ format. Those properties have not been guessed.
   `tools/verify-health-copy.cjs` remains available for a browser-equipped runner.
 
 ## Next evidence needed
+
+The first on-device screenshots show 348 steps, 267 m and 10.8 Cal loading in
+Health. The remaining health readings show dashes; this does not verify those
+bindings, historical activity, or ring behavior. The main Weather sun still
+looked too dominant, prompting the isolated 138-unit server-renderer adjustment.
+The existing Health Premium 1 export already requests revision 11 with its
+minute refresh parameter, so this adjustment needs no new JSON import. Device
+image refresh scheduling remains controlled by Widgy/iOS.
 
 Import Health Premium 1 as a separate copy and inspect its actual layout and data.
 To finish historical days and measurement times, capture/export one configured
