@@ -21,6 +21,8 @@ function chart(name,field,x,y,width,height,labels,color,spacing){
 // Native seven-row layout: pitch 31.5 design px; 80% gap gives a 6.3 px bar.
 // Values use independent transparent charts so their type stays readable and fixed in columns.
 const bars=chart('Health · Weekly steps bars','Step Count',177.114846,806.85,410.672269,195.3,false,lime,80);
+// Verified against the iPhone export: Both limits, default minimum 0, maximum 10,000.
+bars['45']=3;bars['47']=10000;
 const steps=chart('Health · Weekly steps values','Step Count',646,794.25,150,220.5,true,'uicol_white-0',0);
 const energy=chart('Health · Weekly energy values','Active Energy Burned',865,794.25,195,220.5,true,'uicol_white-0',0);energy.f=muted;
 health['1']=health['1'].filter(n=>!/^Health · (steps[0-6]|energy[0-6]|Today steps bar)$/.test(n.s||''));
@@ -38,6 +40,6 @@ const cipher=createCipheriv('aes-256-gcm',key,iv);cipher.setAAD(Buffer.from('wid
 const data=Buffer.concat([cipher.update(gzipSync(raw,{level:9})),cipher.final(),cipher.getAuthTag()]);
 fs.writeFileSync('tools/widgy-health-premium-1.enc.json',JSON.stringify({v:1,iv:iv.toString('base64url'),data:data.toString('base64url'),bytes:raw.length,sha256:createHash('sha256').update(raw).digest('hex')})+'\n');
 let html=fs.readFileSync('tools/widgy-health-premium-copy.html','utf8');
-html=html.replace(/<h1>.*?<\/h1>/,'<h1>Health — פעילות שבועית מחוברת</h1>').replace(/<p><b>זו גרסת חיבור ראשונית[\s\S]*?<\/p>/,'<p>צעדים וקלוריות בשבעת הימים האחרונים מחוברים כעת לתרשימים המובנים של Widgy. זוהי בניית בדיקה: יש לבדוק באייפון את גודל המספרים ויישור השורות. שלוש טבעות הפעילות מוגדרות ליעדים 300 קלוריות, 45 דקות אימון ו־12 שעות עמידה. הכיתוב Day Progress הורם מעט.</p>').replace('פתח את Home ואת Weather וצלם את שני המסכים לבדיקה.','פתח את Health וצלם את הטבלה השבועית לבדיקה.').replace(/939,624 bytes/,raw.length.toLocaleString('en-US')+' bytes');
+html=html.replace(/<h1>.*?<\/h1>/,'<h1>Health — פעילות שבועית מחוברת</h1>').replace(/<p><b>זו גרסת חיבור ראשונית[\s\S]*?<\/p>/,'<p>צעדים וקלוריות בשבעת הימים האחרונים מחוברים כעת לתרשימים המובנים של Widgy. זוהי בניית בדיקה: יש לבדוק באייפון את גודל המספרים ויישור השורות. שלוש טבעות הפעילות מוגדרות ליעדים 300 קלוריות, 45 דקות אימון ו־12 שעות עמידה. הכיתוב Day Progress הורם מעט.</p>').replace('פתח את Home ואת Weather וצלם את שני המסכים לבדיקה.','פתח את Health וצלם את הטבלה השבועית לבדיקה.').replace(/[\d,]+ bytes/,raw.length.toLocaleString('en-US')+' bytes');
 fs.writeFileSync('tools/widgy-health-premium-copy.html',html);
 console.log(JSON.stringify({nativeCharts:3,lastDays:7,removedPlaceholders:14,bytes:raw.length,ids:[bars.d0,steps.d0,energy.d0]}));
