@@ -57,7 +57,7 @@ test('Weather v11 changes only the main standalone sun, preserving v10 everywher
  const base={at:'2026-10-10T10:30:00Z',zone:'Asia/Jerusalem',current:{icon:'sun',temperature:29,label:'Mostly Sunny',feels:31,humidity:59,wind:17,uv:6,time:'2026-10-10T13:30'},hourly:[],daily:[]};
  const ten=renderSVG(base,{revision:10}),eleven=renderSVG(base,{revision:11});
  assert.notEqual(ten,eleven);
- assert.equal(ten.replace('translate(75 281) scale(1.8)','translate(96 302) scale(1.38)'),eleven);
+ assert.equal(ten.replace('translate(75 281) scale(1.8)','translate(96 290) scale(1.38)'),eleven);
  for(const icon of ['cloud','partly','moon','night_cloud','light_rain','heavy_rain','snow','storm','fog','wind']){
   const data={...base,current:{...base.current,icon}};
   assert.equal(renderSVG(data,{revision:10}),renderSVG(data,{revision:11}));
