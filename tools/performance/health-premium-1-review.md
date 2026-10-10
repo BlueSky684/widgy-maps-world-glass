@@ -16,8 +16,9 @@
   steps ring/source and Home activity data remain untouched.
 - Weather rendering revision 11 reduces only the standalone hero sun from 180
   to 138 units. Subsequent on-device feedback raises its centre 12 units from
-  Y=371 to Y=359, matching the partly-cloudy centre, while retaining X=165 and
-  the approved 138-unit size. The first on-device candidate used 162;
+  Y=371 to Y=359, matching the partly-cloudy centre, and moves it 8 units toward
+  the temperature (X=165 to X=173), retaining the approved 138-unit size.
+  The first on-device candidate used 162;
   feedback requested a further reduction (162 → 138, about 14.8%). Revisions
   1–10 retain their previous output; hourly/daily artwork remains unchanged.
 - Encrypted full-widget export and separate multiline Copy Full JSON page.
