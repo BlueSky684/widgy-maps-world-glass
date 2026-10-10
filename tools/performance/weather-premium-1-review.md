@@ -332,3 +332,10 @@ cd3cf11ea43b092eb1312f3eb06af0dbb173f73459e3cb87a183362b2272bf7c.
 User approved option B in full. Main cloud center Y 359 -> 347 and partly-cloudy center Y 371 -> 359, size 180 unchanged. Other main icons unchanged. Only standalone hourly sun scales 70 -> 63 about its existing visible center; original temperature size/position and all other forecast artwork remain unchanged. Revision 9 URLs keep revision 9 rendering. Revision 10 retains the existing Calendar minute refresh URL variable from 9.1; sustained native background refresh remains under observation.
 
 Validation: exact raster comparison against both cloud and partly-cloudy option B mockups passed. Full private 9.1 vs 10 differs only in title/description and v=9 -> v=10 on the Weather image URL. All 15 Weather/AQI tests, multiline JSON token/decryption/copy/fallback checks, build and cleanup passed. No private plaintext or key included in public changes. Preview only, branch f50-widget-test. Native appearance acceptance pending import.
+
+### R10 Home additions authorized 2026-10-10 09:46 Israel
+
+- New lossless Home_Glass_Chrome_Solar_R10.png: sunrise up arrow and sunset down arrow, common original sun/horizon geometry, lime and 4-unit round strokes. 2102 pixels changed, constrained to the two solar icon rectangles; every pixel outside them is identical to C8.
+- Native solar times retain their original sources, font, size, centered alignment and vertical position. Horizontal centers are 153.5 and 980.5 logical units: midpoints of icon/track gaps [93,214] and [921,1040].
+- R6 atlas line gain increased 5% (multiplier 1.20 -> 1.26). Coastline positions, widths, ocean shading, original master pixels and solar mask gate unchanged. Precomputed map cache key includes the new style automatically. Album-based maps need the existing Shortcut to fetch a new image before this is visible.
+- Weather option B and 9.1 minute refresh retained. Weather/AQI 15 tests, exact JSON copy, public build, scoped cleanup gate, solar pixel bounds and map day/night tests passed. Cleanup now explicitly pins the authorized atlas source hash; all other original runtime/design locks retained.

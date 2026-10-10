@@ -70,7 +70,11 @@ test('latest full widget changes only Weather and metadata; all references resol
   const path=process.env.WIDGY_BASELINE;if(!path)return;
   const original=JSON.parse(readFileSync(path)),widget=withWeatherPremium(original);
   for(const k of Object.keys(original))if(!['1','3','4','a2'].includes(k))assert.deepEqual(widget[k],original[k],k);
-  for(const n of original['1'])if(n.d0!==246)assert.deepEqual(widget['1'].find(v=>v.d0===n.d0),n,n.s);
+  for(const n of original['1'])if(n.d0!==246&&n.d0!==245)assert.deepEqual(widget['1'].find(v=>v.d0===n.d0),n,n.s);
+  const beforeHome=original['1'].find(n=>n.d0===245),afterHome=widget['1'].find(n=>n.d0===245);
+  const restoredHome=structuredClone(afterHome);
+  for(const n of restoredHome['1']){const prev=beforeHome['1'].find(v=>v.d0===n.d0);if([6121,6124].includes(n.d0))n.b=structuredClone(prev.b);if(n.d0===80309){n['2']=prev['2'];if('22' in prev)n['22']=prev['22'];}}
+  assert.deepEqual(restoredHome,beforeHome,'Only solar frames and chrome URL may change in Home');
   const oldTaps=original['1'].find(n=>n.d0===246)['1'].filter(n=>n.z==='11');assert.deepEqual(widget['1'].find(n=>n.d0===246)['1'].filter(n=>n.z==='11'),oldTaps);
   function* walk(nodes){for(const n of nodes){yield n;if(Array.isArray(n['1']))yield*walk(n['1']);}}
   const nodes=[...walk(widget['1'])],ids=nodes.map(n=>n.d0),variables=new Set(widget['36'].map(v=>v['0'])),names=new Set(widget['36'].map(v=>v['1']));
