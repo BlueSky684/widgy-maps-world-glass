@@ -34,7 +34,12 @@ for(const p of manifest.files.filter(p=>p.endsWith('.enc.json')&&!p.startsWith('
 }
 // The runtime, contracts, fonts and approved masters must remain byte-identical.
 const active=execFileSync('git',['ls-tree','-r','--name-only',cleanup.baseCommit,'api','lib','assets/earth','assets/fonts','assets/home-glass','assets/calendar-glass'],{cwd:root,encoding:'utf8'}).trim().split('\n');
-for(const p of active.filter(p=>p!=='api/fetch-probe.js'))assert(read(p).equals(original(p)),`Runtime/design dependency changed: ${p}`);
+// Explicit user-approved R10 atlas intensity adjustment; all other original files stay locked.
+const r10AtlasHash='29c509af0fb16c3f706bc2d37af06870e4472917c2bfe425a2310c2a2a9a6704';
+for(const p of active.filter(p=>p!=='api/fetch-probe.js')){
+  if(p==='lib/engraved-coasts.js')assert.equal(sha(read(p)),r10AtlasHash);
+  else assert(read(p).equals(original(p)),`Runtime/design dependency changed: ${p}`);
+}
 const config=JSON.parse(read('vercel.json')),oldConfig=JSON.parse(original('vercel.json'));
 const {['api/fetch-probe.js']:weatherFunction,...priorFunctions}=config.functions;
 assert.deepEqual(priorFunctions,oldConfig.functions);
