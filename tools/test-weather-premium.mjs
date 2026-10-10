@@ -8,6 +8,7 @@ import {renderSVG,renderPNG} from '../lib/weather/render.js';
 import {createWeatherHandler} from '../lib/weather/handler.js';
 import probeHandler from '../api/fetch-probe.js';
 import {withWeatherPremium} from './weather-premium-widget.js';
+import {widgyData} from '../lib/weather/widgy-data.js';
 
 function fixture(epoch=Date.parse('2026-10-09T10:30Z'),zone='Asia/Jerusalem',offset=10800){
   const start=Math.floor((epoch/1000+offset)/86400)*86400-offset;
@@ -15,6 +16,31 @@ function fixture(epoch=Date.parse('2026-10-09T10:30Z'),zone='Asia/Jerusalem',off
   return {timezone:zone,utc_offset_seconds:offset,current:{time:Math.floor(epoch/900000)*900,temperature_2m:29,apparent_temperature:31,relative_humidity_2m:64,wind_speed_10m:18,wind_direction_10m:315,weather_code:2,is_day:1,uv_index:7},hourly:{time:hours,temperature_2m:hours.map(()=>29),precipitation_probability:hours.map(()=>0),weather_code:hours.map(()=>0),is_day:hours.map(()=>1),wind_speed_10m:hours.map(()=>10)},daily:{time:days,temperature_2m_min:[25,24,24,23,24,22],temperature_2m_max:[32,31,30,29,30,28],weather_code:[2,0,1,3,2,0],precipitation_probability_max:[10,0,0,20,10,0]}};
 }
 const now=Date.parse('2026-10-09T10:30Z');
+test('Home JSON uses the panel values, solar time zone and AQI without invented fallback',async()=>{
+  const raw=fixture();raw.daily.sunrise=raw.daily.time.map(t=>t+6*3600+41*60);raw.daily.sunset=raw.daily.time.map(t=>t+18*3600+15*60);
+  const data=normalizeForecast(raw,now),aqi={value:53,at:now,zone:data.zone,state:'fresh'};
+  const h=createWeatherHandler({forecast:async()=>({data,state:'fresh',cache:'HIT'}),airQuality:async()=>aqi,render:()=>{throw Error('JSON must not render');}});
+  const r=await h({method:'GET',url:'/api/weather-panel?lat=31&lon=34&v=12&format=json'},response());
+  assert.equal(r.code,200);assert.match(r.headers['Content-Type'],/application\/json/);
+  assert.deepEqual([r.body.temperature,r.body.high,r.body.low,r.body.status],['29°C','32°C','25°C',data.current.label]);
+  assert.deepEqual([r.body.sunrise,r.body.sunset,r.body.aqi],['06:41','18:15',53]);
+  assert.deepEqual(r.body.hours,data.hours);assert.deepEqual(r.body.days,data.days);
+  const missing=widgyData(null);assert.equal(missing.temperature,'—');assert.equal(missing.icon_status,'—');assert.equal(missing.aqi,null);assert.equal(missing.sunrise,'—');
+  raw.daily.sunrise[0]=null;assert.equal(normalizeForecast(raw,now).days[0].sunrise,'—');
+  const q=new URL(providerURL(31,34)).searchParams;assert(q.get('daily').includes('sunrise,sunset'));
+});
+test('revision 12 moves only the main standalone moon; other weather art unchanged',()=>{
+  const data=normalizeForecast(fixture(),now);
+  for(const icon of ['sun','partly','cloud','night_cloud','light_rain','heavy_rain','snow','storm','fog','wind']){
+    data.current.icon=icon;assert.equal(renderSVG(data,{revision:12}),renderSVG(data,{revision:11}),icon);
+  }
+  data.current.icon='moon';const before=renderSVG(data,{revision:11}),after=renderSVG(data,{revision:12});
+  assert.notEqual(after,before);
+  // The two rendered strings differ only by the hero icon translation.
+  let a=0;while(before[a]===after[a])a++;
+  let b=0;while(before.at(-1-b)===after.at(-1-b))b++;
+  assert(before.slice(a,before.length-b).length<40);assert(after.slice(a,after.length-b).length<40);
+});
 test('no missing GPS coercion and no provider URL injection',()=>{
   for(const x of ['',null,undefined,'${widgy.map_latitude_max5}','NaN','91','1&evil=1'])assert.equal(coordinate(x,90),null);
   assert.equal(coordinate('−31,67',90),-31.67);assert.equal(coordinate('0',90),0);
