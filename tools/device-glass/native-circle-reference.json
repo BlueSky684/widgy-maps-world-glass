@@ -1,0 +1,32 @@
+{
+  "provenance": "User-supplied clean Circle Chart / Battery Level export, 2026-10-11 18:35:32. Only generic chart layer retained.",
+  "layer": {
+    "f": "uicol_white-100",
+    "1": "1-Segment Info",
+    "2": "Battery Level",
+    "d": {
+      "b": 0,
+      "a": [
+        {
+          "d": 1294,
+          "b": 1294,
+          "a": 1600,
+          "c": 0
+        }
+      ]
+    },
+    "d0": 0,
+    "e": {
+      "a": [
+        {
+          "d": 1294,
+          "b": 1294,
+          "a": 1600,
+          "c": 0
+        }
+      ],
+      "b": 0
+    },
+    "z": "8"
+  }
+}

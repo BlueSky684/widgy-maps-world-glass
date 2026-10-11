@@ -73,6 +73,29 @@ independently of battery data, but would not alone prove the 10-degree model.
 D4 remains unchanged, with no battery-accuracy correction claimed. Its local
 SVG layout proof draws an ideal arc, not Widgy's native renderer.
 
+### Native fixed-value result and Circle Chart comparison
+
+`IMG_0283.png` is the actual phone result of Ring Check 1. Fitting the lime
+pixels gives cap-adjusted endpoints around 80.6, 170.6 and 260.6 degrees for
+25, 50 and 75 respectively; 100 draws a complete circle. Thus the partial-arc
+shortfall reproduces with constant inputs and cannot be attributed solely to
+battery rounding or freshness. It does not yet prove a universal renderer bug
+or justify adding an arbitrary percentage to the live input.
+
+The owner then supplied a clean native Circle Chart / Battery Level export at
+18:35:32. `native-circle-reference.json` retains its sole layer (`z:8`). Its
+export omits custom-value and hole controls, so their field IDs are not guessed.
+`node tools/device-glass/build-chart-compare.mjs` builds `Widgy Device Chart
+Compare 1`, with a native Circle Chart and Ring Chart side by side, equal
+140.5px square frames, plus live battery text and one embedded label background.
+The Circle retains exported defaults; the Ring retains Device thickness, with
+the explicit manual maximum omitted to match the reference's live-ring export.
+Both chart providers are `1-Segment Info / Battery Level`. The copy page is
+`/tools/widgy-device-chart-compare.html`. Its four native layers still require
+a phone screenshot to check actual angle, orientation, default circle styling
+and agreement with the text. A 0%/100% live result alone is not sufficient to
+validate intermediate angles. This diagnostic does not change Device Glass 4.
+
 ## Previous panel correction
 
 Revision 3 responds to the lower panel almost touching the outer rim in the
