@@ -1,4 +1,25 @@
-# Device Glass 1
+# Device Glass 2
+
+Revision 2 responds to the owner's `IMG_0252.png` native export. Revision 1
+remains available as an unchanged JSON and artwork pair.
+
+- The battery text displayed 60%, while its chart displayed no active arc.
+  Revision 1 incorrectly used the text category `System Info` for the chart.
+  Revision 2 uses `1-Segment Info / Battery Level`. Published native chart
+  exports use this category for battery (for example the creator's JSON at
+  https://www.reddit.com/r/widgy/comments/lb0337/). This source correction is
+  not yet validated in the owner's current native ring renderer.
+- The first PNG had transparent six-pixel gutters. Widgy's white background
+  showed through them, and its native corner mask clipped the 49px artwork
+  corners. Revision 2 is fully opaque, with the rim inset eight pixels. Its
+  continuous-corner curve is fitted to the native 530px alpha mask (radius
+  120.4, exponent 2.833; boundary fit RMS 0.47px).
+- Native caps requested as 53/23/19/31px appeared as 50/21/18/29px. Native line
+  boxes increase from 1.65 to 1.75 times target cap height, retaining their
+  measured baselines. Hours retain their native unit with a separating space.
+
+The layer count remains 13. Re-check the ring and frame in Widgy; the SVG proof
+cannot execute the native chart. It is not evidence that the arc now works.
 
 Separate native Widgy trial on `f50-widget-test`. Baseline commit:
 `e86659da861ce47ea82cbac1acdd0e0e9c281b37` (Weather 15).
@@ -39,7 +60,7 @@ node tools/device-glass/test.mjs
 node tools/build-public-site.mjs
 ```
 
-Generated import: `tools/Widgy_Device_Glass_1.json`.
+Generated import: `tools/Widgy_Device_Glass_2.json`.
 Copy page: `/tools/widgy-device-glass-copy.html`.
 Internal proof: `work/device-glass/layout-proof.png` (illustrative readings,
 not a phone screenshot and not used in the widget).
