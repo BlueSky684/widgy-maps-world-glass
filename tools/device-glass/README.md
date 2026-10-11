@@ -236,3 +236,32 @@ colour or other layer is changed. The adjustment grows the annulus inward;
 its exact visible width remains a phone-rendering measurement, not a value
 asserted by the local geometric model. Still 13 layers. Copy page remains
 `/tools/widgy-device-glass-circle-copy.html`, now loading D6. D5 is retained.
+
+## Device Glass 7 — independent blue connectivity icons
+
+D6's native result `IMG_0287.png` shows an approximately 5px visible band and
+an endpoint of 251.8 degrees for 70% (252 expected). Together with D5's 75%
+result, this supports the new Circle geometry at the observed inputs only.
+The user now requests ice-blue `#79BFFF` icons, each tracking its own On/Off
+state, while ON text remains lime and OFF text/grey icons stay unchanged.
+
+`node tools/device-glass/build-connectivity-icons.mjs` starts from D6 and adds
+two small opaque embedded icon tiles, for 15 layers. All 13 D6 layers remain
+identical, including the validated Circle Chart. Each tile has a native Equals
+On condition cloned from `widgy-native-visibility-source.json`, with its own
+native text variable using the same provider as the existing status label:
+`System Network / WiFi Status` or `System Info / Bluetooth Status`. No shared
+On condition, JavaScript, request or remote image is introduced. Unknown/empty
+status leaves the original grey icon visible.
+
+Blue icons use the exact original SVG paths, positions and stroke widths.
+Tile pixels outside each icon footprint are copied from D6's original PNG;
+this keeps the tile borders identical and avoids a rectangular seam. Tiles
+are only 68x64 and 52x72 pixels at the embedded 2x scale. The grey icons remain
+in the original background and are covered only while the relevant On tile
+is visible. The main copy page now loads D7; earlier imports are retained.
+
+Checks cover all four On/Off combinations independently, provider mapping,
+opaque tile edge equality, full clipboard fidelity and unchanged D6 layers.
+Native visibility after toggling each connection and refreshing remains to be
+checked on the phone; refresh timing is controlled by Widgy/iOS.
