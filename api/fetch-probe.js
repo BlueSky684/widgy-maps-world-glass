@@ -3,6 +3,10 @@ export default async function handler(req, res) {
   // A narrow deployment rewrite shares this function's slot with Weather.
   // Existing diagnostic requests retain their original response and headers.
   const url = new URL(req.url || '/api/fetch-probe', 'https://probe.invalid');
+  if (url.searchParams.get('location_admin') === '1') {
+    const {default: admin} = await import('../lib/location/admin.js');
+    return admin(req,res);
+  }
   if (url.searchParams.get('location_shared') === '1') {
     const {locationHandler} = await import('../lib/location/shared.js');
     return locationHandler(req, res);

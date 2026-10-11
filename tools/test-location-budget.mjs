@@ -23,3 +23,5 @@ const entry={latitude:1,longitude:2,city:'Fixture',countryName:'Fixture',observe
 const hit=createSharedLocation({...options,cache:()=>({get:async()=>entry})});
 assert.equal((await hit({latitude:1,longitude:2})).state,'SHARED');assert.equal(providerCalls,0);
 console.log('PASS: reservation transport, fail-closed errors, denied lookup sends no provider request, cached city bypasses budget');
+
+assert.deepEqual(await createBudget({env:()=>({KV_REST_API_URL:'https://test.upstash.io',KV_REST_API_TOKEN:'integration-token'}),fetcher:async(url,o)=>{assert.equal(o.headers.Authorization,'Bearer integration-token');return {ok:true,json:async()=>({result:[1,1]})};}})(),{used:1,limit:40000});
