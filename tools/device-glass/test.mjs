@@ -8,10 +8,10 @@ import {formatJSONLines} from '../json-copy-lines.js';
 
 const root=new URL('../../',import.meta.url);
 const read=p=>fs.readFileSync(new URL(p,root));
-const raw=read('tools/Widgy_Device_Glass_3.json').toString();
+const raw=read('tools/Widgy_Device_Glass_4.json').toString();
 const w=JSON.parse(raw),source=JSON.parse(read('tools/device-glass/native-source.json'));
 const layers=w['1'],find=id=>layers.find(n=>n.d0===id);
-assert.equal(w['3'],'Widgy Device Glass 3');assert.equal(w['6'],source['6']);
+assert.equal(w['3'],'Widgy Device Glass 4');assert.equal(w['6'],source['6']);
 assert.equal(layers.length,13);assert.equal(new Set(layers.map(n=>n.d0)).size,13);
 assert.equal(layers.filter(n=>n.z==='5').length,1);
 assert.equal(layers.filter(n=>n.z==='9').length,1);
@@ -56,7 +56,7 @@ for(const n of layers){
 const bg=layers.at(-1);assert.equal(bg.z,'5');
 assert(bg['2'].startsWith('data:image/png;base64,'));
 const png=Buffer.from(bg['2'].split(',')[1],'base64');
-assert(png.equals(read('assets/device-glass/chrome-d3.png')));
+assert(png.equals(read('assets/device-glass/chrome-d4.png')));
 const metadata=await sharp(png).metadata();assert.equal(metadata.width,1060);assert.equal(metadata.height,1060);
 const pixels=await sharp(png).ensureAlpha().raw().toBuffer();
 for(let i=3;i<pixels.length;i+=4)assert.equal(pixels[i],255,'No transparent gutters revealing a white Widgy background');

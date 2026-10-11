@@ -41,14 +41,14 @@ const svg=staticArtwork();
 // 8-bit palette retains 256 colours and full alpha, avoids a multi-megabyte
 // clipboard string. Artwork is flattened once; live values are never baked in.
 const png=await sharp(Buffer.from(svg)).png({palette:true,colours:256,dither:0,compressionLevel:9}).toBuffer();
-write('assets/device-glass/chrome-d3.svg',svg);
-write('assets/device-glass/chrome-d3.png',png);
+write('assets/device-glass/chrome-d4.svg',svg);
+write('assets/device-glass/chrome-d4.png',png);
 const background=frame({z:'5',d0:16002,s:'Device · Glass, labels and icons',1:'Web URL',2:'data:image/png;base64,'+png.toString('base64'),3:true},[0,0,530,530]);
 widget['1']=[tap,...readings,charging,ring,background];
-widget['3']='Widgy Device Glass 3';widget.a2=16003;
-widget['4']='Device Glass 3 — lower panel spacing after IMG_0256. The complete lower panel and its six live text layers move up six design pixels. Its bottom corner radius increases from 15 to 36 pixels to keep a clear inset from the outer continuous rim. Same 13 layers, eight native sources, typography, battery ring and original charging/refresh behavior. No remote artwork or custom JavaScript. Revised panel spacing still requires iPhone validation. Estimated battery time is Widgy’s estimate.';
+widget['3']='Widgy Device Glass 4';widget.a2=16003;
+widget['4']='Device Glass 4 — readability after IMG_0267. Larger, brighter secondary labels; more space between storage/time headings, live values, captions and icons. A taller lower panel keeps the proven D3 bottom clearance. Same 13 layers and eight native sources. Battery ring geometry/data are unchanged pending native calibration: the screenshot arc appears near 47% while the native text says 50%. This layout revision does not claim a ring accuracy fix. Estimated battery time is Widgy’s estimate.';
 assert.equal(widget['1'].length,13);
-write('tools/Widgy_Device_Glass_3.json',JSON.stringify(widget));
+write('tools/Widgy_Device_Glass_4.json',JSON.stringify(widget));
 fs.mkdirSync(new URL('work/device-glass/',root),{recursive:true});
 await sharp(Buffer.from(layoutProof(svg))).png().toFile(new URL('work/device-glass/layout-proof.png',root).pathname);
 const report={name:widget['3'],layers:13,originalLayers:107,artworkBytes:png.length,jsonBytes:Buffer.byteLength(JSON.stringify(widget)),artworkSHA256:createHash('sha256').update(png).digest('hex'),nativeProviders:8,customScripts:0,remoteArtworkURLs:0,phoneValidated:false};

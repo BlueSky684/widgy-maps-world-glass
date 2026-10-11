@@ -1,4 +1,46 @@
-# Device Glass 3
+# Device Glass 4
+
+Revision 4 responds to small secondary labels and crowded storage/time text in
+`IMG_0267.jpeg`. System Status grows from 9 to 13px, Device Information from
+9.5 to 13.5px, Battery from 9.5 to 13px, and Storage/Time Left from 9 to 13.5px.
+Secondary labels use a brighter blue-grey. Connectivity labels grow to 14px,
+ON/OFF to 20px, and the bottom captions to 13px. All retain Phenomena.
+
+Storage/time title baselines are now 414px, value baselines 456px and caption
+baselines 478px, giving 11px and 9px clear text gaps. The text columns move
+eight pixels right, increasing icon clearance; icons align with the large
+values. The upper panel ends at 323px and the lower panel starts at 336px.
+Its bottom edge at 490px and 36px bottom corners retain the D3 rim clearance.
+All earlier JSON/artwork pairs remain unchanged. There are still 13 layers.
+
+## Battery accuracy investigation — 2026-10-11
+
+The imported chart uses `1-Segment Info / Battery Level`, manual maximum 100,
+and the owner's previously exported native ring schema. Text uses
+`System Info / Battery Level`. No percentage correction has been applied.
+
+Green-pixel circle fitting gives a radius of about 67.6px in both screenshots.
+For `IMG_0255.png`, text is 55% and the visible end is about 190.8 degrees from
+12 o'clock (about 53% including the end cap). In `IMG_0267.jpeg`, text is 50%
+and the visible end is about 170.1 degrees (about 47%). Pixel thresholds,
+JPEG edges and rounded caps limit the precision of these estimates. These
+measurements establish a visible mismatch, not its cause or the real charge.
+
+Neither screenshot includes the simultaneous iPhone status-bar percentage.
+Apple staff confirm that battery API rounding is not specified:
+https://developer.apple.com/forums/thread/732903
+That makes rounding a possible limitation of the source, not proof that it
+causes this ring/text mismatch on the owner's current iOS version.
+
+Next native evidence: open `Battery · Native ring` and capture the Ring Chart
+settings (angle and segment/range controls), with the iPhone percentage visible
+in the status bar. If those are correct, compare a fixed 50% native chart with
+the live one before changing any angle or maximum. Do not compensate the arc
+by a guessed percentage. D4 leaves the ring and battery text byte-identical to
+D3, and explicitly does not claim a battery-accuracy correction. The local
+SVG proof draws an ideal arc, not Widgy's native renderer.
+
+## Previous panel correction
 
 Revision 3 responds to the lower panel almost touching the outer rim in the
 owner's `IMG_0256.jpeg`. The panel, labels, icons and six native connectivity /
@@ -75,7 +117,7 @@ node tools/device-glass/test.mjs
 node tools/build-public-site.mjs
 ```
 
-Generated import: `tools/Widgy_Device_Glass_3.json`.
+Generated import: `tools/Widgy_Device_Glass_4.json`.
 Copy page: `/tools/widgy-device-glass-copy.html`.
 Internal proof: `work/device-glass/layout-proof.png` (illustrative readings,
 not a phone screenshot and not used in the widget).
