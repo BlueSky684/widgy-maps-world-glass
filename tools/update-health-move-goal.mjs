@@ -1,0 +1,48 @@
+// Patch only the Move-ring goal in the current private export.
+// Never print or commit the decrypted widget or its copy key.
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {isDeepStrictEqual} from 'node:util';
+import {createCipheriv,createDecipheriv,createHash,randomBytes} from 'node:crypto';
+import {gzipSync,gunzipSync} from 'node:zlib';
+const goal=Number(process.argv[2]);
+assert(Number.isInteger(goal)&&goal>0,'A positive integer goal is required');
+const file='work/private/Widgy_Health_Premium_1.json';
+const encrypted='tools/widgy-health-premium-1.enc.json';
+const rawBefore=fs.readFileSync(file),before=JSON.parse(rawBefore);
+assert.equal(before['3'],'Widgy Weather 15');
+const key=Buffer.from(JSON.parse(fs.readFileSync('work/private/copy-key.json')).key,'base64url');
+const aad=Buffer.from('widgy-health-premium-copy:v1:20261010');
+const previous=JSON.parse(fs.readFileSync(encrypted));
+const payload=Buffer.from(previous.data,'base64url');
+const decipher=createDecipheriv('aes-256-gcm',key,Buffer.from(previous.iv,'base64url'));
+decipher.setAAD(aad);decipher.setAuthTag(payload.subarray(-16));
+const currentRaw=gunzipSync(Buffer.concat([decipher.update(payload.subarray(0,-16)),decipher.final()]));
+assert(currentRaw.equals(rawBefore),'Private file does not match the published encrypted artifact');
+const after=structuredClone(before);
+function walk(n){return [n,...(Array.isArray(n['1'])?n['1'].flatMap(walk):[])];}
+const move=walk(after).find(n=>n.d0===85037);
+assert.equal(move['1'],'Health (Daily)');assert.equal(move['2'],'Active Energy Burned');
+const oldGoal=move['20'];assert.equal(oldGoal,300);
+move['20']=goal;
+const comparison=structuredClone(after);walk(comparison).find(n=>n.d0===85037)['20']=oldGoal;
+assert(isDeepStrictEqual(before,comparison),'Unexpected change outside the Move-ring goal');
+const backup='work/private/health-before-move-goal-500.json';
+fs.writeFileSync(backup,rawBefore,{mode:0o600,flag:'wx'});
+const raw=Buffer.from(JSON.stringify(after));
+const iv=randomBytes(12),cipher=createCipheriv('aes-256-gcm',key,iv);cipher.setAAD(aad);
+const data=Buffer.concat([cipher.update(gzipSync(raw,{level:9})),cipher.final(),cipher.getAuthTag()]);
+const envelope={v:1,iv:iv.toString('base64url'),data:data.toString('base64url'),bytes:raw.length,sha256:createHash('sha256').update(raw).digest('hex')};
+fs.writeFileSync(file,raw,{mode:0o600});
+fs.writeFileSync(encrypted,JSON.stringify(envelope)+'\n');
+let html=fs.readFileSync('tools/widgy-health-premium-copy.html','utf8');
+html=html.replace('widgy-health-premium-copy.js?v=15','widgy-health-premium-copy.js?v=15-move500');
+html=html.replace(/<h1>[\s\S]*?<section class="card">/,'<h1>Weather 15 — יעד תנועה 500</h1><p>יעד הטבעת האדומה ב־Health עודכן ל־500 קלוריות פעילות, בהתאם ליעד שהגדרת ב־Apple Fitness.</p><p>זהו הווידג׳ט המלא בשם Widgy Weather 15. השינוי היחיד בתוכן הווידג׳ט הוא יעד הטבעת האדומה מ־300 ל־500. שאר הנתונים והעיצוב נשמרו.</p><section class="card">');
+html=html.replace('פתח את Weather ובדוק את גודל הענן ופס הקרינה החדש. שמור את העותק הקודם כגיבוי.','פתח את Health ובדוק את הטבעת האדומה: לדוגמה, 309 קלוריות מתוך 500 הן כ־62%. שמור את העותק הקודם כגיבוי.');
+html=html.replace(/[\d,]+ bytes/,raw.length.toLocaleString('en-US')+' bytes');
+fs.writeFileSync('tools/widgy-health-premium-copy.html',html);
+let js=fs.readFileSync('tools/widgy-health-premium-copy.js','utf8');
+assert(js.includes("fetch('./widgy-health-premium-1.enc.json', {credentials:'omit'"));
+js=js.replace("fetch('./widgy-health-premium-1.enc.json', {credentials:'omit'","fetch('./widgy-health-premium-1.enc.json?v=15-move500', {cache:'no-store', credentials:'omit'");
+fs.writeFileSync('tools/widgy-health-premium-copy.js',js);
+console.log(JSON.stringify({widget:after['3'],ringId:move.d0,oldGoal,newGoal:goal,onlyGoalChanged:true,bytes:raw.length,sha256:envelope.sha256}));
