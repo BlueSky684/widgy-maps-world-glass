@@ -189,3 +189,35 @@ Estimated battery hours are Widgy's estimate, not a guaranteed runtime.
 
 Weather/runtime hashes are checked against the baseline. Public-site changes
 only append this widget's copy page, script and JSON; existing entries stay.
+
+## Circle Chart integration trial — Device Glass 5
+
+The native result `IMG_0285.png` at 75% shows the Circle Chart ending on the
+left quarter-turn marker while the Ring Chart ends early. That supports using
+the Circle renderer; it does not validate every input or the new styling.
+
+`node tools/device-glass/build-circle-device.mjs` replaces only D4's ring layer
+with the owner's native Circle layer, preserving its frame, native Battery
+Level source and 12 other layers byte-for-byte at the object level. There are
+still 13 layers. D4 and its existing copy page are unchanged. D5 has its own
+copy page: `/tools/widgy-device-glass-circle-copy.html`.
+
+Styling is inferred from creator-published native Circle exports, not a
+complete current-version schema. Sources:
+- https://www.reddit.com/r/widgy/comments/knrtsc/ (8=90; 10/12=false; 5=material)
+- https://www.reddit.com/r/widgy/comments/jn65o0/ (8=90; 14=0; same switches)
+- https://www.reddit.com/r/widgy/comments/m9g9s1/ (8=80; 13=colour; 14=0)
+
+D5 uses the current export's constant numeric container for 8 and 14, the
+existing lime material for 5, clear for f/13, and false for 10/12. The exact
+current UI names of the two switches are not asserted. This compatibility
+mapping remains unverified until import on the user's phone. No settings UI
+screenshots or manual user edits are needed to try this candidate.
+
+The target outer radius is 70.25px, inner radius 65.75px; inner percentage is
+93.594306. This yields the original 68px centre radius and 4.5px stroke. Native
+end caps may differ from Ring Chart. There is no guessed battery correction,
+manual maximum, custom value, masking layer, script or external artwork URL.
+Phone validation: lime colour, thin annulus on the track, hidden chart text
+and outlines, clockwise start at 12, endpoint agreement with the displayed
+percentage. No claim of a complete fix is made before this native check.
