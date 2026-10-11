@@ -221,3 +221,18 @@ manual maximum, custom value, masking layer, script or external artwork URL.
 Phone validation: lime colour, thin annulus on the track, hidden chart text
 and outlines, clockwise start at 12, endpoint agreement with the displayed
 percentage. No claim of a complete fix is made before this native check.
+
+### Native D5 result and D6 thickness correction
+
+`IMG_0286.png` confirms that D5 imports with the lime Circle Chart, thin
+annulus, hidden chart labels and a 75% sweep from 12 to 9 o'clock. The user
+finds the stroke too thin. On the 530px screenshot, the rightmost lime band
+has about three visible pixels (including antialiasing). Thus the original
+geometric 4.5px target did not translate directly to native visible fill.
+
+`node tools/device-glass/build-circle-thickness.mjs` builds D6 from D5 by
+changing only `8.a[0].a` from 93.594306 to 90. No source, angle, outer frame,
+colour or other layer is changed. The adjustment grows the annulus inward;
+its exact visible width remains a phone-rendering measurement, not a value
+asserted by the local geometric model. Still 13 layers. Copy page remains
+`/tools/widgy-device-glass-circle-copy.html`, now loading D6. D5 is retained.
