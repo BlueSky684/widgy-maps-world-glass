@@ -12,7 +12,8 @@
     "tools/widgy-home-calendar-runtime-navfix-copy.html",
     "tools/widgy-stable-copy.html",
     "tools/widgy-weather-premium-copy.html",
-    "tools/widgy-health-premium-copy.html"
+    "tools/widgy-health-premium-copy.html",
+    "tools/widgy-device-glass-copy.html"
   ],
   "files": [
     "assets/calendar-glass/Calendar_Glass_Chrome_C8.png",
@@ -72,6 +73,9 @@
     "tools/widgy-health-premium-copy.html",
     "tools/widgy-health-premium-copy.js",
     "tools/widgy-health-premium-1.enc.json",
-    "assets/weather-premium/chrome-r14.png"
+    "assets/weather-premium/chrome-r14.png",
+    "tools/widgy-device-glass-copy.html",
+    "tools/widgy-device-glass-copy.js",
+    "tools/Widgy_Device_Glass_1.json"
   ]
 }
