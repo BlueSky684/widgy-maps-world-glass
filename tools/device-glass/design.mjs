@@ -17,7 +17,28 @@ export const READINGS=[
   {id:15022,name:'Storage · Free space',x:113,baseline:466,width:134,cap:31,weight:'Bold'},
   {id:15037,name:'Battery · Hours remaining',x:357,baseline:466,width:125,cap:31,weight:'Bold'},
 ];
-export const nativeBox=r=>[r.x,r.baseline-r.cap*1.325,r.width,r.cap*1.65];
+// IMG_0252: requested caps 53/23/19/31 rendered as 50/21/18/29px.
+// Keep the measured baseline while correcting the native line-box scale.
+export const nativeBox=r=>[r.x,r.baseline-r.cap*1.405,r.width,r.cap*1.75];
+// Continuous corners fitted to the actual 530px Widgy export's alpha mask.
+// The previous 49px circular corners were clipped by the native 120px corners.
+export function nativeOutline(inset=0){
+  const l=inset,t=inset,r=530-inset,b=530-inset,rad=120.4-inset,power=2/2.833;
+  const p=[`M${l+rad} ${t}H${r-rad}`];
+  const corners=[
+    a=>[r-rad+rad*Math.sin(a)**power,t+rad-rad*Math.cos(a)**power],
+    a=>[r-rad+rad*Math.cos(a)**power,b-rad+rad*Math.sin(a)**power],
+    a=>[l+rad-rad*Math.sin(a)**power,b-rad+rad*Math.cos(a)**power],
+    a=>[l+rad-rad*Math.cos(a)**power,t+rad-rad*Math.sin(a)**power],
+  ];
+  for(let c=0;c<4;c++){
+    if(c===1)p.push(`V${b-rad}`);
+    if(c===2)p.push(`H${l+rad}`);
+    if(c===3)p.push(`V${t+rad}`);
+    for(let i=1;i<=32;i++)p.push('L'+corners[c](i*Math.PI/64).map(n=>n.toFixed(3)).join(' '));
+  }
+  return p.join('')+'Z';
+}
 export const ringBox=()=>{
   const outer=DIAL.r+DIAL.stroke/2;
   return [DIAL.x-outer,DIAL.y-outer,outer*2,outer*2];
@@ -32,10 +53,11 @@ export function staticArtwork(){
   <linearGradient id="bezel" x1="15%" y1="0%" x2="85%" y2="100%"><stop stop-color="#a0b7c4"/><stop offset=".30" stop-color="#304854"/><stop offset=".65" stop-color="#1b2b35"/><stop offset="1" stop-color="#6d8693"/></linearGradient>
   <linearGradient id="reflection" x1="0%" y1="0%" x2="20%" y2="100%"><stop stop-color="#d8efff" stop-opacity=".045"/><stop offset="1" stop-color="#d8efff" stop-opacity="0"/></linearGradient>
   <linearGradient id="icon" x1="0%" y1="0%" x2="50%" y2="100%"><stop stop-color="#d8e2ed"/><stop offset="1" stop-color="#99a9c0"/></linearGradient>
-  <clipPath id="outer"><rect x="6" y="6" width="518" height="518" rx="49"/></clipPath>
+  <clipPath id="outer"><path d="${nativeOutline()}"/></clipPath>
   </defs>
-  <rect x="6" y="6" width="518" height="518" rx="49" fill="url(#base)" stroke="url(#rim)" stroke-width="1.3"/>
-  <rect x="7.8" y="7.8" width="514.4" height="514.4" rx="47.5" fill="none" stroke="#b5cede" stroke-opacity=".15" stroke-width=".55"/>
+  <rect width="530" height="530" fill="url(#base)"/>
+  <path d="${nativeOutline(8)}" fill="none" stroke="url(#rim)" stroke-width="1.3"/>
+  <path d="${nativeOutline(9.8)}" fill="none" stroke="#b5cede" stroke-opacity=".15" stroke-width=".55"/>
   <path d="M0 0H530V40L0 255Z" fill="url(#reflection)" clip-path="url(#outer)"/>`];
   const t=(s,x,y,cap,fill=C.muted,weight='Regular',anchor='start',w=Infinity)=>p.push(outlinedText(s,x,y,cap,fill,weight,anchor,w));
   const line=(x,y,x2,y2)=>p.push(`<path d="M${x} ${y}L${x2} ${y2}" stroke="#7b96a8" stroke-opacity=".65" stroke-width=".65"/>`);

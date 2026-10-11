@@ -8,10 +8,10 @@ import {formatJSONLines} from '../json-copy-lines.js';
 
 const root=new URL('../../',import.meta.url);
 const read=p=>fs.readFileSync(new URL(p,root));
-const raw=read('tools/Widgy_Device_Glass_1.json').toString();
+const raw=read('tools/Widgy_Device_Glass_2.json').toString();
 const w=JSON.parse(raw),source=JSON.parse(read('tools/device-glass/native-source.json'));
 const layers=w['1'],find=id=>layers.find(n=>n.d0===id);
-assert.equal(w['3'],'Widgy Device Glass 1');assert.equal(w['6'],source['6']);
+assert.equal(w['3'],'Widgy Device Glass 2');assert.equal(w['6'],source['6']);
 assert.equal(layers.length,13);assert.equal(new Set(layers.map(n=>n.d0)).size,13);
 assert.equal(layers.filter(n=>n.z==='5').length,1);
 assert.equal(layers.filter(n=>n.z==='9').length,1);
@@ -44,9 +44,9 @@ for(const [onId,offId]of [[15013,15611],[15030,15612]])for(const state of ['On',
 }
 for(const percent of ['0%','1%','75%','100%'])assert.equal(replace(find(15003),percent),percent.slice(0,-1));
 for(const space of ['512 MB','151 GB','1.2 TB','—'])assert.equal(replace(find(15022),space),space);
-for(const value of ['0 h','29.2 h','—'])assert.equal(replace(find(15037),value),value);
+for(const [value,expected]of [['0h','0 h'],['29.2h','29.2 h'],['—','—']])assert.equal(replace(find(15037),value),expected);
 const ring=layers.find(n=>n.z==='9');
-assert.equal(ring['1'],'System Info');assert.equal(ring['2'],'Battery Level');assert.equal(ring['20'],100);
+assert.equal(ring['1'],'1-Segment Info');assert.equal(ring['2'],'Battery Level');assert.equal(ring['20'],100);
 assert.equal(ring['8'].a[0].a,ring['9'].a[0].a);assert(ring['8'].a[0].a>0&&ring['8'].a[0].a<10);
 for(const n of layers){
   const [x,y,width,height]=['b','c','d','e'].map(k=>n[k].a[0].a);
@@ -56,9 +56,11 @@ for(const n of layers){
 const bg=layers.at(-1);assert.equal(bg.z,'5');
 assert(bg['2'].startsWith('data:image/png;base64,'));
 const png=Buffer.from(bg['2'].split(',')[1],'base64');
-assert(png.equals(read('assets/device-glass/chrome-d1.png')));
+assert(png.equals(read('assets/device-glass/chrome-d2.png')));
 const metadata=await sharp(png).metadata();assert.equal(metadata.width,1060);assert.equal(metadata.height,1060);
-assert.equal(metadata.hasAlpha,true);assert(png.length<100000);assert(Buffer.byteLength(raw)<150000);
+const pixels=await sharp(png).ensureAlpha().raw().toBuffer();
+for(let i=3;i<pixels.length;i+=4)assert.equal(pixels[i],255,'No transparent gutters revealing a white Widgy background');
+assert(png.length<100000);assert(Buffer.byteLength(raw)<150000);
 assert(!/https?:\/\//.test(raw));assert(!w['36']);
 assert.deepEqual(JSON.parse(formatJSONLines(raw)),w);
 
