@@ -72,6 +72,18 @@ export default async function handler(req, res) {
     report('rejected', {status: 400, reason: 'invalid_width'});
     return res.status(400).json({error:'Unsupported image width'});
   }
+  // Explicit opt-in only: existing widget/map requests are unchanged.
+  if (url.searchParams.get('shared_location') === '1') {
+    const {authorizeLocation,sharedLocation,locationErrorStatus} = await import('../lib/location/shared.js');
+    try {
+      const result=await sharedLocation(authorizeLocation(url));
+      url.searchParams.set('city',result.entry.city);
+      res.setHeader('X-Location-Cache',result.state);
+    } catch(error) {
+      // Never render an invented or old city for different coordinates.
+      return res.status(locationErrorStatus(error)).json({error:'Location unavailable'});
+    }
+  }
   const location = resolveLocation(url, req.headers);
   cachedCity.remember(url);
   const presentation = url.searchParams.get('presentation') === 'glass' ? 'glass' : 'default';
