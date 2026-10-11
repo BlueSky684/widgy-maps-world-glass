@@ -4,18 +4,21 @@ import {outlinedText} from '../../lib/weather/render.js';
 
 export const C={white:'#f4f7fa',muted:'#aeb7c6',lime:'#c5ff0a',track:'#263b46'};
 export const DIAL={x:143,y:224,r:68,stroke:4.5};
+// Move artwork and live readings together. Larger bottom corners keep a clear
+// inset from Widgy's continuous outer rim without narrowing the data panel.
+const LOWER_PANEL_OFFSET_Y=-6;
 // Native font fitting is controlled by Widgy. These are optical layout targets,
 // not a claim that our SVG reproduces the iOS text engine exactly.
 export const READINGS=[
   {id:15003,name:'Battery · Percentage',x:94,baseline:235,width:80,cap:53,weight:'Bold',align:1},
   {id:15301,name:'Device · Model',x:274,baseline:223,width:204,cap:23},
   {id:15302,name:'Device · iOS version',x:311,baseline:267,width:165,cap:19},
-  {id:15013,name:'Wi-Fi · ON',x:157,baseline:386,width:49,cap:18,color:'lime'},
-  {id:15611,name:'Wi-Fi · OFF',x:157,baseline:386,width:49,cap:18,color:'muted'},
-  {id:15030,name:'Bluetooth · ON',x:409,baseline:386,width:62,cap:18,color:'lime'},
-  {id:15612,name:'Bluetooth · OFF',x:409,baseline:386,width:62,cap:18,color:'muted'},
-  {id:15022,name:'Storage · Free space',x:113,baseline:466,width:134,cap:31,weight:'Bold'},
-  {id:15037,name:'Battery · Hours remaining',x:357,baseline:466,width:125,cap:31,weight:'Bold'},
+  {id:15013,name:'Wi-Fi · ON',x:157,baseline:386+LOWER_PANEL_OFFSET_Y,width:49,cap:18,color:'lime'},
+  {id:15611,name:'Wi-Fi · OFF',x:157,baseline:386+LOWER_PANEL_OFFSET_Y,width:49,cap:18,color:'muted'},
+  {id:15030,name:'Bluetooth · ON',x:409,baseline:386+LOWER_PANEL_OFFSET_Y,width:62,cap:18,color:'lime'},
+  {id:15612,name:'Bluetooth · OFF',x:409,baseline:386+LOWER_PANEL_OFFSET_Y,width:62,cap:18,color:'muted'},
+  {id:15022,name:'Storage · Free space',x:113,baseline:466+LOWER_PANEL_OFFSET_Y,width:134,cap:31,weight:'Bold'},
+  {id:15037,name:'Battery · Hours remaining',x:357,baseline:466+LOWER_PANEL_OFFSET_Y,width:125,cap:31,weight:'Bold'},
 ];
 // IMG_0252: requested caps 53/23/19/31 rendered as 50/21/18/29px.
 // Keep the measured baseline while correcting the native line-box scale.
@@ -62,6 +65,10 @@ export function staticArtwork(){
   const t=(s,x,y,cap,fill=C.muted,weight='Regular',anchor='start',w=Infinity)=>p.push(outlinedText(s,x,y,cap,fill,weight,anchor,w));
   const line=(x,y,x2,y2)=>p.push(`<path d="M${x} ${y}L${x2} ${y2}" stroke="#7b96a8" stroke-opacity=".65" stroke-width=".65"/>`);
   const panel=(x,y,w,h)=>p.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="15" fill="url(#well)" stroke="url(#edge)" stroke-width="1"/><rect x="${x+1.3}" y="${y+1.3}" width="${w-2.6}" height="${h-2.6}" rx="13.7" fill="none" stroke="#080f15" stroke-opacity=".7" stroke-width=".6"/>`);
+  const lowerPanelPath=(inset=0)=>{
+    const x=26+inset,y=350+inset,r=504-inset,b=496-inset,rt=15-inset,rb=36-inset;
+    return `M${x+rt} ${y}H${r-rt}A${rt} ${rt} 0 0 1 ${r} ${y+rt}V${b-rb}A${rb} ${rb} 0 0 1 ${r-rb} ${b}H${x+rb}A${rb} ${rb} 0 0 1 ${x} ${b-rb}V${y+rt}A${rt} ${rt} 0 0 1 ${x+rt} ${y}Z`;
+  };
   t('DE',29,76,34,C.white,'Bold');t('VICE',68.15,76,34,C.lime,'Bold');
   t('SYSTEM STATUS',31,95,9,'#91a9b8');
   p.push('<circle cx="480" cy="65" r="16" fill="#0a151d" fill-opacity=".40" stroke="#59727f" stroke-opacity=".6" stroke-width=".65"/><g fill="none" stroke="#afbecb" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><path d="M472 64a8 8 0 0 1 13-6l3 3M488 56v5h-5M488 67a8 8 0 0 1-13 6l-3-3M472 75v-5h5"/></g>');
@@ -78,7 +85,7 @@ export function staticArtwork(){
   line(250,151,250,298);
   t('DEVICE INFORMATION',274,181,9.5,'#a3b5c2');t('iOS',274,267,13,'#a3b5c2');
   // A quiet connectivity row over two roomy measurements, inside one surface.
-  panel(26,350,478,146);
+  p.push(`<g transform="translate(0 ${LOWER_PANEL_OFFSET_Y})"><path d="${lowerPanelPath()}" fill="url(#well)" stroke="url(#edge)" stroke-width="1"/><path d="${lowerPanelPath(1.3)}" fill="none" stroke="#080f15" stroke-opacity=".7" stroke-width=".6"/>`);
   line(42,405,488,405);line(265,425,265,479);
   t('Wi-Fi',113,384,12);t('Bluetooth',344,384,12);
   t('STORAGE',113,429,9);t('Free space',113,482,11);
@@ -91,7 +98,7 @@ export function staticArtwork(){
   <path d="M94 456Q98 458 95 460L82 470Q80 472 76 471L62 468Q59 467 62 465L65 462"/>
   <path d="M94 449Q98 451 95 453L82 463Q80 465 76 464L62 461Q59 460 62 458L65 455"/>
   <path d="M62 451L75 441Q77 439 80 440L94 443Q98 444 95 447L82 457Q80 459 76 458L62 455Q59 454 62 451Z"/>
-  </g></svg>`);
+  </g></g></svg>`);
   return p.join('');
 }
 // A build proof with illustrative readings; never used as a widget data source.
