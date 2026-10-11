@@ -8,13 +8,14 @@ import {isDeepStrictEqual} from 'node:util';
 import {formatJSONLines} from './json-copy-lines.js';
 
 const base=process.env.TEST_ORIGIN;
-const source=base?await (await fetch(base+'/tools/widgy-health-premium-copy.js?v=14')).text():fs.readFileSync('tools/widgy-health-premium-copy.js','utf8');
+const revision=process.env.WEATHER_REVISION||'14';
+const source=base?await (await fetch(base+'/tools/widgy-health-premium-copy.js?v='+revision)).text():fs.readFileSync('tools/widgy-health-premium-copy.js','utf8');
 const key=JSON.parse(fs.readFileSync('work/private/copy-key.json')).key;
 const expected=JSON.parse(fs.readFileSync('work/private/Widgy_Health_Premium_1.json'));
 const envelope=base?await (await fetch(base+'/tools/widgy-health-premium-1.enc.json?verify='+Date.now())).json():JSON.parse(fs.readFileSync('tools/widgy-health-premium-1.enc.json'));
 const html=base?await (await fetch(base+'/tools/widgy-health-premium-copy.html?verify='+Date.now())).text():fs.readFileSync('tools/widgy-health-premium-copy.html','utf8');
-assert(html.includes('widgy-health-premium-copy.js?v=14'),'Missing cache-busted copy module');
-assert(html.includes('Weather 14'));
+assert(html.includes('widgy-health-premium-copy.js?v='+revision),'Missing cache-busted copy module');
+assert(html.includes('Weather '+revision));
 let clipboard='',manualMode=false;
 const nodes=Object.fromEntries(['copy','status','manual','text','multiline','select'].map(id=>[id,{disabled:true,checked:true,hidden:true,value:'',handlers:{},addEventListener(t,f){this.handlers[t]=f},classList:{toggle(){}},focus(){},select(){},setSelectionRange(){}}]));
 const context={formatJSONLines,console,URLSearchParams,location:{hash:'#key='+key},crypto:webcrypto,atob,TextEncoder,TextDecoder,Response,Blob,DecompressionStream,Uint8Array,
