@@ -265,3 +265,25 @@ Checks cover all four On/Off combinations independently, provider mapping,
 opaque tile edge equality, full clipboard fidelity and unchanged D6 layers.
 Native visibility after toggling each connection and refreshing remains to be
 checked on the phone; refresh timing is controlled by Widgy/iOS.
+
+
+## Device Glass 8 — chosen vivid blue and matching icon gaps
+
+The user selected vivid blue `#2D9CFF` from the four-color comparison, then
+requested Bluetooth move slightly right to match Wi-Fi's icon-to-label gap.
+`node tools/device-glass/build-connectivity-polish.mjs` starts from D7.
+Measured visible glyph bounds at 8x (alpha >= 128) on the 530px design give
+Wi-Fi a 22.375px gap and Bluetooth a 25.375px gap. Moving Bluetooth 3px right
+produces the same 22.375px gap in both On and Off states. Label positions,
+stroke widths and sizes stay unchanged.
+
+The gray Bluetooth glyph is part of the background: D8 replaces only pixels
+where the old/new SVG glyphs differ, then saves losslessly without palette
+re-quantization. Every other original background pixel is preserved. The two
+active tiles use the selected vivid blue, with Bluetooth's frame moved 3px
+right to align with the new gray glyph. Native status variables/conditions,
+all text and the battery Circle are identical to D7; there are still 15 layers.
+D7's `IMG_0289.png` showed both On icons blue on-device. Independent Off
+transitions remain pending a phone check; this revision preserves that logic.
+
+Copy page loads `Widgy_Device_Glass_8.json?v=8`. Earlier JSON/artwork is retained.
