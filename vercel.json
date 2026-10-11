@@ -34,7 +34,7 @@
     },
     "api/fetch-probe.js": {
       "maxDuration": 10,
-      "includeFiles": "assets/weather-premium/{glyphs.json,icons.json}"
+      "includeFiles": "assets/weather-premium/{glyphs.json,icons.json,text-ink-bounds.json}"
     }
   },
   "headers": [

@@ -58,7 +58,7 @@ async function load() {
     if (raw.byteLength !== envelope.bytes || hash !== envelope.sha256) throw Error('integrity');
     const value = new TextDecoder('utf-8',{fatal:true}).decode(raw);
     const widget = JSON.parse(value);
-    if (!Array.isArray(widget['1']) || widget['3'] !== 'Widgy Health Premium 1') throw Error('widget');
+    if (!Array.isArray(widget['1']) || !['Widgy Health Premium 1','Widgy Weather 14'].includes(widget['3'])) throw Error('widget');
     compactPayload = value;
     linePayload = formatJSONLines(value);
     // Validate the display-oriented representation before enabling copy. The
