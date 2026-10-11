@@ -1,0 +1,13 @@
+import fs from 'node:fs';import {randomBytes,createCipheriv,createHash} from 'node:crypto';import {gzipSync} from 'node:zlib';
+import {withLocationLabelUngated} from './location-label-ungated.js';
+const input=JSON.parse(fs.readFileSync(process.argv[2]));
+const raw=Buffer.from(JSON.stringify(withLocationLabelUngated(input)));
+fs.writeFileSync('work/private/Widgy_Health_Premium_1.json',raw,{mode:0o600});
+const key=Buffer.from(JSON.parse(fs.readFileSync('work/private/copy-key.json')).key,'base64url'),iv=randomBytes(12);
+const cipher=createCipheriv('aes-256-gcm',key,iv);cipher.setAAD(Buffer.from('widgy-health-premium-copy:v1:20261010'));
+const data=Buffer.concat([cipher.update(gzipSync(raw,{level:9})),cipher.final(),cipher.getAuthTag()]);
+fs.writeFileSync('tools/widgy-health-premium-1.enc.json',JSON.stringify({v:1,iv:iv.toString('base64url'),data:data.toString('base64url'),bytes:raw.length,sha256:createHash('sha256').update(raw).digest('hex')})+'\n');
+let html=fs.readFileSync('tools/widgy-health-premium-copy.html','utf8');
+html=html.replace(/<h1>.*?<\/h1>/,'<h1>בדיקת מיקום — Calendar ו־Weather</h1>').replace(/[\d,]+ bytes/,raw.length.toLocaleString('en-US')+' bytes').replace('פתח את Health וצלם את הטבלה השבועית לבדיקה.','פתח את Calendar ואת Weather ובדוק שמופיעים שם העיר והמדינה.');
+fs.writeFileSync('tools/widgy-health-premium-copy.html',html);
+console.log(JSON.stringify({bytes:raw.length,sharedLocation:true}));
