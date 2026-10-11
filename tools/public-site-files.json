@@ -16,7 +16,8 @@
     "tools/widgy-device-glass-copy.html",
     "tools/widgy-device-ring-check.html",
     "tools/widgy-device-chart-compare.html",
-    "tools/map-host-ab-15.html"
+    "tools/map-host-ab-15.html",
+    "tools/widgy-device-glass-circle-copy.html"
   ],
   "files": [
     "assets/calendar-glass/Calendar_Glass_Chrome_C8.png",
@@ -93,6 +94,9 @@
     "tools/map-host-ab-15.js",
     "tools/map-host-ab-15-A.enc.json",
     "tools/map-host-ab-15-B.enc.json",
-    "assets/diagnostics/map-host-ab-15/snapshot.png"
+    "assets/diagnostics/map-host-ab-15/snapshot.png",
+    "tools/widgy-device-glass-circle-copy.html",
+    "tools/widgy-device-glass-circle-copy.js",
+    "tools/Widgy_Device_Glass_5.json"
   ]
 }
