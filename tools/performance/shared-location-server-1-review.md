@@ -78,3 +78,10 @@ https://vercel.com/docs/functions/functions-api-reference/vercel-functions-packa
   40k/minute boundaries, conservative rollover, missing/corrupt state.
   Live Upstash EVAL and simultaneous-request behavior still need verification.
 - No widget artifact or live deployment changed by this budget preparation.
+
+## Live integration — 2026-10-11
+- Upstash `widgy-location-cache`: Free, iad1, eviction off; integration envs Preview only.
+- Added KV_REST_API_URL / KV_REST_API_TOKEN aliases; separate private operator credential for POST-only ledger initialize/status. Initialization refuses to replace an existing key.
+- Preview 82c3815304791857f662fc99400b97f86726436b: empty ledger verified, initialized once; Ashdod GPS lookup returned Ashdod/Israel; repeat returned MEMORY; map returned SHARED and valid PNG, visually checked.
+- Ledger after first repeat: one counted provider attempt. Local shared-cache and budget tests pass. Real Redis Lua reservation executes successfully; high-volume limit testing remains fixture-based.
+- Copy payload uses shared mechanism; AES-GCM round-trip and multiline clipboard harness pass. Phone performance and persistence still require user observation. Test-machine wall times include network/proxy overhead and are not phone latency measurements.
