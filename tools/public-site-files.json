@@ -13,7 +13,8 @@
     "tools/widgy-stable-copy.html",
     "tools/widgy-weather-premium-copy.html",
     "tools/widgy-health-premium-copy.html",
-    "tools/widgy-device-glass-copy.html"
+    "tools/widgy-device-glass-copy.html",
+    "tools/widgy-device-ring-check.html"
   ],
   "files": [
     "assets/calendar-glass/Calendar_Glass_Chrome_C8.png",
@@ -79,6 +80,9 @@
     "tools/Widgy_Device_Glass_1.json",
     "tools/Widgy_Device_Glass_2.json",
     "tools/Widgy_Device_Glass_3.json",
-    "tools/Widgy_Device_Glass_4.json"
+    "tools/Widgy_Device_Glass_4.json",
+    "tools/widgy-device-ring-check.html",
+    "tools/widgy-device-ring-check.js",
+    "tools/Widgy_Device_Ring_Check_1.json"
   ]
 }
