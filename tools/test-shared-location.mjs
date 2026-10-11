@@ -12,7 +12,7 @@ const fetcher=async url=>{
   const latitude=Number(url.searchParams.get('latitude')),longitude=Number(url.searchParams.get('longitude'));
   return {ok:true,json:async()=>({latitude,longitude,city:latitude===1?'City A':'City B',countryName:'Country'})};
 };
-const options={cache,fetcher,now:()=>time,env};
+const options={cache,fetcher,now:()=>time,env,reserve:async()=>({used:1,limit:40000})};
 const point=coordinates('1','2'),moved=coordinates('3','4');
 const resolve=createSharedLocation(options);
 const parallel=await Promise.all(Array.from({length:8},()=>resolve(point)));
