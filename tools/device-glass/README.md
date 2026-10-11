@@ -32,13 +32,46 @@ https://developer.apple.com/forums/thread/732903
 That makes rounding a possible limitation of the source, not proof that it
 causes this ring/text mismatch on the owner's current iOS version.
 
-Next native evidence: open `Battery · Native ring` and capture the Ring Chart
-settings (angle and segment/range controls), with the iPhone percentage visible
-in the status bar. If those are correct, compare a fixed 50% native chart with
-the live one before changing any angle or maximum. Do not compensate the arc
-by a guessed percentage. D4 leaves the ring and battery text byte-identical to
-D3, and explicitly does not claim a battery-accuracy correction. The local
-SVG proof draws an ideal arc, not Widgy's native renderer.
+The subsequent settings screenshots show Circle, clockwise, start 0, range
+360, Fixed Origin, equal start/end scale, quantization 0 and forecast off.
+The temporarily selected Custom shape was restored to Circle. The two Device
+exports differ only in editing metadata and ring field `20` being set to 60
+instead of the omitted default. That change did not visibly normalize the
+battery ring to 60. The owner's Full Scale toggle also produced no confirmed
+correction. Neither experiment establishes the semantics of these controls
+for the one-segment Battery Level source. Restore Max 100 / Full Scale Yes.
+
+Further pixel measurements, adjusting approximately for rounded caps, put
+the endpoint near 100 degrees at 30%, 170 at 50%, 190 at 55% and 210 at 60%.
+Correct endpoints would be 108, 180, 198 and 216 degrees. A 10-degree drawing
+step is a hypothesis consistent with these images, not a confirmed Widgy bug.
+Apple battery rounding alone does not establish the cause of the arc/text gap.
+Exclusive Segment Mode concerns chart data selection; it is not evidence of
+30 geometric arc segments. Developer reference:
+https://www.reddit.com/r/widgy/comments/ps35mg/announcing_the_biggest_update_yet_v17_is_a_game/
+
+The owner's 18:23:41 export, `Battery Info` by Bo Nyi, supplies two native ring
+configurations retained in `native-ring-reference.json`. Its live ring has the
+same Battery Level source and no additional correction/precision control. Its
+second, low-opacity backdrop ring uses `Custom Value` and **field 21 = 100**.
+This identifies a native constant input without guessing a schema field.
+The reference's equal scales are 50, versus 6.405694 in Device; its frame is
+1400 square, versus 424.150943. No screenshot of this reference was supplied,
+so its accuracy has not been established.
+
+`node tools/device-glass/build-ring-check.mjs` builds a separate five-layer
+diagnostic: four native rings at 25, 50, 75 and 100, plus an embedded background
+with input labels and exact endpoint markers. It derives constant field 21
+from the supplied reference and uses Device's frame size, thickness and lime.
+No battery provider, JavaScript, remote image or percentage correction is used.
+Copy page: `/tools/widgy-device-ring-check.html`; import name:
+`Widgy Device Ring Check 1`. A real Widgy screenshot is still needed. Static
+labels show configured inputs, not readings; the background does not draw any
+lime progress arcs. A short fixed-value arc would implicate rendering/settings
+independently of battery data, but would not alone prove the 10-degree model.
+
+D4 remains unchanged, with no battery-accuracy correction claimed. Its local
+SVG layout proof draws an ideal arc, not Widgy's native renderer.
 
 ## Previous panel correction
 
