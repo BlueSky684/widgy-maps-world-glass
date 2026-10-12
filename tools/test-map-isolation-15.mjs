@@ -1,0 +1,31 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {mapIsolation15} from './map-isolation-15.js';
+
+const raw=fs.readFileSync('work/private/Widgy_Weather_15_Stability.json');
+const original=JSON.parse(raw),before=structuredClone(original);
+const isolated=mapIsolation15(original);
+assert.deepEqual(original,before);
+const home=w=>w['1'].find(n=>n.d0===245);
+const map=w=>home(w)['1'].find(n=>n.d0===6170);
+assert.deepEqual(map(isolated),map(original));
+assert.deepEqual({...home(isolated),'1':null},{...home(original),'1':null});
+assert.equal(isolated['1'].length,1);
+assert.equal(home(isolated)['1'].length,1);
+assert.deepEqual(isolated['36'],[]);
+assert.deepEqual(isolated['38'],[]);
+assert.deepEqual(isolated['39'],{});
+const restored=structuredClone(isolated);
+for(const k of ['1','3','4','36','38','39'])restored[k]=original[k];
+assert.deepEqual(restored,original);
+const text=JSON.stringify(isolated);
+const urls=[...text.matchAll(/https:\/\/[^"\s]+/g)].map(m=>new URL(m[0]));
+assert.equal(urls.length,2);
+for(const u of urls){assert.equal(u.origin,'https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app');assert.equal(u.pathname,'/api/map-stability');}
+const {control}=JSON.parse(fs.readFileSync('work/private/map-stability-15-secrets.json'));
+assert(!text.includes(control));
+assert(!text.includes('${widgy.'));
+assert.throws(()=>mapIsolation15({...original,'3':'unrecognized'}));
+fs.writeFileSync('work/private/Widgy_Map_Isolation_15.json',text,{mode:0o600});
+console.log(JSON.stringify({name:isolated['3'],layers:2,images:1,variables:0,bytes:Buffer.byteLength(text),sha256:createHash('sha256').update(text).digest('hex'),exactImageAndParent:true,originalUnchanged:true,nativeResult:'pending'}));

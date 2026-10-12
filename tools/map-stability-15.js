@@ -1,3 +1,4 @@
+import {mapIsolation15} from './map-isolation-15.js';
 const $=s=>document.querySelector(s);
 const message=(text,error=false)=>{$('#message').textContent=text;$('#message').classList.toggle('error',error);};
 const decode=s=>Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0));
@@ -22,7 +23,9 @@ function show(data){
 async function action(body){if(busy)return;busy=true;try{show(await api(body));if(body?.action==='set')message('מצב הבדיקה עודכן. חזור לווידג׳ט ובדוק את המפה.');else if(body?.action==='observation')message('התצפית נשמרה.');}catch{message('לא ניתן לקרוא או לעדכן את מצב הבדיקה כרגע. נסה שוב; העותק המקורי לא השתנה.',true);}finally{busy=false;}}
 const select=()=>{const t=$('#json');t.focus();t.select();t.setSelectionRange(0,t.value.length);};
 $('#select').addEventListener('click',select);
-$('#copy').addEventListener('click',async()=>{if(!copyText)return;try{await navigator.clipboard.writeText(copyText);message('כל הווידג׳ט הועתק. ייבא ב־Widgy מהלוח.');}catch{$('#manual').hidden=false;$('#json').value=copyText;select();try{if(document.execCommand('copy')){$('#manual').hidden=true;message('כל הווידג׳ט הועתק.');return;}}catch{}message('בחר ״העתק״ בתפריט הטקסט.',true);}});
+async function copyWidget(text,label){if(!text)return;try{await navigator.clipboard.writeText(text);message(label+' הועתק. ייבא ב־Widgy מהלוח.');}catch{$('#manual').hidden=false;$('#json').value=text;select();try{if(document.execCommand('copy')){$('#manual').hidden=true;message(label+' הועתק.');return;}}catch{}message('בחר ״העתק״ בתפריט הטקסט.',true);}}
+$('#copy').addEventListener('click',()=>copyWidget(copyText,'הווידג׳ט המלא'));
+$('#copy-map').addEventListener('click',()=>{try{copyWidget(JSON.stringify(mapIsolation15(payload.widget)),'עותק המפה בלבד');}catch{message('לא ניתן להכין את עותק המפה. העותק המקורי לא השתנה.',true);}});
 $('#refresh').addEventListener('click',()=>action());
 for(const b of document.querySelectorAll('[data-mode]'))b.addEventListener('click',()=>action({action:'set',mode:b.dataset.mode}));
 for(const b of document.querySelectorAll('[data-result]'))b.addEventListener('click',()=>action({action:'observation',result:b.dataset.result}));
