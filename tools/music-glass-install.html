@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark"><title>Music Glass M1 — התקנה</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#080f14;color:#f4f7fa;font:17px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    main{max-width:650px;margin:auto;padding:40px 24px 70px}header{direction:ltr;text-align:left;border-bottom:1px solid #35434e;padding-bottom:22px;margin-bottom:28px}
+    .tag{color:#aeb7c6;font-size:12px;letter-spacing:2px}h1{font-size:38px;line-height:1.1;margin:12px 0;font-weight:500}h1 span{color:#c5ff0a}
+    p{margin:16px 0}.muted,small{color:#aeb7c6}.box{background:#101b23;border:1px solid #35434e;border-radius:22px;padding:22px;margin:24px 0}
+    a{color:#c5ff0a}a.primary,button{display:block;width:100%;text-align:center;border:0;border-radius:14px;padding:15px 18px;font:inherit;font-weight:600;cursor:pointer;text-decoration:none}
+    a.primary{background:#c5ff0a;color:#080f14;margin:18px 0}button{background:#1b2b35;color:#f4f7fa;margin:10px 0}
+    li{padding:6px 0}ol{padding-inline-start:24px}details{margin-top:28px}summary{cursor:pointer}textarea{width:100%;height:240px;background:#091116;color:#aeb7c6;border:1px solid #35434e;border-radius:10px;direction:ltr;text-align:left;font:12px/1.5 monospace;padding:12px}
+    #status{min-height:28px;font-size:14px}code{direction:ltr;unicode-bidi:isolate}footer{font-size:13px;color:#8798a5;margin-top:36px}
+  </style>
+  <script src="music-glass-install.js" defer></script>
+</head>
+<body><main>
+  <header><div class="tag">SMALL WIDGET · DESIGN A · M1</div><h1>MUSIC <span>GLASS</span></h1><div class="muted">Apple Music · First device-test build</div></header>
+  <p>הווידג׳ט בעיצוב שאישרת: עטיפה גדולה וריבועית, פרטי השיר ופאנל ניגון על רקע הזכוכית של Device Glass.</p>
+  <div class="box">
+    <p><strong>להתקנה על האייפון</strong></p>
+    <ol>
+      <li>התקן את <a href="https://apps.apple.com/il/app/scripting/id6479691128">Scripting</a>. שליטה ישירה ב־Apple Music דורשת <strong>Scripting PRO</strong>.</li>
+      <li>לחץ על כפתור הייבוא למטה ואשר את הוספת <bdi>Music Glass M1</bdi>.</li>
+      <li>פתח את הסקריפט פעם אחת ב־Scripting ואפשר גישה למדיה ול־Apple Music כאשר האייפון מבקש.</li>
+      <li>הפעל שיר ב־Apple Music. במסך הבית הוסף ווידג׳ט <strong>קטן</strong> של Scripting. בעריכת הווידג׳ט בחר <bdi>Music Glass M1</bdi>.</li>
+    </ol>
+    <a class="primary" id="install" href="#">ייבוא Music Glass ל־Scripting</a>
+    <p><a id="download" href="Music_Glass_M1.zip" download>הורדת חבילת ZIP</a> · <a href="https://apps.apple.com/il/app/scripting/id6479691128">פתיחת Scripting ב־App Store</a></p>
+    <small>אם כפתור הייבוא אינו פותח את האפליקציה, העתק את קישור החבילה והדבק באפשרות הייבוא מקישור של Scripting.</small>
+    <button id="copy-link" type="button">העתקת קישור החבילה</button><div id="status" role="status" aria-live="polite"></div>
+  </div>
+  <p>כפתורי הניגון, ההשהייה והדילוג מחוברים ישירות לנגן באמצעות Scripting. הם מוכנים לבדיקה על האייפון; פעולת הרקע עדיין לא אומתה במכשיר שלך.</p>
+  <p class="muted">העטיפה והזמנים מתעדכנים ברענון הווידג׳ט ובבקשת רענון לאחר לחיצה. פס ההתקדמות מציג את המצב בזמן הרענון. אם אין עטיפה זמינה, יופיע תו מוזיקלי. לקבלת צבעי העיצוב, השתמש במראה מלא־צבע ולא במצב גוון אחיד של iOS.</p>
+  <details><summary>קוד המקור והעתקה</summary>
+    <p>קובצי המקור נפרדים בתוך החבילה. ההעתקה כאן מיועדת לעיון או לשליחה; להתקנה השתמש בכפתור הייבוא.</p>
+    <button id="copy-source" type="button">העתקת כל קוד המקור</button>
+    <textarea id="source" readonly aria-label="קוד המקור" spellcheck="false" placeholder="לחץ על העתקת הקוד לטעינה"></textarea>
+  </details>
+  <footer>M1 · עיצוב A · גרסת בדיקה ראשונה · נתוני המוזיקה נשארים במכשיר. אין שרת מוזיקה ואין חיבור לקיצורי דרך.</footer>
+</main></body></html>
