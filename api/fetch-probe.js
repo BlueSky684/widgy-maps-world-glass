@@ -3,6 +3,10 @@ export default async function handler(req, res) {
   // A narrow deployment rewrite shares this function's slot with Weather.
   // Existing diagnostic requests retain their original response and headers.
   const url = new URL(req.url || '/api/fetch-probe', 'https://probe.invalid');
+  if (url.pathname === '/api/map-stability' || url.searchParams.get('map_stability') === '1' || req.query?.map_stability === '1') {
+    const {default: stability} = await import('../lib/map-stability.js');
+    return stability(req,res);
+  }
   if (url.searchParams.get('location_admin') === '1') {
     const {default: admin} = await import('../lib/location/admin.js');
     return admin(req,res);

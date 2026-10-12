@@ -18,7 +18,8 @@
     "tools/widgy-device-chart-compare.html",
     "tools/map-host-ab-15.html",
     "tools/widgy-device-glass-circle-copy.html",
-    "tools/map-refresh-c-15.html"
+    "tools/map-refresh-c-15.html",
+    "tools/map-stability-15.html"
   ],
   "files": [
     "assets/calendar-glass/Calendar_Glass_Chrome_C8.png",
@@ -105,6 +106,10 @@
     "tools/Widgy_Device_Glass_9.json",
     "assets/health-premium/chrome-h1-clean.png",
     "tools/map-refresh-c-15.html",
-    "tools/map-host-ab-15-C.enc.json"
+    "tools/map-host-ab-15-C.enc.json",
+    "tools/map-stability-15.html",
+    "tools/map-stability-15.js",
+    "tools/map-stability-15.css",
+    "tools/map-stability-15.enc.json"
   ]
 }

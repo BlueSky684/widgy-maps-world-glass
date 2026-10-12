@@ -1,0 +1,20 @@
+{
+  "v": 1,
+  "origin": "https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app",
+  "readHash": "098b239f5562876e503287ee172d3c92d428857f3d4b0c62dc29b52d07c02b78",
+  "controlHash": "af0a4dab5299d89dda2c8d9c466ad467d16cd58024a5e68e3afc949b6778cc42",
+  "fixtures": {
+    "a": {
+      "at": "2026-10-12T04:00:00.000Z",
+      "path": "assets/diagnostics/map-stability-15/a.png",
+      "bytes": 4277405,
+      "sha256": "a37c8f62a89df3c8058c7f239d58b2c6bc28d09084462b44e3d00b6cc95c1749"
+    },
+    "b": {
+      "at": "2026-10-12T16:00:00.000Z",
+      "path": "assets/diagnostics/map-stability-15/b.png",
+      "bytes": 4202500,
+      "sha256": "f71ffaa9f29cdea8b64bb79089d134bb16601c3c48f2da3d603890c522b37d0b"
+    }
+  }
+}
