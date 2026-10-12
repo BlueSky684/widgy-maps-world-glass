@@ -2,7 +2,7 @@ import fs from 'node:fs';
 const fonts = JSON.parse(fs.readFileSync(new URL('../assets/weather-premium/glyphs.json', import.meta.url)));
 const nativeRunner = JSON.parse(fs.readFileSync(new URL('../assets/health-premium/native-figure-run.json', import.meta.url)));
 // The approved technical drawing, without sample readings in shipped artwork.
-export function healthScene(values = null) {
+export function healthScene(values = null, {highlightToday = true} = {}) {
 const C = {white:'#f4f7fa', muted:'#acb7c6', dim:'#8596a2', lime:'#c5ff0a', pink:'#ff2b80', cyan:'#15cbea', purple:'#b49aff', line:'#30434e'};
 const p=[];
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
@@ -86,7 +86,7 @@ live('cardio','41.2',960,624,34,C.white,'Bold','middle',232);text('VO2 max',960,
 card(32,713,1071,305);rect(54,731,4.5,25,2.2,C.lime);text('WEEKLY ACTIVITY',73,755,23,C.white,'Bold');text('LAST 7 DAYS',1074,754,14,C.dim,'Regular','end');line(54,770,1080,770);
 const days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
 for(let i=0;i<7;i++){
-  const y=790+i*31.5;if(i===6){p.push(`<rect x="48" y="${y-18}" width="1039" height="29" rx="7" fill="#bfff09" fill-opacity=".045"/>`);}if(i<6)line(55,y+16,1080,y+16,'#273841',.7);
+  const y=790+i*31.5;if(i===6&&highlightToday){p.push(`<rect x="48" y="${y-18}" width="1039" height="29" rx="7" fill="#bfff09" fill-opacity=".045"/>`);}if(i<6)line(55,y+16,1080,y+16,'#273841',.7);
   live('day'+i,days[i],64,y+8,21,i===6?C.lime:C.white,i===6?'Bold':'Regular','start',86);
   rect(183,y-3,405,7,3.5,'#263741');
   live('steps'+i,i===6?'7,842':'—',712,y+8,23,C.white,'Regular','end',115);
