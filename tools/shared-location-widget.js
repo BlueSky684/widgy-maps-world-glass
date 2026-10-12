@@ -15,10 +15,10 @@ export function sharedLocationText(latitude,longitude,endpoint) {
   var lat=String(latitude).trim().replace(',','.'),lon=String(longitude).trim().replace(',','.');
   var number=/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/;
   if(!number.test(lat)||!number.test(lon)||Math.abs(Number(lat))>90||Math.abs(Number(lon))>180){unavailable();return;}
-  // Complete once even if headers/body never arrive. Abort is optional in
-  // native JS; the callback guard also discards any late successful response.
-  if(typeof setTimeout!=='function'){unavailable();return;}
-  timer=setTimeout(unavailable,4000);
+  // Widgy native JS can provide fetch without setTimeout. A browser timer
+  // is optional: its absence must not prevent the location request.
+  // Without timers, fetch settlement / the host controls the request lifetime.
+  if(typeof setTimeout==='function')timer=setTimeout(unavailable,4000);
   try {
   if(typeof AbortController==='function')controller=new AbortController();
   fetch(endpoint+'&lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon),controller?{signal:controller.signal}:undefined).then(function(r){
