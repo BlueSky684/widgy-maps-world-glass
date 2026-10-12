@@ -290,3 +290,20 @@ manual-refresh successes plus sharing HTTP 422 failures. Neither local source
 should be described as universally impossible or already reliable. A local
 replacement route still requires independently verified persistence, file access,
 replacement semantics, export/import behavior and actual native refresh.
+
+
+### Isolation helper deployment verification — 2026-10-12
+
+- Preview commit `70e40d6e896706cfe72b231d4d264d5fca7056af`, deployment `dpl_FRDTsDZb5uMAL6hX8sUBtyGWhd5Q`: READY. Production unchanged.
+- Branch helper loaded the new map-only section, decrypted its existing envelope, and the map-only copy action reported success in the browser UI.
+- Browser clipboard bridge returned an empty string; native clipboard bytes/import were not independently verified. The local transformation test already validated the generated JSON. Native map-only rendering remains the next gate.
+- Status-only page read showed a later native fetch at 14:45:14 (metadata) and 14:45:15 (image), still healthy image B; 22 metadata and 16 image requests total. This does not establish iPhone display. No fault or image mode change performed for helper verification.
+
+
+### Native isolation result and fresh full control — 2026-10-12 15:03:33 Asia/Jerusalem
+
+User reported “המפה מופיעה” after the map-only import instructions. This establishes user-reported map visibility in the isolated variant, not a long-running stability result or a memory measurement. The report did not explicitly distinguish editor preview from home-screen visibility.
+
+Next comparison: `Widgy Weather 15 — Fresh Control`, imported as a separate full document and placed in the same screen slot. Its only export changes relative to the full Stability candidate are document name and description (root fields 3 and 4). All layers, variables, geometry, providers and URLs are preserved exactly; the map is identical to the isolated variant. A distinct name does not promise native cache invalidation or a new internal identity. No guessed undocumented identity fields are modified.
+
+The helper now offers a clearly named fresh-full copy action above prior copies and collapses image-switch controls to keep the initial check focused. No server state, image, secret, backend or daily export change. First gate: does the map display on the iPhone home screen? Further fault testing/soak remains deferred. If both newly imported documents work, layer-count causation is not established; if only the full copy fails, document load/dependencies become a stronger lead, still without measuring memory.

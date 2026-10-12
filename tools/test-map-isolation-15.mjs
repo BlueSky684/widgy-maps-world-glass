@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {mapIsolation15} from './map-isolation-15.js';
+import {mapIsolation15,mapFreshFull15} from './map-isolation-15.js';
 
 const raw=fs.readFileSync('work/private/Widgy_Weather_15_Stability.json');
 const original=JSON.parse(raw),before=structuredClone(original);
@@ -29,3 +29,12 @@ assert(!text.includes('${widgy.'));
 assert.throws(()=>mapIsolation15({...original,'3':'unrecognized'}));
 fs.writeFileSync('work/private/Widgy_Map_Isolation_15.json',text,{mode:0o600});
 console.log(JSON.stringify({name:isolated['3'],layers:2,images:1,variables:0,bytes:Buffer.byteLength(text),sha256:createHash('sha256').update(text).digest('hex'),exactImageAndParent:true,originalUnchanged:true,nativeResult:'pending'}));
+const fresh=mapFreshFull15(original);
+assert.deepEqual(original,before);
+assert.deepEqual({...fresh,'3':original['3'],'4':original['4']},original);
+assert.deepEqual(map(fresh),map(isolated));
+assert(!JSON.stringify(fresh).includes(control));
+assert.throws(()=>mapFreshFull15({...original,'3':'unrecognized'}));
+const freshText=JSON.stringify(fresh);
+fs.writeFileSync('work/private/Widgy_Weather_15_Fresh_Control.json',freshText,{mode:0o600});
+console.log(JSON.stringify({name:fresh['3'],bytes:Buffer.byteLength(freshText),sha256:createHash('sha256').update(freshText).digest('hex'),changedFields:['3','4'],exactMapProviderAndAllContent:true,nativeResult:'pending'}));

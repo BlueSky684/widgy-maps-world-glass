@@ -22,3 +22,15 @@ export function mapIsolation15(original) {
     throw Error('unexpected_dependency');
   return widget;
 }
+
+// Comparison control: preserve every layer, variable, provider, and URL.
+// A new display name helps the user import/select a separate full document.
+// It does not promise that Widgy discards shared caches or internal state.
+export function mapFreshFull15(original) {
+  if (original?.['3'] !== 'Widgy Weather 15 — Stability' ||
+      !Array.isArray(original['1'])) throw Error('unexpected_stability_document');
+  const widget = structuredClone(original);
+  widget['3'] = 'Widgy Weather 15 — Fresh Control';
+  widget['4'] = 'Temporary full-document comparison after Map Isolation 15 displayed successfully. All layers, variables, image providers, URLs and image quality are identical to Weather 15 Stability. Import as a separate new widget and use the same screen slot. No server mode change or deliberate fault. This does not clear shared Widgy caches and is not a proven fix.';
+  return widget;
+}

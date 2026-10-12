@@ -1,4 +1,4 @@
-import {mapIsolation15} from './map-isolation-15.js';
+import {mapIsolation15,mapFreshFull15} from './map-isolation-15.js?v=fresh-control-1';
 const $=s=>document.querySelector(s);
 const message=(text,error=false)=>{$('#message').textContent=text;$('#message').classList.toggle('error',error);};
 const decode=s=>Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0));
@@ -26,6 +26,7 @@ $('#select').addEventListener('click',select);
 async function copyWidget(text,label){if(!text)return;try{await navigator.clipboard.writeText(text);message(label+' הועתק. ייבא ב־Widgy מהלוח.');}catch{$('#manual').hidden=false;$('#json').value=text;select();try{if(document.execCommand('copy')){$('#manual').hidden=true;message(label+' הועתק.');return;}}catch{}message('בחר ״העתק״ בתפריט הטקסט.',true);}}
 $('#copy').addEventListener('click',()=>copyWidget(copyText,'הווידג׳ט המלא'));
 $('#copy-map').addEventListener('click',()=>{try{copyWidget(JSON.stringify(mapIsolation15(payload.widget)),'עותק המפה בלבד');}catch{message('לא ניתן להכין את עותק המפה. העותק המקורי לא השתנה.',true);}});
+$('#copy-fresh').addEventListener('click',()=>{try{copyWidget(JSON.stringify(mapFreshFull15(payload.widget)),'העותק המלא החדש');}catch{message('לא ניתן להכין את העותק המלא החדש. העותק המקורי לא השתנה.',true);}});
 $('#refresh').addEventListener('click',()=>action());
 for(const b of document.querySelectorAll('[data-mode]'))b.addEventListener('click',()=>action({action:'set',mode:b.dataset.mode}));
 for(const b of document.querySelectorAll('[data-result]'))b.addEventListener('click',()=>action({action:'observation',result:b.dataset.result}));
