@@ -1,0 +1,110 @@
+{
+  "date": "2026-10-12",
+  "widgetSha256": "a37852981a3c3a9b66a26449688792531ed47c2cc82394342ed8d81161f77f8a",
+  "editorReportedImagesMB": 104.6,
+  "warningsReportedImagesMB": 48,
+  "counterRelationship": "unknown; do not add or multiply",
+  "recursiveNodes": 1204,
+  "imageNodes": 31,
+  "timerSources": [
+    {
+      "name": "Hero Time",
+      "id": 6110,
+      "source": "Live Timer (24 hours, No Seconds)"
+    }
+  ],
+  "assets": [
+    {
+      "label": "Approved Glass · Chrome and Frames",
+      "id": 80309,
+      "dimensions": [
+        1320,
+        1377
+      ],
+      "rgbaMiB": 6.934,
+      "alphaBounds": [
+        0,
+        0,
+        1320,
+        1377
+      ],
+      "path": "/assets/home-glass/Home_Glass_Chrome_Solar_R10.png"
+    },
+    {
+      "label": "Calendar R2 · Static Chrome",
+      "id": 80408,
+      "dimensions": [
+        1320,
+        1377
+      ],
+      "rgbaMiB": 6.934,
+      "alphaBounds": [
+        0,
+        0,
+        1320,
+        1377
+      ],
+      "path": "/assets/calendar-glass/Calendar_Glass_Chrome_C8.png"
+    },
+    {
+      "label": "Weather · Approved glass with native navigation",
+      "id": 84024,
+      "dimensions": [
+        1135,
+        1184
+      ],
+      "rgbaMiB": 5.126,
+      "alphaBounds": [
+        1,
+        1,
+        1134,
+        1183
+      ],
+      "path": "/assets/weather-premium/chrome-r14.png"
+    },
+    {
+      "label": "Health · Approved glass and icons",
+      "id": 85059,
+      "dimensions": [
+        2270,
+        2368
+      ],
+      "rgbaMiB": 20.505,
+      "alphaBounds": [
+        3,
+        3,
+        2267,
+        2365
+      ],
+      "path": "/assets/health-premium/chrome-h1-clean.png"
+    },
+    {
+      "label": "Live map",
+      "dimensions": [
+        3306,
+        1558
+      ],
+      "rgbaMiB": 19.649,
+      "resolutionLocked": true
+    },
+    {
+      "label": "Weather panel",
+      "dimensions": [
+        2270,
+        1608
+      ],
+      "rgbaMiB": 13.924
+    },
+    {
+      "label": "Calendar dots per month",
+      "dimensions": [
+        1108,
+        1120
+      ],
+      "rgbaMiB": 4.734,
+      "configuredNodes": 25,
+      "simultaneousResidency": "unknown"
+    }
+  ],
+  "limits": "RGBA estimates from source dimensions, not measured native allocations, peak RSS or a verified memory limit. No property/image/widget change."
+}

@@ -47,7 +47,7 @@ async function load() {
     message('פתח את הקישור המלא מהשיחה כדי לטעון את הקובץ.', true); return;
   }
   try {
-    const response = await fetch('./widgy-health-premium-1.enc.json?v=15-city-resilience', {cache:'no-store', credentials:'omit', referrerPolicy:'no-referrer'});
+    const response = await fetch('./widgy-health-premium-1.enc.json?v=15-health-memory', {cache:'no-store', credentials:'omit', referrerPolicy:'no-referrer'});
     if (!response.ok) throw Error('load_failed');
     const envelope = await response.json();
     if (envelope.v !== 1) throw Error('version');

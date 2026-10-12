@@ -111,6 +111,7 @@
     "tools/map-stability-15.js",
     "tools/map-stability-15.css",
     "tools/map-stability-15.enc.json",
-    "tools/map-isolation-15.js"
+    "tools/map-isolation-15.js",
+    "assets/health-premium/chrome-h1-clean-1320.png"
   ]
 }
