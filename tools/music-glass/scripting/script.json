@@ -1,0 +1,10 @@
+{
+  "name": "Music Glass M1",
+  "description": "Design A — Apple Music, square artwork and direct playback buttons. First device-test build.",
+  "version": "1.0.0",
+  "icon": "music.note",
+  "color": "#C5FF0A",
+  "entry": "index.tsx",
+  "runInApp": false,
+  "intentInputTypes": []
+}
