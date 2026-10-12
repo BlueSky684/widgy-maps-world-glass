@@ -1,16 +1,34 @@
 import {withDirectLocationLabel} from './direct-location-label.js';
 
 export function sharedLocationText(latitude,longitude,endpoint) {
+  var done=false,timer=null,controller=null;
+  function finish(value) {
+    if(done)return;
+    done=true;
+    if(timer!==null && typeof clearTimeout==='function')clearTimeout(timer);
+    sendToWidgy(value);
+  }
+  function unavailable() {
+    finish('Location unavailable');
+    if(controller)try{controller.abort();}catch(error){}
+  }
   var lat=String(latitude).trim().replace(',','.'),lon=String(longitude).trim().replace(',','.');
   var number=/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/;
-  if(!number.test(lat)||!number.test(lon)||Math.abs(Number(lat))>90||Math.abs(Number(lon))>180){sendToWidgy('Location unavailable');return;}
-  fetch(endpoint+'&lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon)).then(function(r){
+  if(!number.test(lat)||!number.test(lon)||Math.abs(Number(lat))>90||Math.abs(Number(lon))>180){unavailable();return;}
+  // Complete once even if headers/body never arrive. Abort is optional in
+  // native JS; the callback guard also discards any late successful response.
+  if(typeof setTimeout!=='function'){unavailable();return;}
+  timer=setTimeout(unavailable,4000);
+  try {
+  if(typeof AbortController==='function')controller=new AbortController();
+  fetch(endpoint+'&lat='+encodeURIComponent(lat)+'&lon='+encodeURIComponent(lon),controller?{signal:controller.signal}:undefined).then(function(r){
     if(!r.ok)throw Error('unavailable');return r.json();
   }).then(function(result){
     var e=result.entry;
     if(!e||e.latitude!==Number(lat)||e.longitude!==Number(lon)||!e.city||!e.countryName)throw Error('mismatch');
-    sendToWidgy(e.city+', '+e.countryName);
-  }).catch(function(){sendToWidgy('Location unavailable');});
+    finish(e.city+', '+e.countryName);
+  }).catch(unavailable);
+  } catch(error) {unavailable();}
 }
 export function withSharedLocationWidget(input,accessToken,origin='https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app') {
   if(!/^[a-zA-Z0-9_-]{43}$/.test(accessToken))throw Error('Invalid access token');

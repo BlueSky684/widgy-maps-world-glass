@@ -74,15 +74,24 @@ export default async function handler(req, res) {
   }
   // Explicit opt-in only: existing widget/map requests are unchanged.
   if (url.searchParams.get('shared_location') === '1') {
-    const {authorizeLocation,sharedLocation,locationErrorStatus} = await import('../lib/location/shared.js');
+    const {authorizeLocation,locationErrorStatus} = await import('../lib/location/shared.js');
+    let point;
     try {
-      const result=await sharedLocation(authorizeLocation(url));
-      url.searchParams.set('city',result.entry.city);
-      res.setHeader('X-Location-Cache',result.state);
+      // Authorization and coordinate validation remain mandatory even when
+      // the optional city provider is missing or unavailable.
+      point=authorizeLocation(url,process.env,{requireProvider:false});
     } catch(error) {
-      // Never render an invented or old city for different coordinates.
-      return res.status(locationErrorStatus(error)).json({error:'Location unavailable'});
+      const status=locationErrorStatus(error);
+      report('rejected',{status,reason:'location_authorization_or_coordinates'});
+      return res.status(status).json({error:'Location unavailable'});
     }
+    const {resolveMapCity}=await import('../lib/location/map-city.js');
+    const result=await resolveMapCity(point);
+    // Never reuse a caller-supplied or stale name for different coordinates.
+    url.searchParams.delete('city');
+    if(result.city)url.searchParams.set('city',result.city);
+    res.setHeader('X-Location-Cache',result.state);
+    report('location',{state:result.state,cityAvailable:!!result.city});
   }
   const location = resolveLocation(url, req.headers);
   cachedCity.remember(url);
