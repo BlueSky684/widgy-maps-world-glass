@@ -110,6 +110,7 @@
     "tools/map-stability-15.html",
     "tools/map-stability-15.js",
     "tools/map-stability-15.css",
-    "tools/map-stability-15.enc.json"
+    "tools/map-stability-15.enc.json",
+    "tools/map-isolation-15.js"
   ]
 }
