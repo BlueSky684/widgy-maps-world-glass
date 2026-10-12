@@ -2,7 +2,7 @@
   "regions": [
     "fra1"
   ],
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build && node tools/build-map-stability-assets.mjs",
   "outputDirectory": "public",
   "functions": {
     "api/calendar-widget.js": {
@@ -33,8 +33,8 @@
       "includeFiles": "assets/earth/{Terrain_Master_3306x1558.png,Night_Lights_Master_3306x1558.png,Widget_Asset_Contract.json,render-cache-r6.bin.gz,BarlowCondensed-Regular.ttf,BarlowCondensed-Medium.ttf,OFL.txt}"
     },
     "api/fetch-probe.js": {
-      "maxDuration": 10,
-      "includeFiles": "assets/weather-premium/{glyphs.json,icons.json,text-ink-bounds.json}"
+      "maxDuration": 15,
+      "includeFiles": "{assets/weather-premium/{glyphs.json,icons.json,text-ink-bounds.json},assets/diagnostics/map-stability-15/{a,b}.png}"
     }
   },
   "headers": [
@@ -68,6 +68,10 @@
     {
       "source": "/api/weather-panel",
       "destination": "/api/fetch-probe?weather_panel=1"
+    },
+    {
+      "source": "/api/map-stability",
+      "destination": "/api/fetch-probe?map_stability=1"
     }
   ]
 }
