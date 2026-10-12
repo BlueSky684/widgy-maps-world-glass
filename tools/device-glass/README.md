@@ -287,3 +287,21 @@ D7's `IMG_0289.png` showed both On icons blue on-device. Independent Off
 transitions remain pending a phone check; this revision preserves that logic.
 
 Copy page loads `Widgy_Device_Glass_8.json?v=8`. Earlier JSON/artwork is retained.
+
+
+## Device Glass 9 — match Home background colors
+
+User screenshot IMG_0290.jpeg shows Device below Home. Device has a lighter
+cyan top, brighter rim and blue gradient panels. Home source
+`assets/home-glass/Home_Glass_Chrome_R4.svg` uses glass stops #15212A, #101B23
+at .43, #080F14 with x2=.25/y2=1; panels #091116, edges #35434E.
+`node tools/device-glass/build-matched-background.mjs` copies Home's glass
+and rim gradients, sets the Device panels/edges to Home's colors, and removes
+the diagonal cyan reflection. Dial/bezel geometry and materials are retained.
+The active blue tiles are rebuilt against the matching background so the old
+background does not show as rectangles. PNGs are lossless RGBA with sRGB ICC.
+Only the three embedded image sources plus widget metadata change from D8.
+All frames, variables, conditions, data sources, text and battery Circle are
+identical; 15 layers. D8 was reported working by the user. Native side-by-side
+color matching for D9 remains to be checked on the phone. Home, Calendar,
+Weather and Health are not modified. Copy page loads D9; D8 is retained.
