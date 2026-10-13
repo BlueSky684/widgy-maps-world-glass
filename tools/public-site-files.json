@@ -20,7 +20,8 @@
     "tools/widgy-device-glass-circle-copy.html",
     "tools/map-refresh-c-15.html",
     "tools/map-stability-15.html",
-    "tools/music-glass-install.html"
+    "tools/music-glass-install.html",
+    "tools/widgy-music-glass-copy.html"
   ],
   "files": [
     "assets/calendar-glass/Calendar_Glass_Chrome_C8.png",
@@ -117,6 +118,9 @@
     "tools/music-glass-install.html",
     "tools/music-glass-install.js",
     "tools/Music_Glass_M1.zip",
-    "tools/Music_Glass_M1_Source.txt"
+    "tools/Music_Glass_M1_Source.txt",
+    "tools/widgy-music-glass-copy.html",
+    "tools/widgy-music-glass-copy.js",
+    "tools/Widgy_Music_Glass_W1.json"
   ]
 }
