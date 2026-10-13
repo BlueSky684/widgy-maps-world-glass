@@ -1,4 +1,4 @@
-import {renderHomeMap, resolveLocation, REVISION} from '../lib/home-map-day-night.js';
+import {renderHomeMap, renderMapLocation, resolveLocation, REVISION} from '../lib/home-map-day-night.js';
 import {parseMapRequest} from '../lib/native-map-request.js';
 import {createMapRenderCache} from '../lib/map-render-cache.js';
 import {precomputedState} from '../lib/map-precomputed.js';
@@ -73,8 +73,16 @@ export default async function handler(req, res) {
     report('rejected', {status: 400, reason: 'invalid_width'});
     return res.status(400).json({error:'Unsupported image width'});
   }
+  const layer = url.searchParams.get('layer');
+  if (layer !== null && !['base', 'location'].includes(layer)) {
+    report('rejected', {status:400, reason:'invalid_layer'});
+    return res.status(400).json({error:'Unsupported image layer'});
+  }
+  const baseOnly = layer === 'base', locationOnly = layer === 'location';
   // Explicit opt-in only: existing widget/map requests are unchanged.
-  if (url.searchParams.get('shared_location') === '1') {
+  // The new base never reads GPS/IP/city or waits for location authorization or
+  // geocoding. A failure in the separate location request cannot gate this PNG.
+  if (!baseOnly && url.searchParams.get('shared_location') === '1') {
     const {authorizeLocation,locationErrorStatus} = await import('../lib/location/shared.js');
     let point;
     try {
@@ -94,23 +102,27 @@ export default async function handler(req, res) {
     res.setHeader('X-Location-Cache',result.state);
     report('location',{state:result.state,cityAvailable:!!result.city});
   }
-  const location = resolveLocation(url, req.headers);
-  cachedCity.remember(url);
+  const location = baseOnly ? null : resolveLocation(url, req.headers);
+  if (!baseOnly) cachedCity.remember(url);
   const presentation = url.searchParams.get('presentation') === 'glass' ? 'glass' : 'default';
   const atlas = url.searchParams.get('atlas') === 'r6' ? 'r6' : 'f50';
   try {
     const started=performance.now();
     const diagnosticValue = url.searchParams.get('diagnostic');
     // Keep the existing false/true keys; only this opt-in uses a distinct key.
-    const diagnostic = diagnosticValue === 'refresh-v1' ? 'refresh-v1' : diagnosticValue === 'location';
+    const diagnostic = locationOnly ? false : diagnosticValue === 'refresh-v1' ? 'refresh-v1' : diagnosticValue === 'location';
     // C6 opt-in only. Explicit coordinates (including empty/unavailable values)
     // make the URL self-contained; IP-derived locations must never be browser-cached.
     const reuse = url.searchParams.get('reuse') === '60' && fixed === null &&
       url.searchParams.has('lat') && url.searchParams.has('lon');
     // Reuse for at most 60 seconds from the actual render, even across a
     // wall-clock minute boundary. GPS, city, style and size still key the cache.
-    const render = () => renderHomeMap({date, location, width, presentation, diagnostic, atlas});
-    const cacheKey = JSON.stringify([REVISION, width, presentation, atlas, diagnostic, location]);
+    const render = () => locationOnly
+      ? renderMapLocation({location, width, presentation})
+      : renderHomeMap({date, location, width, presentation, diagnostic, atlas});
+    // Preserve every legacy key and its diagnostic tuple shape. A transparent
+    // image must never satisfy a request for the opaque composite or base.
+    const cacheKey = JSON.stringify([REVISION, width, locationOnly ? `location-only:${presentation}` : presentation, atlas, diagnostic, location]);
     let keyDiagnostic = {previousKeyComparison: 'bypass', previousKeyChanges: [], previousRequestAgeMs: null};
     if (reuse) {
       keyDiagnostic = {...compareMapRequestKeys(previousCacheKey, cacheKey),
@@ -147,6 +159,7 @@ export default async function handler(req, res) {
     res.setHeader('X-Map-Revision', REVISION);
     res.setHeader('X-Map-Atlas', atlas);
     res.setHeader('X-Map-Width', String(width));
+    res.setHeader('X-Map-Layer', layer || 'composite');
     res.setHeader('X-Map-Time-Mode', fixed === null ? 'server-now' : 'fixed-test');
     res.setHeader('X-Map-Rendered-At', entry.renderedAt);
     res.setHeader('X-Map-Location-Source', location?.source || 'unavailable');
@@ -157,7 +170,7 @@ export default async function handler(req, res) {
     // budget can still fail after the function adapter processes this response.
     const urlDiagnostic = reuse && method === 'GET' ? observeMapURL({key:cacheKey, rawURL:req.url, etag:entry.etag}) : {};
     report('prepared', {status: notModified ? 304 : 200, cache: result.state, ...keyDiagnostic, ...urlDiagnostic, ...readCityTimingTrace(url),
-      width, pngBytes: entry.png.length, bodyBytes: notModified || method === 'HEAD' ? 0 : entry.png.length,
+      width, layer:layer || 'composite', pngBytes: entry.png.length, bodyBytes: notModified || method === 'HEAD' ? 0 : entry.png.length,
       conditional: tags.length > 0 && tags[0] !== '', precomputed: precomputedState()});
     if (notModified) return res.status(304).end();
     return req.method === 'HEAD' ? res.status(200).end() : res.status(200).send(entry.png);
