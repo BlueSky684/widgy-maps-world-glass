@@ -42,11 +42,11 @@ button.addEventListener('click', async () => {
 });
 async function load() {
   try {
-    const response = await fetch('./Widgy_Music_Glass_W1.json?v=1', {cache:'no-store'});
+    const response = await fetch('./Widgy_Music_Glass_W2.json?v=2', {cache:'no-store'});
     if (!response.ok) throw Error('load_failed');
     const value = await response.text();
     const widget = JSON.parse(value);
-    if (!Array.isArray(widget['1']) || widget['3'] !== 'Widgy Music Glass W1' || widget['1'].length !== 8) throw Error('widget');
+    if (!Array.isArray(widget['1']) || widget['3'] !== 'Widgy Music Glass W2' || widget['1'].length !== 9) throw Error('widget');
     compactPayload = value;
     linePayload = formatJSONLines(value);
     // Validate the display-oriented representation before enabling copy. The
