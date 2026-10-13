@@ -22,7 +22,8 @@
     "tools/map-stability-15.html",
     "tools/music-glass-install.html",
     "tools/widgy-music-glass-copy.html",
-    "tools/widgy-weather15-location-split-copy.html"
+    "tools/widgy-weather15-location-split-copy.html",
+    "tools/widgy-weather15-hourly-lime-copy.html"
   ],
   "files": [
     "assets/calendar-glass/Calendar_Glass_Chrome_C8.png",
@@ -127,6 +128,10 @@
     "tools/Widgy_Music_Glass_W3.json",
     "tools/widgy-weather15-location-split-copy.html",
     "tools/widgy-weather15-location-split-copy.js",
-    "tools/widgy-weather15-location-split.enc.json"
+    "tools/widgy-weather15-location-split.enc.json",
+    "assets/weather-premium/chrome-r14-hourly-lime1.png",
+    "tools/widgy-weather15-hourly-lime-copy.html",
+    "tools/widgy-weather15-hourly-lime-copy.js",
+    "tools/widgy-weather15-hourly-lime.enc.json"
   ]
 }
