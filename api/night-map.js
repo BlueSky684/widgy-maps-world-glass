@@ -68,7 +68,8 @@ export default async function handler(req, res) {
     return res.status(400).json({error: 'at must be an ISO instant with a timezone, between 1900 and 2100'});
   }
   const width=Number(url.searchParams.get('width') || 3306);
-  if(![3306,1653,1102].includes(width)){
+  // Opt-in resolution steps for the single-map Widgy stability trial.
+  if(![3306,2600,2204,1653,1102].includes(width)){
     report('rejected', {status: 400, reason: 'invalid_width'});
     return res.status(400).json({error:'Unsupported image width'});
   }
@@ -156,7 +157,7 @@ export default async function handler(req, res) {
     // budget can still fail after the function adapter processes this response.
     const urlDiagnostic = reuse && method === 'GET' ? observeMapURL({key:cacheKey, rawURL:req.url, etag:entry.etag}) : {};
     report('prepared', {status: notModified ? 304 : 200, cache: result.state, ...keyDiagnostic, ...urlDiagnostic, ...readCityTimingTrace(url),
-      pngBytes: entry.png.length, bodyBytes: notModified || method === 'HEAD' ? 0 : entry.png.length,
+      width, pngBytes: entry.png.length, bodyBytes: notModified || method === 'HEAD' ? 0 : entry.png.length,
       conditional: tags.length > 0 && tags[0] !== '', precomputed: precomputedState()});
     if (notModified) return res.status(304).end();
     return req.method === 'HEAD' ? res.status(200).end() : res.status(200).send(entry.png);
