@@ -25,7 +25,8 @@
     "tools/widgy-weather15-location-split-copy.html",
     "tools/widgy-weather15-hourly-lime-copy.html",
     "tools/widgy-weather15-before-lime-copy.html",
-    "tools/widgy-weather15-recovery-copy.html"
+    "tools/widgy-weather15-recovery-copy.html",
+    "tools/widgy-weather15-home-start-copy.html"
   ],
   "files": [
     "assets/calendar-glass/Calendar_Glass_Chrome_C8.png",
@@ -139,6 +140,9 @@
     "tools/widgy-weather15-before-lime-copy.js",
     "tools/widgy-weather15-recovery-copy.html",
     "tools/widgy-weather15-recovery-copy.js",
-    "tools/widgy-weather15-recovery.enc.json"
+    "tools/widgy-weather15-recovery.enc.json",
+    "tools/widgy-weather15-home-start-copy.html",
+    "tools/widgy-weather15-home-start-copy.js",
+    "tools/widgy-weather15-home-start.enc.json"
   ]
 }
