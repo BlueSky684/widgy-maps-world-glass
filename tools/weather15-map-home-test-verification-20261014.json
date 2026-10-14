@@ -1,0 +1,457 @@
+{
+  "baseline": "Home Start PNG, reconstructed and exact SHA-256 verified",
+  "sourceSha256": "cf0a272cf7b1477bbf322f0ae4c49a3bdbe6ec05c351458d317c63841725f137",
+  "layersBefore": 1204,
+  "layersAfter": 1099,
+  "homeChildrenBefore": 42,
+  "homeChildrenAfter": 10,
+  "removedLayerCount": 106,
+  "removedLayers": [
+    {
+      "id": 6191,
+      "name": "Events Calendar Icon"
+    },
+    {
+      "id": 80029,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80030,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80031,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80001,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80011,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80012,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80017,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80018,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80019,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 7002,
+      "name": "MASTER · Clear Day · Weight 3"
+    },
+    {
+      "id": 80013,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80015,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80016,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 7302,
+      "name": "WX CURRENT · Partly Cloudy Day · Cloud OUTLINE"
+    },
+    {
+      "id": 7303,
+      "name": "WX CURRENT · Partly Cloudy Day · Exact Interior Fill MASK · LOCKED"
+    },
+    {
+      "id": 7053,
+      "name": "WX CURRENT · Partly Cloudy Day · OFFSET CLOUD FILL SEPARATOR · v53 · +5X -5Y"
+    },
+    {
+      "id": 7001,
+      "name": "MASTER · Partly Cloudy Day · Sun BEHIND · USER LOCKED · Weight 3"
+    },
+    {
+      "id": 7003,
+      "name": "WX READY · Cloudy"
+    },
+    {
+      "id": 80025,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80027,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 76800,
+      "name": "WX READY · Light Rain · Cloud · v68"
+    },
+    {
+      "id": 77102,
+      "name": "Light Rain · Shared original strokes"
+    },
+    {
+      "id": 80026,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 76801,
+      "name": "WX READY · Heavy Rain · Cloud · v68"
+    },
+    {
+      "id": 77202,
+      "name": "Heavy Rain · Shared original strokes"
+    },
+    {
+      "id": 80032,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80033,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80034,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80002,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80022,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80023,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 7009,
+      "name": "WX READY · Clear Night"
+    },
+    {
+      "id": 80020,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80021,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 7010,
+      "name": "WX READY · Partly Cloudy Night · Cloud"
+    },
+    {
+      "id": 79001,
+      "name": "WX · Partly Cloudy Night · Exact Interior Fill MASK · v99"
+    },
+    {
+      "id": 79002,
+      "name": "WX · Partly Cloudy Night · CLOUD FILL SEPARATOR · +5X -5Y · v99"
+    },
+    {
+      "id": 7011,
+      "name": "WX READY · Partly Cloudy Night · Moon"
+    },
+    {
+      "id": 80028,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 79101,
+      "name": "Thunderstorm · Reference Rounded Lightning · v100"
+    },
+    {
+      "id": 79102,
+      "name": "Thunderstorm · Rounded Cloud Opening and Old Bolt Mask · v100"
+    },
+    {
+      "id": 79201,
+      "name": "Thunderstorm · Left Surplus Rain Mask · v101"
+    },
+    {
+      "id": 79202,
+      "name": "Thunderstorm · Right Surplus Rain Mask · v101"
+    },
+    {
+      "id": 7006,
+      "name": "WX READY · Thunderstorm"
+    },
+    {
+      "id": 80049,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80003,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 7012,
+      "name": "WX READY · Snow Option 6 · Cloud"
+    },
+    {
+      "id": 7013,
+      "name": "WX READY · Snow Option 6 · Flake L"
+    },
+    {
+      "id": 7014,
+      "name": "WX READY · Snow Option 6 · Flake C"
+    },
+    {
+      "id": 7015,
+      "name": "WX READY · Snow Option 6 · Flake R"
+    },
+    {
+      "id": 80050,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80005,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80039,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80038,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 79401,
+      "name": "Fog · Shared original lines"
+    },
+    {
+      "id": 79403,
+      "name": "Fog · Original Lines Mask · v103"
+    },
+    {
+      "id": 7007,
+      "name": "WX READY · Fog"
+    },
+    {
+      "id": 80040,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 7008,
+      "name": "WX READY · Windy"
+    },
+    {
+      "id": 80041,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80042,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80004,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80036,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80071,
+      "name": "WX CURRENT · Partly Cloudy Day · Cloud OUTLINE"
+    },
+    {
+      "id": 80072,
+      "name": "WX CURRENT · Partly Cloudy Day · Exact Interior Fill MASK · LOCKED"
+    },
+    {
+      "id": 80073,
+      "name": "WX CURRENT · Partly Cloudy Day · OFFSET CLOUD FILL SEPARATOR · v53 · +5X -5Y"
+    },
+    {
+      "id": 80074,
+      "name": "MASTER · Partly Cloudy Day · Sun BEHIND · USER LOCKED · Weight 3"
+    },
+    {
+      "id": 80035,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80084,
+      "name": "WX READY · Partly Cloudy Night · Cloud"
+    },
+    {
+      "id": 80085,
+      "name": "WX · Partly Cloudy Night · Exact Interior Fill MASK · v99"
+    },
+    {
+      "id": 80086,
+      "name": "WX · Partly Cloudy Night · CLOUD FILL SEPARATOR · +5X -5Y · v99"
+    },
+    {
+      "id": 80087,
+      "name": "WX READY · Partly Cloudy Night · Moon"
+    },
+    {
+      "id": 80051,
+      "name": "WX · Shared native condition"
+    },
+    {
+      "id": 80097,
+      "name": "WX READY · Snow Option 6 · Cloud"
+    },
+    {
+      "id": 80098,
+      "name": "WX READY · Snow Option 6 · Flake L"
+    },
+    {
+      "id": 80099,
+      "name": "WX READY · Snow Option 6 · Flake C"
+    },
+    {
+      "id": 80100,
+      "name": "WX READY · Snow Option 6 · Flake R"
+    },
+    {
+      "id": 6193,
+      "name": "Fitness Walk Ring"
+    },
+    {
+      "id": 80209,
+      "name": "Steps Goal Ring · Native"
+    },
+    {
+      "id": 6101,
+      "name": "Greeting White"
+    },
+    {
+      "id": 6102,
+      "name": "Greeting Lime · Direct clock data"
+    },
+    {
+      "id": 6110,
+      "name": "Hero Time"
+    },
+    {
+      "id": 6111,
+      "name": "Events Summary · 1"
+    },
+    {
+      "id": 80206,
+      "name": "Events Summary · 2"
+    },
+    {
+      "id": 80207,
+      "name": "Events Summary · 3"
+    },
+    {
+      "id": 80208,
+      "name": "Events Summary · 4"
+    },
+    {
+      "id": 6112,
+      "name": "Next Event Label"
+    },
+    {
+      "id": 6113,
+      "name": "Next Event Title"
+    },
+    {
+      "id": 6121,
+      "name": "Sunrise Time"
+    },
+    {
+      "id": 6122,
+      "name": "Day Progress Label"
+    },
+    {
+      "id": 6123,
+      "name": "Day Progress Value"
+    },
+    {
+      "id": 6124,
+      "name": "Sunset Time"
+    },
+    {
+      "id": 6130,
+      "name": "Weather Sun"
+    },
+    {
+      "id": 6131,
+      "name": "Weather Temp"
+    },
+    {
+      "id": 6132,
+      "name": "Weather Status"
+    },
+    {
+      "id": 6133,
+      "name": "Weather High"
+    },
+    {
+      "id": 6134,
+      "name": "Weather Low"
+    },
+    {
+      "id": 6140,
+      "name": "Fitness Hero Icon"
+    },
+    {
+      "id": 6141,
+      "name": "Steps Value"
+    },
+    {
+      "id": 6142,
+      "name": "Steps Label"
+    },
+    {
+      "id": 6143,
+      "name": "Distance Value"
+    },
+    {
+      "id": 6144,
+      "name": "Calories Value"
+    },
+    {
+      "id": 82317,
+      "name": "Day Progress · Native Linear Gauge"
+    },
+    {
+      "id": 80309,
+      "name": "Approved Glass · Chrome and Frames"
+    },
+    {
+      "id": 5001,
+      "name": "Full Graphite Background"
+    }
+  ],
+  "removedVariables": [
+    "wx_status"
+  ],
+  "variablesBefore": 74,
+  "variablesAfter": 73,
+  "preexistingUnusedVariablesPreserved": [
+    "wx_wind_speed",
+    "calendar_native_city",
+    "calendar_native_country"
+  ],
+  "calendarOriginalChildrenIdentical": true,
+  "calendarDateRetainedWithOriginalFrame": true,
+  "weatherAndHealthIdentical": true,
+  "navigationActionsIdentical": true,
+  "mapLayerAndRequestIdentical": true,
+  "mapFormat": "PNG",
+  "mapWidth": 3306,
+  "debugCounterIncluded": false,
+  "nativeLoadVerified": false,
+  "encryptionRoundTrip": true,
+  "bytes": 851314,
+  "sha256": "16f3eed08bfdbfb31ba713c2266a2af4e697abbf0b594c5133b8f48968fd263a"
+}
