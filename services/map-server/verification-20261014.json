@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "baselineCommit": "6fcfc958a62fafdf7fdfac937b7db0feaadaa5d3",
+  "rows": [
+    {
+      "at": "2026-10-14T12:00:00Z",
+      "bytes": 4062166,
+      "sha256": "6828f3fdfeaa0777d2429de853c9edb4c41050e0c505a1edeb92b5d8bba48a27",
+      "byteIdenticalToBaseline": true
+    },
+    {
+      "at": "2026-10-14T00:00:00Z",
+      "bytes": 4492823,
+      "sha256": "9fbadfd72397dd8e2ba92259d7d16f7c1ec93e573d646c3a68244ad1094eba17",
+      "byteIdenticalToBaseline": true
+    }
+  ],
+  "liveCacheAnd304": true,
+  "head": true,
+  "accessGuards": true,
+  "cityWorkFinishesBeforeResponse": true,
+  "cityOutageStillReturnsPNG": true,
+  "privateCacheTTL": true,
+  "sanitizedApplicationLogs": true,
+  "peakRSSMiB": 406,
+  "containerBuild": "pending; no Docker daemon in local environment",
+  "cloudRunAndNativePhone": "pending Google project deployment",
+  "legacyResilienceSuite": {
+    "routeImageAndAuthorizationCases": "passed before unrelated client assertion",
+    "result": "failed at existing no-timers client expectation, line 110",
+    "baselineFilesUnchanged": true,
+    "reason": "Existing native client permits fetch without setTimeout; existing test expects zero fetches and Location unavailable. Neither file changed by the Cloud Run trial."
+  },
+  "deploymentPlan": {
+    "noCloudOperations": true,
+    "preparedSourceFilesIncludingDockerfile": 29
+  }
+}

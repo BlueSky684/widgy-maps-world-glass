@@ -1,0 +1,50 @@
+# Deployment template. PROJECT_ID and IMAGE_DIGEST are replaced at deployment.
+# Request-billed trial; this is not the $57/month always-allocated CPU profile.
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: widgy-map-test
+  labels:
+    cloud.googleapis.com/location: me-west1
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: '0'
+        autoscaling.knative.dev/maxScale: '2'
+        run.googleapis.com/cpu-throttling: 'true'
+        run.googleapis.com/startup-cpu-boost: 'true'
+        run.googleapis.com/execution-environment: gen2
+    spec:
+      serviceAccountName: widgy-map-runtime@PROJECT_ID.iam.gserviceaccount.com
+      containerConcurrency: 2
+      timeoutSeconds: 30
+      containers:
+        - image: IMAGE_DIGEST
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: '1'
+              memory: 1Gi
+          env:
+            - name: WIDGY_LOCATION_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: widgy-location-access-token
+                  key: '1'
+            - name: BIGDATACLOUD_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: widgy-bigdatacloud-api-key
+                  key: '1'
+            - name: UPSTASH_REDIS_REST_URL
+              valueFrom:
+                secretKeyRef:
+                  name: widgy-upstash-rest-url
+                  key: '1'
+            - name: UPSTASH_REDIS_REST_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: widgy-upstash-rest-token
+                  key: '1'
