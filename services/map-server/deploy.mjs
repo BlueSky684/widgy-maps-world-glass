@@ -51,9 +51,7 @@ const sourceClean = !execFileSync('git', ['status', '--porcelain', '--untracked-
 if (mode === '--execute' && !sourceClean) throw Error('Commit the reviewed deployment sources on f50-widget-test first');
 const secrets = {
   WIDGY_LOCATION_ACCESS_TOKEN: 'widgy-location-access-token',
-  BIGDATACLOUD_API_KEY: 'widgy-bigdatacloud-api-key',
-  UPSTASH_REDIS_REST_URL: 'widgy-upstash-rest-url',
-  UPSTASH_REDIS_REST_TOKEN: 'widgy-upstash-rest-token'
+  BIGDATACLOUD_API_KEY: 'widgy-bigdatacloud-api-key'
 };
 const args = ['run', 'deploy', 'widgy-map-test', '--project', project, '--region', 'me-west1',
   '--source', context, '--execution-environment', 'gen2', '--port', '8080',
@@ -63,6 +61,7 @@ const args = ['run', 'deploy', 'widgy-map-test', '--project', project, '--region
   '--service-account', `widgy-map-runtime@${project}.iam.gserviceaccount.com`,
   '--build-service-account', `projects/${project}/serviceAccounts/widgy-map-builder@${project}.iam.gserviceaccount.com`,
   '--set-secrets', Object.entries(secrets).map(([key, name]) => `${key}=${name}:1`).join(','),
+  '--set-env-vars', `FIRESTORE_PROJECT_ID=${project},FIRESTORE_DATABASE_ID=(default)`,
   '--labels', `purpose=widgy-map-trial,source-commit=${commit}`, '--quiet'];
 console.log(JSON.stringify({execute: mode === '--execute', project, region: 'me-west1', branch, commit, sourceClean,
   profile: {billing: 'request-based', minimum: 0, maximum: 2, cpu: 1, memory: '1Gi', concurrency: 2},
@@ -74,6 +73,8 @@ if (mode !== '--execute') process.exit(0);
 const gcloudJSON = extra => JSON.parse(execFileSync('gcloud', [...extra, '--project', project, '--format=json'], {encoding: 'utf8'}));
 const projectInfo = gcloudJSON(['projects', 'describe', project]);
 if (projectInfo.projectId !== project || projectInfo.lifecycleState !== 'ACTIVE') throw Error('Project is not active');
+const database = gcloudJSON(['firestore', 'databases', 'describe', '--database', '(default)']);
+if (database.locationId !== 'me-west1' || database.type !== 'FIRESTORE_NATIVE') throw Error('Expected Firestore Native database in me-west1');
 for (const suffix of ['runtime', 'builder']) {
   const identity = gcloudJSON(['iam', 'service-accounts', 'describe', `widgy-map-${suffix}@${project}.iam.gserviceaccount.com`]);
   if (identity.disabled) throw Error('Service identity is disabled');

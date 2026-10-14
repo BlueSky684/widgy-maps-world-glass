@@ -10,6 +10,7 @@ import {createHash} from 'node:crypto';
 import sharp from 'sharp';
 import {createMapServer, validateConfiguration} from '../services/map-server/server.mjs';
 import {createLocationCache} from '../services/map-server/location-cache.mjs';
+import {encodeValue, decodeValue} from '../services/map-server/firestore.mjs';
 import {authorizeLocation, locationErrorStatus} from '../lib/location/shared.js';
 
 const token = 'synthetic-cloud-run-token-'.repeat(2);
@@ -130,20 +131,64 @@ try {
   assert.equal(fallback.status, 200); assert.equal(fallback.headers['x-location-cache'], 'UNAVAILABLE');
   assert.equal(fallback.headers['content-type'], 'image/png');
 
-  // Private Redis cache uses hashed namespaced keys, finite TTL and a deadline.
-  const commands = [], entry = {latitude: 10, longitude: 20, city: 'Synthetic City A'};
-  const cache = createLocationCache({env: () => ({UPSTASH_REDIS_REST_URL: 'https://synthetic.upstash.io', UPSTASH_REDIS_REST_TOKEN: 'test'}),
-    fetcher: async (url, init) => {
-      assert(init.signal); assert.equal(init.redirect, 'error'); commands.push(JSON.parse(init.body));
-      return {ok: true, json: async () => ({result: commands.at(-1)[0] === 'GET' ? JSON.stringify(entry) : 'OK'})};
-    }});
+  // Exercise the real server's default lookup wiring with Google REST and BDC
+  // fixtures. A hidden Redis dependency would fail this allowlisted transport.
+  const priorFetch = globalThis.fetch, documents = new Map();
+  let providerCalls = 0, revision = 0;
+  documents.set('widgyControl/bdc-budget-v1', {schema: 1, state: 'active', days: {}, minute: 0, rate: 0,
+    migrationId: '12345678-1234-1234-1234-123456789012'});
+  globalThis.fetch = async (input, init) => {
+    const url = new URL(input);
+    const response = (data, status = 200) => ({ok: status === 200, status, json: async () => data});
+    if (url.hostname === 'metadata.google.internal') return response({access_token: 'synthetic-google', expires_in: 3600});
+    if (url.hostname === 'api-bdc.net') {
+      providerCalls++;
+      return response({latitude: 10, longitude: 20, city: 'Synthetic City A', countryName: 'Synthetic Country'});
+    }
+    assert.equal(url.hostname, 'firestore.googleapis.com', 'Unexpected runtime dependency');
+    const path = url.pathname.split('/documents/')[1];
+    if (init.method === 'PATCH') {
+      documents.set(path, decodeValue({mapValue: {fields: JSON.parse(init.body).fields}})); revision++;
+    }
+    if (!documents.has(path)) return response({error: {status: 'NOT_FOUND'}}, 404);
+    return response({fields: encodeValue(documents.get(path)).mapValue.fields, updateTime: `2026-10-14T18:00:00.${String(revision).padStart(6, '0')}Z`});
+  };
+  try {
+    const environment = () => ({...config, BIGDATACLOUD_API_KEY: 'synthetic-bdc', FIRESTORE_PROJECT_ID: 'synthetic-project'});
+    const first = await start({lookup: undefined, env: environment});
+    const locationPath = pathFor({at: '2026-10-14T12:00:00Z', layer: 'location', width: '1102'});
+    const cold = await first(locationPath);
+    assert.equal(cold.status, 200); assert.equal(cold.headers['x-location-cache'], 'LOOKUP');
+    const second = await start({lookup: undefined, env: environment});
+    const reused = await second(locationPath);
+    assert.equal(reused.status, 200); assert.equal(reused.headers['x-location-cache'], 'SHARED');
+    const cityPath = '/api/fetch-probe?' + new URLSearchParams({location_shared: '1', location_key: token, lat: '10', lon: '20'});
+    const city = await second(cityPath);
+    assert.equal(city.status, 200); assert.equal(city.headers['access-control-allow-origin'], '*');
+    assert.equal(JSON.parse(city.body).entry.countryName, 'Synthetic Country');
+    assert.equal((await second(cityPath, 'OPTIONS')).status, 204);
+    assert.equal((await second(cityPath.replace(token, 'invalid'))).status, 403);
+    assert.equal((await second(cityPath + '&lat=11')).status, 400);
+    assert.equal(providerCalls, 1);
+    assert.equal(Object.values(documents.get('widgyControl/bdc-budget-v1').days).reduce((sum, n) => sum + n, 0), 1);
+  } finally {globalThis.fetch = priorFetch;}
+
+  // Cache data stays private and expires even if Firestore TTL deletion lags.
+  let cachedDocument, clock = 1800000000000;
+  const entry = {latitude: 10, longitude: 20, city: 'Synthetic City A'};
+  const cache = createLocationCache({now: () => clock, store: {
+    get: async path => {assert.equal(path, 'widgyCityCache/' + 'a'.repeat(64)); return cachedDocument;},
+    put: async (path, value) => {assert.equal(path, 'widgyCityCache/' + 'a'.repeat(64)); cachedDocument = {value};}
+  }});
   const key = 'a'.repeat(64);
-  assert.deepEqual(await cache.get(key), entry);
+  assert.equal(await cache.get(key), null);
   await cache.set(key, entry, {ttl: 21600});
-  assert.deepEqual(commands[1].slice(-2), ['EX', '21600']);
-  assert(commands.every(command => command[1] === 'widgy:map:cloud-run:city:v1:' + key));
+  assert.deepEqual(await cache.get(key), entry);
+  clock += 21600000;
+  assert.equal(await cache.get(key), null);
   await assert.rejects(cache.get('plain-location'), /invalid_cache_key/);
   await assert.rejects(cache.set(key, entry, {ttl: 999999}), /invalid_cache_ttl/);
+  validateConfiguration({WIDGY_LOCATION_ACCESS_TOKEN: token, BIGDATACLOUD_API_KEY: 'synthetic', FIRESTORE_PROJECT_ID: 'synthetic-project'});
   assert.throws(() => validateConfiguration({}), /Missing configuration/);
 
   const serializedLogs = logs.join('\n');
@@ -153,6 +198,8 @@ try {
   const summary = {passed: true, baselineCommit: '6fcfc958a62fafdf7fdfac937b7db0feaadaa5d3', rows,
     liveCacheAnd304: true, head: true, accessGuards: true, cityWorkFinishesBeforeResponse: true,
     cityOutageStillReturnsPNG: true, privateCacheTTL: true, sanitizedApplicationLogs: true,
+    defaultLookupUsesFirestoreWithoutUpstash: true,
+    calendarCityEndpointAndCORS: true,
     peakRSSMiB: Math.round(process.resourceUsage().maxRSS / 1024),
     containerBuild: 'pending; no Docker daemon in local environment',
     cloudRunAndNativePhone: 'pending Google project deployment'};

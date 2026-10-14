@@ -38,13 +38,7 @@ spec:
                 secretKeyRef:
                   name: widgy-bigdatacloud-api-key
                   key: '1'
-            - name: UPSTASH_REDIS_REST_URL
-              valueFrom:
-                secretKeyRef:
-                  name: widgy-upstash-rest-url
-                  key: '1'
-            - name: UPSTASH_REDIS_REST_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: widgy-upstash-rest-token
-                  key: '1'
+            - name: FIRESTORE_PROJECT_ID
+              value: PROJECT_ID
+            - name: FIRESTORE_DATABASE_ID
+              value: '(default)'
