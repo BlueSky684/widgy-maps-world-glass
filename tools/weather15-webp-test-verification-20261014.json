@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-14",
+  "rendererSharp": "0.34.5",
+  "encoderSharp": "0.35.5",
+  "images": [
+    {
+      "fixture": "october-00",
+      "pngBytes": 4477739,
+      "webpBytes": 3206228,
+      "encodeMs": 271,
+      "rawRGBAIdentical": true,
+      "iccIdentical": true,
+      "pngBytesUnchanged": true,
+      "webpSHA256": "4c9a276fd8c9e2c113acd7bff834304203a479db2ecd5d3e945a26387adcdcad"
+    },
+    {
+      "fixture": "october-06",
+      "pngBytes": 4141903,
+      "webpBytes": 3012380,
+      "encodeMs": 260,
+      "rawRGBAIdentical": true,
+      "iccIdentical": true,
+      "pngBytesUnchanged": true,
+      "webpSHA256": "95ddf020645064f80da167cc5b79047fd33bb29ad053512fbd448473ea4209f3"
+    },
+    {
+      "fixture": "october-12",
+      "pngBytes": 4050121,
+      "webpBytes": 2974852,
+      "encodeMs": 260,
+      "rawRGBAIdentical": true,
+      "iccIdentical": true,
+      "pngBytesUnchanged": true,
+      "webpSHA256": "45100e17be097e98a4419c4c261c884d25ddf6bd423f5da384e641420c9b3805"
+    },
+    {
+      "fixture": "october-18",
+      "pngBytes": 4384558,
+      "webpBytes": 3198890,
+      "encodeMs": 316,
+      "rawRGBAIdentical": true,
+      "iccIdentical": true,
+      "pngBytesUnchanged": true,
+      "webpSHA256": "5861729c1361d77e7bfede0a4f68c9a4ec8d6d0ba22254b770ea7fe984657746"
+    },
+    {
+      "fixture": "march-equinox",
+      "pngBytes": 3958173,
+      "webpBytes": 2926352,
+      "encodeMs": 299,
+      "rawRGBAIdentical": true,
+      "iccIdentical": true,
+      "pngBytesUnchanged": true,
+      "webpSHA256": "a489749f72927dcc6fcc8f1e9419779e5476e22b72361804fbd4437f7dbd3764"
+    },
+    {
+      "fixture": "june-solstice",
+      "pngBytes": 4154227,
+      "webpBytes": 3000966,
+      "encodeMs": 289,
+      "rawRGBAIdentical": true,
+      "iccIdentical": true,
+      "pngBytesUnchanged": true,
+      "webpSHA256": "21e51d215449603be681bc94c99051fb7eb4e581892fb9ee19ca05338b929918"
+    }
+  ],
+  "transparentRGBPreserved": true,
+  "routeChecks": 15,
+  "dynamicTimeAndLocation": true,
+  "pngAndWebPCachesIsolated": true,
+  "privateCachingPreserved": true,
+  "conditionalAndHeadPassed": true,
+  "authenticationStillRequired": true,
+  "widget": {
+    "layers": 1204,
+    "variables": 74,
+    "onlyNameAndFormatChanged": true
+  },
+  "copyController": "decrypt/integrity/multiline/copy/invalid-key/corrupt-envelope passed",
+  "nativeWidgyVerified": false,
+  "deployed": false,
+  "timingScope": "local Node encoder only, not iPhone or network"
+}

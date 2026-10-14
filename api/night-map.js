@@ -106,6 +106,8 @@ export default async function handler(req, res) {
   if (!baseOnly) cachedCity.remember(url);
   const presentation = url.searchParams.get('presentation') === 'glass' ? 'glass' : 'default';
   const atlas = url.searchParams.get('atlas') === 'r6' ? 'r6' : 'f50';
+  // Explicit opt-in only. Do not negotiate by Accept or alter existing exports.
+  const webpExact = url.searchParams.get('format') === 'webp-exact-v1';
   try {
     const started=performance.now();
     const diagnosticValue = url.searchParams.get('diagnostic');
@@ -117,12 +119,17 @@ export default async function handler(req, res) {
       url.searchParams.has('lat') && url.searchParams.has('lon');
     // Reuse for at most 60 seconds from the actual render, even across a
     // wall-clock minute boundary. GPS, city, style and size still key the cache.
-    const render = () => locationOnly
+    const renderPNG = () => locationOnly
       ? renderMapLocation({location, width, presentation})
       : renderHomeMap({date, location, width, presentation, diagnostic, atlas});
+    const render = webpExact ? async () => {
+      const {encodeMapWebP} = await import('../lib/map-webp-exact.js');
+      return encodeMapWebP(await renderPNG());
+    } : renderPNG;
     // Preserve every legacy key and its diagnostic tuple shape. A transparent
     // image must never satisfy a request for the opaque composite or base.
-    const cacheKey = JSON.stringify([REVISION, width, locationOnly ? `location-only:${presentation}` : presentation, atlas, diagnostic, location]);
+    const cacheKey = JSON.stringify([REVISION, width, locationOnly ? `location-only:${presentation}` : presentation, atlas, diagnostic, location,
+      ...(webpExact ? ['webp-exact-v1'] : [])]);
     let keyDiagnostic = {previousKeyComparison: 'bypass', previousKeyChanges: [], previousRequestAgeMs: null};
     if (reuse) {
       keyDiagnostic = {...compareMapRequestKeys(previousCacheKey, cacheKey),
@@ -151,7 +158,8 @@ export default async function handler(req, res) {
         res.setHeader('X-Map-Delivery', 'synthetic-cdn-60');
       }
     }
-    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Type', webpExact ? 'image/webp' : 'image/png');
+    if (webpExact) res.setHeader('X-Map-Format', 'webp-exact-v1');
     res.setHeader('X-Map-Cache', result.state);
     res.setHeader('Server-Timing', `map;dur=${(performance.now()-started).toFixed(1)}`);
     res.setHeader('X-Map-Performance', 'perf-8-srgb-profile');
@@ -170,7 +178,9 @@ export default async function handler(req, res) {
     // budget can still fail after the function adapter processes this response.
     const urlDiagnostic = reuse && method === 'GET' ? observeMapURL({key:cacheKey, rawURL:req.url, etag:entry.etag}) : {};
     report('prepared', {status: notModified ? 304 : 200, cache: result.state, ...keyDiagnostic, ...urlDiagnostic, ...readCityTimingTrace(url),
-      width, layer:layer || 'composite', pngBytes: entry.png.length, bodyBytes: notModified || method === 'HEAD' ? 0 : entry.png.length,
+      width, layer:layer || 'composite',
+      ...(webpExact ? {format:'webp-exact-v1', imageBytes:entry.png.length} : {pngBytes:entry.png.length}),
+      bodyBytes: notModified || method === 'HEAD' ? 0 : entry.png.length,
       conditional: tags.length > 0 && tags[0] !== '', precomputed: precomputedState()});
     if (notModified) return res.status(304).end();
     return req.method === 'HEAD' ? res.status(200).end() : res.status(200).send(entry.png);
