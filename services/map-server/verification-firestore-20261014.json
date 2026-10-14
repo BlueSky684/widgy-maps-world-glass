@@ -1,0 +1,85 @@
+{
+  "date": "2026-10-14",
+  "branch": "f50-widget-test",
+  "sourceParent": "a86a6a5d287f0c734d2be25e8f86de5e723b9cea",
+  "scope": "Cloud Run map and Calendar city-label endpoints use Firestore; BigDataCloud remains city provider.",
+  "map": {
+    "passed": true,
+    "baselineCommit": "6fcfc958a62fafdf7fdfac937b7db0feaadaa5d3",
+    "rows": [
+      {
+        "at": "2026-10-14T12:00:00Z",
+        "bytes": 4062166,
+        "sha256": "6828f3fdfeaa0777d2429de853c9edb4c41050e0c505a1edeb92b5d8bba48a27",
+        "byteIdenticalToBaseline": true
+      },
+      {
+        "at": "2026-10-14T00:00:00Z",
+        "bytes": 4492823,
+        "sha256": "9fbadfd72397dd8e2ba92259d7d16f7c1ec93e573d646c3a68244ad1094eba17",
+        "byteIdenticalToBaseline": true
+      }
+    ],
+    "liveCacheAnd304": true,
+    "head": true,
+    "accessGuards": true,
+    "cityWorkFinishesBeforeResponse": true,
+    "cityOutageStillReturnsPNG": true,
+    "privateCacheTTL": true,
+    "sanitizedApplicationLogs": true,
+    "defaultLookupUsesFirestoreWithoutUpstash": true,
+    "calendarCityEndpointAndCORS": true,
+    "peakRSSMiB": 411,
+    "containerBuild": "pending; no Docker daemon in local environment",
+    "cloudRunAndNativePhone": "pending Google project deployment"
+  },
+  "storageAndMigration": {
+    "passed": true,
+    "atomicQuotaBoundary": true,
+    "rollingWindowAndRate": true,
+    "ambiguousWriteFailsClosed": true,
+    "wireIdentityAndPreconditions": true,
+    "migrationResumeAndNoReset": true,
+    "rollbackPreservesNewUsage": true,
+    "liveFirestore": "pending authenticated Google project"
+  },
+  "actualRedisLua": {
+    "passed": true,
+    "actualLua": true,
+    "oldInstancesFenced": true,
+    "snapshotRetainsUsage": true,
+    "resumeAndRollbackIdempotent": true,
+    "corruptSourceRejected": true
+  },
+  "buildContext": {
+    "files": 31,
+    "sourceBytes": 6160809,
+    "operatorMigrationToolIncluded": false
+  },
+  "plansOnly": [
+    "Firestore setup",
+    "counter transfer",
+    "Cloud Run deployment"
+  ],
+  "notPerformed": [
+    "Google resource creation",
+    "live counter handoff",
+    "Cloud Build",
+    "real Firestore IAM/API test",
+    "phone origin changes"
+  ],
+  "handoff": "Source snapshot/fence, pending Google document, source activation acknowledgment, conditional Google activation. Exactly one active reservation backend. Rollback transfers updated counters back.",
+  "lostDestination": "A previously activated destination cannot be recreated from the old snapshot.",
+  "runtimeSecrets": [
+    "widgy-location-access-token",
+    "widgy-bigdatacloud-api-key"
+  ],
+  "phoneChangesAfterHostedChecks": [
+    "map_request origin",
+    "calendar_location_pair origin"
+  ],
+  "originalImageResolution": [
+    3306,
+    1558
+  ]
+}

@@ -1,25 +1,24 @@
 import http from 'node:http';
 import {randomUUID, timingSafeEqual} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
-import {createSharedLocation} from '../../lib/location/shared.js';
-import {createBudget} from '../../lib/location/budget.js';
+import {createSharedLocation, authorizeLocation, locationErrorStatus} from '../../lib/location/shared.js';
+import {createFirestore, databaseName} from './firestore.mjs';
+import {createFirestoreBudget} from './firestore-budget.mjs';
 import {createLocationCache} from './location-cache.mjs';
 
 export function validateConfiguration(env) {
   const missing = ['WIDGY_LOCATION_ACCESS_TOKEN', 'BIGDATACLOUD_API_KEY',
-    'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN'].filter(key => !env[key]);
+    'FIRESTORE_PROJECT_ID'].filter(key => !env[key]);
   if (missing.length) throw Error(`Missing configuration: ${missing.join(', ')}`);
   if (env.WIDGY_LOCATION_ACCESS_TOKEN.length < 32) throw Error('Access token is too short');
-  const url = new URL(env.UPSTASH_REDIS_REST_URL);
-  if (url.protocol !== 'https:' || !url.hostname.endsWith('.upstash.io') ||
-      url.username || url.password || url.search || url.hash) throw Error('Invalid cache endpoint');
+  databaseName(env);
 }
 
 
 export function createCityServer({env = () => process.env, lookup, logger = console.info,
   cityDeadlineMs = 1500, drainDeadlineMs = 6500} = {}) {
-  const cache = createLocationCache({env});
-  const lookupCity = lookup || createSharedLocation({env, cache: () => cache, reserve: createBudget({env})});
+  const store = createFirestore({env}), cache = createLocationCache({store});
+  const lookupCity = lookup || createSharedLocation({env, cache: () => cache, reserve: createFirestoreBudget({store})});
   const report = fields => {
     try { logger(JSON.stringify({event: 'cloud_city_http_v1', ...fields})); } catch {}
   };
@@ -50,11 +49,25 @@ export function createCityServer({env = () => process.env, lookup, logger = cons
     };
     let url;
     try { url = new URL(req.url, 'http://map.invalid'); } catch { return reply(400, {error: 'Invalid request'}); }
+    const cityRoute = url.pathname === '/api/fetch-probe' && url.searchParams.get('location_shared') === '1';
+    if (cityRoute) {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Accept, Accept-Language, Content-Language, Content-Type');
+      if (req.method === 'OPTIONS') {res.statusCode = 204; return res.end();}
+    }
     if (!['GET', 'HEAD'].includes(req.method)) {
       res.setHeader('Allow', 'GET, HEAD');
       return reply(405, {error: 'Method not allowed'});
     }
     if (url.pathname === '/healthz') return reply(200, {status: 'ready', service: 'cloud-run-trial-v1'});
+    if (cityRoute) {
+      try {
+        const point = authorizeLocation(url, env()), result = await lookupCity(point);
+        res.setHeader('X-Location-Cache', result.state);
+        return reply(200, result);
+      } catch (error) {return reply(locationErrorStatus(error), {error: 'Location unavailable'});}
+    }
     return reply(404, {error: 'Not found'});
   });
 }
