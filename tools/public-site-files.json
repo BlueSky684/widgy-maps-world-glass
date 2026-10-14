@@ -143,6 +143,9 @@
     "tools/widgy-weather15-recovery.enc.json",
     "tools/widgy-weather15-home-start-copy.html",
     "tools/widgy-weather15-home-start-copy.js",
-    "tools/widgy-weather15-home-start.enc.json"
+    "tools/widgy-weather15-home-start.enc.json",
+    "tools/widgy-weather15-webp-test-copy.html",
+    "tools/widgy-weather15-webp-test-copy.js",
+    "tools/widgy-weather15-webp-test.enc.json"
   ]
 }
