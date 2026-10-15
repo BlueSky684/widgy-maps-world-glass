@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-15",
+  "format": "tiff-lossless-v1",
+  "compression": "lzw",
+  "width": 3306,
+  "height": 1558,
+  "lossless": true,
+  "images": [
+    {
+      "fixture": "october-00",
+      "pngBytes": 4477739,
+      "tiffBytes": 5172010,
+      "encodeMs": 290,
+      "rgbaByteIdentical": true,
+      "iccIdentical": true,
+      "pngBytesUnchanged": true,
+      "tiffSHA256": "aa07cf3ca0af018d61f0fb06e57bf68daa04784efb4d69c8980477591588d059"
+    },
+    {
+      "fixture": "october-06",
+      "pngBytes": 4141903,
+      "tiffBytes": 4800662,
+      "encodeMs": 260,
+      "rgbaByteIdentical": true,
+      "iccIdentical": true,
+      "pngBytesUnchanged": true,
+      "tiffSHA256": "0aeede5e7583a9cd9c5c9b660b001f2d077023f3d680455ae0c4a00b2d1ef1b5"
+    },
+    {
+      "fixture": "october-12",
+      "pngBytes": 4050121,
+      "tiffBytes": 4667060,
+      "encodeMs": 247,
+      "rgbaByteIdentical": true,
+      "iccIdentical": true,
+      "pngBytesUnchanged": true,
+      "tiffSHA256": "21099bb2aeefbb3433995cf2005cc02073367e4003b37fc89da5467eaf991d1f"
+    },
+    {
+      "fixture": "october-18",
+      "pngBytes": 4384558,
+      "tiffBytes": 5145882,
+      "encodeMs": 262,
+      "rgbaByteIdentical": true,
+      "iccIdentical": true,
+      "pngBytesUnchanged": true,
+      "tiffSHA256": "d0a7bf8024de22fc64fe60d92d58c7bcfe304d5ae29a34874d871cf35c22fd98"
+    },
+    {
+      "fixture": "march-equinox",
+      "pngBytes": 3958173,
+      "tiffBytes": 4587496,
+      "encodeMs": 232,
+      "rgbaByteIdentical": true,
+      "iccIdentical": true,
+      "pngBytesUnchanged": true,
+      "tiffSHA256": "4c285b55cbb65f1aa4cc7fe3aed910a18b6fef1f310c84de63a600615f8aaca6"
+    },
+    {
+      "fixture": "june-solstice",
+      "pngBytes": 4154227,
+      "tiffBytes": 4786980,
+      "encodeMs": 240,
+      "rgbaByteIdentical": true,
+      "iccIdentical": true,
+      "pngBytesUnchanged": true,
+      "tiffSHA256": "cc4c5c969e04cb001a0d723b30782a7303e36c7a0c71852ee3896db957d7e8b4"
+    }
+  ],
+  "httpRequests": 16,
+  "privateCachingAuthorizationAndRollback": true,
+  "existingPNGAndWebPPreserved": true,
+  "liveTimeAndLocationPreserved": true,
+  "timingScope": "local Linux encoder only",
+  "hostedVerified": false,
+  "nativeWidgyVerified": false
+}

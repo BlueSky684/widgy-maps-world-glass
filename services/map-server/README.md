@@ -4,8 +4,10 @@ Target: **BlueSky684/widgy-maps-world-glass, f50-widget-test only**.
 This adds a separate map and city service. Calendar's city-label request moves
 with the map; calendar events, Weather and Health keep their current endpoints.
 The trial was deployed on 2026-10-15. Health and a full-resolution synthetic map
-have passed hosted checks; see `verification-hosted-20261015.json`. The installed
-widget and live city-provider cutover remain pending.
+have passed hosted checks; see `verification-hosted-20261015.json`. The city
+cutover subsequently passed, but the PNG map disappeared again on the phone
+at 09:12 Israel time on 2026-10-15. See
+`../../tools/performance/google-map-native-failure-20261015.md`.
 
 ## Runtime and trial configuration
 
@@ -15,8 +17,10 @@ widget and live city-provider cutover remain pending.
   capacity control, not a hard monetary cap. Cold starts remain a phone test.
 - Exactly the existing PNG renderer, approved masters, fonts, projection,
   dynamic GPS/English city and server-time day/night mask. Width stays 3306.
-- No new image URL variant, image resize, WebP conversion, static snapshot or
-  permanent city substitution. Default map cache still expires after 60 seconds.
+- Ordinary requests retain PNG and the 60-second map cache. The explicit
+  `format=tiff-lossless-v1` option is a separate lossless native-decoder trial;
+  see `../../tools/performance/map-tiff-lossless-review-20261015.md` for exact
+  pixel verification, larger payloads and the pending native acceptance gate.
 - Every image request requires the existing `location_key`. Only `/health`
   is public without that key. Public HTTP invocation is required because Widgy
   cannot supply Google IAM identity tokens; application authorization remains.
