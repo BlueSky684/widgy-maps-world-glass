@@ -1,0 +1,31 @@
+{
+  "dateUTC": "2026-10-15",
+  "deployedSourceCommit": "49d0ae66865881905ae8647aa4a940fa5609ef6f",
+  "service": "widgy-map-test",
+  "region": "me-west1",
+  "health": {"httpStatus": 200, "status": "ready"},
+  "syntheticMap": {
+    "at": "2026-10-14T12:00:00Z",
+    "latitude": 10,
+    "longitude": 20,
+    "city": "Synthetic City A",
+    "liveCityProviderUsed": false,
+    "googleHttpStatus": 200,
+    "vercelHttpStatus": 200,
+    "width": 3306,
+    "height": 1558,
+    "bytes": 4062122,
+    "iccBytes": 480,
+    "completeDecode": true,
+    "googleAndVercelByteIdentical": true,
+    "sha256": "bbdc7440ffca9f291ac927002cd756a318eb9efa9626e4890228114dc8dee3b5",
+    "googleRenderDurationMs": 1092,
+    "localOracleNote": "The local runtime differed in 3219 text-region pixels; the two hosted responses matched byte for byte. No map-asset or renderer changes were made."
+  },
+  "pending": [
+    "Deployed runtime Firestore cache access",
+    "Exclusive existing budget handoff",
+    "Live provider and shared city cache",
+    "Installed widget cutover and native stability"
+  ]
+}
