@@ -232,6 +232,19 @@ The deployment command also sets a service-level maximum of two instances.
    updates. Record missing-image times and compute/network usage during 72h.
    This document does not schedule an unattended test or promise monitoring.
 
+After the counter handoff and the live synthetic city check at
+`31.6688,34.5743`, verify its durable cache entry within one hour:
+
+```sh
+node tools/check-cloud-run-handoff.mjs PROJECT_ID --execute
+```
+
+This operator check only reads Google data. It checks the migrated ledger and
+the provider-populated Firestore entry; it does not seed a cache value, change
+the counters, or call the provider. Credentials are captured privately from
+Google. Success prints `WIDGY_GOOGLE_CITY_READY`. A missing or stale city entry
+requires investigating or repeating the live probe, not resetting the budget.
+
 A cheap trial is useful only if that same economical configuration is stable.
 If it fails only after idle, assess the measured cold-start latency before
 paying for a warm instance. Request success never proves native image display.
