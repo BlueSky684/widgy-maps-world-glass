@@ -6,6 +6,9 @@ Owner-reported incident: October 15, 2026, approximately 09:12 Asia/Jerusalem
 
 ## Observations
 
+- IMG_0423.png, supplied at 09:31, confirms the installed application's Settings
+  label reads `Widgy v27.0.1`. No build number is visible. The earlier 27.1 build
+  360 TestFlight main-app crash report does not describe this confirmed version.
 - Initial image display after the instructed Google-origin change was reported
   successful. The installed widget was not exported again for independent review.
 - On Calendar → Home the map disappeared again. IMG_0420.jpeg shows the Home
@@ -72,6 +75,5 @@ Can you provide a way to capture Widgy's image-download/decoding/cache error
 during a group visibility change, or specify the smallest useful reproduction?
 I can attach the failed-widget screenshot and the sanitized server records.
 
-Device: iPhone 17 Pro Max, iOS 27.0.1. Reconfirm the currently installed Widgy
-version/build before sending; historical reports mix a user-reported public
-27.0.1 installation and an earlier 27.1 build 360 TestFlight main-app report.
+Device: iPhone 17 Pro Max, iOS 27.0.1, Widgy 27.0.1 (confirmed in the app's
+Settings; build number not displayed).
