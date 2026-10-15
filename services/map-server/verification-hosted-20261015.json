@@ -22,10 +22,29 @@
     "googleRenderDurationMs": 1092,
     "localOracleNote": "The local runtime differed in 3219 text-region pixels; the two hosted responses matched byte for byte. No map-asset or renderer changes were made."
   },
+  "firestoreRuntimeRead": {
+    "operatorReported": true,
+    "marker": "WIDGY_CLOUD_STORAGE_OK",
+    "cacheState": "SHARED",
+    "syntheticEntry": "deleted",
+    "budgetBeforeHandoff": "absent_unchanged"
+  },
+  "budgetHandoff": {
+    "operatorReported": true,
+    "status": "complete",
+    "alreadyMigrated": false,
+    "usedAtHandoff": 376
+  },
+  "liveCityProbe": {
+    "syntheticPoint": {"latitude": 31.6688, "longitude": 34.5743},
+    "city": "Ashkelon",
+    "country": "Israel",
+    "first": {"httpStatus": 200, "cacheState": "LOOKUP", "elapsedSeconds": 9.493251},
+    "second": {"httpStatus": 200, "cacheState": "MEMORY", "elapsedSeconds": 5.587084},
+    "timingNote": "End-to-end timings from the remote verification client include its network path; they are not phone timings."
+  },
   "pending": [
-    "Deployed runtime Firestore cache access",
-    "Exclusive existing budget handoff",
-    "Live provider and shared city cache",
+    "Read back the active ledger and provider-populated Firestore city document",
     "Installed widget cutover and native stability"
   ]
 }
