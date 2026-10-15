@@ -14,7 +14,7 @@ with the map; calendar events, Weather and Health keep their current endpoints. 
   dynamic GPS/English city and server-time day/night mask. Width stays 3306.
 - No new image URL variant, image resize, WebP conversion, static snapshot or
   permanent city substitution. Default map cache still expires after 60 seconds.
-- Every image request requires the existing `location_key`. Only `/healthz`
+- Every image request requires the existing `location_key`. Only `/health`
   is public without that key. Public HTTP invocation is required because Widgy
   cannot supply Google IAM identity tokens; application authorization remains.
 - City names still come from the existing BigDataCloud account. Image creation,
@@ -195,7 +195,9 @@ The deployment command also sets a service-level maximum of two instances.
 ## Before changing the phone
 
 1. Build and deploy the container; record the deployed source commit and image
-   digest. Check `/healthz`, the secret-free application logs, and error metrics.
+   digest. Check `/health`, the secret-free application logs, and error metrics.
+   Cloud Run [reserves some URL paths ending in `z`](https://docs.cloud.google.com/run/docs/known-issues#reserved_url_paths),
+   so the public health endpoint deliberately avoids that suffix.
 2. Compare hosted fixed-time synthetic requests to the local PNG oracle, decode
    completely and check 3306x1558 and ICC metadata. Check valid-token 200, bad-
    token 403, live cache, ETag/304 and actual response completion.

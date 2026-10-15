@@ -78,7 +78,8 @@ export function createMapServer({env = () => process.env, lookup, logger = conso
       res.setHeader('Allow', 'GET, HEAD');
       return reply(405, {error: 'Method not allowed'});
     }
-    if (url.pathname === '/healthz') return reply(200, {status: 'ready', service: 'cloud-run-trial-v1'});
+    // Cloud Run reserves some paths ending in "z" before requests reach us.
+    if (url.pathname === '/health') return reply(200, {status: 'ready', service: 'cloud-run-trial-v1'});
     if (cityRoute) {
       try {
         const point = authorizeLocation(url, env()), result = await lookupCity(point);

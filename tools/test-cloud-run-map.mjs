@@ -74,7 +74,7 @@ async function baselineImage(url) {
 const rows = [];
 try {
   const request = await start();
-  assert.equal((await request('/healthz')).status, 200);
+  assert.equal((await request('/health')).status, 200);
   assert.equal((await request('/private.json')).status, 404);
   assert.equal((await request(pathFor({}), 'POST')).status, 405);
   assert.equal((await request(pathFor({location_key: 'invalid'}))).status, 403);
