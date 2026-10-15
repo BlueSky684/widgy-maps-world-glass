@@ -43,8 +43,19 @@
     "second": {"httpStatus": 200, "cacheState": "MEMORY", "elapsedSeconds": 5.587084},
     "timingNote": "End-to-end timings from the remote verification client include its network path; they are not phone timings."
   },
+  "firestorePostHandoff": {
+    "operatorReported": true,
+    "marker": "WIDGY_GOOGLE_CITY_READY",
+    "status": "handoff_verified",
+    "budgetState": "active",
+    "used": 377,
+    "limit": 40000,
+    "persistedCity": "Ashkelon",
+    "persistedCountry": "Israel",
+    "readbackWrites": false,
+    "readbackProviderRequests": 0
+  },
   "pending": [
-    "Read back the active ledger and provider-populated Firestore city document",
     "Installed widget cutover and native stability"
   ]
 }
