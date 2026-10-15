@@ -55,7 +55,24 @@
     "readbackWrites": false,
     "readbackProviderRequests": 0
   },
+  "nativeGoogleTrial": {
+    "operatorReported": true,
+    "initialMapVisible": true,
+    "status": "failed_native_stability",
+    "failureLocalTime": "2026-10-15T09:12:00+03:00",
+    "trigger": "Calendar to Home navigation",
+    "symptom": "Map absent; navigation and native Memory Used text remain visible",
+    "displayedMemoryMB": 19.7,
+    "memoryNote": "One displayed sample after disappearance; not a measured peak or proof of a memory threshold.",
+    "evidence": ["IMG_0420.jpeg", "IMG_0421.png", "IMG_0422.png"],
+    "operatorLogQueryWindowUTC": ["2026-10-15T06:10:00Z", "2026-10-15T06:14:00Z"],
+    "nearbyLargeResponses": [
+      {"timestampUTC": "2026-10-15T06:12:16.520493Z", "phase": "finished", "status": 200, "elapsedMs": 840, "bodyBytes": 4129677},
+      {"timestampUTC": "2026-10-15T06:12:26.470317Z", "phase": "finished", "status": 200, "elapsedMs": 4, "bodyBytes": 4129677}
+    ],
+    "interpretation": "Hosting migration alone did not resolve disappearance. Nearby server-side completions do not prove receipt, decode, presentation or attribution to one exact widget instance. Root cause remains unconfirmed."
+  },
   "pending": [
-    "Installed widget cutover and native stability"
+    "Diagnose native map loss after Calendar to Home; Google hosting is not a proven stability fix"
   ]
 }
