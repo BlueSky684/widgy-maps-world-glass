@@ -2,7 +2,10 @@
 
 Target: **BlueSky684/widgy-maps-world-glass, f50-widget-test only**.
 This adds a separate map and city service. Calendar's city-label request moves
-with the map; calendar events, Weather and Health keep their current endpoints. No Cloud Run resource has been created by this preparation.
+with the map; calendar events, Weather and Health keep their current endpoints.
+The trial was deployed on 2026-10-15. Health and a full-resolution synthetic map
+have passed hosted checks; see `verification-hosted-20261015.json`. The installed
+widget and live city-provider cutover remain pending.
 
 ## Runtime and trial configuration
 
@@ -51,7 +54,8 @@ local Node HTTP connections. No live provider calls are made by these tests.
 See `verification-firestore-20261014.json` for the current adapter and
 `verification-20261014.json` for the initial Cloud Run preparation. The recorded peak belongs to the whole
 test process, including the baseline oracle; it is not a Cloud Run measurement.
-Docker/Cloud Build, the hosted endpoint and native Widgy still require validation.
+Cloud Build and hosted PNG delivery subsequently passed the checks recorded in
+`verification-hosted-20261015.json`. Native Widgy still requires validation.
 
 The older `test-map-city-resilience-15.mjs` also passed its route/image and
 authorization checks, then failed an existing client-only assertion at line
@@ -112,6 +116,21 @@ index exemptions. It refuses an existing database with a different region or
 mode. It does not transfer or initialize usage counters. IAM changes can need
 several minutes to propagate. TTL operations are asynchronous. Operations,
 storage and TTL deletions are metered; this is not a zero-cost guarantee.
+
+Before the counter handoff, verify the deployed service's own Firestore read:
+
+```sh
+node tools/check-cloud-run-storage.mjs PROJECT_ID --execute
+```
+
+This operator-only check privately reads the existing Google secret versions,
+creates one short-lived synthetic open-ocean city entry with a create-only
+precondition, and requires the deployed city endpoint to return `SHARED`. It
+deletes that same entry in a `finally` block with an update-time precondition.
+The ledger must be absent before and after the check; it is never initialized,
+so no provider request can be reserved during this pre-handoff test. The tool
+prints only sanitized status and deployment metadata. An execution failure
+must be resolved before handoff.
 
 **Do not copy an empty ledger or reset the existing Upstash ledger.** After the
 Google endpoint and its identity/storage access are verified, transfer the
