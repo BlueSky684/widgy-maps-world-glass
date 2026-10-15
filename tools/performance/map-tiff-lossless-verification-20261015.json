@@ -72,6 +72,28 @@
   "existingPNGAndWebPPreserved": true,
   "liveTimeAndLocationPreserved": true,
   "timingScope": "local Linux encoder only",
-  "hostedVerified": false,
-  "nativeWidgyVerified": false
+  "hostedVerified": true,
+  "nativeWidgyVerified": false,
+  "hosted": {
+    "verifiedAt": "2026-10-15T07:26:26.225622+00:00",
+    "origin": "https://widgy-map-test-952007798808.me-west1.run.app",
+    "deployedSourceCommitFromOwnerScreenshot": "4aefcae6b4d6eee65aae6b6bbe84314a3dec085a",
+    "syntheticFixedInstant": "2026-10-14T12:00:00Z",
+    "providerRequests": 0,
+    "pngStatus": 200,
+    "tiffStatus": 200,
+    "pngMIME": "image/png",
+    "tiffMIME": "image/tiff",
+    "formatHeader": "tiff-lossless-v1",
+    "pngBytes": 4062122,
+    "tiffBytes": 4687526,
+    "width": 3306,
+    "height": 1558,
+    "rgbaByteIdentical": true,
+    "iccByteIdentical": true,
+    "decoder": "Pillow/libtiff",
+    "pngSHA256": "bbdc7440ffca9f291ac927002cd756a318eb9efa9626e4890228114dc8dee3b5",
+    "tiffSHA256": "ac7ac9c5fc4aa8640704084a9268ae96f1be83e17e1545d49929a4cc2799c85c",
+    "nativeWidgyVerified": false
+  }
 }

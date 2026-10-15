@@ -1,7 +1,7 @@
 # Lossless TIFF native decoder trial
 
-Prepared 2026-10-15 on `f50-widget-test`. **Locally verified; not yet deployed
-to Google or accepted on the phone. This is not a demonstrated fix.**
+Prepared 2026-10-15 on `f50-widget-test`. **Local and hosted pixel verification passed. The owner deployed the
+option to Google; native acceptance is pending. This is not a demonstrated fix.**
 
 ## Why this is a different experiment
 
@@ -97,3 +97,16 @@ Machine-readable results: `map-tiff-lossless-verification-20261015.json`.
 Rollback is simply removing `&format=tiff-lossless-v1` from `map_request`.
 This leaves the established Google storage/budget handoff intact. Do not reset
 the budget, delete the old ledger, or restore old Vercel city URLs.
+
+## Hosted verification after owner deployment
+
+At 10:24 Israel time the owner supplied a successful Cloud Run deployment
+screenshot identifying source commit `4aefcae6b4d6eee65aae6b6bbe84314a3dec085a`.
+Authenticated synthetic fixed-time PNG and TIFF requests both returned 200
+from the Google origin, with matching Content-Length and the correct MIME.
+TIFF additionally returned `X-Map-Format: tiff-lossless-v1`. Both files were
+fully decoded using Pillow/libtiff: all 3306×1558 RGBA samples and all ICC
+bytes are identical. Payloads were 4,062,122 and 4,687,526 bytes respectively.
+The synthetic request did not use shared-location lookup or call the city
+provider. Credentials remained in memory and were not printed or saved.
+Native phone acceptance and Calendar → Home stability remain pending.
