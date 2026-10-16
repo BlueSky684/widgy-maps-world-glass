@@ -1,0 +1,133 @@
+{
+  "sourceSHA256": "615f3b03304b1253f2d458e42443896bd24f84e57a0e68bbb438aa67d88b7ccb",
+  "halo": {
+    "color": "#c5e858",
+    "rx": 72,
+    "ry": 62,
+    "profile": [
+      [
+        0,
+        0.125
+      ],
+      [
+        0.18,
+        0.118
+      ],
+      [
+        0.36,
+        0.085
+      ],
+      [
+        0.55,
+        0.044
+      ],
+      [
+        0.74,
+        0.015
+      ],
+      [
+        0.9,
+        0.003
+      ],
+      [
+        1,
+        0
+      ]
+    ]
+  },
+  "artwork": [
+    {
+      "name": "home",
+      "width": 1320,
+      "height": 1377,
+      "pngBytes": 61629,
+      "sha256": "ee0adca197f56a03823ce29a4fdb6315498aff5447870eb3b1581d8e14e0fa28",
+      "centre": {
+        "x": 95,
+        "y": 1109
+      },
+      "changedPixels": 17242,
+      "changedBounds": [
+        33,
+        1217,
+        187,
+        1363
+      ],
+      "otherPixelsIdentical": true,
+      "alphaIdentical": true
+    },
+    {
+      "name": "calendar",
+      "width": 1320,
+      "height": 1377,
+      "pngBytes": 47039,
+      "sha256": "271008658908ce00ed7d01f8f1fda489947f31d9c24a5cc22df7d340f93c2cee",
+      "centre": {
+        "x": 351,
+        "y": 1110
+      },
+      "changedPixels": 16384,
+      "changedBounds": [
+        330,
+        1224,
+        485,
+        1357
+      ],
+      "otherPixelsIdentical": true,
+      "alphaIdentical": true
+    },
+    {
+      "name": "weather",
+      "width": 1135,
+      "height": 1184,
+      "pngBytes": 69883,
+      "sha256": "045a10c34a76ed4a8fcdaa8c893da376b5d83ef7327c47b92ebf07a96e2d0480",
+      "centre": {
+        "x": 636.5,
+        "y": 1108
+      },
+      "changedPixels": 12042,
+      "changedBounds": [
+        570,
+        1051,
+        702,
+        1167
+      ],
+      "otherPixelsIdentical": true,
+      "alphaIdentical": true
+    },
+    {
+      "name": "health",
+      "width": 1320,
+      "height": 1377,
+      "pngBytes": 168725,
+      "sha256": "477c89c7c6528294a4ca5174300ea6d1ce43d67bd362b8a9e5bbd44e3f70a27f",
+      "centre": {
+        "x": 927,
+        "y": 1110
+      },
+      "changedPixels": 15772,
+      "changedBounds": [
+        1000,
+        1224,
+        1155,
+        1357
+      ],
+      "otherPixelsIdentical": true,
+      "alphaIdentical": true
+    }
+  ],
+  "widgetChanges": [
+    "Display name",
+    "Four chrome artwork URLs"
+  ],
+  "allOtherWidgetFieldsIdentical": true,
+  "layers": 1204,
+  "variables": 74,
+  "noAddedLayersOrRequests": true,
+  "googleMapAndVariablesIdentical": true,
+  "encryptionRoundTripExact": true,
+  "bytes": 921947,
+  "sha256": "4bd8c70af1c3b3774c54baa12d1adf427a68999e1b24bf9aa57cb9d47f03e26b",
+  "nativeVisualReviewPending": true
+}
