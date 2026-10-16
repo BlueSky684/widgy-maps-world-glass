@@ -1,0 +1,93 @@
+{
+  "baseline": "9ba549d8c8152b29572bdc863b36fdab00bde2ae",
+  "before": "#afbac9",
+  "after": "#d3dce7",
+  "tests": [
+    {
+      "name": "night",
+      "changedPixels": 3660,
+      "bounds": [
+        2095,
+        634,
+        2366,
+        682
+      ],
+      "bytesBefore": 4336918,
+      "bytesAfter": 4337137,
+      "dimensions": [
+        3306,
+        1558
+      ],
+      "iccBytes": 480,
+      "alphaUnchanged": true
+    },
+    {
+      "name": "day",
+      "changedPixels": 3660,
+      "bounds": [
+        2095,
+        634,
+        2366,
+        682
+      ],
+      "bytesBefore": 4072972,
+      "bytesAfter": 4073274,
+      "dimensions": [
+        3306,
+        1558
+      ],
+      "iccBytes": 480,
+      "alphaUnchanged": true
+    },
+    {
+      "name": "default",
+      "changedPixels": 0,
+      "bounds": null,
+      "bytesBefore": 4345371,
+      "bytesAfter": 4345371,
+      "dimensions": [
+        3306,
+        1558
+      ],
+      "iccBytes": 480,
+      "alphaUnchanged": true
+    },
+    {
+      "name": "coordinate-fallback",
+      "changedPixels": 0,
+      "bounds": null,
+      "bytesBefore": 4333490,
+      "bytesAfter": 4333490,
+      "dimensions": [
+        3306,
+        1558
+      ],
+      "iccBytes": 480,
+      "alphaUnchanged": true
+    }
+  ],
+  "scope": "Glass presentation coordinate subtitle only; no widget import required.",
+  "revision": "engraved-coasts-f50-coordinates-r2",
+  "pixelsOutsideCoordinateGlyphsUnchanged": true,
+  "coordinateSizePositionAndAlphaUnchanged": true,
+  "cloudRunAdapterSuite": {
+    "command": "node --experimental-vm-modules tools/test-cloud-run-map.mjs",
+    "passed": true,
+    "note": "The adapter suite loads the current renderer for both routes. Separate before/after pixel checks above compare against the recorded parent renderer.",
+    "checks": [
+      "authorization",
+      "PNG decoding",
+      "cache reuse",
+      "ETag and 304",
+      "HEAD",
+      "city completion",
+      "provider outage fallback",
+      "Firestore fixtures",
+      "private cache TTL",
+      "sanitized logs"
+    ]
+  },
+  "providerRequestsForVerification": 0,
+  "googleDeployment": "pending Cloud Shell deployment",
+  "nativePhoneVerification": "pending"
+}
