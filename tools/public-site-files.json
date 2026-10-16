@@ -37,7 +37,8 @@
     "tools/widgy-weather15-google-soft-glow3-copy.html",
     "tools/widgy-weather15-google-soft-glow4-copy.html",
     "tools/widgy-weather15-google-soft-glow5-copy.html",
-    "tools/widgy-weather15-google-soft-glow6-copy.html"
+    "tools/widgy-weather15-google-soft-glow6-copy.html",
+    "tools/widgy-weather15-google-clean-zero-copy.html"
   ],
   "files": [
     "assets/calendar-glass/Calendar_Glass_Chrome_C8.png",
@@ -200,6 +201,10 @@
     "tools/widgy-weather15-google-soft-glow6-copy.html",
     "tools/widgy-weather15-google-soft-glow6-copy.js",
     "tools/widgy-weather15-google-soft-glow6.enc.json",
-    "assets/navigation-soft-glow/home-balanced-activity.png"
+    "assets/navigation-soft-glow/home-balanced-activity.png",
+    "tools/widgy-weather15-google-clean-zero-copy.html",
+    "tools/widgy-weather15-google-clean-zero-copy.js",
+    "tools/widgy-weather15-google-clean-zero.enc.json",
+    "assets/navigation-soft-glow/health-plain-zero.png"
   ]
 }

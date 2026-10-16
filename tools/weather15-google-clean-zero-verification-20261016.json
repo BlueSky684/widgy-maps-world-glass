@@ -1,0 +1,35 @@
+{
+  "sourceSHA256": "261bb9d22701b440f4c705aeef53e4083035a9a490268471805a138783a460cb",
+  "fonts": {
+    "Phenomena-Regular": "WidgyPlainZero-Regular",
+    "Phenomena-Bold": "WidgyPlainZero-Bold"
+  },
+  "fontReferences": 381,
+  "nativeTextReferences": 378,
+  "nativeChartReferences": 3,
+  "artwork": {
+    "path": "assets/navigation-soft-glow/health-plain-zero.png",
+    "width": 1320,
+    "height": 1377,
+    "bytes": 168423,
+    "sha256": "8ff89e561fad3ee91ffa2a2b3e0393b99ec9eceebcd5cc56f8269f4a32984a35",
+    "changedZeroCount": 4,
+    "changedPixels": 130,
+    "changedBounds": [
+      424,
+      473,
+      462,
+      488
+    ]
+  },
+  "allLayerFramesAndSizesIdentical": true,
+  "allColorsIdentical": true,
+  "googleMapAndAllVariablesIdentical": true,
+  "allOtherWidgetFieldsIdentical": true,
+  "layers": 1204,
+  "variables": 74,
+  "encryptionRoundTripExact": true,
+  "bytes": 923875,
+  "sha256": "a61d840f2d8e50efb8d80d0bfffa6439a09f900fe5ef0f405e6aa57f90700d4c",
+  "nativeVisualReviewPending": true
+}
