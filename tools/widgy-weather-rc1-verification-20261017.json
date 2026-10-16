@@ -1,0 +1,17 @@
+{
+  "name": "Widgy Weather RC1",
+  "sourceSHA256": "a61d840f2d8e50efb8d80d0bfffa6439a09f900fe5ef0f405e6aa57f90700d4c",
+  "sha256": "06b2234ad57dfc81deb00305bf527a7d31d4298cf1d0e7a61892946b11e4edbe",
+  "bytes": 923856,
+  "changedWidgetFields": [
+    "3"
+  ],
+  "allDataSourcesIdentical": true,
+  "allLayerFramesIdentical": true,
+  "googleMapUnchanged": true,
+  "fontsUnchanged": true,
+  "layers": 1204,
+  "variables": 74,
+  "encryptionRoundTripExact": true,
+  "jsonCopyFormattingExact": true
+}
