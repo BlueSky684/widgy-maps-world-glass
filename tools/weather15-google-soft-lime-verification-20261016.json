@@ -1,0 +1,25 @@
+{
+  "sourceSHA256": "78faaa647bc8aa6e68692a48e6034a61021538d39f6cfd3570a4a1063d9ceb67",
+  "width": 1135,
+  "height": 1184,
+  "pngBytes": 68123,
+  "changedPixels": 18260,
+  "changedBounds": [
+    59,
+    578,
+    202,
+    706
+  ],
+  "allOtherPixelsIdentical": true,
+  "alphaIdentical": true,
+  "widgetChanges": [
+    "Display name",
+    "Weather background URL"
+  ],
+  "allOtherWidgetFieldsIdentical": true,
+  "layers": 1204,
+  "variables": 74,
+  "encryptionRoundTripExact": true,
+  "sha256": "5918f9f97f1a8b2c1df11f3ad272b3ceadf3311fec37a7ae4fd2c92a35d8bbe1",
+  "nativeVisualReviewPending": true
+}
