@@ -1,0 +1,30 @@
+// Publish only an encrypted envelope. The export and fragment key stay private.
+import assert from 'node:assert/strict';
+import {readFileSync, writeFileSync, mkdirSync} from 'node:fs';
+import {resolve, relative} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {randomBytes, createCipheriv, createDecipheriv, createHash} from 'node:crypto';
+import {gzipSync, gunzipSync} from 'node:zlib';
+
+const [input, output] = process.argv.slice(2);
+assert(input && output, 'Supply the full Google Home export and a private output directory');
+const root = fileURLToPath(new URL('../', import.meta.url));
+const privateDir = resolve(output);
+assert(relative(root, privateDir).startsWith('../'), 'Private files must stay outside the repository');
+const raw = readFileSync(input);
+const digest = createHash('sha256').update(raw).digest('hex');
+assert.equal(digest, '78faaa647bc8aa6e68692a48e6034a61021538d39f6cfd3570a4a1063d9ceb67');
+assert.equal(JSON.parse(raw)['3'], 'Widgy Weather 15 - Google Full Home');
+const key = randomBytes(32), iv = randomBytes(12);
+const aad = Buffer.from('widgy-weather15-google-full-home:v1:20261016');
+const cipher = createCipheriv('aes-256-gcm', key, iv); cipher.setAAD(aad);
+const data = Buffer.concat([cipher.update(gzipSync(raw)), cipher.final(), cipher.getAuthTag()]);
+const decipher = createDecipheriv('aes-256-gcm', key, iv); decipher.setAAD(aad); decipher.setAuthTag(data.subarray(-16));
+assert(gunzipSync(Buffer.concat([decipher.update(data.subarray(0,-16)), decipher.final()])).equals(raw));
+const envelope = {v:1, iv:iv.toString('base64url'), data:data.toString('base64url'), bytes:raw.length, sha256:digest};
+writeFileSync(new URL('./widgy-weather15-google-full-home.enc.json', import.meta.url), JSON.stringify(envelope)+'\n');
+mkdirSync(privateDir, {recursive:true, mode:0o700});
+writeFileSync(resolve(privateDir, 'copy-key.txt'), key.toString('base64url'), {mode:0o600});
+const url = 'https://widgy-maps-world-glass-git-f50-widget-test-blue-sky12.vercel.app/tools/widgy-weather15-google-full-home-copy.html#key='+key.toString('base64url');
+writeFileSync(resolve(privateDir, 'copy-url.txt'), url, {mode:0o600});
+console.log(JSON.stringify({bytes:raw.length, sha256:digest, encryptedBytes:data.length, roundTripExact:true}));
