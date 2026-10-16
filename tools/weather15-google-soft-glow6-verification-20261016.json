@@ -1,0 +1,82 @@
+{
+  "sourceSHA256": "8bb221a04d52f8fec91e0a88b1829d0cdec1f0f638692f3a0c5fc51396051baf",
+  "offsetsDesignPixels": {
+    "steps": 12.75,
+    "details": 2.25,
+    "divider": -4.5
+  },
+  "layout": {
+    "source": "IMG_0019.png, visible-ink half-open bounds",
+    "measured": {
+      "card": [
+        577,
+        1112
+      ],
+      "steps": [
+        603,
+        886
+      ],
+      "details": [
+        974,
+        1071
+      ],
+      "divider": 942
+    },
+    "expected": {
+      "steps": [
+        615.75,
+        898.75
+      ],
+      "details": [
+        976.25,
+        1073.25
+      ],
+      "divider": 937.5
+    },
+    "equalMargins": 38.75,
+    "gaps": [
+      38.75,
+      38.75,
+      38.75,
+      38.75
+    ],
+    "note": "Reference content: 6,150 steps, 4012 m and 305 Cal. Visible gaps vary with values and native rasterization."
+  },
+  "changedLayerIDs": [
+    6193,
+    80209,
+    6140,
+    6141,
+    6142,
+    6143,
+    6144
+  ],
+  "artwork": {
+    "path": "assets/navigation-soft-glow/home-balanced-activity.png",
+    "width": 1320,
+    "height": 1377,
+    "bytes": 61540,
+    "sha256": "67a711d08871e8aab55214fceac3f08847a690caeb763615a722f671ac403940",
+    "changedPixels": 13044,
+    "changedBounds": [
+      701,
+      987,
+      1096,
+      1152
+    ],
+    "otherPixelsIdentical": true,
+    "alphaIdentical": true
+  },
+  "ringBackgroundAndNativeProgressTranslatedEqually": true,
+  "ringToTextSpacingPreserved": true,
+  "allSizesFontsAndVerticalPositionsIdentical": true,
+  "weatherCardIdentical": true,
+  "googleMapAndAllVariablesIdentical": true,
+  "allOtherWidgetFieldsIdentical": true,
+  "layers": 1204,
+  "variables": 74,
+  "encryptionRoundTripExact": true,
+  "bytes": 921949,
+  "sha256": "261bb9d22701b440f4c705aeef53e4083035a9a490268471805a138783a460cb",
+  "nativeVisualReviewPending": true
+}
