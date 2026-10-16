@@ -1,0 +1,41 @@
+{
+  "sourceSHA256": "4624ac4991b365e8872cb931e20fd79c93d3e0e676c3bd853ddb64d846d09a4c",
+  "weather": {
+    "width": 1135,
+    "height": 1184,
+    "pngBytes": 68880,
+    "sha256": "d69a55e8d04ed0642f843bfbef92856273ff9dec56ea5dcab6c97a82b72077d2",
+    "changedPixels": 1355,
+    "changedBounds": [
+      61,
+      580,
+      200,
+      704
+    ],
+    "centreFillIdentical": true,
+    "featherIdentical": true,
+    "otherPixelsIdentical": true,
+    "alphaIdentical": true
+  },
+  "calendar": {
+    "discsMoved": 95,
+    "dateDrawingsUnchanged": 285,
+    "designPixelOffset": {
+      "x": -1,
+      "y": 1.5
+    },
+    "discSizeAndMaterialUnchanged": true,
+    "allDateTextPropertiesIdentical": true,
+    "monthLayoutVariants": [
+      4,
+      5,
+      6
+    ]
+  },
+  "allOtherWidgetFieldsIdentical": true,
+  "layers": 1204,
+  "variables": 74,
+  "encryptionRoundTripExact": true,
+  "sha256": "615f3b03304b1253f2d458e42443896bd24f84e57a0e68bbb438aa67d88b7ccb",
+  "nativeVisualReviewPending": true
+}

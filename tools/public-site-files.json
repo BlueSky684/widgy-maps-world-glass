@@ -30,7 +30,8 @@
     "tools/widgy-weather15-map-home-test-copy.html",
     "tools/widgy-weather15-google-full-home-copy.html",
     "tools/widgy-weather15-google-soft-lime-copy.html",
-    "tools/widgy-weather15-google-refined-copy.html"
+    "tools/widgy-weather15-google-refined-copy.html",
+    "tools/widgy-weather15-google-refined2-copy.html"
   ],
   "files": [
     "assets/calendar-glass/Calendar_Glass_Chrome_C8.png",
@@ -165,6 +166,10 @@
     "assets/health-premium/chrome-h2-spaced-1320.png",
     "tools/widgy-weather15-google-refined-copy.html",
     "tools/widgy-weather15-google-refined-copy.js",
-    "tools/widgy-weather15-google-refined.enc.json"
+    "tools/widgy-weather15-google-refined.enc.json",
+    "assets/weather-premium/chrome-r14-hourly-lime4.png",
+    "tools/widgy-weather15-google-refined2-copy.html",
+    "tools/widgy-weather15-google-refined2-copy.js",
+    "tools/widgy-weather15-google-refined2.enc.json"
   ]
 }
