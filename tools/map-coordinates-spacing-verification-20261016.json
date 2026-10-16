@@ -1,0 +1,39 @@
+{
+  "baselineCommit": "d91aec10c66fb67c7636f18116fb47f614ae5ccb",
+  "revision": "engraved-coasts-f50-coordinates-r3",
+  "change": {
+    "presentation": "glass",
+    "coordinateGapSourcePixels": {
+      "before": 12,
+      "after": 20
+    },
+    "coordinateShiftSourcePixels": 8,
+    "approximateShiftAt1086pxDisplayWidth": 2.6279491833030852
+  },
+  "verification": {
+    "coordinateGlyphRGBAIdenticalAfterTranslation": true,
+    "coordinateColor": "#d3dce7",
+    "cityAndMarkerUnchanged": true,
+    "pixelsOutsideSubtitleAreaUnchanged": true,
+    "changedPixels": 4797,
+    "changedBounds": [
+      2095,
+      634,
+      2366,
+      690
+    ],
+    "dimensions": [
+      3306,
+      1558
+    ],
+    "iccBytes": 480,
+    "iccUnchanged": true,
+    "alphaUnchanged": true,
+    "defaultPresentationUnchanged": true,
+    "noCityFallbackUnchanged": true,
+    "noLocationUnchanged": true,
+    "providerCalls": 0
+  },
+  "googleDeployment": "pending Cloud Shell deployment",
+  "nativePhoneVerification": "pending"
+}
