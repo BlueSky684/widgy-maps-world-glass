@@ -1,0 +1,60 @@
+{
+  "sourceSHA256": "5918f9f97f1a8b2c1df11f3ad272b3ceadf3311fec37a7ae4fd2c92a35d8bbe1",
+  "weather": {
+    "width": 1135,
+    "height": 1184,
+    "bytes": 68277,
+    "sha256": "2a606c3bd091121e225b3b594f833fb611672a1566a0811f40dc173f5db55fed",
+    "changedPixels": 16990,
+    "changedBounds": [
+      59,
+      578,
+      202,
+      704
+    ],
+    "otherPixelsIdentical": true,
+    "alphaIdentical": true,
+    "fillIncreasePercent": 18,
+    "featherUnchanged": true
+  },
+  "health": {
+    "width": 1320,
+    "height": 1377,
+    "bytes": 167272,
+    "sha256": "c4e206228488b7e26c15d11a97dd4abd522cfd896af75b795e2fd3e7ff6fa640",
+    "changedPixels": 14503,
+    "changedBounds": [
+      164,
+      590,
+      1206,
+      706
+    ],
+    "otherPixelsIdentical": true,
+    "alphaIdentical": true,
+    "circleRadius": [
+      23,
+      20
+    ],
+    "titleBaseline": [
+      514,
+      510
+    ],
+    "subtitleBaseline": [
+      584,
+      587
+    ],
+    "mainValueOffset": 4
+  },
+  "widgetChanges": [
+    "Display name",
+    "Weather artwork URL",
+    "Health artwork URL",
+    "Four Health main-value vertical positions"
+  ],
+  "allOtherWidgetFieldsIdentical": true,
+  "layers": 1204,
+  "variables": 74,
+  "encryptionRoundTripExact": true,
+  "sha256": "4624ac4991b365e8872cb931e20fd79c93d3e0e676c3bd853ddb64d846d09a4c",
+  "nativeVisualReviewPending": true
+}

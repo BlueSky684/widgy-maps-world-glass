@@ -2,7 +2,7 @@ import fs from 'node:fs';
 const fonts = JSON.parse(fs.readFileSync(new URL('../assets/weather-premium/glyphs.json', import.meta.url)));
 const nativeRunner = JSON.parse(fs.readFileSync(new URL('../assets/health-premium/native-figure-run.json', import.meta.url)));
 // The approved technical drawing, without sample readings in shipped artwork.
-export function healthScene(values = null, {highlightToday = true} = {}) {
+export function healthScene(values = null, {highlightToday = true, spaciousSnapshot = false} = {}) {
 const C = {white:'#f4f7fa', muted:'#acb7c6', dim:'#8596a2', lime:'#c5ff0a', pink:'#ff2b80', cyan:'#15cbea', purple:'#b49aff', line:'#30434e'};
 const p=[];
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
@@ -73,16 +73,16 @@ for(const[label,key,x,sample]of [['Active Calories','calories',635,'420 kcal'],[
 for(const[label,key,x,sample]of [['Stand','stand',635,'10 hr'],['Step Goal','goal',817,'78%'],['Workouts','workouts',997,'1']]){text(label,x,350,21,C.muted,'Regular','middle');live(key,sample,x,390,31,C.white,'Bold','middle',157);}
 card(32,434,1071,267);rect(54,451,4.5,25,2.2,C.lime);text('HEALTH SNAPSHOT',73,476,23,C.white,'Bold');text('LATEST READINGS',1074,475,14,C.dim,'Regular','end');
 const centers=[174,436,698,960];for(const x of [305,567,829])vline(x,500,681);
-for(const[i,label]of ['Heart','Blood Oxygen','Sleep & Breathing','Cardio Fitness'].entries())text(label,centers[i],514,22,C.muted,'Regular','middle',236);
-for(let i=0;i<4;i++){const color=[C.pink,C.cyan,C.purple,C.lime][i],x=centers[i];p.push(`<circle cx="${x}" cy="546" r="23" fill="${color}" fill-opacity=".07" stroke="${color}" stroke-opacity=".28" stroke-width="1.2"/>`);if(i===1){text('O',x-4,557,24,C.cyan,'Bold','middle');text('2',x+11,561,12,C.cyan,'Bold','middle');}else icon(['heart','','moon','runner'][i],x,546,i===2?33.0939:30,color);}
+for(const[i,label]of ['Heart','Blood Oxygen','Sleep & Breathing','Cardio Fitness'].entries())text(label,centers[i],spaciousSnapshot?510:514,22,C.muted,'Regular','middle',236);
+for(let i=0;i<4;i++){const color=[C.pink,C.cyan,C.purple,C.lime][i],x=centers[i];p.push(`<circle cx="${x}" cy="546" r="${spaciousSnapshot?20:23}" fill="${color}" fill-opacity=".07" stroke="${color}" stroke-opacity=".28" stroke-width="1.2"/>`);if(i===1){text('O',x-4,spaciousSnapshot?556:557,spaciousSnapshot?22:24,C.cyan,'Bold','middle');text('2',x+(spaciousSnapshot?10:11),spaciousSnapshot?560:561,spaciousSnapshot?11:12,C.cyan,'Bold','middle');}else icon(['heart','','moon','runner'][i],x,546,(i===2?33.0939:30)*(spaciousSnapshot?26.5/30:1),color);}
 // Measurement timestamps need an observed native export. Never use Date.now().
-for(const[i,label]of ['LATEST','LATEST','DAILY SLEEP','LATEST'].entries())text(label,centers[i],584,11,C.dim,'Regular','middle');
-live('heart','72 bpm',174,624,34,C.white,'Bold','middle',232);
+for(const[i,label]of ['LATEST','LATEST','DAILY SLEEP','LATEST'].entries())text(label,centers[i],spaciousSnapshot?587:584,11,C.dim,'Regular','middle');
+live('heart','72 bpm',174,spaciousSnapshot?628:624,34,C.white,'Bold','middle',232);
 live('hrv','HRV avg 42 ms',174,651,19,C.muted,'Regular','middle',235);
 live('resting','Resting 60 bpm',174,676,17,C.muted,'Regular','middle',235);
-live('oxygen','98%',436,624,34,C.white,'Bold','middle',232);text('SpO2',436,651,18,C.muted,'Regular','middle');text('Latest reading',436,676,17,C.dim,'Regular','middle');
-live('sleep','7h 24m',698,624,33,C.white,'Bold','middle',236);text('Breathing disturbances',698,649,17,C.muted,'Regular','middle');live('breathing','3.2',698,678,23,C.white,'Bold','middle',235);
-live('cardio','41.2',960,624,34,C.white,'Bold','middle',232);text('VO2 max',960,651,18,C.muted,'Regular','middle');text('mL/kg/min',960,676,17,C.dim,'Regular','middle');
+live('oxygen','98%',436,spaciousSnapshot?628:624,34,C.white,'Bold','middle',232);text('SpO2',436,651,18,C.muted,'Regular','middle');text('Latest reading',436,676,17,C.dim,'Regular','middle');
+live('sleep','7h 24m',698,spaciousSnapshot?628:624,33,C.white,'Bold','middle',236);text('Breathing disturbances',698,649,17,C.muted,'Regular','middle');live('breathing','3.2',698,678,23,C.white,'Bold','middle',235);
+live('cardio','41.2',960,spaciousSnapshot?628:624,34,C.white,'Bold','middle',232);text('VO2 max',960,651,18,C.muted,'Regular','middle');text('mL/kg/min',960,676,17,C.dim,'Regular','middle');
 card(32,713,1071,305);rect(54,731,4.5,25,2.2,C.lime);text('WEEKLY ACTIVITY',73,755,23,C.white,'Bold');text('LAST 7 DAYS',1074,754,14,C.dim,'Regular','end');line(54,770,1080,770);
 const days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
 for(let i=0;i<7;i++){
