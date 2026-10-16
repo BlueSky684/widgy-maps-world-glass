@@ -1,0 +1,33 @@
+{
+  "sourceSHA256": "e6cdf6272f23d50cb2220353f466b9c76e80e970a4499728e46ae08909bfb11f",
+  "textOffsetDesignPixels": {
+    "x": 6,
+    "y": 0
+  },
+  "changedLayerIDs": [
+    6131,
+    6132
+  ],
+  "leftEdgeDesignPixels": {
+    "before": 201,
+    "after": 207
+  },
+  "rightGapToDividerDesignPixels": {
+    "temperature": {
+      "before": 34,
+      "after": 28
+    },
+    "condition": {
+      "before": 24,
+      "after": 18
+    }
+  },
+  "iconAndCardGeometryIdentical": true,
+  "allOtherWidgetFieldsIdentical": true,
+  "layers": 1204,
+  "variables": 74,
+  "encryptionRoundTripExact": true,
+  "bytes": 921949,
+  "sha256": "3add224ad26b2fa9ee882d25e0b45e328099a2beef2d57ed2a9a3cd0401c0680",
+  "nativeVisualReviewPending": true
+}
