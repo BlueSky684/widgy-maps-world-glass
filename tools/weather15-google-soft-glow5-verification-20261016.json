@@ -1,0 +1,160 @@
+{
+  "sourceSHA256": "69adbe626fd025c36733b32153eb2f9e216f65825a13a271f190632d914eedb6",
+  "offsetsDesignPixels": {
+    "weather": 6,
+    "highLow": 13,
+    "divider": 10
+  },
+  "divider": {
+    "before": 358,
+    "after": 368
+  },
+  "changedLayerIDs": [
+    80029,
+    80030,
+    80031,
+    80001,
+    80011,
+    80012,
+    80017,
+    80018,
+    80019,
+    7002,
+    80013,
+    80015,
+    80016,
+    7302,
+    7303,
+    7053,
+    7001,
+    7003,
+    80025,
+    80027,
+    76800,
+    77102,
+    80026,
+    76801,
+    77202,
+    80032,
+    80033,
+    80034,
+    80002,
+    80022,
+    80023,
+    7009,
+    80020,
+    80021,
+    7010,
+    79001,
+    79002,
+    7011,
+    80028,
+    79101,
+    79102,
+    79201,
+    79202,
+    7006,
+    80049,
+    80003,
+    7012,
+    7013,
+    7014,
+    7015,
+    80050,
+    80005,
+    80039,
+    80038,
+    79401,
+    79403,
+    7007,
+    80040,
+    7008,
+    80041,
+    80042,
+    80004,
+    80036,
+    80071,
+    80072,
+    80073,
+    80074,
+    80035,
+    80084,
+    80085,
+    80086,
+    80087,
+    80051,
+    80097,
+    80098,
+    80099,
+    80100,
+    6131,
+    6132,
+    6133,
+    6134
+  ],
+  "layout": {
+    "source": "IMG_0018.png, visible-ink half-open bounds",
+    "measured": {
+      "card": [
+        23,
+        558
+      ],
+      "weather": [
+        50,
+        329
+      ],
+      "highLow": [
+        388,
+        512
+      ],
+      "divider": 358
+    },
+    "expected": {
+      "weather": [
+        56,
+        335
+      ],
+      "highLow": [
+        401,
+        525
+      ],
+      "divider": 368
+    },
+    "equalMargins": 33,
+    "gaps": [
+      33,
+      33,
+      33,
+      33
+    ],
+    "note": "The screenshot measurement is the optical reference. Native rasterization and changing text still require phone review."
+  },
+  "artwork": {
+    "path": "assets/navigation-soft-glow/home-balanced.png",
+    "width": 1320,
+    "height": 1377,
+    "bytes": 61684,
+    "sha256": "4b97e91365de8cb301058bf14290aacb3836489d6edfae1e952195a44e15c658",
+    "changedPixels": 4173,
+    "changedBounds": [
+      415,
+      994,
+      518,
+      1150
+    ],
+    "otherPixelsIdentical": true,
+    "alphaIdentical": true
+  },
+  "iconToTextSpacingPreserved": true,
+  "highLowIconToTextSpacingPreserved": true,
+  "allIconVariantsTranslatedEqually": true,
+  "iconSizesTextFramesAndVerticalPositionsIdentical": true,
+  "googleMapAndAllVariablesIdentical": true,
+  "allOtherWidgetFieldsIdentical": true,
+  "layers": 1204,
+  "variables": 74,
+  "encryptionRoundTripExact": true,
+  "bytes": 921935,
+  "sha256": "8bb221a04d52f8fec91e0a88b1829d0cdec1f0f638692f3a0c5fc51396051baf",
+  "nativeVisualReviewPending": true
+}
