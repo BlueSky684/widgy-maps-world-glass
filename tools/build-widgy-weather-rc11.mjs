@@ -1,7 +1,7 @@
 // Build a focused Health-source correction from the owner's latest phone export.
 // The input and unencrypted output must remain outside the tracked repository.
 import assert from 'node:assert/strict';
-import {readFileSync, writeFileSync, mkdirSync} from 'node:fs';
+import {readFileSync, writeFileSync, mkdirSync, existsSync} from 'node:fs';
 import {resolve, relative} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createCipheriv, createDecipheriv, createHash, randomBytes} from 'node:crypto';
@@ -57,9 +57,30 @@ assert.deepEqual(stepsVariable['3']['66'], [{'5':'Pedometer', '6':'Steps'}]);
 stepsVariable['3']['66'] = [structuredClone(nativeSteps)];
 assert(layer(85007)['66'][0]['10'].includes('${widgy.steps_today}'));
 
+// Make only the standalone Home sun less dominant beside the temperature.
+// Keep its center, symbol weight, tint and visibility conditions unchanged.
+const sun = layer(7002);
+assert.equal(sun.z, '4');
+assert.equal(sun['3'], 'sun.max.fill');
+const sunFrameBefore = Object.fromEntries(['b','c','d','e'].map(k => {
+  assert.equal(sun[k].a.length, 1);
+  assert.equal(sun[k].b, 0);
+  return [k, sun[k].a[0].a];
+}));
+const sunScale = 0.85;
+const round = n => Math.round(n * 1e6) / 1e6;
+sun.d.a[0].a = round(sunFrameBefore.d * sunScale);
+sun.e.a[0].a = round(sunFrameBefore.e * sunScale);
+sun.b.a[0].a = round(sunFrameBefore.b + (sunFrameBefore.d - sun.d.a[0].a) / 2);
+sun.c.a[0].a = round(sunFrameBefore.c + (sunFrameBefore.e - sun.e.a[0].a) / 2);
+for (const [pos, size] of [['b','d'],['c','e']]) {
+  assert(Math.abs(sun[pos].a[0].a + sun[size].a[0].a / 2 -
+    (sunFrameBefore[pos] + sunFrameBefore[size] / 2)) < 1e-6);
+}
+
 const name = 'Widgy Weather RC1.1';
 widget['3'] = name;
-widget['4'] = 'RC1.1: daily Health steps shared by Home, Health and weekly activity; direct native step and active-calorie text. Phone verification pending.';
+widget['4'] = 'RC1.1: daily Health steps shared by Home, Health and weekly activity; direct native step and active-calorie text; standalone Home sun 15% smaller around its original center. Phone verification pending.';
 
 // Reverse only the intended edits and compare the full private export. This
 // protects the map, credentials, navigation, styling and all unrelated data.
@@ -68,6 +89,7 @@ const originalLayers = new Map([...widgetLayers(before)].map(n => [n.d0,n]));
 for (const n of widgetLayers(reversed)) {
   if (modifiedTextIDs.includes(n.d0)) n['66'] = structuredClone(originalLayers.get(n.d0)['66']);
   if (n.d0 === 80209) for (const k of ['1','2']) n[k] = originalLayers.get(n.d0)[k];
+  if (n.d0 === 7002) for (const k of ['b','c','d','e']) n[k] = structuredClone(originalLayers.get(n.d0)[k]);
 }
 reversed['36'].find(v => v['1'] === 'steps_today')['3']['66'] =
   structuredClone(before['36'].find(v => v['1'] === 'steps_today')['3']['66']);
@@ -78,7 +100,10 @@ const raw = Buffer.from(JSON.stringify(widget));
 assert.deepEqual(JSON.parse(formatJSONLines(raw.toString())), widget);
 const slug = 'widgy-weather-rc11';
 const aadText = 'widgy-weather-rc11:v1:20261019';
-const key = randomBytes(32), iv = randomBytes(12), aad = Buffer.from(aadText);
+const keyPath = resolve(privateDir, 'copy-key.txt');
+const key = existsSync(keyPath) ? Buffer.from(readFileSync(keyPath,'utf8').trim(),'base64url') : randomBytes(32);
+assert.equal(key.length, 32);
+const iv = randomBytes(12), aad = Buffer.from(aadText);
 const cipher = createCipheriv('aes-256-gcm', key, iv);
 cipher.setAAD(aad);
 const ciphertext = Buffer.concat([cipher.update(gzipSync(raw)), cipher.final(), cipher.getAuthTag()]);
@@ -105,7 +130,7 @@ html = html.replaceAll('Widgy Weather RC1',name)
   .replaceAll('widgy-weather-rc1-copy.js',`${slug}-copy.js`)
   .replace('<button id="download"', verificationMarkup+'\n<button id="download"')
   .replace('מועמדת לגרסה הסופית, עם כל תיקוני העיצוב והמרווחים האחרונים ופונטים עם אפס ללא קו.',
-    'גרסת בדיקה לתיקון התאמת נתוני הצעדים והקלוריות בין התצוגות. הצעדים ב־Home וב־Health מחוברים למקור היומי של הטבלה; הקלוריות ב־Health מחוברות ישירות למקור של הטבעת.')
+    'גרסת בדיקה לתיקון התאמת נתוני הצעדים והקלוריות בין התצוגות. הצעדים ב־Home וב־Health מחוברים למקור היומי של הטבלה; הקלוריות ב־Health מחוברות ישירות למקור של הטבעת. השמש הבודדת בכרטיס מזג האוויר ב־Home הוקטנה ב־15% למראה עדין יותר.')
   .replace('בדוק שהאפסים מוצגים ללא הקו ב־Home, Calendar, Weather ו־Health.',
     'פתח Health והשווה את הצעדים והקלוריות למספרים בשורה של היום בטבלה. בדוק גם שהצעדים ב־Home תואמים. שמור את RC1 להשוואה.');
 writeFileSync(resolve(root,`tools/${slug}-copy.html`),html);
@@ -119,6 +144,8 @@ const report = {name,sourceSHA256:sha(inputBytes),sha256:sha(raw),bytes:raw.leng
   directTextLayers:modifiedTextIDs,homeRingSource:'Health (Daily) / Step Count',
   percentageInputSource:'Health (Daily) / Step Count',percentageScriptRetained:true,
   stepsGoal:10000,moveGoal:500,unrelatedConfigurationIdentical:true,
+  standaloneHomeSun:{layerID:7002,scale:sunScale,centerPreserved:true,
+    before:sunFrameBefore,after:Object.fromEntries(['b','c','d','e'].map(k => [k,sun[k].a[0].a]))},
   layers:layers.length,variables:widget['36'].length,encryptionRoundTripExact:true,
   jsonCopyFormattingExact:true,nativePhoneVerification:'pending'};
 writeFileSync(resolve(root,'tools/widgy-weather-rc11-verification-20261019.json'),JSON.stringify(report,null,2)+'\n');
