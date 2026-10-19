@@ -1,0 +1,22 @@
+{
+  "name": "Widgy Weather RC1.1",
+  "sourceSHA256": "708baf46c2a3fd0c3963597dff0897dcd76b3bb51f08aa5498250511f6d17846",
+  "sha256": "2d99a148b22b1cd5ca5d7d7c4e1fecad0fc63414e1884a0cd262926cbe49a1c0",
+  "bytes": 923031,
+  "directTextLayers": [
+    6141,
+    85002,
+    85003
+  ],
+  "homeRingSource": "Health (Daily) / Step Count",
+  "percentageInputSource": "Health (Daily) / Step Count",
+  "percentageScriptRetained": true,
+  "stepsGoal": 10000,
+  "moveGoal": 500,
+  "unrelatedConfigurationIdentical": true,
+  "layers": 1204,
+  "variables": 74,
+  "encryptionRoundTripExact": true,
+  "jsonCopyFormattingExact": true,
+  "nativePhoneVerification": "pending"
+}

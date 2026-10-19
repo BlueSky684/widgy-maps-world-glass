@@ -208,6 +208,10 @@
     "assets/navigation-soft-glow/health-plain-zero.png",
     "tools/widgy-weather-rc1-copy.html",
     "tools/widgy-weather-rc1-copy.js",
-    "tools/widgy-weather-rc1.enc.json"
+    "tools/widgy-weather-rc1.enc.json",
+    "tools/widgy-weather-rc11-copy.html",
+    "tools/widgy-weather-rc11-copy.js",
+    "tools/widgy-weather-rc11.enc.json",
+    "tools/copy-verification.js"
   ]
 }
