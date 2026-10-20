@@ -10,7 +10,7 @@ import {observeMapResponseCompletion} from '../lib/map-response-completion.js';
 
 // The default Vercel handler retains its process-local caches and behavior.
 // Other hosts can supply a city resolver without changing the approved renderer.
-export function createNightMapHandler({resolveCity} = {}) {
+export function createNightMapHandler({resolveCity, resolveFileCity} = {}) {
   const cachedRender = createMapRenderCache();
   const cachedCity = createCityReuseCache();
   const observeMapURL = createMapURLDiagnostics();
@@ -27,6 +27,20 @@ export function createNightMapHandler({resolveCity} = {}) {
   return async function handler(req, res) {
     const requestStarted = performance.now();
     const url = parseMapRequest(req.url);
+    let filePoint = null;
+    if (url.searchParams.has('delivery')) {
+      const {authorizeFileDelivery} = await import('../lib/location/cloud-city-bridge.js');
+      const {locationErrorStatus} = await import('../lib/location/shared.js');
+      try {filePoint = authorizeFileDelivery(url);}
+      catch (error) {
+        res.setHeader('Cache-Control', 'private, no-store');
+        res.setHeader('CDN-Cache-Control', 'no-store');
+        res.setHeader('Vercel-CDN-Cache-Control', 'no-store');
+        const status = error.message === 'invalid_delivery' ? 400 : locationErrorStatus(error);
+        return res.status(status).json({error: 'Map unavailable'});
+      }
+      res.setHeader('X-Map-Service', 'vercel-file-v1');
+    }
     if (url.searchParams.get('city_cache_v1') === 'read') {
       res.setHeader('Cache-Control', 'private, no-store, max-age=0');
       res.setHeader('CDN-Cache-Control', 'no-store');
@@ -91,14 +105,20 @@ export function createNightMapHandler({resolveCity} = {}) {
       try {
         // Authorization and coordinate validation remain mandatory even when
         // the optional city provider is missing or unavailable.
-        point=authorizeLocation(url,process.env,{requireProvider:false});
+        point=filePoint || authorizeLocation(url,process.env,{requireProvider:false});
       } catch(error) {
         const status=locationErrorStatus(error);
         report('rejected',{status,reason:'location_authorization_or_coordinates'});
         return res.status(status).json({error:'Location unavailable'});
       }
       const {resolveMapCity}=await import('../lib/location/map-city.js');
-      const result=await (resolveCity || resolveMapCity)(point);
+      let selectedResolver = resolveCity || resolveMapCity;
+      if (filePoint) {
+        const {resolveFileMapCity, fileCityBackend} = await import('../lib/location/cloud-city-bridge.js');
+        selectedResolver = resolveFileCity || resolveFileMapCity;
+        res.setHeader('X-Map-City-Service', fileCityBackend());
+      }
+      const result=await selectedResolver(point);
       // Never reuse a caller-supplied or stale name for different coordinates.
       url.searchParams.delete('city');
       if(result.city)url.searchParams.set('city',result.city);
