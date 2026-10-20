@@ -86,7 +86,7 @@ export function createNightMapHandler({resolveCity, resolveFileCity} = {}) {
     }
     const width=Number(url.searchParams.get('width') || 3306);
     // Opt-in resolution steps for the single-map Widgy stability trial.
-    if(![3306,2600,2204,1653,1102].includes(width)){
+    if(![3306,2600,2400,2204,1653,1102].includes(width)){
       report('rejected', {status: 400, reason: 'invalid_width'});
       return res.status(400).json({error:'Unsupported image width'});
     }
