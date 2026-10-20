@@ -1,0 +1,105 @@
+{
+  "deployment": "dpl_9SNh1e4Loa3URuY4ciG5jpW2k9wc",
+  "commit": "7444c210af49000881487c5fead1408c7f1b46e3",
+  "coordinates": "Synthetic public London coordinates, not device GPS",
+  "samples": [
+    {
+      "sample": "missing-key",
+      "expected": 403,
+      "status": 403,
+      "totalMs": 5127.3,
+      "passed": true
+    },
+    {
+      "sample": "wrong-key",
+      "expected": 403,
+      "status": 403,
+      "totalMs": 5865.7,
+      "passed": true
+    },
+    {
+      "sample": "city-first",
+      "expected": 200,
+      "status": 200,
+      "headers": {
+        "content-type": "image/png",
+        "content-length": "4073908",
+        "server-timing": "map;dur=1392.7",
+        "x-map-service": "vercel-file-v1",
+        "x-map-city-service": "cloud-run",
+        "x-location-cache": "TIMEOUT",
+        "x-map-location-source": "coordinates",
+        "x-map-rendered-at": "2026-10-20T13:00:00.000Z",
+        "x-map-time-mode": "fixed-test",
+        "x-map-cache": "BYPASS",
+        "x-vercel-id": "sfo1::fra1::9rqp6-1792502343738-5b47a202fa5a"
+      },
+      "bytes": 4073908,
+      "headersMs": 7620.8,
+      "totalMs": 9006.9,
+      "sha256": "b35820c8d096da92734d9a02a2aab64ec748d88dc1df0405697bdf132d95607d",
+      "dimensions": [
+        3306,
+        1558
+      ],
+      "passed": true,
+      "fullDecodeVerified": true
+    },
+    {
+      "sample": "city-repeat",
+      "expected": 200,
+      "status": 200,
+      "headers": {
+        "content-type": "image/png",
+        "content-length": "4076259",
+        "server-timing": "map;dur=714.4",
+        "x-map-service": "vercel-file-v1",
+        "x-map-city-service": "cloud-run",
+        "x-location-cache": "MEMORY",
+        "x-map-location-source": "coordinates",
+        "x-map-rendered-at": "2026-10-20T13:00:00.000Z",
+        "x-map-time-mode": "fixed-test",
+        "x-map-cache": "BYPASS",
+        "x-vercel-id": "sfo1::fra1::rjpcr-1792502352799-70e49210e52b"
+      },
+      "bytes": 4076259,
+      "headersMs": 5528.9,
+      "totalMs": 12877.7,
+      "sha256": "05a8d1129f87e9ad97728471f9096c8578e82ffb09c22f489a8755da17d2a7df",
+      "dimensions": [
+        3306,
+        1558
+      ],
+      "passed": true,
+      "fullDecodeVerified": true
+    },
+    {
+      "sample": "live-client",
+      "expected": 200,
+      "status": 200,
+      "headers": {
+        "content-type": "image/png",
+        "content-length": "4072468",
+        "server-timing": "map;dur=722.1",
+        "x-map-service": "vercel-file-v1",
+        "x-map-city-service": "cloud-run",
+        "x-location-cache": "MEMORY",
+        "x-map-location-source": "coordinates",
+        "x-map-rendered-at": "2026-10-20T13:19:25.942Z",
+        "x-map-time-mode": "server-now",
+        "x-map-cache": "MISS",
+        "x-vercel-id": "sfo1::fra1::hfwmv-1792502365734-152bb5e875a8"
+      },
+      "bytes": 4072468,
+      "headersMs": 5627.0,
+      "totalMs": 7362.0,
+      "sha256": "085ae67c0abaf418de75634a6d6631452dba65744ce02c894271baa5157759f6",
+      "dimensions": [
+        3306,
+        1558
+      ],
+      "passed": true,
+      "fullDecodeVerified": true
+    }
+  ]
+}

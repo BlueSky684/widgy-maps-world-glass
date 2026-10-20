@@ -1,7 +1,14 @@
-# Map Cache Test 0.6.0 — Vercel delivery candidate
+# Map Cache Test 0.6.0 — Vercel Preview delivery
 
-Release status: prepared, not released to the phone. The Preview secret and
-live integrated-city verification are still pending explicit authorization.
+Release status: server verification completed on 2026-10-20; packaged for owner
+installation. The existing map key was explicitly authorized and saved as a
+sensitive variable scoped only to Preview branch `f50-widget-test`.
+
+Three real authenticated PNG downloads passed full decoding at 3306 x 1558.
+Missing and incorrect keys returned 403. The first uncached city lookup exceeded
+the 1500 ms city deadline, so that image had coordinates without a city label;
+the next two returned the correct London label from the city cache. This is
+not proof that all cellular downloads will complete within the client deadline.
 
 This version changes the map URL to the existing permanent `f50-widget-test`
 Preview alias with `delivery=vercel-file-v1`. The download must carry the new
@@ -17,12 +24,16 @@ that server-side change does not require another client import.
 
 Never commit `private-config.json` or an owner `.scripting` package. The private
 owner package must contain the existing `mapAccessKey`; the example file is
-not a working credential. Do not install until the server and app-key check
-have passed. No temporary Vercel share URL belongs in the package.
+not a working credential. No temporary Vercel share URL belongs in the package.
 
-Once released: import as an update to the existing script, keep the existing
+Install: import as an update to the existing script, keep the existing
 Shortcut and map-file selection, then run the Shortcut once. Native import and
 device rendering cannot be verified by the local mocked tests.
+
+Keep automatic runs paused during this handoff. Start with one normal Shortcut
+run after import. A continuous 15-minute schedule is not a cost-free guarantee:
+the full-resolution monthly transfer scenario exceeds the current Hobby origin
+allowance; no paid plan change or Google-to-Redis quota handback was performed.
 
 ## Reproduction
 

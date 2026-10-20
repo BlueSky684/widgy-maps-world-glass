@@ -1,4 +1,4 @@
-Map Cache Test 0.6.0 — candidate, not released to device
+Map Cache Test 0.6.0 — Preview server verified, owner installation pending
 30 publication/input tests passed.
 27 download/failure tests passed (including missing/wrong service marker).
 5 TypeScript/TSX module graph and menu tests passed.
@@ -8,5 +8,9 @@ Existing Cloud Run regression and Firestore handback JavaScript suites passed.
 Unchanged optional Lua suite not rerun: lupa absent in this environment.
 Standard npm build passed; candidate Vercel Preview reached READY.
 Deployed new mode rejects missing configuration (503); legacy guard remains400.
-App-key configuration, authenticated integrated-city test and native import remain pending.
+App-key saved as a sensitive Preview variable for f50-widget-test after explicit approval.
+Preview dpl_9SNh1e4Loa3URuY4ciG5jpW2k9wc READY, commit 7444c210af49000881487c5fead1408c7f1b46e3.
+Missing/wrong keys rejected with 403; three authenticated full PNGs received and decoded.
+First city lookup TIMEOUT; next two MEMORY with correct London name.
+Native import, cellular reliability, full city quota handback and continuous-use traffic plan remain unverified or pending.
 Phone publication guarantees are unchanged; process-kill atomicity is not added.
