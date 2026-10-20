@@ -25,13 +25,13 @@ export function createCityServer({env = () => process.env, lookup, logger = cons
   return http.createServer({maxHeaderSize: 16384, requestTimeout: 30000, headersTimeout: 15000}, async (req, res) => {
     const id = randomUUID(), started = performance.now();
     // Never include URLs, query strings, tokens, coordinates, city or image data.
-    let terminal = false;
+    let terminal = false, bodyBytes = 0;
     const terminalReport = phase => {
       if (terminal) return;
       terminal = true;
       report({id, phase, status: res.statusCode,
         elapsedMs: Math.round(performance.now() - started),
-        bodyBytes: Number(res.getHeader('Content-Length') || 0),
+        bodyBytes,
         rssMiB: Math.round(process.memoryUsage().rss / 1048576)});
     };
     res.once('finish', () => terminalReport('finished'));
@@ -44,6 +44,7 @@ export function createCityServer({env = () => process.env, lookup, logger = cons
       res.statusCode = status;
       res.setHeader('Content-Type', 'application/json');
       const body = Buffer.from(JSON.stringify(value));
+      bodyBytes = body.length;
       res.setHeader('Content-Length', body.length);
       res.end(body);
     };
