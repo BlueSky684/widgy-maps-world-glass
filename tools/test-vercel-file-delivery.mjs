@@ -87,6 +87,16 @@ try {
     assert.equal(r.statusCode,200);assert.equal(r.headers['X-Location-Cache'],'TIMEOUT');assert(Buffer.isBuffer(r.body));
     finish({entry,state:'SHARED'});await background;assert.equal(r.headers['X-Location-Cache'],'TIMEOUT');
   });
+  await test('2400px delivery preserves the compositor, colour profile and exact expected PNG',async()=>{
+    const r=await route(path({width:'2400'}),async()=>({city:'London',state:'SHARED'}));
+    assert.equal(r.statusCode,200);assert.equal(r.headers['X-Map-Width'],'2400');
+    assert.equal(r.headers['X-Map-Service'],'vercel-file-v1');
+    const expected=await renderHomeMap({date:new Date(at),location:{...point,city:'London',source:'coordinates'},width:2400,presentation:'glass',atlas:'r6'});
+    assert(r.body.equals(expected));
+    const m=await sharp(r.body).metadata();assert.equal(m.width,2400);assert.equal(m.height,1131);
+    assert.equal(m.space,'srgb');assert(m.hasAlpha && m.hasProfile);
+    await sharp(r.body).raw().toBuffer();
+  });
   await test('Wrong-coordinate city response is rejected and caller-supplied name is never reused',async()=>{
     const r=await route(path({width:'1102'}),p=>resolveCloudMapCity(p,{lookup:async()=>({entry:{...entry,latitude:0},state:'SHARED'}),defer(){}}));
     assert.equal(r.headers['X-Location-Cache'],'UNAVAILABLE');

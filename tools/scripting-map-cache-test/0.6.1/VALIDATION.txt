@@ -1,0 +1,11 @@
+Map Cache Test 0.6.1 — local verification, native appearance pending
+30 publication/input tests passed.
+27 download/failure tests passed.
+1 Preview endpoint/authentication/location contract test passed.
+11 resolution migration, fallback and actual writer integration tests passed.
+Server: 11 authentication/failure/image-oracle cases passed, including 2400px.
+Standard deployment build passed (map cache, public site and stability assets).
+5 TypeScript/TSX module graph and menu checks passed.
+Real Preview delivery pending.
+Native iPhone appearance, import and background scheduling are not simulated.
+No crash-atomicity or immediate Widgy onscreen refresh guarantee is added.

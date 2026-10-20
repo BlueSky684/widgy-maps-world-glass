@@ -1,0 +1,9 @@
+{
+  "name": "Map Cache Test",
+  "icon": "map.fill",
+  "color": "#C5FF0A",
+  "version": "0.6.1",
+  "description": "2400px saved map with original-resolution fallback, shared resolution choice and unchanged last-good-file safeguards.",
+  "runInApp": false,
+  "intentInputTypes": []
+}
