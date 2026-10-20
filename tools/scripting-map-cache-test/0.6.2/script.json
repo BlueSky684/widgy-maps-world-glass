@@ -1,0 +1,9 @@
+{
+  "name": "Map Cache Test",
+  "icon": "map.fill",
+  "color": "#C5FF0A",
+  "version": "0.6.2",
+  "description": "Dedicated 2400 x 1131 map test, fixed 15-minute scheduling, existing Shortcut and last-good-map recovery.",
+  "runInApp": false,
+  "intentInputTypes": []
+}

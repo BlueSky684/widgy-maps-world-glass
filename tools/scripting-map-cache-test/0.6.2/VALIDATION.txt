@@ -1,0 +1,23 @@
+Map Cache Test 2400 — 0.6.2 verification
+30 publication/input tests passed.
+27 download/failure tests passed.
+1 Preview endpoint/authentication/location contract test passed.
+11 fixed-resolution, migration, rollback and actual manual/Shortcut integration tests passed.
+5 fixed-15-minute scheduling, replacement, cleanup and environment checks passed.
+5 TypeScript/TSX module graph and menu checks passed.
+Total: 79 automated local checks, using mocked native APIs.
+
+A real authenticated permanent-Preview download returned HTTP 200:
+2400 x 1131, 2,792,507 bytes, PNG fingerprint b302d468.
+Response markers: vercel-file-v1 and vercel-bdc.
+New 0.6.2 client PNG checks, full sharp decoding, sRGB and alpha checks passed.
+Verified against Preview deployment dpl_Hnf6HdFaQ2aRVXh8LjWcHoPHmqzF;
+this release changes only Scripting sources, tests and documentation, not the server.
+No temporary share links, cookies or additional authentication headers required.
+
+Prior user-supplied 3306px and 2400px widget screenshots were visually compared;
+no apparent sharpness loss at their displayed size. This is not a pixel-identity claim.
+0.6.2 native import and manual execution still require the owner's device.
+iOS background scheduling, notification delivery and Widgy refresh are not simulated.
+Existing timeout, last-good-map, backup and verified-write safeguards are retained;
+no crash-atomicity or immediate onscreen refresh guarantee is added.
