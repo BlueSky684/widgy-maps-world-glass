@@ -1,7 +1,8 @@
-# Vercel saved-map migration candidate — 2026-10-20
+# Vercel saved-map migration — 2026-10-20
 
 Scope: `f50-widget-test`, Vercel Preview only. Production, Google resources,
-quota ledgers, installed Scripting and Widgy have not been changed.
+quota handoff, installed Scripting and Widgy have not been changed. The real
+city verification uses the current provider/quota accounting normally.
 
 ## Implementation
 
@@ -27,7 +28,8 @@ quota ledgers, installed Scripting and Widgy have not been changed.
 - Scripting0.6.0 uses the permanent branch URL and requires the response header
   `X-Map-Service: vercel-file-v1`. Full-resolution PNG validation, last-good-file
   behavior, schedule and Shortcut input stay intact. Owner secrets are excluded
-  from the committed source. The package is not released until live verification.
+  from the committed source. The package passed the live server verification
+  below and is prepared for owner installation.
 
 ## Why BigDataCloud and Vercel are compatible
 
@@ -46,14 +48,14 @@ credentials are required; those capabilities are not available in this session.
 Cached city results can still be served by old code, but new provider requests
 must have exactly one active quota authority.
 
-## Approval blocker
+## Approval resolved
 
-Automatic approval review rejected creation of the sensitive Preview variable
-`WIDGY_MAP_FILE_ACCESS_TOKEN`: explicit user authorization is required to copy
-this particular existing map-access key into Vercel. The value was not saved.
-No alternative credential transfer or indirect workaround was attempted.
-The concrete destination is project `widgy-maps-world-glass`, Preview branch
-`f50-widget-test`; the value would be hidden/sensitive, never public or in Git.
+Automatic approval review initially rejected creation of the sensitive Preview
+variable `WIDGY_MAP_FILE_ACCESS_TOKEN`. The user then explicitly approved copying
+the existing map-access key into Vercel. Creation succeeded as a sensitive
+variable in project `widgy-maps-world-glass`, Preview branch `f50-widget-test`
+only. No alternative credential transfer or indirect workaround was attempted.
+The key is not printed in reports or committed in Git.
 It allows that server to validate the owner's map requests and call the existing
 Google city endpoint. This is an app key, not the user's account password.
 
@@ -72,8 +74,8 @@ Ten new server cases passed. The client passed30 publication/input tests,
 27 download/failure tests,5 module/menu tests and1 endpoint-contract check
 (63 total). Beyond version labels, publication, bookmark, location-freshness,
 schedule, lock and timing logic was verified unchanged against0.5.7.
-A private0.6.0 archive was assembled and integrity-checked as an unreleased
-intermediate; it is not committed or offered for installation before live checks.
+A private 0.6.0 archive is assembled from the verified source and existing owner
+configuration. The private archive is not committed in Git.
 
 Local bridge/auth tests cover wrong keys, invalid coordinates, bad/oversized
 upstream JSON, timeouts, wrong-coordinate city rejection, background completion,
@@ -83,13 +85,33 @@ The Firestore/return-counter JavaScript tests passed. An optional repeat of the
 unchanged Lua suite could not run because `lupa` is absent; this is not a live
 ledger check. The normal application build passed.
 
-After the map-key approval: set only the scoped secret, build a new Preview,
-verify real authenticated map delivery and city result with synthetic public
-coordinates, reject missing/wrong keys, check last-good-file client guards,
-then package and release0.6.0. No request should expose tokens or full authenticated
-URLs in reports. The Vercel traffic scenario remains about11.68–12.96GB/month
-for one full map every15minutes continuously; Hobby's10GB origin allowance
-must not be assumed sufficient. No paid plan change has been performed.
+## Authenticated Preview verification after approval
+
+Preview `dpl_9SNh1e4Loa3URuY4ciG5jpW2k9wc` reached READY for source commit
+`7444c210af49000881487c5fead1408c7f1b46e3`, and received the permanent branch
+alias. Production still points to `dpl_C7Y8Y38t7kZUo5b5oMfmWi2uwNpK`.
+Missing and incorrect keys returned 403. Three authenticated PNG downloads
+returned HTTP 200, the required service marker, exact Content-Length and full
+3306 x 1558 decoding. Measurements are from this workspace, not an iPhone.
+
+| Request | Bytes | Render ms | Complete download ms | City |
+| --- | ---: | ---: | ---: | --- |
+| First, uncached London coordinates | 4,073,908 | 1392.7 | 9006.9 | TIMEOUT; coordinates only |
+| Same fixed instant, repeated | 4,076,259 | 714.4 | 12877.7 | MEMORY; London visually verified |
+| Exact live-client query shape | 4,072,468 | 722.1 | 7362.0 | MEMORY; city available |
+
+Runtime logs confirm all three responses finished. The city stages took
+1502.1 ms, 86.9 ms and 84.2 ms. The first request explicitly demonstrates the
+coordinate-only fallback; no claim is made that every update has a city label.
+The detailed HTTP results are in `vercel-file-authorized-20261020.json`.
+
+The owner package is ready for a single normal Shortcut invocation after import,
+while keeping automatic runs paused. Native import and cellular reliability are
+not verified by these server tests. Full city migration still requires current
+Firestore counters to be handed back to Redis with operator access. The traffic
+scenario remains about 11.68–12.96 GB/month for a full map every 15 minutes
+continuously; Hobby's 10 GB origin allowance must not be assumed sufficient.
+No paid plan change has been performed.
 
 Primary provider references checked:
 - https://www.bigdatacloud.com/docs/api-domains
