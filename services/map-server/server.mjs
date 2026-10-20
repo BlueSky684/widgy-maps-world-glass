@@ -35,7 +35,12 @@ export function createMapServer({env = () => process.env, lookup, logger = conso
   const requestWork = new AsyncLocalStorage();
   const handler = createNightMapHandler({resolveCity: point => resolveMapCity(point, {
     lookup: lookupCity, deadlineMs: cityDeadlineMs,
-    defer: work => requestWork.getStore().add(work)
+    defer: work => {
+      const pending = requestWork.getStore();
+      pending.add(work);
+      const settled = () => pending.delete(work);
+      work.then(settled, settled);
+    }
   })});
   const report = fields => {
     try { logger(JSON.stringify({event: 'cloud_map_http_v1', ...fields})); } catch {}
@@ -43,13 +48,13 @@ export function createMapServer({env = () => process.env, lookup, logger = conso
   return http.createServer({maxHeaderSize: 16384, requestTimeout: 30000, headersTimeout: 15000}, async (req, res) => {
     const id = randomUUID(), started = performance.now();
     // Never include URLs, query strings, tokens, coordinates, city or image data.
-    let terminal = false;
+    let terminal = false, bodyBytes = 0;
     const terminalReport = phase => {
       if (terminal) return;
       terminal = true;
       report({id, phase, status: res.statusCode,
         elapsedMs: Math.round(performance.now() - started),
-        bodyBytes: Number(res.getHeader('Content-Length') || 0),
+        bodyBytes,
         rssMiB: Math.round(process.memoryUsage().rss / 1048576)});
     };
     res.once('finish', () => terminalReport('finished'));
@@ -62,6 +67,7 @@ export function createMapServer({env = () => process.env, lookup, logger = conso
       res.statusCode = status;
       res.setHeader('Content-Type', 'application/json');
       const body = Buffer.from(JSON.stringify(value));
+      bodyBytes = body.length;
       res.setHeader('Content-Length', body.length);
       res.end(body);
     };
@@ -94,9 +100,9 @@ export function createMapServer({env = () => process.env, lookup, logger = conso
     const work = new Set();
     await requestWork.run(work, async () => {
       // Request-billed Cloud Run can suspend CPU after the HTTP response ends.
-      // Finish bounded city/cache work before ending the response. Usually it
-      // completes during PNG rendering. A slow cold lookup can add latency;
-      // the 1500ms city decision and the resulting image pixels are unchanged.
+      // Finish bounded city/cache work before ending the response. When that
+      // work is still pending, overlap it with PNG transfer, retaining the last
+      // byte until drain completes. The city decision and pixels are unchanged.
       async function drain() {
         if (!work.size) return;
         let timer;
@@ -107,10 +113,27 @@ export function createMapServer({env = () => process.env, lookup, logger = conso
         if (!completed) report({id, phase: 'city_completion_timeout'});
       }
       async function finish(body) {
+        if (res.destroyed || res.writableEnded) { await drain(); return; }
+        const overlap = work.size > 0 && req.method === 'GET' && res.statusCode === 200 &&
+          res.getHeader('Content-Type') === 'image/png' && body?.length > 1;
+        if (body !== undefined && res.statusCode !== 304) bodyBytes = body.length;
+        if (overlap) {
+          // Cloud Run's documented streaming path requires chunked HTTP/1.1.
+          // Never send both framing headers. Keep the PNG incomplete on abort,
+          // and keep this request open for request-billed city/cache work.
+          res.removeHeader('Content-Length');
+          res.setHeader('Transfer-Encoding', 'chunked');
+          // One bounded, already-rendered buffer; no producer loop can enqueue
+          // more data while the socket applies backpressure.
+          res.write(body.subarray(0, -1));
+        }
         await drain();
         if (res.destroyed || res.writableEnded) return;
-        if (body !== undefined && res.statusCode !== 304) res.setHeader('Content-Length', body.length);
-        res.end(body);
+        if (overlap) res.end(body.subarray(-1));
+        else {
+          if (body !== undefined && res.statusCode !== 304) res.setHeader('Content-Length', body.length);
+          res.end(body);
+        }
       }
       // Only the small response surface used by api/night-map.js is adapted.
       // Native events/properties retain real finish/close diagnostics.

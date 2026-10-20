@@ -42,12 +42,20 @@ at 09:12 Israel time on 2026-10-15. See
 Request-billed CPU may stop when a response ends. The adapter therefore waits
 for the already-bounded city/cache task before ending the HTTP response. It
 preserves the existing 1500ms city decision and coordinate-only image fallback.
-A slow lookup can add response latency; it is not disguised as a successful
-city result. Normally the task completes while the PNG is being rendered.
+Normally the task completes while the PNG is being rendered. The 2026-10-20
+candidate overlaps any remaining wait with PNG transfer: successful GET PNGs
+start transferring with chunked framing, holding their last byte until the
+task completes or the existing 6500ms drain expires. The response remains open
+for request-billed CPU. A slow lookup can still delay completion and is not
+disguised as a successful city result. All other responses keep their framing.
+This candidate is locally verified, **not deployed**; see
+`../../tools/performance/map-transfer-overlap-review-20261020.md`.
 
 ## Verified locally
 
 Run `node --experimental-vm-modules tools/test-cloud-run-map.mjs` from the repo.
+Run `node tools/test-map-transfer-overlap.mjs` for the gated-provider streaming,
+exact PNG equality, bounded wait and interrupted-transfer regression checks.
 The oracle is the deployed route at commit
 `6fcfc958a62fafdf7fdfac937b7db0feaadaa5d3`, with synthetic coordinates/provider.
 Two full-resolution PNGs are byte-identical to that oracle, including ICC data.
