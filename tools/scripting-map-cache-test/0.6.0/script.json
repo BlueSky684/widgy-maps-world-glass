@@ -1,0 +1,9 @@
+{
+  "name": "Map Cache Test",
+  "icon": "map.fill",
+  "color": "#C5FF0A",
+  "version": "0.6.0",
+  "description": "Full-resolution saved map from Vercel, authenticated server-managed city backend, unchanged last-good-file safeguards.",
+  "runInApp": false,
+  "intentInputTypes": []
+}
