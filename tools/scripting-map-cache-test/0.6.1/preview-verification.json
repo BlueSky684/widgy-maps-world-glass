@@ -1,0 +1,55 @@
+{
+  "deployment": "dpl_6jPwtZGh6bZ6GjayypPDnNzy6inf",
+  "commit": "d267cba1307460245d44b5341d020fac8b5c2ef2",
+  "target": "preview",
+  "branch": "f50-widget-test",
+  "downloads": [
+    {
+      "requestedWidth": 2400,
+      "status": 200,
+      "bytes": 2792531,
+      "elapsedSeconds": 9.19,
+      "headers": {
+        "cache-control": "private, no-store, max-age=0",
+        "content-type": "image/png",
+        "server-timing": "map;dur=1537.9",
+        "x-location-cache": "LOOKUP",
+        "x-map-city-service": "vercel-bdc",
+        "x-map-rendered-at": "2026-10-20T18:00:00.000Z",
+        "x-map-service": "vercel-file-v1",
+        "x-map-width": "2400"
+      },
+      "width": 2400,
+      "height": 1131,
+      "srgb": true,
+      "alpha": true,
+      "fullDecode": true,
+      "clientPNGValidation": true,
+      "sha256": "7e992f3396019f5465c74b35044aa0de81d299c4581ef8a7bcee5edfc0b9a2f3"
+    },
+    {
+      "requestedWidth": 3306,
+      "status": 200,
+      "bytes": 4380134,
+      "elapsedSeconds": 8.58,
+      "headers": {
+        "cache-control": "private, no-store, max-age=0",
+        "content-type": "image/png",
+        "server-timing": "map;dur=733.8",
+        "x-location-cache": "MEMORY",
+        "x-map-city-service": "vercel-bdc",
+        "x-map-rendered-at": "2026-10-20T18:00:00.000Z",
+        "x-map-service": "vercel-file-v1",
+        "x-map-width": "3306"
+      },
+      "width": 3306,
+      "height": 1558,
+      "srgb": true,
+      "alpha": true,
+      "fullDecode": true,
+      "clientPNGValidation": true,
+      "sha256": "d8fb6385ee93dbf75960061222b02b7add9636be357f2d32c58476709d1b113f"
+    }
+  ],
+  "nativeAppearance": "pending owner comparison"
+}

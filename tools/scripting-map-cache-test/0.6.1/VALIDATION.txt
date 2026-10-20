@@ -6,6 +6,10 @@ Map Cache Test 0.6.1 — local verification, native appearance pending
 Server: 11 authentication/failure/image-oracle cases passed, including 2400px.
 Standard deployment build passed (map cache, public site and stability assets).
 5 TypeScript/TSX module graph and menu checks passed.
-Real Preview delivery pending.
+Preview dpl_6jPwtZGh6bZ6GjayypPDnNzy6inf READY, commit d267cba1307460245d44b5341d020fac8b5c2ef2.
+Two authenticated downloads from the permanent branch alias passed full decoding and client PNG validation.
+2400 x 1131: 2,792,531 bytes; 3306 x 1558 fallback: 4,380,134 bytes.
+Both responses: sRGB, alpha, vercel-file-v1, vercel-bdc, HTTP 200.
+No temporary protection links, extra headers or cookies were required.
 Native iPhone appearance, import and background scheduling are not simulated.
 No crash-atomicity or immediate Widgy onscreen refresh guarantee is added.
