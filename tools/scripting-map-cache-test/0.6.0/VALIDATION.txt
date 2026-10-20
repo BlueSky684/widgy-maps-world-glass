@@ -1,0 +1,12 @@
+Map Cache Test 0.6.0 — candidate, not released to device
+30 publication/input tests passed.
+27 download/failure tests passed (including missing/wrong service marker).
+5 TypeScript/TSX module graph and menu tests passed.
+1 permanent-endpoint/authentication/location-guard contract test passed.
+Server: 10 bridge/auth/failure/image-oracle cases passed.
+Existing Cloud Run regression and Firestore handback JavaScript suites passed.
+Unchanged optional Lua suite not rerun: lupa absent in this environment.
+Standard npm build passed; candidate Vercel Preview reached READY.
+Deployed new mode rejects missing configuration (503); legacy guard remains400.
+App-key configuration, authenticated integrated-city test and native import remain pending.
+Phone publication guarantees are unchanged; process-kill atomicity is not added.

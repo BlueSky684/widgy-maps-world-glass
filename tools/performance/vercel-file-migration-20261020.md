@@ -59,6 +59,22 @@ Google city endpoint. This is an app key, not the user's account password.
 
 ## Verification and release gates
 
+Candidate code commit: `c9b7cbcdacabd5f199950681a39cc798547b1328`.
+Vercel Preview `dpl_8gfR1yKx3pfNVEyjEvxWiGYRs64N` reached READY and received
+the existing branch alias. The production alias still points to its prior
+deployment `dpl_C7Y8Y38t7kZUo5b5oMfmWi2uwNpK`.
+The permanent branch URL returned the expected JSON503 for the new delivery
+mode without its configured secret, and JSON400 for the legacy invalid-width
+probe, with no login redirects. This verifies a fail-closed deployed candidate,
+not authenticated end-to-end map/city success. No live city lookup was made.
+
+Ten new server cases passed. The client passed30 publication/input tests,
+27 download/failure tests,5 module/menu tests and1 endpoint-contract check
+(63 total). Beyond version labels, publication, bookmark, location-freshness,
+schedule, lock and timing logic was verified unchanged against0.5.7.
+A private0.6.0 archive was assembled and integrity-checked as an unreleased
+intermediate; it is not committed or offered for installation before live checks.
+
 Local bridge/auth tests cover wrong keys, invalid coordinates, bad/oversized
 upstream JSON, timeouts, wrong-coordinate city rejection, background completion,
 and byte identity with the approved3306x1558 renderer. The existing Cloud Run
