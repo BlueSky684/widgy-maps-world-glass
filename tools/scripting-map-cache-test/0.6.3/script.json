@@ -1,0 +1,9 @@
+{
+  "name": "Map Cache Test",
+  "icon": "map.fill",
+  "color": "#C5FF0A",
+  "version": "0.6.3",
+  "description": "Daily-use trial: 2400 x 1131, existing 15-minute automation, silent success, failure-only alerts and latest update status.",
+  "runInApp": false,
+  "intentInputTypes": []
+}

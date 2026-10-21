@@ -1,0 +1,32 @@
+World Glass daily-use trial — 0.6.3 verification
+30 publication/input tests passed.
+27 download/failure tests passed.
+1 Preview endpoint/authentication/location contract test passed.
+11 fixed-resolution, migration, rollback and actual manual/Shortcut integration tests passed.
+5 fixed-15-minute scheduling, replacement, cleanup and environment checks passed.
+5 TypeScript/TSX module graph and menu checks passed.
+11 quiet-intent integration/error-notification/report tests passed.
+Total: 90 automated local checks, using mocked native APIs.
+
+The new integration test executes the actual intent -> quiet -> writer ->
+bridge/core modules. Native files/network/notifications and lock/bookmark
+boundaries are mocked. Existing publication/lock/network checks are retained.
+Successful writes return empty Shortcut text and schedule no result alert.
+Failures request one immediate alert, with no tick title/trigger or recursive
+run action. Safe report and notification failures do not mask map outcomes.
+No script import or menu presentation starts map I/O, notifications or timers.
+
+Native evidence for predecessor 0.6.2 (owner, 21 October 2026):
+Approximately 06:16 to 07:15; automatic successes near 06:31, 06:46, 07:01,
+and 07:15, including a locked-screen commute. At 06:47 the updated Ashdod map
+appeared immediately on unlock without Calendar/Home switching. Reported
+script times 5.0, 5.0, 5.6 and 3.8 seconds. User reports fast map display.
+This supports preserving the existing renderer, file pipeline and scheduling;
+it is not proof of multi-day reliability or every possible iOS execution state.
+
+0.6.3 itself has not yet been imported on the owner's iPhone. One successful
+Shortcut invocation (after deleting its unconditional result notification)
+and one explicit failure-alert test remain the minimal native handoff checks.
+No new hour-long or resolution-comparison test is requested.
+No crash-atomicity, guaranteed notification delivery or immediate Widgy refresh
+claim is added. Absence of failure alerts is not proof that automation ran.
