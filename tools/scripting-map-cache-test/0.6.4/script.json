@@ -1,0 +1,9 @@
+{
+  "name": "Map Cache Test",
+  "icon": "map.fill",
+  "color": "#C5FF0A",
+  "version": "0.6.4",
+  "description": "2400 x 1131 with one fresh recovery attempt after a caught timeout, existing 15-minute automation, silent success and conditional Shortcut failure alerts.",
+  "runInApp": false,
+  "intentInputTypes": []
+}

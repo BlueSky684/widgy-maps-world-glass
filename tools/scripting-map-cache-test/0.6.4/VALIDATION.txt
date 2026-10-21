@@ -1,0 +1,21 @@
+World Glass / Map Cache Test 2400 / 0.6.4
+2026-10-21
+
+106 checks passed:
+30 publication, timing, input, lock and rollback checks
+29 download, paused-runtime, native-error and operation-trace checks
+1 Preview endpoint/authentication check
+11 fixed-resolution and legacy-backup checks
+5 regular scheduler checks
+5 menu/import/TSX checks
+11 quiet intent and notification checks
+14 bounded recovery integration checks
+
+Recovery uses real SQLite uniqueness in tests and mocked native APIs.
+61.2-second image-validation pause reproduced; no candidate/current writes;
+one nonrepeating retry requested; fresh invocation succeeds; repeated failures
+cannot create a retry chain. Existing Shortcut contains-condition tested.
+
+All source modules transpile both as native TS/TSX and forced TSX.
+No native iPhone execution, background delivery or visual QA is claimed here.
+The root cause of the phone delay remains undetermined.
