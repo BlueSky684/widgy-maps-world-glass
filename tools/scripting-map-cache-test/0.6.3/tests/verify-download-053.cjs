@@ -56,10 +56,18 @@ async function test(name,fn){await fn();count++;console.log('PASS '+name)}
       assert.match(out,/DOWNLOAD_SERVICE/);assert.equal(h.bodyCalls,0);assert.equal(h.writes.length,0);assert.equal(h.timers.size,0);
     }
   });
-  for(const ms of [65800,248700]) await test(`Late HTTP continuation at ${ms}ms, with timers suspended, cannot read body or publish`,async()=>{
+  for(const ms of [65800,248700,289100]) await test(`Late HTTP continuation at ${ms}ms, with timers suspended, cannot read body or publish`,async()=>{
     const h=harness({fetch:async({jump})=>jump(ms)}),out=await h.write();
     assert.match(out,/DOWNLOAD_LATE_HTTP/);assert.match(out,/שלב: הורדת המפה/);assert.equal(h.bodyCalls,0);
     assert.equal(h.writes.length,0);assert.deepEqual(h.files.get('current'),png);assert.equal(h.unlocks,1);assert.equal(h.timers.size,0);assert.ok(h.aborts);
+  });
+  await test('21 October pause replay releases writer; the next fresh invocation succeeds without changing schedule',async()=>{
+    let calls=0;
+    const h=harness({fetch:async({jump})=>{if(++calls===1)jump(289100)}});
+    const first=await h.write();assert.match(first,/DOWNLOAD_LATE_HTTP/);assert.match(first,/תשובת HTTP: 200/);
+    assert.equal(h.writes.length,0);assert.deepEqual(h.files.get('current'),png);assert.equal(h.unlocks,1);
+    const next=await h.write();assert.match(next,/עדכון המפה הצליח/);assert.equal(calls,2);assert.equal(h.unlocks,2);
+    assert.deepEqual(h.writes,['stage','backup','current']);assert.deepEqual(h.files.get('current'),png);assert.equal(h.timers.size,0);
   });
   await test('Late body completion cannot convert, decode, or publish',async()=>{
     const h=harness({body:async({jump})=>jump(66000)}),out=await h.write();
