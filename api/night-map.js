@@ -7,6 +7,7 @@ import {compareMapRequestKeys, readCityTimingTrace} from '../lib/map-request-key
 import {createCityReuseCache} from '../lib/city-reuse-cache.js';
 import {createMapURLDiagnostics} from '../lib/map-url-diagnostics.js';
 import {observeMapResponseCompletion} from '../lib/map-response-completion.js';
+import {nativeFileToken, tagNativePNG} from '../lib/native-map-file.js';
 
 // The default Vercel handler retains its process-local caches and behavior.
 // Other hosts can supply a city resolver without changing the approved renderer.
@@ -40,6 +41,12 @@ export function createNightMapHandler({resolveCity, resolveFileCity} = {}) {
         return res.status(status).json({error: 'Map unavailable'});
       }
       res.setHeader('X-Map-Service', 'vercel-file-v1');
+    }
+    let transferToken;
+    try { transferToken = nativeFileToken(url, filePoint != null); }
+    catch (_) {
+      res.setHeader('Cache-Control', 'private, no-store');
+      return res.status(400).json({error: 'Map unavailable'});
     }
     if (url.searchParams.get('city_cache_v1') === 'read') {
       res.setHeader('Cache-Control', 'private, no-store, max-age=0');
@@ -186,7 +193,16 @@ export function createNightMapHandler({resolveCity, resolveFileCity} = {}) {
           res.setHeader('X-Map-Delivery', 'synthetic-cdn-60');
         }
       }
-      res.setHeader('Content-Type', webpExact ? 'image/webp' : tiffLossless ? 'image/tiff' : 'image/png');
+      const body = transferToken ? tagNativePNG(entry.png, transferToken) : entry.png;
+      res.setHeader('Content-Type', transferToken ? 'application/octet-stream' : webpExact ? 'image/webp' : tiffLossless ? 'image/tiff' : 'image/png');
+      if (transferToken) {
+        res.setHeader('Content-Disposition', 'attachment; filename="world-glass-map.png"');
+        res.setHeader('Cache-Control', 'private, no-store');
+        res.setHeader('CDN-Cache-Control', 'no-store');
+        res.setHeader('Vercel-CDN-Cache-Control', 'no-store');
+        res.setHeader('X-Content-Type-Options', 'nosniff');
+        res.setHeader('ETag', '"native-' + transferToken + '"');
+      }
       if (encodedFormat) res.setHeader('X-Map-Format', encodedFormat);
       res.setHeader('X-Map-Cache', result.state);
       res.setHeader('Server-Timing', `map;dur=${(performance.now()-started).toFixed(1)}`);
@@ -200,7 +216,7 @@ export function createNightMapHandler({resolveCity, resolveFileCity} = {}) {
       res.setHeader('X-Map-Rendered-At', entry.renderedAt);
       res.setHeader('X-Map-Location-Source', location?.source || 'unavailable');
       const tags = String(req.headers?.['if-none-match'] || '').split(',').map(s => s.trim().replace(/^W\//, ''));
-      const notModified = reuse && (tags.includes(entry.etag) || tags.includes('*'));
+      const notModified = !transferToken && reuse && (tags.includes(entry.etag) || tags.includes('*'));
       // "prepared" is server evidence only: it does not assert network delivery
       // or that Widgy decoded/displayed the image. A PNG above the platform body
       // budget can still fail after the function adapter processes this response.
@@ -208,10 +224,10 @@ export function createNightMapHandler({resolveCity, resolveFileCity} = {}) {
       report('prepared', {status: notModified ? 304 : 200, cache: result.state, ...keyDiagnostic, ...urlDiagnostic, ...readCityTimingTrace(url),
         width, layer:layer || 'composite',
         ...(encodedFormat ? {format:encodedFormat, imageBytes:entry.png.length} : {pngBytes:entry.png.length}),
-        bodyBytes: notModified || method === 'HEAD' ? 0 : entry.png.length,
+        bodyBytes: notModified || method === 'HEAD' ? 0 : body.length,
         conditional: tags.length > 0 && tags[0] !== '', precomputed: precomputedState()});
       if (notModified) return res.status(304).end();
-      return req.method === 'HEAD' ? res.status(200).end() : res.status(200).send(entry.png);
+      return req.method === 'HEAD' ? res.status(200).end() : res.status(200).send(body);
     } catch (error) {
       report('failed', {status: 500, reason: 'render_or_response_failed'});
       console.error('Day/night render failed:', error.message);
