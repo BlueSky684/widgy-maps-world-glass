@@ -1,0 +1,10 @@
+{
+  "name": "Map Cache Test",
+  "icon": "map.fill",
+  "color": "#C5FF0A",
+  "version": "0.6.5",
+  "description": "2400 x 1131 native Shortcuts download candidate. Requires two-step Shortcut setup. Validated file publication, bounded history, silent success, conditional failure alerts. Legacy input remains compatible.",
+  "runInApp": false,
+  "intentInputTypes": []
+}
+

@@ -1,0 +1,32 @@
+Map Cache Test 2400 — 0.6.5
+2026-10-22
+
+152 local checks passed:
+- 106 retained regression checks (publisher, fixed resolution, legacy transport,
+  menu import graph, notification scheduling, quiet output and bounded recovery).
+- 29 native-handoff checks using the actual intent/native/writer/core modules,
+  real SQLite and mocked native APIs and clock.
+- 6 native server checks, including exact decoded-pixel equality and metadata.
+- 11 existing authenticated server-delivery checks with a real renderer.
+
+Native cases include: no JS fetch during preparation/finalization, exact file
+publication, invalid/corrupt/missing/oversized/wrong-request files, delayed HTTP,
+decode/read/stage-I/O pauses, stopped/uncertain scheduling, dropped continuation,
+late and duplicate continuations, changed current, rollback, retained lock,
+bounded private-free history, watch cleanup and unmodified Shortcut fallback.
+
+All TS/TSX source modules transpile with their native extensions and forced TSX.
+Original input freshness, PNG CRC/native decoding, stage/backup/readback and
+writer-ownership protections remain active. No timer steals an existing lock.
+The map remains 2400 x 1131. Native metadata changes no pixels or colour profile.
+
+Not verified by these tests:
+- Real iPhone Get Contents of URL -> Scripting File URLs type coercion/access.
+- Native Shortcuts progress UI, termination behavior and background time limits.
+- Actual completion-watch delivery/automation execution with a locked device.
+- Widgy's refresh timing after a successful file publication.
+- The root cause of the previous overnight delays.
+
+An accepted notification request is not proof of delivery. No guaranteed
+15-minute background execution or guaranteed immediate failure alert is claimed.
+This is a diagnostic candidate, not the final no-menu script.
