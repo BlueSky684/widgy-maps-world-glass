@@ -1,0 +1,9 @@
+{
+  "name": "Map Cache Test",
+  "icon": "map.fill",
+  "color": "#C5FF0A",
+  "version": "0.6.7",
+  "description": "2400 x 1131 native download test: one durable recovery, no lost regular slot, verified snapshot reuse and publication acknowledgment reconciliation. Existing Shortcut unchanged. Device validation required.",
+  "runInApp": false,
+  "intentInputTypes": []
+}

@@ -1,0 +1,35 @@
+Map Cache Test 2400 — 0.6.7
+2026-10-22 — controlled device-test candidate
+
+162 local checks passed:
+30 publisher/input/timing; 11 fixed resolution; 29 old-download failure paths;
+1 endpoint construction; 5 native/forced-TSX menu; 11 quiet result/notification;
+14 legacy durable recovery; 5 schedule; 56 native handoff/reliability.
+
+New native evidence (actual modules, real SQLite, mocked iOS boundaries):
+- 6 binary reads / 3 verified writes instead of 8 / 3 in a healthy full cycle.
+- Missing GET invokes one fresh recovery; its second watch is alert-only.
+- Missed original and retry watches do not waste the next regular invocation.
+- Caught elapsed-time failure queues one 60-second retry; further failures do
+  not add a chain. Success cancels monitoring and resets the durable budget.
+- Stopped schedule, stop during registration, failed cancellation, uncertain
+  registration and stale retry input fail safely without enabling a new loop.
+- Older 0.6.5 watch migrates without adding an extra retry chain.
+- Completion UPDATE failure after verified write remains successful publication;
+  next lock owner verifies/reconciles token, PNG, bytes/fingerprint and decode.
+- Repeated acknowledgment failure stays distinct from map failure. Missing
+  metadata, partial file or different valid transfer cannot reconcile.
+- Candidate-journal failure cannot begin publication. Last-report JSON failure
+  still cannot turn success into failure. Lock release error after verification
+  reports cleanup failure, preserves the mutex and blocks another writer.
+- Frozen native overwrite demonstrates the remaining limitation: partial current,
+  intact backup and retained ownership. No elapsed timer steals the writer lock.
+
+Retained gates: exact 2400 x 1131 bytes; corrupt/HTML/missing/wrong-token/oversize;
+location and transfer freshness; separate finalizer deadline; duplicate/old
+continuation; baseline supersession; rollback; stop; bounded private-free history.
+
+Device acceptance has NOT run for this candidate. Tests do not establish actual
+notification delivery, iOS background guarantees, native crash atomicity,
+end-to-end locked-phone reliability or Widgy refresh. The 11:50 incident remains
+recorded as a failure; its unexplained delay is not retroactively called success.

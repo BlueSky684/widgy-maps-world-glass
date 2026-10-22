@@ -213,3 +213,33 @@ python3 tools/audit-public-map-network-20261022.py
 The first two are local/synthetic. The last contacts only the existing Preview
 public map endpoint and sends no credential or real location. It is optional
 when offline; its absence does not invalidate the local fault models.
+
+## Follow-up implementation, after the audit
+
+The owner asked why work had stopped after the report. The subsequent 0.6.7
+controlled-test candidate in `tools/scripting-map-cache-test/0.6.7/` implements
+bounded native recovery, same-invocation replacement of expired waiting work,
+validated-snapshot reuse (6 binary reads instead of 8), and reconciliation of
+verified publication when completion bookkeeping fails. It preserves the
+separate freshness/finalizer guards from the held 0.6.6 candidate.
+
+The native recovery slot is reserved before URL handoff, covering GET failure
+without finalizer entry. Once spent, the next completion watch has a distinct
+reminder title that cannot match the existing exact-title automation. This is
+what prevents the completion watch from recursively starting more retries;
+the script does not infer notification purpose from elapsed time. A caught
+timeout can move its own reserved retry to one minute. Success cancels monitoring
+and resets the budget. The regular 15-minute schedule is preserved.
+
+162 local checks passed (56 native and 106 retained). New fault cases cover both
+missed watches, retry exhaustion, schedule stop/cancellation/registration faults,
+stale retry input, older-version migration, acknowledgment failure/reconciliation,
+untrusted reconciliation evidence and retained ownership during unresolved I/O.
+These are actual-module/real-SQLite checks with mocked native boundaries.
+
+The interrupted-overwrite limitation remains explicitly unresolved. No timed
+mutex deletion or unproven atomic replacement was introduced. Actual iPhone
+handoff, offline recovery, long locked-device execution and Widgy refresh remain
+device acceptance gates. The candidate is available for that controlled test;
+it is not an assertion that the audit's architectural or device gates all pass.
+Server, renderer, Production and working city-label sources are unchanged.
