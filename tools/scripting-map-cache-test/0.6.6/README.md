@@ -1,5 +1,11 @@
 # Map Cache Test 2400 — 0.6.6
 
+**Candidate held, 22 October 2026.** The owner's subsequent reliability review
+found recovery and interrupted-publication gaps beyond this deadline change.
+Do not recommend installing this candidate as a complete reliability fix.
+See `docs/investigations/map-reliability-audit-20261022.md`. The existing archive
+was not rebuilt; no further phone version was created during that investigation.
+
 ## Why this change
 
 On 22 October the phone recorded eight successful scheduled runs followed by
