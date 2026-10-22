@@ -1,0 +1,26 @@
+Map Cache Test 2400 — 0.6.6
+2026-10-22
+
+143 local checks passed:
+- 106 retained checks covering publisher, resolution, old transport, UI import
+  graph (native TS/TSX and forced TSX), notifications, quiet results and recovery.
+- 37 native handoff checks using actual modules, real SQLite and mocked time/APIs.
+
+New boundary evidence:
+- Valid files arriving at 20.0, 35.5 and 119.0 seconds can be verified and saved.
+- A 35.5-second pause inside finalizer file reading is rejected before overwrite.
+- Exactly 120 seconds is rejected; entering earlier does not reset that deadline.
+- Location freshness remains independent of request and save durations.
+- A corrupt file after a 35.5-second handoff is still rejected.
+- Existing 0.6.5 rows survive creation of the additional timing table.
+- Timing history is bounded and contains no URL, key, GPS or private file path.
+
+Retained checks include wrong request/file, missing/corrupt/oversize/HTML files,
+decode/read/staging delays, concurrent/duplicate/old continuation, newer-current
+protection, rollback, retained writer lock, missed watch, quiet success and
+legacy Shortcut compatibility. No changes to the server/renderer were made.
+
+Not established: cause of the phone's 35.5-second delay, iOS execution guarantees,
+actual 0.6.6 locked-phone behavior, or Widgy display refresh. A successful local
+mock test is not device acceptance. Do not label the prior failed attempt as a
+success or erase it. The first device upgrade check and automatic soak remain.

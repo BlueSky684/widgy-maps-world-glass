@@ -1,0 +1,10 @@
+{
+  "name": "Map Cache Test",
+  "icon": "map.fill",
+  "color": "#C5FF0A",
+  "version": "0.6.6",
+  "description": "2400 x 1131 native download. Separate transfer freshness and save deadlines with per-stage timing. Existing 0.6.5 Shortcut unchanged. Validated publication, bounded history, quiet success and failure alerts.",
+  "runInApp": false,
+  "intentInputTypes": []
+}
+
