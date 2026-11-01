@@ -4,6 +4,9 @@ import assert from 'node:assert/strict';
 import {readFileSync,writeFileSync} from 'node:fs';
 import sharp from 'sharp';
 
+const manifest=JSON.parse(readFileSync(new URL('./public-site-files.json',import.meta.url),'utf8'));
+assert(manifest.files.includes('assets/navigation-soft-glow/home-compact-agenda.png'),'Chrome must be deployed as a public asset');
+
 const original=await sharp(new URL('../assets/navigation-soft-glow/home-balanced-activity.png',import.meta.url).pathname)
   .ensureAlpha().raw().toBuffer({resolveWithObject:true});
 const source=readFileSync(new URL('../assets/home-glass/Home_Glass_Chrome_R4.svg',import.meta.url),'utf8');
