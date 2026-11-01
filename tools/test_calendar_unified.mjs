@@ -260,6 +260,15 @@ test('new capability returns matching TODAY/PNG, reuses provider read and reject
     assert.equal(native.statusCode,200);assert.equal(reads,1);
     assert.equal(native.data.calendar_home_count,'1');
     assert.equal(native.data.calendar_home_title,today.data.home.title);
+    const homeCompact=await get(token,'&format=widgy&agenda=home-v1');
+    assert.equal(homeCompact.statusCode,200);
+    assert.equal(homeCompact.data.calendar_home_agenda_meta,'TODAY');
+    assert.equal(homeCompact.data.calendar_home_agenda_remaining,1);
+    assert.equal(homeCompact.data.calendar_home_agenda_title,'All day · '+today.data.home.title);
+    assert.equal(reads,1,'Compact Home shares the existing provider cache');
+    for(const [key,value] of Object.entries(native.data)){
+      if(key!=='encoded')assert.deepEqual(homeCompact.data[key],value,'Existing flat fields retain their meaning');
+    }
     assert.equal(native.data.calendar_event_1_title,today.data.rows[0].title);
     const decoded=JSON.parse(decodeURIComponent(native.data.encoded));
     assert.deepEqual(decoded.rows,today.data.rows);assert.equal(evaluate(nativeHomeFieldCode('count'),decoded,new Date(decoded.generatedAt)),'1');
