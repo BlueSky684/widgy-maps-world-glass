@@ -7,6 +7,7 @@ import {widgyFields} from '../lib/calendar-bridge/widgy-fields.js';
 import {preparedDaysFor} from '../lib/calendar-bridge/prepared-days.js';
 import {homeAgenda,homeAgendaFields} from '../lib/calendar-bridge/home-agenda.js';
 import {cachedEvents} from '../lib/calendar-bridge/provider-cache.js';
+import {monthProviderWindow,monthViewEntry} from '../lib/calendar-bridge/month-provider-window.js';
 
 export function clientMaxAge(snapshot,providerUntil,instant=Date.now(),agendaUntil=Infinity){
   // Reuse identical sequential Home field requests on the device only.
@@ -48,16 +49,32 @@ export default async function handler(req,res) {
       sources:{google:state.sources.filter(s=>s.provider==='google').length,
         icloud:state.sources.filter(s=>s.provider==='icloud').length,
         holidays:state.sources.filter(s=>s.provider==='apple-holidays').length}});
-    const key=createHash('sha256').update(`${token}:${window.month.toISODate()}`).digest('hex');
+    const pooled=url.searchParams.get('reuse')==='months-v1';
+    trace.providerWindow=pooled?'adjacent-months':'single-month';
+    const providerWindow=pooled?monthProviderWindow({offset:Number(raw),zone:state.zone,now}):window;
+    const monthKey=createHash('sha256').update(`${token}:${window.month.toISODate()}`).digest('hex');
+    const key=pooled?createHash('sha256').update(JSON.stringify(['months-v1',token,providerWindow.zone,
+      providerWindow.start.toISO(),providerWindow.end.toISO()])).digest('hex'):monthKey;
     stage='provider';
     const providerStarted=performance.now();
-    const {entry,state:providerCache}=await cachedEvents(key,()=>readEvents(state,window));
+    let provider;
+    try {
+      provider=await cachedEvents(key,()=>readEvents(state,providerWindow));
+    } catch(error) {
+      // Very dense calendars may exceed a provider's per-request limits over
+      // three months. Retry only these capacity failures using the old range.
+      if(!pooled || !['event_limit','provider_response_too_large','recurrence_limit'].includes(error?.code))throw error;
+      trace.rangeFallback=true;
+      provider=await cachedEvents(monthKey,()=>readEvents(state,window));
+    }
+    const {entry,state:providerCache}=provider;
     trace.providerCache=providerCache;
     const events=await entry.pending;
     trace.providerWaitMs=Math.round((performance.now()-providerStarted)*10)/10;
     stage='response';
     const responseStarted=performance.now();
-    const preparedDays=preparedDaysFor(entry,events,window);
+    const viewEntry=pooled?monthViewEntry(entry,window):entry;
+    const preparedDays=preparedDaysFor(viewEntry,events,window);
     if(view==='today'){
       // Reuse date parsing, ordering and overlap indexing, not the timed Home
       // snapshot: NOW/NEXT EVENT and generatedAt still use the current instant.
@@ -74,8 +91,8 @@ export default async function handler(req,res) {
       return req.method==='HEAD'?res.status(200).end():res.status(200).json(body);
     }
     const pngKey=bounds==='grid'?'pngGrid':'png';
-    if(!entry[pngKey])entry[pngKey]=renderDots(events,window,{bounds,preparedDays});
-    const png=await entry[pngKey];
+    if(!viewEntry[pngKey])viewEntry[pngKey]=renderDots(events,window,{bounds,preparedDays});
+    const png=await viewEntry[pngKey];
     // Reuse month dots on the device within the same provider freshness window.
     // privateHeaders continues to forbid shared/CDN caching of private calendars.
     const remaining=Math.max(0,Math.floor((entry.until-Date.now())/1000));
@@ -94,4 +111,5 @@ export default async function handler(req,res) {
       ...(nativeFields?widgyFields(null):{}),error:error instanceof BridgeError?error.code:'calendar_read_failed'});
   }
 }
+
 
