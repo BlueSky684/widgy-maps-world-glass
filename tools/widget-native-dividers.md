@@ -1,5 +1,18 @@
 # Native divider A/B candidate
 
+## Outcome: rejected after on-device trial (2026-11-05)
+
+The user reports no improvement and noticeably worse transitions with this
+candidate. No stopwatch timings were supplied. Do not promote this trial as
+an optimization or use it as the baseline for further changes. The working
+native-month-heading version, with 500 objects and 24 JS divider images, remains
+the preferred baseline. Its original archive was preserved separately.
+
+The extra 48 conditional leaves may outweigh the removed JavaScript work, but
+the report does not isolate the rendering or scheduling cause. Structural and
+pixel equivalence checks establish correctness only; they did not predict
+phone performance.
+
 The working widget uses 24 JavaScript image sources to select one of three
 embedded PNGs for the non-current months' week dividers. The current month
 already uses three conditional native custom shapes. This candidate copies
