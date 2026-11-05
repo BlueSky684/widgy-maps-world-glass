@@ -6,8 +6,8 @@ import {widgetSnapshot} from '../lib/calendar-bridge/widget-data.js';
 import {widgyFields} from '../lib/calendar-bridge/widgy-fields.js';
 import {preparedDaysFor} from '../lib/calendar-bridge/prepared-days.js';
 import {homeAgenda,homeAgendaFields} from '../lib/calendar-bridge/home-agenda.js';
+import {cachedEvents} from '../lib/calendar-bridge/provider-cache.js';
 
-const cache=new Map();
 export function clientMaxAge(snapshot,providerUntil,instant=Date.now(),agendaUntil=Infinity){
   // Reuse identical sequential Home field requests on the device only.
   // Never keep a response beyond a provider refresh or an event transition.
@@ -49,17 +49,10 @@ export default async function handler(req,res) {
         icloud:state.sources.filter(s=>s.provider==='icloud').length,
         holidays:state.sources.filter(s=>s.provider==='apple-holidays').length}});
     const key=createHash('sha256').update(`${token}:${window.month.toISODate()}`).digest('hex');
-    for(const [id,value] of cache) if(value.until<Date.now()) cache.delete(id);
-    let entry=cache.get(key);
-    const providerCache=entry?'REUSE':'MISS';
-    trace.providerCache=providerCache;
     stage='provider';
     const providerStarted=performance.now();
-    if(!entry){
-      if(cache.size>=50)cache.delete(cache.keys().next().value);
-      entry={pending:readEvents(state,window),until:Date.now()+60000};cache.set(key,entry);
-      entry.pending.catch(()=>cache.delete(key));
-    }
+    const {entry,state:providerCache}=await cachedEvents(key,()=>readEvents(state,window));
+    trace.providerCache=providerCache;
     const events=await entry.pending;
     trace.providerWaitMs=Math.round((performance.now()-providerStarted)*10)/10;
     stage='response';
@@ -101,3 +94,4 @@ export default async function handler(req,res) {
       ...(nativeFields?widgyFields(null):{}),error:error instanceof BridgeError?error.code:'calendar_read_failed'});
   }
 }
+
