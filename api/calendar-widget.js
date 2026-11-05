@@ -9,6 +9,7 @@ import {homeAgenda,homeAgendaFields} from '../lib/calendar-bridge/home-agenda.js
 import {cachedEvents} from '../lib/calendar-bridge/provider-cache.js';
 import {monthProviderWindow,monthViewEntry} from '../lib/calendar-bridge/month-provider-window.js';
 import {yearProviderWindow,yearPreparedDaysFor,readYearRange} from '../lib/calendar-bridge/year-provider-window.js';
+import {cachedAnnualEvents} from '../lib/calendar-bridge/annual-provider-cache.js';
 
 export function clientMaxAge(snapshot,providerUntil,instant=Date.now(),agendaUntil=Infinity){
   // Reuse identical sequential Home field requests on the device only.
@@ -50,20 +51,25 @@ export default async function handler(req,res) {
       sources:{google:state.sources.filter(s=>s.provider==='google').length,
         icloud:state.sources.filter(s=>s.provider==='icloud').length,
         holidays:state.sources.filter(s=>s.provider==='apple-holidays').length}});
-    const annual=url.searchParams.get('reuse')==='year-v1';
+    const fastAnnual=url.searchParams.get('reuse')==='year-v2';
+    const annual=fastAnnual || url.searchParams.get('reuse')==='year-v1';
     const pooled=annual || url.searchParams.get('reuse')==='months-v1';
     trace.providerWindow=annual?'calendar-year':pooled?'adjacent-months':'single-month';
     const providerWindow=annual?yearProviderWindow({offset:Number(raw),zone:state.zone,now}):
       pooled?monthProviderWindow({offset:Number(raw),zone:state.zone,now}):window;
     const monthKey=createHash('sha256').update(`${token}:${window.month.toISODate()}`).digest('hex');
-    const key=pooled?createHash('sha256').update(JSON.stringify([annual?'year-v1':'months-v1',token,providerWindow.zone,
+    const key=pooled?createHash('sha256').update(JSON.stringify([fastAnnual?'year-v2':annual?'year-v1':'months-v1',token,providerWindow.zone,
       providerWindow.start.toISO(),providerWindow.end.toISO()])).digest('hex'):monthKey;
     stage='provider';
     const providerStarted=performance.now();
     let provider;
     try {
       provider=annual?await readYearRange(key,
-        ()=>cachedEvents(key,()=>readEvents(state,providerWindow)),
+        ()=>fastAnnual?cachedAnnualEvents(key,()=>readEvents(state,providerWindow),{
+          requireFresh:view==='today',
+          prepareSnapshot:candidate=>yearPreparedDaysFor(candidate,candidate.events,window,providerWindow),
+          canServeStale:error=>!['event_limit','provider_response_too_large','recurrence_limit'].includes(error?.code)
+        }):cachedEvents(key,()=>readEvents(state,providerWindow)),
         ()=>cachedEvents(monthKey,()=>readEvents(state,window))):
         await cachedEvents(key,()=>readEvents(state,providerWindow));
       if(provider.rangeFallback)trace.rangeFallback=true;
@@ -77,6 +83,12 @@ export default async function handler(req,res) {
     const {entry,state:providerCache}=provider;
     trace.providerCache=providerCache;
     const events=await entry.pending;
+    if(fastAnnual) {
+      const stale=entry.until<=Date.now();
+      res.setHeader('X-Calendar-Data-State',stale?(providerCache==='STALE-ERROR'?'refresh-failed':providerCache==='STALE'?'refreshing':'stale'):'current');
+      if(Number.isFinite(entry.startedAt))res.setHeader('X-Calendar-Data-Age',String(Math.max(0,Math.floor((Date.now()-entry.startedAt)/1000))));
+      if(stale)res.setHeader('Cache-Control','private, no-store');
+    }
     trace.providerWaitMs=Math.round((performance.now()-providerStarted)*10)/10;
     stage='response';
     const responseStarted=performance.now();
@@ -105,7 +117,7 @@ export default async function handler(req,res) {
     // Reuse month dots on the device within the same provider freshness window.
     // privateHeaders continues to forbid shared/CDN caching of private calendars.
     const remaining=Math.max(0,Math.floor((entry.until-Date.now())/1000));
-    res.setHeader('Cache-Control',`private, max-age=${Math.min(30,remaining)}, must-revalidate`);
+    if(!fastAnnual || remaining>0)res.setHeader('Cache-Control',`private, max-age=${Math.min(30,remaining)}, must-revalidate`);
     res.setHeader('Content-Type','image/png');
     res.setHeader('X-Calendar-Provider-Cache',providerCache);
     res.setHeader('Server-Timing',`calendar;dur=${(performance.now()-started).toFixed(1)}`);
