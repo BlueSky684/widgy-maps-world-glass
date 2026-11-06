@@ -30,6 +30,9 @@ export default async function handler(req, res) {
     return admin(req,res);
   }
   if (url.searchParams.get('location_shared') === '1') {
+    if(url.searchParams.get('view')==='label-v1') {
+      return measuredRoute('city-native',async ()=>(await import('../lib/location/native-label.js')).default,req,res);
+    }
     return measuredRoute('city',async ()=>(await import('../lib/location/shared.js')).locationHandler,req,res);
   }
   if (url.pathname === '/api/weather-panel' || url.searchParams.get('weather_panel') === '1' || req.query?.weather_panel === '1') {
