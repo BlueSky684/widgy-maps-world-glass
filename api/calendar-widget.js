@@ -10,6 +10,7 @@ import {cachedEvents} from '../lib/calendar-bridge/provider-cache.js';
 import {monthProviderWindow,monthViewEntry} from '../lib/calendar-bridge/month-provider-window.js';
 import {yearProviderWindow,yearPreparedDaysFor,readYearRange} from '../lib/calendar-bridge/year-provider-window.js';
 import {cachedAnnualEvents} from '../lib/calendar-bridge/annual-provider-cache.js';
+import {calendarGrid} from '../lib/calendar-bridge/calendar-grid.js';
 
 export function clientMaxAge(snapshot,providerUntil,instant=Date.now(),agendaUntil=Infinity){
   // Reuse identical sequential Home field requests on the device only.
@@ -62,23 +63,31 @@ export default async function handler(req,res) {
       providerWindow.start.toISO(),providerWindow.end.toISO()])).digest('hex'):monthKey;
     stage='provider';
     const providerStarted=performance.now();
+    const fetchProviderWindow=range=>{
+      const work=readEvents(state,range);
+      // Build the account-independent date grid while provider I/O is pending,
+      // rather than adding its CPU work after the final provider response.
+      // Grid preparation is optional here; normal validation still runs later.
+      try {calendarGrid(range);} catch {}
+      return work;
+    };
     let provider;
     try {
       provider=annual?await readYearRange(key,
-        ()=>fastAnnual?cachedAnnualEvents(key,()=>readEvents(state,providerWindow),{
+        ()=>fastAnnual?cachedAnnualEvents(key,()=>fetchProviderWindow(providerWindow),{
           requireFresh:view==='today',
           prepareSnapshot:candidate=>yearPreparedDaysFor(candidate,candidate.events,window,providerWindow),
           canServeStale:error=>!['event_limit','provider_response_too_large','recurrence_limit'].includes(error?.code)
-        }):cachedEvents(key,()=>readEvents(state,providerWindow)),
-        ()=>cachedEvents(monthKey,()=>readEvents(state,window))):
-        await cachedEvents(key,()=>readEvents(state,providerWindow));
+        }):cachedEvents(key,()=>fetchProviderWindow(providerWindow)),
+        ()=>cachedEvents(monthKey,()=>fetchProviderWindow(window))):
+        await cachedEvents(key,()=>fetchProviderWindow(providerWindow));
       if(provider.rangeFallback)trace.rangeFallback=true;
     } catch(error) {
       // Very dense calendars may exceed a provider's per-request limits over
       // three months. Retry only these capacity failures using the old range.
       if(annual || !pooled || !['event_limit','provider_response_too_large','recurrence_limit'].includes(error?.code))throw error;
       trace.rangeFallback=true;
-      provider=await cachedEvents(monthKey,()=>readEvents(state,window));
+      provider=await cachedEvents(monthKey,()=>fetchProviderWindow(window));
     }
     const {entry,state:providerCache}=provider;
     trace.providerCache=providerCache;

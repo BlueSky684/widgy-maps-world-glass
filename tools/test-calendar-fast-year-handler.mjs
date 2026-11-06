@@ -12,6 +12,7 @@ import {widgetSnapshot} from '../lib/calendar-bridge/widget-data.js';
 import {widgyFields} from '../lib/calendar-bridge/widgy-fields.js';
 import {preparedDaysFor} from '../lib/calendar-bridge/prepared-days.js';
 import {homeAgenda,homeAgendaFields} from '../lib/calendar-bridge/home-agenda.js';
+import {calendarGrid} from '../lib/calendar-bridge/calendar-grid.js';
 const code=readFileSync(new URL('../api/calendar-widget.js',import.meta.url),'utf8')
  .replace(/^import .*;\n/gm,'').replace('export default async function handler','async function handler').replace('export function clientMaxAge','function clientMaxAge');
 const tick=()=>new Promise(r=>setTimeout(r,0));
@@ -30,7 +31,7 @@ function instance(){
   origin:()=> 'https://example.invalid',privateHeaders,monthWindow,monthProviderWindow,monthViewEntry,
   yearProviderWindow,yearPreparedDaysFor,readYearRange:createYearRangeReader({now:()=>time}),
   cachedEvents:createProviderCache(options),cachedAnnualEvents:createAnnualProviderCache(options),
-  preparedDaysFor,widgetSnapshot,widgyFields,homeAgenda,homeAgendaFields,
+  preparedDaysFor,widgetSnapshot,widgyFields,homeAgenda,homeAgendaFields,calendarGrid,
   unseal:async token=>{if(token==='bad')throw new BridgeError('unauthorized',401);return {zone:'Asia/Jerusalem',sources:[{provider:'icloud',id:'fixture',color:revision%4}],token};},
   readEvents:async(state,window)=>{calls++;if(gate)await gate;
    if(mode==='failure')throw new BridgeError('icloud_connection_failed',502);
