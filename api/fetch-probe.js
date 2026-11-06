@@ -1,4 +1,22 @@
 // Controlled fetch diagnostic. No location or request data is returned/logged.
+const loadedRoutes=new Set();
+async function measuredRoute(route,load,req,res) {
+  const started=performance.now(),firstLoad=!loadedRoutes.has(route);
+  loadedRoutes.add(route);
+  let importMs,failed=false;
+  try {
+    const handler=await load();
+    importMs=Math.round((performance.now()-started)*10)/10;
+    return await handler(req,res);
+  } catch(error) {failed=true;throw error;}
+  finally {
+    // Includes dynamic import time omitted by the inner handlers. It does not
+    // include platform boot, network transit, or native widget drawing.
+    try {console.info(JSON.stringify({event:'widget_route_v1',route,firstLoad,
+      importMs,elapsedMs:Math.round((performance.now()-started)*10)/10,
+      failed}));} catch {}
+  }
+}
 export default async function handler(req, res) {
   // A narrow deployment rewrite shares this function's slot with Weather.
   // Existing diagnostic requests retain their original response and headers.
@@ -12,12 +30,10 @@ export default async function handler(req, res) {
     return admin(req,res);
   }
   if (url.searchParams.get('location_shared') === '1') {
-    const {locationHandler} = await import('../lib/location/shared.js');
-    return locationHandler(req, res);
+    return measuredRoute('city',async ()=>(await import('../lib/location/shared.js')).locationHandler,req,res);
   }
   if (url.pathname === '/api/weather-panel' || url.searchParams.get('weather_panel') === '1' || req.query?.weather_panel === '1') {
-    const {default: weather} = await import('../lib/weather/handler.js');
-    return weather(req, res);
+    return measuredRoute('weather',async ()=>(await import('../lib/weather/handler.js')).default,req,res);
   }
   res.setHeader('Cache-Control', 'private, no-store, max-age=0');
   res.setHeader('Access-Control-Allow-Origin', '*');
