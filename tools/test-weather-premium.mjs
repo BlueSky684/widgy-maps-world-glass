@@ -67,9 +67,10 @@ test('nulls and invalid values never become zero/sunny or fake coverage',()=>{
   assert.throws(()=>normalizeForecast(fixture(),now+4*3600000));
 });
 test('one provider fetch for simultaneous requests; cache reuse, failure and expiry',async()=>{
-  const values=new Map(),cache={get:async k=>values.get(k),set:async(k,v)=>values.set(k,v)};let calls=0,t=now,fail=false;
-  const get=createForecastService({cache,clock:()=>t,flights:new Map(),fetcher:async()=>{calls++;if(fail)throw Error('offline');return new Response(JSON.stringify(fixture(t)));}});
+  const values=new Map(),cache={get:async k=>values.get(k),set:async(k,v)=>values.set(k,v)},writes=[];let calls=0,t=now,fail=false;
+  const get=createForecastService({cache,clock:()=>t,flights:new Map(),schedule:p=>writes.push(p),fetcher:async()=>{calls++;if(fail)throw Error('offline');return new Response(JSON.stringify(fixture(t)));}});
   const results=await Promise.all(Array.from({length:12},()=>get(31.67,34.57)));assert.equal(calls,1);assert(results.every(r=>r.data));
+  await Promise.all(writes); // Persistence is now background work, separate from delivery.
   assert.equal((await get(31.6701,34.5701)).cache,'HIT');assert.equal(calls,1);
   fail=true;t+=FRESH_MS+1;assert.equal((await get(31.67,34.57)).state,'stale');
   t=now+STALE_MS+1;assert.equal((await get(31.67,34.57)).state,'unavailable');
