@@ -11,6 +11,7 @@ import {monthProviderWindow,monthViewEntry} from '../lib/calendar-bridge/month-p
 import {yearProviderWindow,yearPreparedDaysFor,readYearRange} from '../lib/calendar-bridge/year-provider-window.js';
 import {cachedAnnualEvents} from '../lib/calendar-bridge/annual-provider-cache.js';
 import {calendarGrid} from '../lib/calendar-bridge/calendar-grid.js';
+import {withSourceTimeMetadata,sourceTimeFields} from '../lib/calendar-bridge/source-timezones.js';
 
 export function clientMaxAge(snapshot,providerUntil,instant=Date.now(),agendaUntil=Infinity){
   // Reuse identical sequential Home field requests on the device only.
@@ -31,12 +32,13 @@ export default async function handler(req,res) {
   }));
   report('started');
   privateHeaders(res);
-  let nativeFields=false,compactAgenda=false;
+  let nativeFields=false,compactAgenda=false,sourceTimes=false;
   try {
     if (req.method!=='GET' && req.method!=='HEAD') throw new BridgeError('method_not_allowed',405);
     const url=new URL(req.url,origin()),token=url.searchParams.get('token');
     nativeFields=url.searchParams.get('format')==='widgy';
     compactAgenda=nativeFields && url.searchParams.get('agenda')==='home-v1';
+    sourceTimes=url.searchParams.get('time_metadata')==='source-v1';
     // Older dots-only links must never grant access to titles or locations.
     const state=await unseal(token,'calendar-widget');
     if (!state?.sources?.length || state.sources.length>6) throw new BridgeError('unauthorized',401);
@@ -109,7 +111,8 @@ export default async function handler(req,res) {
     if(view==='today'){
       // Reuse date parsing, ordering and overlap indexing, not the timed Home
       // snapshot: NOW/NEXT EVENT and generatedAt still use the current instant.
-      const snapshot=widgetSnapshot(events,window,new Date(),preparedDays);
+      const originalSnapshot=widgetSnapshot(events,window,new Date(),preparedDays);
+      const snapshot=sourceTimes?withSourceTimeMetadata(originalSnapshot,preparedDays):originalSnapshot;
       const agenda=compactAgenda?homeAgenda(preparedDays,snapshot):null;
       const maxAge=clientMaxAge(snapshot,entry.until,Date.now(),agenda?.validUntil);
       if(maxAge>0)res.setHeader('Cache-Control',`private, max-age=${maxAge}, must-revalidate`);
@@ -117,6 +120,7 @@ export default async function handler(req,res) {
       res.setHeader('X-Calendar-Provider-Cache',providerCache);
       res.setHeader('Server-Timing',`calendar;dur=${(performance.now()-started).toFixed(1)}`);
       const body=nativeFields?widgyFields(snapshot):snapshot;
+      if(nativeFields && sourceTimes)Object.assign(body,sourceTimeFields(snapshot));
       if(compactAgenda)Object.assign(body,homeAgendaFields(agenda));
       report('prepared',{status:200,responseMs:Math.round((performance.now()-responseStarted)*10)/10});
       return req.method==='HEAD'?res.status(200).end():res.status(200).json(body);
@@ -138,6 +142,7 @@ export default async function handler(req,res) {
     report('failed',{status:error instanceof BridgeError?error.status:502,stage});
     return res.status(error instanceof BridgeError?error.status:502).json({
       ...(compactAgenda?homeAgendaFields(null):{}),
+      ...(nativeFields && sourceTimes?sourceTimeFields(null):{}),
       ...(nativeFields?widgyFields(null):{}),error:error instanceof BridgeError?error.code:'calendar_read_failed'});
   }
 }
