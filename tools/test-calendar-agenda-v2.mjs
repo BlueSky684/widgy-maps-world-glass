@@ -50,6 +50,24 @@ test('ordinary events use viewer-local HH:mm; no airplane inferred from title or
   assert.equal(row.startLabel,'START');assert.equal(row.endLabel,'END');
  }
 });
+test('flight display title and number split only after verification and clear when rows disappear',()=>{
+ const confirmed=snapshot([flight],'2026-11-08T02:00:00Z','Asia/Jerusalem').data;
+ const before=JSON.stringify(confirmed),fields=agendaPresentationFields(confirmed);
+ assert.equal(fields.calendar_event_1_flight_title,'Flight to Test City');
+ assert.equal(fields.calendar_event_1_flight_number,'XX 100');
+ assert.equal(confirmed.rows[0].start,'06:30');assert.equal(confirmed.rows[0].end,'11:15');
+ assert.equal(JSON.stringify(confirmed),before,'display formatting must not mutate source rows');
+ for(const row of [{title:rule.title,flight:0},{title:'Meeting (AB 123)',flight:0},{title:rule.title,flight:1}]){
+  const values=agendaPresentationFields({rows:[row]});
+  assert.equal(values.calendar_event_1_flight_title,row.flight ? 'Flight to Test City' : '');
+  assert.equal(values.calendar_event_1_flight_number,row.flight ? 'XX 100' : '');
+ }
+ const unknown=agendaPresentationFields({rows:[{flight:1,title:'Flight to Test City (Terminal 3)'}]});
+ assert.equal(unknown.calendar_event_1_flight_title,'Flight to Test City (Terminal 3)');
+ assert.equal(unknown.calendar_event_1_flight_number,'');
+ const cleared=agendaPresentationFields(null);
+ for(let i=1;i<=4;i++)assert.equal(cleared[`calendar_event_${i}_flight_title`]+cleared[`calendar_event_${i}_flight_number`],'');
+});
 test('confirmation does not carry to another date, edited duration, or all-day event',()=>{
  for(const event of [{...flight,end:'2026-11-08T09:16:00+02:00'},
   {...flight,start:'2026-11-09T06:30:00+02:00',end:'2026-11-09T09:15:00+02:00'},
