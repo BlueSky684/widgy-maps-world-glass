@@ -11,7 +11,8 @@ import {monthProviderWindow,monthViewEntry} from '../lib/calendar-bridge/month-p
 import {yearProviderWindow,yearPreparedDaysFor,readYearRange} from '../lib/calendar-bridge/year-provider-window.js';
 import {cachedAnnualEvents} from '../lib/calendar-bridge/annual-provider-cache.js';
 import {calendarGrid} from '../lib/calendar-bridge/calendar-grid.js';
-import {withSourceTimeMetadata,sourceTimeFields} from '../lib/calendar-bridge/source-timezones.js';
+import {sourceZone,withSourceTimeMetadata,sourceTimeFields} from '../lib/calendar-bridge/source-timezones.js';
+import {flightProfiles,presentAgenda,agendaPresentationFields} from '../lib/calendar-bridge/agenda-presentation.js';
 
 export function clientMaxAge(snapshot,providerUntil,instant=Date.now(),agendaUntil=Infinity){
   // Reuse identical sequential Home field requests on the device only.
@@ -32,13 +33,14 @@ export default async function handler(req,res) {
   }));
   report('started');
   privateHeaders(res);
-  let nativeFields=false,compactAgenda=false,sourceTimes=false;
+  let nativeFields=false,compactAgenda=false,sourceTimes=false,presentation=false;
   try {
     if (req.method!=='GET' && req.method!=='HEAD') throw new BridgeError('method_not_allowed',405);
     const url=new URL(req.url,origin()),token=url.searchParams.get('token');
     nativeFields=url.searchParams.get('format')==='widgy';
     compactAgenda=nativeFields && url.searchParams.get('agenda')==='home-v1';
     sourceTimes=url.searchParams.get('time_metadata')==='source-v1';
+    presentation=url.searchParams.get('presentation')==='agenda-v2';
     // Older dots-only links must never grant access to titles or locations.
     const state=await unseal(token,'calendar-widget');
     if (!state?.sources?.length || state.sources.length>6) throw new BridgeError('unauthorized',401);
@@ -48,7 +50,14 @@ export default async function handler(req,res) {
     if(!['full','grid'].includes(bounds) || (view!=='dots' && bounds!=='full'))throw new BridgeError('invalid_bounds');
     const raw=url.searchParams.get('offset') || '0';
     if (!/^-?\d{1,2}$/.test(raw) || (view==='today' && Number(raw)!==0)) throw new BridgeError('invalid_month');
-    const now=new Date(),window=monthWindow({offset:Number(raw),zone:state.zone,now});
+    // The phone's civil day can differ from the zone saved at connection time.
+    // This opt-in changes day membership, not the established event-clock policy.
+    // Reject unresolved widget variables instead of silently showing yesterday.
+    const requestedDayZone=url.searchParams.get('day_zone');
+    if(requestedDayZone!==null && !sourceZone(requestedDayZone))throw new BridgeError('invalid_timezone');
+    const dayZone=requestedDayZone ?? state.zone;
+    const flights=presentation?flightProfiles(url.searchParams.get('flights')):[];
+    const now=new Date(),window=monthWindow({offset:Number(raw),zone:dayZone,now});
     Object.assign(trace,{view,bounds,offset:Number(raw),
       validationMs:Math.round((performance.now()-started)*10)/10,
       sources:{google:state.sources.filter(s=>s.provider==='google').length,
@@ -58,9 +67,9 @@ export default async function handler(req,res) {
     const annual=fastAnnual || url.searchParams.get('reuse')==='year-v1';
     const pooled=annual || url.searchParams.get('reuse')==='months-v1';
     trace.providerWindow=annual?'calendar-year':pooled?'adjacent-months':'single-month';
-    const providerWindow=annual?yearProviderWindow({offset:Number(raw),zone:state.zone,now}):
-      pooled?monthProviderWindow({offset:Number(raw),zone:state.zone,now}):window;
-    const monthKey=createHash('sha256').update(`${token}:${window.month.toISODate()}`).digest('hex');
+    const providerWindow=annual?yearProviderWindow({offset:Number(raw),zone:dayZone,now}):
+      pooled?monthProviderWindow({offset:Number(raw),zone:dayZone,now}):window;
+    const monthKey=createHash('sha256').update(`${token}:${window.month.toISODate()}${requestedDayZone===null?'':':'+dayZone}`).digest('hex');
     const key=pooled?createHash('sha256').update(JSON.stringify([fastAnnual?'year-v2':annual?'year-v1':'months-v1',token,providerWindow.zone,
       providerWindow.start.toISO(),providerWindow.end.toISO()])).digest('hex'):monthKey;
     stage='provider';
@@ -111,9 +120,11 @@ export default async function handler(req,res) {
     if(view==='today'){
       // Reuse date parsing, ordering and overlap indexing, not the timed Home
       // snapshot: NOW/NEXT EVENT and generatedAt still use the current instant.
-      const originalSnapshot=widgetSnapshot(events,window,new Date(),preparedDays);
-      const snapshot=sourceTimes?withSourceTimeMetadata(originalSnapshot,preparedDays):originalSnapshot;
-      const agenda=compactAgenda?homeAgenda(preparedDays,snapshot):null;
+      const originalSnapshot=widgetSnapshot(events,window,new Date(),preparedDays,
+        requestedDayZone===null || presentation?undefined:{timeZone:state.zone});
+      const displayed=presentation?presentAgenda(originalSnapshot,preparedDays,flights):originalSnapshot;
+      const snapshot=sourceTimes?withSourceTimeMetadata(displayed,preparedDays):displayed;
+      const agenda=compactAgenda?homeAgenda(preparedDays,snapshot,flights):null;
       const maxAge=clientMaxAge(snapshot,entry.until,Date.now(),agenda?.validUntil);
       if(maxAge>0)res.setHeader('Cache-Control',`private, max-age=${maxAge}, must-revalidate`);
       res.setHeader('Content-Type','application/json; charset=utf-8');
@@ -121,6 +132,7 @@ export default async function handler(req,res) {
       res.setHeader('Server-Timing',`calendar;dur=${(performance.now()-started).toFixed(1)}`);
       const body=nativeFields?widgyFields(snapshot):snapshot;
       if(nativeFields && sourceTimes)Object.assign(body,sourceTimeFields(snapshot));
+      if(nativeFields && presentation)Object.assign(body,agendaPresentationFields(snapshot));
       if(compactAgenda)Object.assign(body,homeAgendaFields(agenda));
       report('prepared',{status:200,responseMs:Math.round((performance.now()-responseStarted)*10)/10});
       return req.method==='HEAD'?res.status(200).end():res.status(200).json(body);
@@ -143,6 +155,7 @@ export default async function handler(req,res) {
     return res.status(error instanceof BridgeError?error.status:502).json({
       ...(compactAgenda?homeAgendaFields(null):{}),
       ...(nativeFields && sourceTimes?sourceTimeFields(null):{}),
+      ...(nativeFields && presentation?agendaPresentationFields(null):{}),
       ...(nativeFields?widgyFields(null):{}),error:error instanceof BridgeError?error.code:'calendar_read_failed'});
   }
 }
