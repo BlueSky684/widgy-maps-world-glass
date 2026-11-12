@@ -33,6 +33,11 @@ let cache=create();
 const results=await Promise.all(Array.from({length:12},(_,i)=>cache('account-one',state,monthWindow({offset:i-10,now:new Date(time),zone:state.zone}),range)));
 assert.equal([...calls.values()].reduce((a,b)=>a+b,0),3,'One read per source across concurrent months');
 assert.equal(results[0].entry.events.length,3);
+for(const result of results)assert.equal(result.entry.renderCache,results[0].entry.renderCache);
+const initialRenderCache=results[0].entry.renderCache;
+initialRenderCache.monthViews=new Map([['fixture',{png:'synthetic cached image'}]]);
+const otherScope=await cache('another-link',state,month,range);
+assert.notEqual(otherScope.entry.renderCache,initialRenderCache,'Accounts never share private rendered content');
 await Promise.all(tasks);
 const initialPNG=await renderDots(results[0].entry.events,month);
 
@@ -59,6 +64,8 @@ assert.equal((await cache('account-one',state,month,range)).entry.events.length,
 // another be empty without merging deleted events back into the result.
 time+=60000;modes={g:'empty',h:'empty',w:'empty'};
 const empty=await cache('account-one',state,month,range,{requireFresh:true});
+assert.notEqual(empty.entry.renderCache,recovered.entry.renderCache,'Successful deletion invalidates derived images');
+assert.equal(empty.entry.renderCache.monthViews,undefined);
 assert.equal(empty.entry.events.length,0);assert.equal(empty.availability,'current');
 await Promise.all(tasks);
 time+=86400001;modes={g:'fail',h:'fail',w:'fail'};
