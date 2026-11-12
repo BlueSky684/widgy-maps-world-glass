@@ -40,7 +40,7 @@ export default async function handler(req,res) {
   }));
   report('started');
   privateHeaders(res);
-  res.setHeader('X-Calendar-Revision','source-cache-1t');
+  res.setHeader('X-Calendar-Revision','month-cache-1u');
   let nativeFields=false,compactAgenda=false,sourceTimes=false,presentation=false;
   try {
     if (req.method!=='GET' && req.method!=='HEAD') throw new BridgeError('method_not_allowed',405);
@@ -123,10 +123,11 @@ export default async function handler(req,res) {
     trace.providerWaitMs=Math.round((performance.now()-providerStarted)*10)/10;
     stage='response';
     const responseStarted=performance.now();
-    const viewEntry=pooled?monthViewEntry(entry,window,annual?12:3):entry;
+    const renderEntry=entry.renderCache || entry;
+    const viewEntry=pooled?monthViewEntry(renderEntry,window,annual?12:3):renderEntry;
     const pngKey=bounds==='grid'?'pngGrid':'png';
     const preparedDays=annual && view==='dots' && viewEntry[pngKey]?undefined:
-      annual && !provider.rangeFallback?yearPreparedDaysFor(entry,events,window,providerWindow):
+      annual && !provider.rangeFallback?yearPreparedDaysFor(renderEntry,events,window,providerWindow):
       preparedDaysFor(viewEntry,events,window);
     if(view==='today'){
       // Reuse date parsing, ordering and overlap indexing, not the timed Home
@@ -148,7 +149,12 @@ export default async function handler(req,res) {
       report('prepared',{status:200,responseMs:Math.round((performance.now()-responseStarted)*10)/10});
       return req.method==='HEAD'?res.status(200).end():res.status(200).json(body);
     }
-    if(!viewEntry[pngKey])viewEntry[pngKey]=renderDots(events,window,{bounds,preparedDays});
+    if(!viewEntry[pngKey]) {
+      const pending=renderDots(events,window,{bounds,preparedDays});
+      viewEntry[pngKey]=pending;
+      // A transient image error must not poison this otherwise valid snapshot.
+      pending.catch(()=>{if(viewEntry[pngKey]===pending)delete viewEntry[pngKey];});
+    }
     const png=await viewEntry[pngKey];
     // Reuse month dots on the device within the same provider freshness window.
     // privateHeaders continues to forbid shared/CDN caching of private calendars.
