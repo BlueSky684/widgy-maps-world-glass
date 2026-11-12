@@ -1,4 +1,4 @@
-import {BridgeError,body,checkPost,origin,privateHeaders,randomKey,readiness,same,seal,session,setSession} from '../lib/calendar-bridge/security.js';
+import {BridgeError,body,checkPost,origin,privateHeaders,randomKey,readiness,same,seal,session,setSession,unseal} from '../lib/calendar-bridge/security.js';
 import {callbackURL,googleAuthorizeURL,googleExchange,iCloudCalendars,listCalendars,readEvents} from '../lib/calendar-bridge/providers.js';
 import {COLORS,DEFAULT_ZONE,dayDots,monthWindow} from '../lib/calendar-bridge/dots.js';
 import {sourceDiagnostics,widgetSnapshot} from '../lib/calendar-bridge/widget-data.js';
@@ -55,6 +55,25 @@ export default async function handler(req,res) {
       return res.status(200).json({ok:true});
     }
     const state=await session(req);
+    if (op === 'resume') {
+      // Restore an existing installation for an explicitly authenticated owner.
+      // A read-only widget token alone never grants setup access. Require the
+      // setup key again as well as the session, origin and authenticated token.
+      if (!same(input.key,process.env.CALENDAR_SETUP_KEY)) throw new BridgeError('unauthorized',401);
+      const previous=await unseal(input.token,'calendar-widget');
+      if (!previous || !Array.isArray(previous.sources) || previous.sources.length<1 || previous.sources.length>6)
+        throw new BridgeError('invalid_selection');
+      monthWindow({zone:previous.zone});
+      const restored={sources:previous.sources,zone:previous.zone};
+      if(previous.google)restored.google=previous.google;
+      if(previous.icloud)restored.icloud=previous.icloud;
+      // Check the retained accounts before replacing the setup session. Never
+      // return credentials, old OAuth state, or raw provider exceptions.
+      const listing=await listCalendars(restored);
+      if(listing.errors.length)throw new BridgeError('provider_read_failed',502);
+      await setSession(res,restored);
+      return res.status(200).json({ok:true,...publicState(restored)});
+    }
     if (op === 'google') {
       if (!ready.google) throw new BridgeError('google_not_configured',503);
       const oauth={state:randomKey(),verifier:randomKey(),at:Date.now()};
@@ -112,3 +131,4 @@ export default async function handler(req,res) {
     return res.status(error instanceof BridgeError ? error.status : 502).json({error:error instanceof BridgeError ? error.code : 'connection_failed'});
   }
 }
+
