@@ -22,6 +22,12 @@ export function clientMaxAge(snapshot,providerUntil,instant=Date.now(),agendaUnt
     snapshot.validUntil-instant,snapshot.home.validUntil-instant,agendaUntil-instant)/1000));
 }
 export default async function handler(req,res) {
+  let contextRequest=false;
+  try {contextRequest=new URL(req.url,'https://calendar.invalid').searchParams.has('context');} catch {}
+  if(contextRequest) {
+    const {widgetContext}=await import('../lib/widget-context.js');
+    return widgetContext(handler)(req,res);
+  }
   const started=performance.now();
   const method=req.method==='GET'?'GET':req.method==='HEAD'?'HEAD':'OTHER';
   // Log bounded operational fields only: never URLs, tokens, event content,
