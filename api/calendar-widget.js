@@ -40,7 +40,7 @@ export default async function handler(req,res) {
   }));
   report('started');
   privateHeaders(res);
-  res.setHeader('X-Calendar-Revision','month-cache-1u');
+  res.setHeader('X-Calendar-Revision','flight-auto-v1');
   let nativeFields=false,compactAgenda=false,sourceTimes=false,presentation=false;
   try {
     if (req.method!=='GET' && req.method!=='HEAD') throw new BridgeError('method_not_allowed',405);
@@ -66,6 +66,7 @@ export default async function handler(req,res) {
     const dayZone=requestedDayZone ?? state.zone;
     const nativeMetadata=view==='today' && url.searchParams.get('metadata')==='native-v1';
     const flights=(presentation || nativeMetadata) && view==='today'?flightProfiles(url.searchParams.get('flights')):[];
+    const automatic=url.searchParams.get('flight_mode')==='auto-v1';
     const now=new Date(),window=monthWindow({offset:Number(raw),zone:dayZone,now});
     Object.assign(trace,{view,bounds,offset:Number(raw),
       validationMs:Math.round((performance.now()-started)*10)/10,
@@ -134,9 +135,9 @@ export default async function handler(req,res) {
       // snapshot: NOW/NEXT EVENT and generatedAt still use the current instant.
       const originalSnapshot=widgetSnapshot(events,window,new Date(),preparedDays,
         nativeMetadata?{rowLimit:256}:requestedDayZone===null || presentation?undefined:{timeZone:state.zone});
-      const displayed=presentation || nativeMetadata?presentAgenda(originalSnapshot,preparedDays,flights):originalSnapshot;
+      const displayed=presentation || nativeMetadata?presentAgenda(originalSnapshot,preparedDays,flights,automatic):originalSnapshot;
       const snapshot=sourceTimes?withSourceTimeMetadata(displayed,preparedDays):displayed;
-      const agenda=compactAgenda?homeAgenda(preparedDays,snapshot,flights):null;
+      const agenda=compactAgenda?homeAgenda(preparedDays,snapshot,flights,automatic):null;
       const maxAge=clientMaxAge(snapshot,entry.until,Date.now(),agenda?.validUntil);
       if(maxAge>0)res.setHeader('Cache-Control',`private, max-age=${maxAge}, must-revalidate`);
       res.setHeader('Content-Type','application/json; charset=utf-8');
@@ -176,6 +177,7 @@ export default async function handler(req,res) {
       ...(nativeFields?widgyFields(null):{}),error:error instanceof BridgeError?error.code:'calendar_read_failed'});
   }
 }
+
 
 
 
