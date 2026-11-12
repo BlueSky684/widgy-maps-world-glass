@@ -7,7 +7,7 @@ const fixtures={calendar:{encoded:'PRIVATE_EVENT_DATA'},weather:{icon_status:'Cl
 const keys=Object.keys(fixtures),logs=[],seen=[];
 function response(){return {statusCode:200,headers:{},setHeader(k,v){this.headers[k.toLowerCase()]=v;},status(c){this.statusCode=c;return this;},json(b){this.body=b;return this;},end(){return this;}};}
 function loaders(overrides={}){return Object.fromEntries(keys.map(key=>[key,async()=>overrides[key]||((req,res)=>{seen.push({key,req});res.setHeader('Cache-Control','private, max-age=30, must-revalidate');res.json(fixtures[key]);})]));}
-const url='/api/calendar-widget?context=home-v1&token=PRIVATE_TOKEN&flights=W10&lat=1&lon=2&location_key=PRIVATE_KEY&day_zone=Asia%2FKolkata&refresh=20&url=https://evil.invalid&cookie=PRIVATE_COOKIE';
+const url='/api/calendar-widget?context=home-v1&token=PRIVATE_TOKEN&flights=W10&flight_mode=auto-v1&lat=1&lon=2&location_key=PRIVATE_KEY&day_zone=Asia%2FKolkata&refresh=20&url=https://evil.invalid&cookie=PRIVATE_COOKIE';
 async function call(options={},request={}){const res=response();await createWidgetContext({...loaders(),clock:()=>1000,log:x=>logs.push(x),...options})({method:'GET',url,...request},res);return res;}
 const good=await call();
 assert.deepEqual(good.body,{version:1,...fixtures});
@@ -15,6 +15,7 @@ assert.equal(good.headers['cache-control'],'private, max-age=30, must-revalidate
 assert.equal(good.headers['cdn-cache-control'],'no-store');
 assert.equal(good.headers['vercel-cdn-cache-control'],'no-store');
 assert.equal(new URL(seen[0].req.url,'https://test.invalid').pathname,'/api/calendar-widget');
+assert.equal(new URL(seen[0].req.url,'https://test.invalid').searchParams.get('flight_mode'),'auto-v1');
 assert.equal(new URL(seen[1].req.url,'https://test.invalid').pathname,'/api/weather-panel');
 assert.equal(new URL(seen[2].req.url,'https://test.invalid').pathname,'/api/fetch-probe');
 for(const {key,req} of seen){const q=new URL(req.url,'https://test.invalid').searchParams;assert.equal(q.has('context'),false);assert.equal(q.has('url'),false);assert.equal(q.has('cookie'),false);assert.deepEqual(req.headers,{});if(key!=='calendar')assert.equal(q.has('token'),false);if(key!=='location')assert.equal(q.has('location_key'),false);}
@@ -53,3 +54,4 @@ const actualCity=createNativeLocationHandler({authorize:u=>{authCalls++;assert.e
 const actual=await call({weather:async()=>actualWx,location:async()=>actualCity});
 assert.equal(actual.body.weather.icon_status,'—');assert.equal(actual.body.location.text,'Test, Country');assert.deepEqual([forecastCalls,cityCalls,authCalls],[1,1,1]);
 console.log('PASS: shared context projection, concurrent handlers, routing and credential isolation, 12 partial failure cases, bounded expiry, HEAD, validation, privacy and actual weather/location handler contracts.');
+
