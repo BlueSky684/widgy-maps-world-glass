@@ -1,3 +1,4 @@
+import {resilientEvents} from '../lib/calendar-bridge/resilient-events.js';
 import {createHash} from 'node:crypto';
 import {BridgeError,origin,privateHeaders,unseal} from '../lib/calendar-bridge/security.js';
 import {monthWindow,renderDots} from '../lib/calendar-bridge/dots.js';
@@ -33,6 +34,7 @@ export default async function handler(req,res) {
   }));
   report('started');
   privateHeaders(res);
+  res.setHeader('X-Calendar-Revision','source-cache-1t');
   let nativeFields=false,compactAgenda=false,sourceTimes=false,presentation=false;
   try {
     if (req.method!=='GET' && req.method!=='HEAD') throw new BridgeError('method_not_allowed',405);
@@ -56,14 +58,16 @@ export default async function handler(req,res) {
     const requestedDayZone=url.searchParams.get('day_zone');
     if(requestedDayZone!==null && !sourceZone(requestedDayZone))throw new BridgeError('invalid_timezone');
     const dayZone=requestedDayZone ?? state.zone;
-    const flights=presentation?flightProfiles(url.searchParams.get('flights')):[];
+    const nativeMetadata=view==='today' && url.searchParams.get('metadata')==='native-v1';
+    const flights=(presentation || nativeMetadata) && view==='today'?flightProfiles(url.searchParams.get('flights')):[];
     const now=new Date(),window=monthWindow({offset:Number(raw),zone:dayZone,now});
     Object.assign(trace,{view,bounds,offset:Number(raw),
       validationMs:Math.round((performance.now()-started)*10)/10,
       sources:{google:state.sources.filter(s=>s.provider==='google').length,
         icloud:state.sources.filter(s=>s.provider==='icloud').length,
         holidays:state.sources.filter(s=>s.provider==='apple-holidays').length}});
-    const fastAnnual=url.searchParams.get('reuse')==='year-v2';
+    const isolated=view==='dots' || nativeMetadata;
+    const fastAnnual=isolated || url.searchParams.get('reuse')==='year-v2';
     const annual=fastAnnual || url.searchParams.get('reuse')==='year-v1';
     const pooled=annual || url.searchParams.get('reuse')==='months-v1';
     trace.providerWindow=annual?'calendar-year':pooled?'adjacent-months':'single-month';
@@ -84,7 +88,7 @@ export default async function handler(req,res) {
     };
     let provider;
     try {
-      provider=annual?await readYearRange(key,
+      provider=isolated?await resilientEvents(createHash('sha256').update(token).digest('hex'),state,window,providerWindow,{requireFresh:nativeMetadata}):annual?await readYearRange(key,
         ()=>fastAnnual?cachedAnnualEvents(key,()=>fetchProviderWindow(providerWindow),{
           requireFresh:view==='today',
           prepareSnapshot:candidate=>yearPreparedDaysFor(candidate,candidate.events,window,providerWindow),
@@ -96,7 +100,7 @@ export default async function handler(req,res) {
     } catch(error) {
       // Very dense calendars may exceed a provider's per-request limits over
       // three months. Retry only these capacity failures using the old range.
-      if(annual || !pooled || !['event_limit','provider_response_too_large','recurrence_limit'].includes(error?.code))throw error;
+      if(isolated || annual || !pooled || !['event_limit','provider_response_too_large','recurrence_limit'].includes(error?.code))throw error;
       trace.rangeFallback=true;
       provider=await cachedEvents(monthKey,()=>fetchProviderWindow(window));
     }
@@ -105,9 +109,10 @@ export default async function handler(req,res) {
     const events=await entry.pending;
     if(fastAnnual) {
       const stale=entry.until<=Date.now();
-      res.setHeader('X-Calendar-Data-State',stale?(providerCache==='STALE-ERROR'?'refresh-failed':providerCache==='STALE'?'refreshing':'stale'):'current');
+      res.setHeader('X-Calendar-Data-State',provider.availability || (stale?(providerCache==='STALE-ERROR'?'refresh-failed':providerCache==='STALE'?'refreshing':'stale'):'current'));
       if(Number.isFinite(entry.startedAt))res.setHeader('X-Calendar-Data-Age',String(Math.max(0,Math.floor((Date.now()-entry.startedAt)/1000))));
-      if(stale)res.setHeader('Cache-Control','private, no-store');
+      if(isolated){res.setHeader('X-Calendar-Missing-Sources',String(provider.missingSources));res.setHeader('X-Calendar-Stale-Sources',String(provider.staleSources));}
+      if(stale || provider.missingSources)res.setHeader('Cache-Control','private, no-store');
     }
     trace.providerWaitMs=Math.round((performance.now()-providerStarted)*10)/10;
     stage='response';
@@ -121,8 +126,8 @@ export default async function handler(req,res) {
       // Reuse date parsing, ordering and overlap indexing, not the timed Home
       // snapshot: NOW/NEXT EVENT and generatedAt still use the current instant.
       const originalSnapshot=widgetSnapshot(events,window,new Date(),preparedDays,
-        requestedDayZone===null || presentation?undefined:{timeZone:state.zone});
-      const displayed=presentation?presentAgenda(originalSnapshot,preparedDays,flights):originalSnapshot;
+        nativeMetadata?{rowLimit:256}:requestedDayZone===null || presentation?undefined:{timeZone:state.zone});
+      const displayed=presentation || nativeMetadata?presentAgenda(originalSnapshot,preparedDays,flights):originalSnapshot;
       const snapshot=sourceTimes?withSourceTimeMetadata(displayed,preparedDays):displayed;
       const agenda=compactAgenda?homeAgenda(preparedDays,snapshot,flights):null;
       const maxAge=clientMaxAge(snapshot,entry.until,Date.now(),agenda?.validUntil);
@@ -130,7 +135,7 @@ export default async function handler(req,res) {
       res.setHeader('Content-Type','application/json; charset=utf-8');
       res.setHeader('X-Calendar-Provider-Cache',providerCache);
       res.setHeader('Server-Timing',`calendar;dur=${(performance.now()-started).toFixed(1)}`);
-      const body=nativeFields?widgyFields(snapshot):snapshot;
+      const body=nativeMetadata?{encoded:encodeURIComponent(JSON.stringify({version:1,raw:originalSnapshot,presented:displayed}))}:nativeFields?widgyFields(snapshot):snapshot;
       if(nativeFields && sourceTimes)Object.assign(body,sourceTimeFields(snapshot));
       if(nativeFields && presentation)Object.assign(body,agendaPresentationFields(snapshot));
       if(compactAgenda)Object.assign(body,homeAgendaFields(agenda));
@@ -142,7 +147,7 @@ export default async function handler(req,res) {
     // Reuse month dots on the device within the same provider freshness window.
     // privateHeaders continues to forbid shared/CDN caching of private calendars.
     const remaining=Math.max(0,Math.floor((entry.until-Date.now())/1000));
-    if(!fastAnnual || remaining>0)res.setHeader('Cache-Control',`private, max-age=${Math.min(30,remaining)}, must-revalidate`);
+    if(!provider.missingSources && (!fastAnnual || remaining>0))res.setHeader('Cache-Control',`private, max-age=${Math.min(30,remaining)}, must-revalidate`);
     res.setHeader('Content-Type','image/png');
     res.setHeader('X-Calendar-Provider-Cache',providerCache);
     res.setHeader('Server-Timing',`calendar;dur=${(performance.now()-started).toFixed(1)}`);
@@ -159,5 +164,6 @@ export default async function handler(req,res) {
       ...(nativeFields?widgyFields(null):{}),error:error instanceof BridgeError?error.code:'calendar_read_failed'});
   }
 }
+
 
 
