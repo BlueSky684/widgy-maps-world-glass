@@ -22,8 +22,13 @@ export function clientMaxAge(snapshot,providerUntil,instant=Date.now(),agendaUnt
     snapshot.validUntil-instant,snapshot.home.validUntil-instant,agendaUntil-instant)/1000));
 }
 export default async function handler(req,res) {
-  let contextRequest=false;
-  try {contextRequest=new URL(req.url,'https://calendar.invalid').searchParams.has('context');} catch {}
+  let contextRequest=false,timeImage=false;
+  try {const q=new URL(req.url,'https://calendar.invalid').searchParams;
+    contextRequest=q.has('context');timeImage=q.has('render');} catch {}
+  if(timeImage) {
+    const {homeTimeImage}=await import('../lib/calendar-bridge/home-time-image.js');
+    return homeTimeImage(handler)(req,res);
+  }
   if(contextRequest) {
     const {widgetContext}=await import('../lib/widget-context.js');
     return widgetContext(handler)(req,res);
