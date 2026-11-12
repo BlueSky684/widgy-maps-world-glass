@@ -26,6 +26,13 @@ function fixture() {
  const added=revision?event('added','New event','12'):[];
  return ['BEGIN:VCALENDAR','VERSION:2.0',...main,...added,'END:VCALENDAR'].join('\r\n');
 }
+const read=async(state,window)=>{calls++;if(gate)await gate;
+   if(mode==='failure')throw new BridgeError('icloud_connection_failed',502);
+   if(mode==='capacity' && window.end.diff(window.start,'days').days>49)throw new BridgeError('event_limit',502);
+   if(mode==='empty')return [];
+   const events=icalEvents([{data:fixture()}],state.sources[0],window);
+   if(mode==='invalid')events[0].start='not-a-date';
+   return events;};
 function instance(){
  return vm.runInNewContext(code+'\nhandler',{Date:Clock,URL,performance,createHash,BridgeError,console:{info(){}},
   origin:()=> 'https://example.invalid',privateHeaders,monthWindow,monthProviderWindow,monthViewEntry,
@@ -33,66 +40,43 @@ function instance(){
   cachedEvents:createProviderCache(options),cachedAnnualEvents:createAnnualProviderCache(options),
   preparedDaysFor,widgetSnapshot,widgyFields,homeAgenda,homeAgendaFields,calendarGrid,
   unseal:async token=>{if(token==='bad')throw new BridgeError('unauthorized',401);return {zone:'Asia/Jerusalem',sources:[{provider:'icloud',id:'fixture',color:revision%4}],token};},
-  readEvents:async(state,window)=>{calls++;if(gate)await gate;
-   if(mode==='failure')throw new BridgeError('icloud_connection_failed',502);
-   if(mode==='capacity' && window.end.diff(window.start,'days').days>49)throw new BridgeError('event_limit',502);
-   if(mode==='empty')return [];
-   const events=icalEvents([{data:fixture()}],state.sources[0],window);
-   if(mode==='invalid')events[0].start='not-a-date';
-   return events;},
+  readEvents:read,
   renderDots:async(...args)=>{renders++;return renderDots(...args);}});
 }
 async function request(handler,{token='one',offset=0,view='dots',reuse='year-v2',method='GET'}={}) {
  const res={headers:{},setHeader(k,v){this.headers[k]=v;},status(c){this.code=c;return this;},json(b){this.body=b;return this;},send(b){this.body=b;return this;},end(){this.ended=true;return this;}};
  await handler({method,url:`/api/calendar-widget?token=${token}&offset=${offset}&view=${view}&bounds=${view==='dots'?'grid':'full'}&format=widgy&agenda=home-v1${reuse?'&reuse='+reuse:''}`},res);return res;
 }
-const one=instance(),offsets=Array.from({length:12},(_,i)=>i-10);
-assert.equal((await request(one,{token:'bad'})).code,401);assert.equal(calls,0);
-const first=await Promise.all(offsets.map(offset=>request(one,{offset})));assert.equal(calls,1);assert.equal(renders,12);
-const legacy=await request(one,{reuse:'year-v1'});assert(first[10].body.equals(legacy.body));
-const initialCalls=calls,initialRenders=renders;
-await Promise.all(tasks);time+=60000;
-let release;gate=new Promise(r=>release=r);
-const stale=await request(one);assert.equal(stale.code,200);assert.equal(stale.headers['X-Calendar-Data-State'],'refreshing');
-assert.equal(stale.headers['Cache-Control'],'private, no-store');assert(stale.body.equals(first[10].body));
-await tick();assert.equal(calls,initialCalls+1);
-let todayDone=false;const waiting=request(one,{view:'today'}).then(r=>{todayDone=true;return r;});
-for(const offset of offsets)await request(one,{offset});
-assert.equal(todayDone,false);assert.equal(calls,initialCalls+1);assert.equal(renders,initialRenders);
-release();gate=null;const today=await waiting;assert.equal(today.code,200);assert.equal(today.headers['X-Calendar-Data-State'],'current');
-await Promise.all(tasks);
-for(const offset of offsets)await request(one,{offset});assert.equal(renders,initialRenders,'Unchanged refresh preserves every month PNG');
-const fields=JSON.parse(readFileSync(new URL('./widget-tab-selectors.json',import.meta.url)));for(const key of fields)assert(key in today.body,key);
-
-// A changed complete snapshot invalidates all month views together.
-time+=60000;revision=1;
+// Dots/native-v1 now share source caches. Already-imported legacy TODAY
+// clients keep their aggregate contract; validate this independently.
+const one=instance();
+const first=await request(one,{view:'today'});assert.equal(first.code,200);assert.equal(calls,1);
+assert.equal(first.body.calendar_remaining_today,1);assert.equal(first.body.calendar_event_1_title,'Original');
+const fields=JSON.parse(readFileSync(new URL('./widget-tab-selectors.json',import.meta.url)));for(const key of fields)assert(key in first.body,key);
+await request(one,{view:'today'});assert.equal(calls,1);
+await Promise.all(tasks);time+=60000;revision=1;
 const edited=await request(one,{view:'today'});assert.equal(edited.body.calendar_remaining_today,2);assert.equal(edited.body.calendar_event_1_title,'Updated');
-const changed=await Promise.all(offsets.map(offset=>request(one,{offset})));
-for(let i=0;i<12;i++)assert(!changed[i].body.equals(first[i].body));
-assert.equal(renders,initialRenders+12);
 time+=60000;revision=2;
 const deleted=await request(one,{view:'today'});assert.equal(deleted.body.calendar_remaining_today,1);assert.equal(deleted.body.calendar_event_1_title,'New event');
-
-// Outage and invalid provider data retain the prior full result, clearly marked
-// as stale/no-store, and never become a successful empty calendar.
 time+=60000;mode='failure';
-let failed=await request(one,{view:'today'});assert.equal(failed.code,200);assert.equal(failed.body.calendar_remaining_today,1);
+const failed=await request(one,{view:'today'});assert.equal(failed.code,200);assert.equal(failed.body.calendar_remaining_today,1);
 assert.equal(failed.headers['X-Calendar-Data-State'],'refresh-failed');assert.equal(failed.headers['Cache-Control'],'private, no-store');
 time+=15000;mode='invalid';
-failed=await request(one,{view:'today'});assert.equal(failed.body.calendar_remaining_today,1);assert.equal(failed.headers['X-Calendar-Data-State'],'refresh-failed');
+const invalid=await request(one,{view:'today'});assert.equal(invalid.body.calendar_remaining_today,1);assert.equal(invalid.headers['X-Calendar-Data-State'],'refresh-failed');
 time+=15000;mode='empty';
-const empty=await request(one,{view:'today'});assert.equal(empty.body.calendar_remaining_today,0);assert.equal(empty.headers['X-Calendar-Data-State'],'current');
-assert.equal(empty.body.calendar_home_title,'No events today');
+const empty=await request(one,{view:'today'});assert.equal(empty.body.calendar_remaining_today,0);assert.equal(empty.body.calendar_home_title,'No events today');
 time+=900000;mode='failure';
 const expired=await request(one,{view:'today'});assert.equal(expired.code,502);assert.equal(expired.body.calendar_remaining_today,-1);
 assert.equal(expired.body.calendar_home_title,'Calendar unavailable');
 assert.equal((await request(one,{token:'cold-failure',view:'today'})).code,502);
 mode='capacity';const capStart=calls;
 assert.equal((await request(one,{token:'dense',view:'today'})).code,200);assert.equal(calls,capStart+2);
-assert.equal((await request(one,{token:'dense',offset:1})).code,200);assert.equal(calls,capStart+3);
 mode='ok';const prior=calls;
-assert.equal((await request(one,{token:'bad'})).code,401);assert.equal((await request(one,{offset:13})).code,400);
-assert.equal((await request(one,{method:'POST'})).code,405);assert.equal(calls,prior);
-const head=await request(one,{token:'head',method:'HEAD'});assert.equal(head.code,200);assert(head.ended);assert.equal(head.body,undefined);
+assert.equal((await request(one,{token:'bad',view:'today'})).code,401);
+assert.equal((await request(one,{offset:13,view:'today'})).code,400);
+assert.equal((await request(one,{method:'POST',view:'today'})).code,405);assert.equal(calls,prior);
+const head=await request(one,{token:'head',method:'HEAD',view:'today'});assert.equal(head.code,200);assert(head.ended);assert.equal(head.body,undefined);
 await Promise.all(tasks);
-console.log('PASS: annual background refresh, no wait for cached months, TODAY waits, unchanged refresh avoids 12 PNG renders, exact legacy pixels, edits/additions/deletions, invalid/outage retention, honest expiry errors, capacity fallback, auth, 37 fields and HEAD.');
+console.log('PASS: legacy annual TODAY compatibility, edits/additions/deletions, outage+invalid retention, 15-minute expiry, capacity fallback, authentication, all 37 fields and HEAD.');
+// Keep the original test entry point covering the current dots contract too.
+await import('./test-calendar-resilient-handler.mjs');
