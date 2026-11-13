@@ -84,3 +84,22 @@ test('cancelled events, recurring all-day occurrence, duplicates and Unicode tit
  const events=icalEvents([{data:ics}],{...source,provider:'icloud'},window);
  assert.equal(fixture(events).agenda.fields.home_kind,'all-day');
 });
+
+test('selection invariants across 120 deterministic mixed schedules and six phone zones',()=>{
+ let seed=173;const random=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
+ for(let k=0;k<120;k++){
+  const zone=['Asia/Jerusalem','Asia/Kolkata','Asia/Kathmandu','America/New_York','Pacific/Auckland','UTC'][k%6];
+  const now=new Date('2026-11-13T12:00:00Z');
+  const events=Array.from({length:Math.floor(random()*18)},(_,i)=>{
+   const start=+now+(Math.floor(random()*26)-13)*3600000,end=start+Math.floor(random()*6)*3600000;
+   return {...meeting,uid:`${k}-${i}`,title:i%3?'Event '+i:'אירוע '+i,start:new Date(start).toISOString(),end:new Date(end).toISOString()};
+  });
+  if(k%2===0)events.push(allDay);
+  const f=fixture(events,now.toISOString(),zone),eligible=f.days.find(d=>d.date===f.agenda.date).events.filter(e=>e.allDay||Date.parse(e.end)>+now);
+  const out=f.agenda.fields;assert.equal(out.count,eligible.length);
+  assert.equal(out.home_visible,Number(eligible.length>0));
+  for(let i=1;i<=4;i++){assert.equal(out[`event_${i}_visible`],Number(i<=eligible.length));if(i<=eligible.length)assert.equal(out[`event_${i}_title`],eligible[i-1].title);}
+  if(eligible.length){assert(eligible.some(e=>e.title===out.home_title));assert.equal(out.message,'');}
+  else assert(!out.home_title);
+ }
+});
