@@ -71,3 +71,11 @@ test('bad inputs and methods never invoke provider; timeout and rendering failur
  let deferred=false;const timeout=response();await homeTimeImage(()=>new Promise(()=>{}),{budgetMs:5,defer:()=>{deferred=true;}})({method:'GET',url:'/?'+q},timeout);assert.equal(timeout.code,504);assert(deferred);
  const failure=response();await homeTimeImage(async(req,res)=>res.json({encoded:''}),{render:async()=>{throw Error('PRIVATE');}})({method:'GET',url:'/?'+q},failure);assert.equal(failure.code,502);assert(!JSON.stringify(failure).includes('PRIVATE'));
 });
+
+test('image diagnostics distinguish rendering from calendar success without private content',async()=>{
+ const p=fixture(),q=query(p),logs=[];const r=response();
+ await homeTimeImage(async(req,res)=>res.json({encoded:encode(p)}),{log:entry=>logs.push(entry)})({method:'GET',url:'/?'+q},r);
+ assert.equal(logs.length,1);assert.equal(logs[0].phase,'response');assert.equal(logs[0].status,200);assert.equal(logs[0].kind,'flight');assert(logs[0].pngBytes>1000);
+ logs.length=0;await homeTimeImage(async(req,res)=>res.json({encoded:encode(p)}),{render:async()=>{throw new TypeError('PRIVATE_TOKEN '+flight.title);},log:entry=>logs.push(entry)})({method:'GET',url:'/?'+q},response());
+ assert.equal(logs[0].phase,'render');assert.equal(logs[0].status,502);assert.equal(logs[0].errorClass,'TypeError');assert(!JSON.stringify(logs).includes('PRIVATE'));assert(!JSON.stringify(logs).includes(flight.title));
+});
