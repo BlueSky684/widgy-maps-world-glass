@@ -24,7 +24,9 @@ export function clientMaxAge(snapshot,providerUntil,instant=Date.now(),agendaUnt
 export default async function handler(req,res) {
   let contextRequest=false,timeImage=false;
   try {const q=new URL(req.url,'https://calendar.invalid').searchParams;
-    contextRequest=q.has('context');timeImage=q.has('render');} catch {}
+    // Legacy dot images already use render as a cache revision parameter.
+    // Only the explicit time-image mode belongs to the new adapter.
+    contextRequest=q.has('context');timeImage=q.get('render')==='home-time-v1';} catch {}
   if(timeImage) {
     const {homeTimeImage}=await import('../lib/calendar-bridge/home-time-image.js');
     return homeTimeImage(handler)(req,res);
