@@ -65,6 +65,9 @@ const response={headers:{},setHeader(k,v){this.headers[k]=v},status(c){this.code
 await outer({method:'GET',url:'/api/calendar-widget?context=home-v1&agenda=unified-v1&token=PRIVATE_TOKEN&day_zone=Asia%2FJerusalem&flight_mode=auto-v1'},response);
 assert.equal(response.body.calendar.agenda.fields.ready,1);assert.equal(response.body.calendar.agenda.fields.message,'No more events today');
 assert.equal(response.body.calendar.agenda.fields.event_1_title,'');assert.equal(response.body.weather.icon_status,'Clear');
+await outer({method:'GET',url:'/api/calendar-widget?context=home-v1&agenda=unified-v1&display=flat-v1&token=PRIVATE_TOKEN&day_zone=Asia%2FJerusalem&flight_mode=auto-v1'},response);
+assert.equal(response.body.agenda.display_code,3);assert.equal(response.body.agenda.message,'No more events today');
+assert(!('calendar' in response.body));assert.equal(response.body.weather.icon_status,'Clear');
 fail=true;time+=120000;
 assert.equal((await request(unifiedQuery,'isolated-new-key')).code,502,'one missing provider cannot become a complete empty/finished agenda');
 assert(!JSON.stringify(logs).includes('PRIVATE_'));
