@@ -1,3 +1,4 @@
+import {createWidgetContext} from '../lib/widget-context.js';
 import {unifiedAgenda} from '../lib/calendar-bridge/unified-agenda.js';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -59,6 +60,11 @@ const ended=await request(unifiedQuery);assert.equal(ended.body.agenda.fields.st
 assert.equal(ended.body.agenda.fields.message,'No more events today');
 assert.equal((await request(unifiedQuery,'bad')).code,401);
 assert.equal((await request(unifiedQuery,'PRIVATE_TOKEN','HEAD')).body,undefined);
+const outer=createWidgetContext({calendar:async()=>handler,clock:()=>time,log:x=>logs.push(x),weather:async()=>(req,res)=>res.json({icon_status:'Clear'}),location:async()=>(req,res)=>res.json({text:'Test'})});
+const response={headers:{},setHeader(k,v){this.headers[k]=v},status(c){this.code=c;return this},json(b){this.body=JSON.parse(JSON.stringify(b))},end(){}};
+await outer({method:'GET',url:'/api/calendar-widget?context=home-v1&agenda=unified-v1&token=PRIVATE_TOKEN&day_zone=Asia%2FJerusalem&flight_mode=auto-v1'},response);
+assert.equal(response.body.calendar.agenda.fields.ready,1);assert.equal(response.body.calendar.agenda.fields.message,'No more events today');
+assert.equal(response.body.calendar.agenda.fields.event_1_title,'');assert.equal(response.body.weather.icon_status,'Clear');
 fail=true;time+=120000;
 assert.equal((await request(unifiedQuery,'isolated-new-key')).code,502,'one missing provider cannot become a complete empty/finished agenda');
 assert(!JSON.stringify(logs).includes('PRIVATE_'));
