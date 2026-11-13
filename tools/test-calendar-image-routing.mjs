@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import handler from '../api/calendar-widget.js';
-import imageHandler from '../api/home-event-times.png.js';
+import {readFileSync} from 'node:fs';
 
 function response(){return {headers:{},code:200,setHeader(k,v){this.headers[k]=v;},status(c){this.code=c;return this;},json(body){this.body=body;return this;},end(body){this.body=body;return this;}};}
 
@@ -28,6 +28,9 @@ test('home time images still validate image inputs and calendar authorization',a
 });
 
 test('dedicated PNG path retains authentication, validation and private caching',async()=>{
+  const config=JSON.parse(readFileSync(new URL('../vercel.json',import.meta.url)));
+  const route=config.rewrites.find(r=>r.source==='/api/home-event-times.png');
+  assert.equal(route.destination,'/api/calendar-widget');
   for(const [method,query,status] of [
     ['GET','context=home-v1&render=home-time-v1&row=1&token=invalid-local-test',401],
     ['GET','context=home-v1&render=home-time-v1&row=5',400],
@@ -35,9 +38,9 @@ test('dedicated PNG path retains authentication, validation and private caching'
     ['POST','context=home-v1&render=home-time-v1&row=1',405],
   ]) {
     const res=response();
-    await imageHandler({method,url:'/api/home-event-times.png?'+query},res);
+    // Runtime rewrite forwarding is also checked against the deployed URL.
+    await handler({method,url:route.destination+'?'+query},res);
     assert.equal(res.code,status);
-    assert.equal(res.headers['X-Home-Time-Endpoint'],'png-v1');
     assert.equal(res.headers['X-Home-Time-Revision'],'image-v1');
     assert.match(res.headers['Cache-Control'],/private/);
     assert.match(res.headers['Cache-Control'],/no-store/);
