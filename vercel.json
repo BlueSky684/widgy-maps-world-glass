@@ -72,6 +72,10 @@
   ],
   "rewrites": [
     {
+      "source": "/api/home-event-times.png",
+      "destination": "/api/calendar-widget"
+    },
+    {
       "source": "/api/weather-panel",
       "destination": "/api/fetch-probe?weather_panel=1"
     },
@@ -81,4 +85,5 @@
     }
   ]
 }
+
 
