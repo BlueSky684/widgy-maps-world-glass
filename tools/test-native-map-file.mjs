@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import sharp from 'sharp';
 import {nativeFileToken, tagNativePNG} from '../lib/native-map-file.js';
 import {createNightMapHandler} from '../api/night-map.js';
+import {createHash} from 'node:crypto';
 
 const key='synthetic-native-test-key-'.repeat(3), id='11111111-2222-4333-8444-555555555555';
 const params={delivery:'vercel-file-v1',location_key:key,lat:'51.5',lon:'-0.1',width:'2400',
@@ -51,6 +52,21 @@ try{
   await test('Transfer marker differs per request; credentials and transfer IDs stay out of app logs',async()=>{
     const other=await route(url({transfer_id:'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee'}));
     assert(!other.body.equals(native.body));assert(logs.every(s=>!s.includes(key)&&!s.includes(id)));
+  });
+  await test('Only authenticated native requests expose a deterministic hashed correlation',async()=>{
+    const expected=createHash('sha256').update('world-glass-transfer-v1:'+id).digest('hex').slice(0,24);
+    const start=logs.length;
+    await route(url({transfer_id:id.toUpperCase()}));
+    const rows=logs.slice(start).map(s=>JSON.parse(s));
+    assert(rows.some(r=>r.phase==='started'&&r.transferCorrelation===expected));
+    assert(rows.some(r=>r.phase==='prepared'&&r.transferCorrelation===expected));
+    for(const r of rows)assert.equal(r.transferCorrelation,expected);
+    const ordinary=url();ordinary.searchParams.delete('native_file');ordinary.searchParams.delete('transfer_id');
+    const next=logs.length;await route(ordinary);
+    assert(logs.slice(next).every(s=>!Object.hasOwn(JSON.parse(s),'transferCorrelation')));
+    const rejected=logs.length;await route(url({location_key:'bad'}));await route(url({transfer_id:'bad'}));
+    assert(logs.slice(rejected).every(s=>!s.includes('transferCorrelation')));
+    assert(logs.every(s=>!s.includes(key)&&!s.includes(id)&&!s.includes('location_key=')));
   });
 }finally{console.info=info;if(previous===undefined)delete process.env.WIDGY_MAP_FILE_ACCESS_TOKEN;else process.env.WIDGY_MAP_FILE_ACCESS_TOKEN=previous}
 console.log(checks+' native server checks passed.');

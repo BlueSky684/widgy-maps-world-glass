@@ -2,7 +2,7 @@ import {renderHomeMap, renderMapLocation, resolveLocation, REVISION} from '../li
 import {parseMapRequest} from '../lib/native-map-request.js';
 import {createMapRenderCache} from '../lib/map-render-cache.js';
 import {precomputedState} from '../lib/map-precomputed.js';
-import {randomUUID} from 'node:crypto';
+import {randomUUID, createHash} from 'node:crypto';
 import {compareMapRequestKeys, readCityTimingTrace} from '../lib/map-request-key-diagnostics.js';
 import {createCityReuseCache} from '../lib/city-reuse-cache.js';
 import {createMapURLDiagnostics} from '../lib/map-url-diagnostics.js';
@@ -63,12 +63,21 @@ export function createNightMapHandler({resolveCity, resolveFileCity} = {}) {
       return req.method === 'HEAD' ? res.status(status).end() : res.status(status).json({state:result.state, ...(result.entry ? {entry:result.entry} : {})});
     }
     const instanceRequest = ++instanceRequests;
+    // The native token is already validated and authorized. Hash only that
+    // opaque UUID; never expose the token, URL, credentials or coordinates.
+    // Correlation is diagnostic only and cannot change response delivery.
+    let transferCorrelation = null;
+    try {
+      if (transferToken) transferCorrelation = createHash('sha256')
+        .update('world-glass-transfer-v1:' + transferToken).digest('hex').slice(0, 24);
+    } catch {}
     // Native black-image reports cannot be diagnosed from render errors alone.
     // Do not record the URL, query, coordinates, city, headers or image content.
     // Vercel supplies the request ID around each line, including timed-out calls.
     const method = req.method === 'HEAD' ? 'HEAD' : !req.method || req.method === 'GET' ? 'GET' : 'OTHER';
     const report = (phase, details = {}) => console.info(JSON.stringify({
       event: 'night_map_response_v1', phase, method, instance, instanceRequest,
+      ...(transferCorrelation ? {transferCorrelation} : {}),
       elapsedMs: Math.round((performance.now() - requestStarted) * 10) / 10,
       ...details
     }));
