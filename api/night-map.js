@@ -8,6 +8,7 @@ import {createCityReuseCache} from '../lib/city-reuse-cache.js';
 import {createMapURLDiagnostics} from '../lib/map-url-diagnostics.js';
 import {observeMapResponseCompletion} from '../lib/map-response-completion.js';
 import {nativeFileToken, tagNativePNG} from '../lib/native-map-file.js';
+import {readNativeHandoffTiming} from '../lib/native-handoff-timing.js';
 
 // The default Vercel handler retains its process-local caches and behavior.
 // Other hosts can supply a city resolver without changing the approved renderer.
@@ -27,6 +28,7 @@ export function createNightMapHandler({resolveCity, resolveFileCity} = {}) {
   // This route is opt-in. Existing widget endpoints retain their behavior.
   return async function handler(req, res) {
     const requestStarted = performance.now();
+    const handlerEnteredAt = Date.now();
     const url = parseMapRequest(req.url);
     let filePoint = null;
     if (url.searchParams.has('delivery')) {
@@ -81,7 +83,8 @@ export function createNightMapHandler({resolveCity, resolveFileCity} = {}) {
       elapsedMs: Math.round((performance.now() - requestStarted) * 10) / 10,
       ...details
     }));
-    report('started');
+    const handoffTiming = transferToken ? readNativeHandoffTiming(url, handlerEnteredAt) : null;
+    report('started', handoffTiming ? {handoffTiming} : {});
     observeMapResponseCompletion(res, report);
     res.setHeader('Cache-Control', 'private, no-store, max-age=0');
     res.setHeader('CDN-Cache-Control', 'no-store');

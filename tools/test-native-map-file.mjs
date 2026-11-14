@@ -3,6 +3,7 @@ import sharp from 'sharp';
 import {nativeFileToken, tagNativePNG} from '../lib/native-map-file.js';
 import {createNightMapHandler} from '../api/night-map.js';
 import {createHash} from 'node:crypto';
+import {readNativeHandoffTiming} from '../lib/native-handoff-timing.js';
 
 const key='synthetic-native-test-key-'.repeat(3), id='11111111-2222-4333-8444-555555555555';
 const params={delivery:'vercel-file-v1',location_key:key,lat:'51.5',lon:'-0.1',width:'2400',
@@ -66,6 +67,38 @@ try{
     assert(logs.slice(next).every(s=>!Object.hasOwn(JSON.parse(s),'transferCorrelation')));
     const rejected=logs.length;await route(url({location_key:'bad'}));await route(url({transfer_id:'bad'}));
     assert(logs.slice(rejected).every(s=>!s.includes('transferCorrelation')));
+    assert(logs.every(s=>!s.includes(key)&&!s.includes(id)&&!s.includes('location_key=')));
+  });
+  await test('Optional handoff timing splits the phone tail and handler boundary without changing bytes or cache policy',async()=>{
+    const start=logs.length, snapshot=1794636939062, ready=snapshot+105000;
+    const r=await route(url({handoff_v1:`${snapshot},${ready}`}));
+    assert.equal(r.statusCode,200);assert(r.body.equals(native.body));
+    const stableHeaders=h=>Object.fromEntries(Object.entries(h).filter(([name])=>name!=='Server-Timing'));
+    assert.deepEqual(stableHeaders(r.headers),stableHeaders(native.headers));
+    const rows=logs.slice(start).map(s=>JSON.parse(s));
+    const timing=rows.find(r=>r.phase==='started').handoffTiming;
+    assert.equal(timing.tailMs,105000);assert.equal(timing.readyAt,ready);
+    assert.equal(timing.readyToHandlerMs,timing.handlerEnteredAt-ready);
+    assert.equal(rows.find(r=>r.phase==='prepared').previousKeyComparison,'bypass','fixed-time fixture remains uncached');
+    assert(!rows.find(r=>r.phase==='prepared').handoffTiming);
+    const shifted=readNativeHandoffTiming(url({handoff_v1:`${snapshot},${ready}`}),ready-5000);
+    assert.equal(shifted.readyToHandlerMs,-5000,'clock offsets must not be silently clamped');
+  });
+  await test('Invalid optional timing is ignored; only authorized native requests log timing',async()=>{
+    const snapshot=1794636939062, good=`${snapshot},${snapshot+40}`;
+    for(const value of ['', 'bad',`${snapshot},${snapshot-1}`,`${snapshot},${snapshot+86400001}`,
+      `${snapshot},Infinity`,`${snapshot},${snapshot}.5`,good+',extra']){
+      const u=url({handoff_v1:value});assert.equal(readNativeHandoffTiming(u,Date.now()),null);
+      const start=logs.length,r=await route(u);assert.equal(r.statusCode,200);assert(r.body.equals(native.body));
+      assert(logs.slice(start).every(s=>!Object.hasOwn(JSON.parse(s),'handoffTiming')));
+    }
+    const duplicate=url({handoff_v1:good});duplicate.searchParams.append('handoff_v1',good);
+    assert.equal(readNativeHandoffTiming(duplicate,Date.now()),null);
+    const start=logs.length;assert.equal((await route(duplicate)).statusCode,200);
+    const ordinary=url({handoff_v1:good});ordinary.searchParams.delete('native_file');ordinary.searchParams.delete('transfer_id');
+    await route(ordinary);await route(url({handoff_v1:good,location_key:'bad'}));
+    await route(url({handoff_v1:good,transfer_id:'bad'}));
+    assert(logs.slice(start).every(s=>!Object.hasOwn(JSON.parse(s),'handoffTiming')));
     assert(logs.every(s=>!s.includes(key)&&!s.includes(id)&&!s.includes('location_key=')));
   });
 }finally{console.info=info;if(previous===undefined)delete process.env.WIDGY_MAP_FILE_ACCESS_TOKEN;else process.env.WIDGY_MAP_FILE_ACCESS_TOKEN=previous}
