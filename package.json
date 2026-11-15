@@ -15,7 +15,6 @@
   },
   "scripts": {
     "build": "node tools/build-map-cache.mjs && node tools/build-public-site.mjs",
-    "build:diagnostics": "node tools/build-home-map-static-diagnostic.mjs && node tools/build-map-mask-compare.mjs && node tools/build-map-mask-live.mjs",
     "test:cleanup": "node tools/test-repository-cleanup.mjs"
   }
 }
