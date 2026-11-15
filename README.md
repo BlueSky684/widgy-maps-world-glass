@@ -1,20 +1,8 @@
-# Maps World Glass
+# Widgy World Glass — production compatibility
 
-Apple-like Widgy Maps widget project.
+This branch retains the production map API and assets used by older installed clients.
+Home Glass uses the separate active branch URL documented in its installation.
 
-## Current build
-- `Maps World Glass v1.json`
-- World satellite map background
-- Functional Refresh control
-- Functional Apple Maps tap area
-- Functional Find My control
-- Dynamic current city and street from Widgy Location data
-- Hybrid-style continent/ocean labels
-- Dark glass / Apple-like visual language
-
-## Map source
-The world satellite background currently references NASA Blue Marble imagery
-served through Wikimedia Commons.
-
-## Planned repository name
-`widgy-maps-world-glass`
+Obsolete prototype exports, builders and workflows were removed for release 1.00.
+Runtime code, route settings and map assets are unchanged. Git history remains available.
+Run `node tools/check-release-cleanup.mjs` to verify the cleanup.
