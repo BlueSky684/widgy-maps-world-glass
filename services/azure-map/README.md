@@ -1,4 +1,4 @@
-# Azure Home Glass trial — preparation only
+# Azure Home Glass trial — deployment paused
 
 The user selected Microsoft Azure on 2026-11-15. This adds an isolated Node 24
 HTTP adapter for Azure Container Apps. It does not replace the Vercel handler,
@@ -59,8 +59,19 @@ docker build --platform linux/amd64 -f services/azure-map/Dockerfile -t homeglas
 The Dockerfile-specific allowlist excludes git metadata, `.env`, local files,
 phone bundles and unrelated application assets. Approved map assets are
 validated/precomputed during the build. The server runs as the `node` user.
-Docker is unavailable in the preparation environment: the image build itself
-has not been executed. Hosted health/PNG checks remain required.
+The image was built and tested on a standard GitHub-hosted Linux runner on
+2026-11-15. Workflow `azure-trial-image-check.yml` uses read-only repository
+permissions and no cloud credentials. It starts the real image with 1 vCPU,
+2 GiB, a read-only filesystem, non-root user and external networking disabled.
+The smoke test verified health, access rejection, complete PNG decoding,
+2400x1131 dimensions, color profile and the native transfer marker. The image
+was 392,651,350 bytes and the test PNG 2,835,207 bytes. Run:
+https://github.com/BlueSky684/widgy-maps-world-glass/actions/runs/43750626856
+
+This CI run does not publish an image or deploy Azure resources. Hosted health
+and PNG checks with the real runtime configuration remain required. ACR Tasks
+currently pauses builds using free credits; a future deployment needs a
+separately reviewed image-transfer path rather than assuming `az acr build` works.
 
 ## Proposed Azure setup, not deployed
 
@@ -74,9 +85,15 @@ automatically best. Use a private image registry and retained sanitized app
 logs; review registry and log costs before creating them. Avoid an automatic
 quickstart that silently creates a registry or logging workspace.
 
-No Azure account/CLI connection has been established. Plugin discovery found
-no suitable Azure Container Apps management integration in the returned results.
-Account sign-in, subscription eligibility and resource quota checks are pending.
+Deployment is paused while the hosting choice is reassessed. No Container App,
+registry or logging workspace has been deployed, and no runtime credentials
+have been transferred. Account-specific findings are kept out of this public
+repository. Verify account eligibility, current quotas and costs before any
+future deployment. Cloud credentials must never enter CI or the container image.
+
+When connecting the existing quota ledger, its Vercel aliases `KV_REST_API_URL`
+and `KV_REST_API_TOKEN` map to the adapter's `UPSTASH_REDIS_REST_URL` and
+`UPSTASH_REDIS_REST_TOKEN`. Use the existing store, not a newly initialized one.
 
 ## Cost boundaries checked against Microsoft documentation, 2026-11-15
 

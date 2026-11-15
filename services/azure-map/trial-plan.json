@@ -1,5 +1,5 @@
 {
-  "status": "local-preparation-only",
+  "status": "paused-before-service-deployment",
   "baselineCommit": "cf2a4cef2744726cb598be0e2cdd63a05dbfed6f",
   "target": "Microsoft Azure Container Apps",
   "plan": "Consumption",
@@ -21,9 +21,9 @@
     "WIDGY_MAP_FILE_CITY_BACKEND": "vercel-bdc"
   },
   "pending": [
-    "Azure subscription and trial eligibility",
-    "Supported region and account quotas",
-    "Private container image build and registry cost",
+    "Confirm hosting choice before deployment",
+    "Verify account eligibility, region quotas and spending protection at deployment",
+    "Transfer CI-verified image to a private registry and review registry cost",
     "Historical sanitized application logs and retention cost",
     "Measured scale-to-zero cooldown and billable lifetime",
     "Cloud resource validation and hosted smoke test",
