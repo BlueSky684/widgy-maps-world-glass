@@ -1,0 +1,33 @@
+{
+  "status": "local-preparation-only",
+  "baselineCommit": "cf2a4cef2744726cb598be0e2cdd63a05dbfed6f",
+  "target": "Microsoft Azure Container Apps",
+  "plan": "Consumption",
+  "cpu": 1,
+  "memory": "2Gi",
+  "minReplicas": 0,
+  "maxReplicas": 1,
+  "activeRevisionsMode": "Single",
+  "targetPort": 8080,
+  "healthPath": "/health",
+  "httpsOnly": true,
+  "secretsRequired": [
+    "WIDGY_MAP_FILE_ACCESS_TOKEN",
+    "BIGDATACLOUD_API_KEY",
+    "UPSTASH_REDIS_REST_URL",
+    "UPSTASH_REDIS_REST_TOKEN"
+  ],
+  "environment": {
+    "WIDGY_MAP_FILE_CITY_BACKEND": "vercel-bdc"
+  },
+  "pending": [
+    "Azure subscription and trial eligibility",
+    "Supported region and account quotas",
+    "Private container image build and registry cost",
+    "Historical sanitized application logs and retention cost",
+    "Measured scale-to-zero cooldown and billable lifetime",
+    "Cloud resource validation and hosted smoke test",
+    "Exact Azure origin pinning in a separate phone trial build",
+    "Matched open and locked-Sleep phone trials"
+  ]
+}
