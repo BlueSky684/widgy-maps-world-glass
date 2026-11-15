@@ -1,0 +1,42 @@
+name: Verify Azure trial container
+
+on:
+  push:
+    branches: [codex/azure-homeglass-trial]
+    paths:
+      - .github/workflows/azure-trial-image-check.yml
+      - services/azure-map/**
+      - tools/test-azure-container.mjs
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  image-check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Build Linux amd64 image
+        run: docker build --platform linux/amd64 -f services/azure-map/Dockerfile -t homeglass-azure-check .
+      - name: Start isolated container with synthetic credentials
+        run: |
+          docker run --detach --name homeglass-azure-check --network none \
+            --read-only --cap-drop ALL --security-opt no-new-privileges \
+            --cpus 1 --memory 2g \
+            --env WIDGY_MAP_FILE_ACCESS_TOKEN=synthetic-container-smoke-test-key-000000000 \
+            --env WIDGY_MAP_FILE_CITY_BACKEND=vercel-bdc \
+            --env BIGDATACLOUD_API_KEY=synthetic-provider-key \
+            --env UPSTASH_REDIS_REST_URL=https://synthetic.upstash.io \
+            --env UPSTASH_REDIS_REST_TOKEN=synthetic-quota-key \
+            homeglass-azure-check
+      - name: Verify real container HTTP and PNG with no external network
+        run: docker exec -i homeglass-azure-check node --input-type=module < tools/test-azure-container.mjs
+      - name: Record image size and non-root user
+        run: docker image inspect homeglass-azure-check --format 'Image={{.Id}} Size={{.Size}} User={{.Config.User}}'
+      - name: Remove disposable CI container
+        if: always()
+        run: docker rm -f homeglass-azure-check 2>/dev/null || true
