@@ -1,28 +1,16 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import vm from 'node:vm';
-import {createHash} from 'node:crypto';
-import {BridgeError,privateHeaders} from '../lib/calendar-bridge/security.js';
-import {monthWindow,icalEvents,renderDots} from '../lib/calendar-bridge/dots.js';
-import {monthProviderWindow,monthViewEntry} from '../lib/calendar-bridge/month-provider-window.js';
-import {createProviderCache} from '../lib/calendar-bridge/provider-cache.js';
-import {widgetSnapshot} from '../lib/calendar-bridge/widget-data.js';
-import {widgyFields} from '../lib/calendar-bridge/widgy-fields.js';
-import {preparedDaysFor} from '../lib/calendar-bridge/prepared-days.js';
-import {homeAgenda,homeAgendaFields} from '../lib/calendar-bridge/home-agenda.js';
-const code=readFileSync(new URL('../api/calendar-widget.js',import.meta.url),'utf8')
- .replace(/^import .*;\n/gm,'').replace('export default async function handler','async function handler').replace('export function clientMaxAge','function clientMaxAge');
+import {BridgeError} from '../lib/calendar-bridge/security.js';
+import {icalEvents,renderDots} from '../lib/calendar-bridge/dots.js';
+import {calendarHandler,referenceMonthPng} from './fixtures/calendar-handler.mjs';
 const ics=['BEGIN:VCALENDAR','VERSION:2.0','BEGIN:VEVENT','UID:monthly','SUMMARY:Monthly fixture','DTSTART:20241005T100000Z','DTEND:20241005T110000Z','RRULE:FREQ=MONTHLY;COUNT=60','END:VEVENT','END:VCALENDAR'].join('\r\n');
 let time=Date.parse('2026-11-05T08:00:00Z'),calls=0,cacheReads=0,renders=0;
 const tasks=[],remote=new Map(),reads=[];
 const cacheOptions={now:()=>time,background:p=>tasks.push(p),remote:()=>({get:async k=>{cacheReads++;return remote.get(k);},set:async(k,v)=>remote.set(k,v)})};
-class Clock extends Date {constructor(...args){super(...(args.length?args:[time]));}static now(){return time;}}
 function instance(){
- const cachedEvents=createProviderCache(cacheOptions);
- return vm.runInNewContext(code+'\nhandler',{Date:Clock,URL,performance,createHash,BridgeError,console:{info(){}},
-  origin:()=> 'https://example.invalid',privateHeaders,monthWindow,monthProviderWindow,monthViewEntry,cachedEvents,preparedDaysFor,widgetSnapshot,widgyFields,homeAgenda,homeAgendaFields,
+ return calendarHandler({...cacheOptions,
   unseal:async token=>{if(token==='bad')throw new BridgeError('unauthorized',401);return {zone:'Asia/Jerusalem',sources:[{provider:'icloud',id:'fixture',color:1}],token};},
-  readEvents:async(state,window)=>{calls++;reads.push([state.token,window.start.toISO(),window.end.toISO()]);
+  readEvents:async(state,window)=>{calls++;reads.push(window);
    if(state.token==='provider-error')throw new BridgeError('icloud_connection_failed',502);
    if(state.token==='dense' && window.end.diff(window.start,'days').days>49)throw new BridgeError('event_limit',502);
    return icalEvents([{data:ics}],state.sources[0],window);},
@@ -40,25 +28,34 @@ const pooled=await Promise.all([-1,0,1].map(offset=>request(one,{offset})));
 assert.equal(calls,1);assert.equal(renders,3);
 for(let i=0;i<3;i++) {
  const offset=i-1,a=pooled[i],b=await request(one,{offset,reuse:false});
- assert.equal(a.code,200);assert.equal(b.code,200);assert(a.body.equals(b.body),'Exact legacy PNG bytes');
+ assert.equal(a.code,200);assert.equal(b.code,200);
+ assert(a.body.equals(await referenceMonthPng(ics,offset,time,1)));
+ assert(a.body.equals(b.body),'Exact PNG bytes with either link format');
  assert.equal(a.headers['X-Calendar-Generated-For'],b.headers['X-Calendar-Generated-For']);
  assert.equal(a.headers['CDN-Cache-Control'],'no-store');assert.match(a.headers['Cache-Control'],/^private, max-age=30, must-revalidate$/);
 }
-assert.equal(calls,4,'One pooled plus three legacy reads');
+assert.equal(calls,1,'Month links and default dots share the same annual source read');
 const count=renders;for(const offset of [1,0,-1])await request(one,{offset});assert.equal(renders,count,'Reuse each month PNG, never a sibling PNG');
-const a=await request(one,{view:'today'}),b=await request(one,{view:'today',reuse:false});assert.deepEqual(JSON.parse(JSON.stringify(a.body)),JSON.parse(JSON.stringify(b.body)));assert.equal(calls,4);
+const a=await request(one,{view:'today'}),b=await request(one,{view:'today',reuse:false});
+assert.equal(a.code,200);assert.equal(b.code,200);
+assert.deepEqual(JSON.parse(JSON.stringify(a.body)),JSON.parse(JSON.stringify(b.body)));
+assert.equal(calls,3,'TODAY reads its adjacent-month or single-month range');
+assert(reads[1].start<reads[2].start && reads[1].end>reads[2].end,'Adjacent-month TODAY reads cover a wider range');
 const fields=JSON.parse(readFileSync(new URL('./widget-tab-selectors.json',import.meta.url)));for(const name of fields)assert(name in a.body,name);
 const head=await request(one,{offset:1,method:'HEAD'});assert.equal(head.code,200);assert(head.ended);assert.equal(head.body,undefined);
 await Promise.all(tasks);const separate=instance(),before=calls;
-const shared=await request(separate,{offset:1});assert.equal(shared.headers['X-Calendar-Provider-Cache'],'SHARED');assert.equal(calls,before);assert(shared.body.equals(pooled[2].body));
+const shared=await request(separate,{offset:1});assert.equal(shared.headers['X-Calendar-Provider-Cache'],'SOURCE-CACHE');assert.equal(calls,before);assert(shared.body.equals(pooled[2].body));
 const start=calls;
 for(let offset=-12;offset<=12;offset++)assert.equal((await request(one,{token:'all-months',offset})).code,200);
-assert.equal(calls-start,9,'25 displayed months -> 9 provider reads in one freshness window');
-await request(one,{token:'different-account'});assert.equal(calls-start,10);
-const expiring=calls;time+=60000;await request(one);assert.equal(calls,expiring+1,'Hits cannot renew provider TTL');
+assert.equal(calls-start,3,'25 displayed months -> 3 annual provider reads in one freshness window');
+await request(one,{token:'different-account'});assert.equal(calls-start,4);
+const expiring=calls;time+=60000;
+assert.equal((await request(one)).headers['X-Calendar-Data-State'],'refreshing');
+await Promise.all(tasks);assert.equal(calls,expiring+1,'Hits cannot renew provider TTL');
+assert.equal((await request(one)).headers['X-Calendar-Data-State'],'current');
 const denseBefore=calls;assert.equal((await request(one,{token:'dense'})).code,200);assert.equal(calls,denseBefore+2,'Capacity-only fallback uses original monthly range');
 const failed=calls;assert.equal((await request(one,{token:'provider-error'})).code,502);assert.equal(calls,failed+1,'Do not retry general provider errors');
 const validation=calls;assert.equal((await request(one,{offset:13})).code,400);assert.equal((await request(one,{method:'POST'})).code,405);assert.equal(calls,validation);
 time=Date.parse('2027-01-01T00:30:00Z');const rollover=await request(one,{offset:0});assert.equal(rollover.headers['X-Calendar-Generated-For'],'2027-01');
 await Promise.all(tasks);
-console.log('PASS: concurrent adjacent months 3 -> 1 provider read, 25 months -> 9 reads, exact legacy PNG/JSON, separate PNG caches, shared-instance reuse, account/month isolation, expiry, capacity fallback, auth, HEAD and rollover.');
+console.log('PASS: concurrent adjacent months 3 -> 1 provider read, 25 months -> 3 annual reads, exact legacy PNG/JSON, separate PNG caches, shared-instance reuse, account/month isolation, expiry, capacity fallback, auth, HEAD and rollover.');

@@ -29,7 +29,15 @@ for(const zone of ['UTC','Asia/Jerusalem','America/New_York','Australia/Lord_How
   const now=new Date(instant),w=monthWindow({now,zone}),events=fixture(w,100);
   const expected=oldIndex(events,w),actual=eventsByDay(events,w);assert.deepEqual(actual,expected);indexCases++;
   for(const at of [now.getTime()-1,now.getTime(),now.getTime()+1,...events.slice(0,12).flatMap(e=>[DateTime.fromISO(e.start,{zone}).toMillis(),DateTime.fromISO(e.end,{zone}).toMillis()]).flatMap(t=>[t-1,t,t+1])]){
-   assert.deepEqual(widgetSnapshot(events,w,new Date(at),actual),oldSnapshot(events,w,new Date(at),expected));snapshotCases++;
+   const reference=oldSnapshot(events,w,new Date(at),expected);
+   // The reference predates the UTC instants used to distinguish completed events.
+   const day=expected.find(d=>d.date===reference.date);
+   for(const [i,row] of reference.rows.entries()){
+    const event=day.events[i];
+    row.startAt=DateTime.fromISO(event.start,{zone}).toUTC().toISO();
+    row.endAt=DateTime.fromISO(event.end,{zone}).toUTC().toISO();
+   }
+   assert.deepEqual(widgetSnapshot(events,w,new Date(at),actual),reference);snapshotCases++;
   }
  }
 }

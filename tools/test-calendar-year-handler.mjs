@@ -1,33 +1,20 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import vm from 'node:vm';
-import {createHash} from 'node:crypto';
-import {BridgeError,privateHeaders} from '../lib/calendar-bridge/security.js';
-import {monthWindow,icalEvents,renderDots} from '../lib/calendar-bridge/dots.js';
-import {monthProviderWindow,monthViewEntry} from '../lib/calendar-bridge/month-provider-window.js';
-import {yearProviderWindow,yearPreparedDaysFor,createYearRangeReader} from '../lib/calendar-bridge/year-provider-window.js';
-import {createProviderCache} from '../lib/calendar-bridge/provider-cache.js';
-import {widgetSnapshot} from '../lib/calendar-bridge/widget-data.js';
-import {widgyFields} from '../lib/calendar-bridge/widgy-fields.js';
-import {preparedDaysFor} from '../lib/calendar-bridge/prepared-days.js';
-import {homeAgenda,homeAgendaFields} from '../lib/calendar-bridge/home-agenda.js';
-const code=readFileSync(new URL('../api/calendar-widget.js',import.meta.url),'utf8')
- .replace(/^import .*;\n/gm,'').replace('export default async function handler','async function handler').replace('export function clientMaxAge','function clientMaxAge');
+import {BridgeError} from '../lib/calendar-bridge/security.js';
+import {icalEvents,renderDots} from '../lib/calendar-bridge/dots.js';
+import {calendarHandler,referenceMonthPng} from './fixtures/calendar-handler.mjs';
 const ics=['BEGIN:VCALENDAR','VERSION:2.0','BEGIN:VEVENT','UID:monthly','SUMMARY:Monthly fixture','DTSTART:20241005T100000Z','DTEND:20241005T110000Z','RRULE:FREQ=MONTHLY;COUNT=60','END:VEVENT','END:VCALENDAR'].join('\r\n');
 let time=Date.parse('2026-11-05T08:00:00Z'),calls=0,cacheReads=0,renders=0,revision=0;
+const revisedIcs=ics.replaceAll('20241005','20241006');
 const tasks=[],remote=new Map();
 const cacheOptions={now:()=>time,background:p=>tasks.push(p),remote:()=>({get:async k=>{cacheReads++;return remote.get(k);},set:async(k,v)=>remote.set(k,v)})};
-class Clock extends Date {constructor(...args){super(...(args.length?args:[time]));}static now(){return time;}}
 function instance(){
- const cachedEvents=createProviderCache(cacheOptions),readYearRange=createYearRangeReader({now:()=>time});
- return vm.runInNewContext(code+'\nhandler',{Date:Clock,URL,performance,createHash,BridgeError,console:{info(){}},
-  origin:()=> 'https://example.invalid',privateHeaders,monthWindow,monthProviderWindow,monthViewEntry,
-  yearProviderWindow,yearPreparedDaysFor,readYearRange,cachedEvents,preparedDaysFor,widgetSnapshot,widgyFields,homeAgenda,homeAgendaFields,
-  unseal:async token=>{if(token==='bad')throw new BridgeError('unauthorized',401);return {zone:'Asia/Jerusalem',sources:[{provider:'icloud',id:'fixture',color:revision%4}],token};},
+ return calendarHandler({...cacheOptions,
+  unseal:async token=>{if(token==='bad')throw new BridgeError('unauthorized',401);return {zone:'Asia/Jerusalem',sources:[{provider:'icloud',id:'fixture',color:0}],token};},
   readEvents:async(state,window)=>{calls++;
    if(state.token==='provider-error')throw new BridgeError('icloud_connection_failed',502);
    if(state.token==='dense' && window.end.diff(window.start,'days').days>49)throw new BridgeError('event_limit',502);
-   return icalEvents([{data:ics}],state.sources[0],window);},
+   return icalEvents([{data:revision?revisedIcs:ics}],state.sources[0],window);},
   renderDots:async(...args)=>{renders++;return renderDots(...args);}});
 }
 const one=instance();
@@ -41,19 +28,22 @@ const yearly=await Promise.all(offsets.map(offset=>request(one,{offset})));
 assert.equal(calls,1,'All 12 months share one pending annual provider read');assert.equal(renders,12);
 for(let i=0;i<12;i++) {
  const expected=await request(one,{offset:offsets[i],reuse:''});
- assert.equal(yearly[i].code,200);assert(yearly[i].body.equals(expected.body));
+ assert.equal(yearly[i].code,200);assert.equal(expected.code,200);
+ assert(yearly[i].body.equals(await referenceMonthPng(ics,offsets[i],time,0)));
+ assert(yearly[i].body.equals(expected.body));
  assert.equal(yearly[i].headers['X-Calendar-Generated-For'],`2026-${String(i+1).padStart(2,'0')}`);
  assert.equal(yearly[i].headers['CDN-Cache-Control'],'no-store');
 }
-assert.equal(calls,13);const rendered=renders;
+assert.equal(calls,1);const rendered=renders;
 for(const offset of offsets.toReversed())await request(one,{offset});
 assert.equal(renders,rendered,'All 12 PNGs are reusable, not evicted after 3');
 const today=await request(one,{view:'today'}),legacy=await request(one,{view:'today',reuse:''});
+assert.equal(today.code,200);assert.equal(legacy.code,200);
 assert.deepEqual(JSON.parse(JSON.stringify(today.body)),JSON.parse(JSON.stringify(legacy.body)));
 const fields=JSON.parse(readFileSync(new URL('./widget-tab-selectors.json',import.meta.url)));for(const name of fields)assert(name in today.body,name);
 const head=await request(one,{offset:1,method:'HEAD'});assert.equal(head.code,200);assert(head.ended);assert.equal(head.body,undefined);
 await Promise.all(tasks);const two=instance(),prior=calls;
-assert.equal((await request(two,{offset:-8})).headers['X-Calendar-Provider-Cache'],'SHARED');assert.equal(calls,prior);
+assert.equal((await request(two,{offset:-8})).headers['X-Calendar-Provider-Cache'],'SOURCE-CACHE');assert.equal(calls,prior);
 const allStart=calls;
 for(let offset=-12;offset<=12;offset++)assert.equal((await request(one,{token:'range',offset})).code,200);
 assert.equal(calls-allStart,3,'Existing 25 visible offsets span 3 calendar years');
@@ -63,9 +53,15 @@ await request(one,{token:'other-account'});assert.equal(calls-allStart,4);
 // replaces all months together rather than retaining sibling PNGs/day indexes.
 time+=59000;await request(one,{offset:1});const beforeExpiry=calls;
 time+=1000;revision++;
+const retained=await request(one);assert.equal(retained.headers['X-Calendar-Data-State'],'refreshing');
+assert(retained.body.equals(yearly[offsets.indexOf(0)].body));await Promise.all(tasks);
 const refreshed=await Promise.all(offsets.map(offset=>request(one,{offset})));
 assert.equal(calls,beforeExpiry+1);
-for(let i=0;i<12;i++)assert(!refreshed[i].body.equals(yearly[i].body),'Every month sees the new annual event revision');
+for(let i=0;i<12;i++){
+ assert.equal(refreshed[i].headers['X-Calendar-Data-State'],'current');
+ assert(!refreshed[i].body.equals(yearly[i].body),'Every month sees the new annual event revision');
+ assert(refreshed[i].body.equals(await referenceMonthPng(revisedIcs,offsets[i],time,0)));
+}
 
 const denseStart=calls;
 assert.equal((await request(one,{token:'dense',offset:0})).code,200);assert.equal(calls,denseStart+2);
