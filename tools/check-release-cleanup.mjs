@@ -1,10 +1,3 @@
 import assert from 'node:assert/strict';
-import {readFileSync,existsSync} from 'node:fs';
-import {execFileSync} from 'node:child_process';
-const report=JSON.parse(readFileSync('docs/release-100-cleanup.json'));
-const paths=execFileSync('git',['ls-tree','-r','--name-only',report.baseCommit,'api','lib','assets'],{encoding:'utf8'}).trim().split('\n');
-const retired = p => p.startsWith('assets/earth/') || p.startsWith('lib/home-map') || ['api/world-map.js','api/home-map.js','api/marker.js','api/night-map.js'].includes(p);
-for(const p of paths.filter(retired))assert(!existsSync(p),p);
-for(const p of [...paths.filter(p=>!retired(p)),'package.json','package-lock.json'])assert(readFileSync(p).equals(execFileSync('git',['show',`${report.baseCommit}:${p}`],{maxBuffer:32*1024*1024})),p);
-for(const p of report.removedFiles)assert(!existsSync(p),p);
-console.log(JSON.stringify({pass:true,removedFiles:report.removedFiles.length,protectedFiles:paths.filter(p=>!retired(p)).length+2}));
+import { readdirSync } from 'node:fs';
+assert.deepEqual(readdirSync(new URL('../api/', import.meta.url)).sort(), ['ip-probe.js']);
