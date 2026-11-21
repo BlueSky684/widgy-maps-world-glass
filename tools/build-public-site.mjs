@@ -1,5 +1,5 @@
 // Only the supported browser entry points and their dependencies are public.
-// API code and map assets remain at the project root for Vercel's function bundler.
+// API code and private dependencies remain at the project root for Vercel's function bundler.
 import {readFileSync,writeFileSync,existsSync,mkdirSync,copyFileSync,unlinkSync,readdirSync,lstatSync} from 'node:fs';
 import {resolve,dirname,relative} from 'node:path';
 import {fileURLToPath} from 'node:url';

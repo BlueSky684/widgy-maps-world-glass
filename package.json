@@ -1,5 +1,5 @@
 {
-  "name": "widgy-world-marker",
+  "name": "widgy-home-glass",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -10,7 +10,6 @@
     "luxon": "3.7.2",
     "pngjs": "^7.0.0",
     "sharp": "0.34.5",
-    "sharp-webp-exact": "npm:sharp@0.35.5",
     "tsdav": "2.3.5"
   },
   "scripts": {

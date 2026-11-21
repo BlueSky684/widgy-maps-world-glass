@@ -61,44 +61,9 @@ Remaining hidden layers have purposes: inactive tabs/months, alternative
 The two tiny `CALENDAR Nav Binding` shapes are the calendar icon's binding
 tabs, not unused data bindings. Deleting them would damage the icon.
 
-## What explains the delay, and what remains unmeasured
+## Calendar rendering
 
-The map URL is produced by a **global asynchronous variable** that awaits a
-client-side reverse-geocoding request before sending the URL to Widgy. Then
-the map image may need generation/download/decode. Its best-effort JS-context
-cache does not prove persistence between Widgy reloads. The map server's
-private minute cache does not cache or bypass the preceding geocoder.
-
-The developer states that variables load before layers. This makes a global
-async map variable a strong candidate for delaying Calendar even when Home
-is hidden; exact behavior on this beta still needs the controlled device test.
-The developer separately says hidden layers are skipped by fetching/rendering.
-Thus 75 stored Calendar grids do **not** prove 75 active fetch/render passes.
-Only one native grid is selected for the active month and row layout.
-
-A public request sequence with explicit empty coordinates measured 5.328 s
-for MISS, 0.586 s for HIT and 0.390 s for conditional 304; PNG size 3,903,246
-bytes. This is one sequence from the execution host, **not the iPhone** and
-not a statistical benchmark. No user location or client-only geocoder was
-used. Full details: `Calendar_C8_HTTP_Probe.json`.
-
-Native Agenda work (many calendar/reminder items), JS startup, iOS reload
-scheduling, cold instances, exact-GPS cache misses and network latency remain
-plausible contributors. C7's locally measured map encoding improvement did
-not establish or predict an equivalent end-to-end phone improvement.
-
-## Prepared controlled comparison
-
-`widgy-calendar-c8-diagnostic.html` copies a separate **C8 Map-Off Test**.
-It changes only the Home map layer and its five coordinate/URL variables.
-Calendar, Agenda, weather, steps, chrome, navigation and other variables
-are identical. Home's map area is intentionally empty in this test copy.
-
-After the first load, compare three consecutive Calendar month taps with C8
-in the same slot/network. A large improvement implicates the removed map
-pipeline; no improvement directs the next isolation toward native Agenda /
-Widgy reload work. This does not require deleting or editing the working C8.
-The same original clipboard handler is retained.
+One native calendar grid is selected for the active month and row layout. Stored grids include alternate layouts. Native Agenda, JavaScript startup and iOS scheduling still require profiling on the phone.
 
 ## Event dots: not silently marked complete
 

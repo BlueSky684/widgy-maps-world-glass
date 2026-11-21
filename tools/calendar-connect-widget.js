@@ -1,4 +1,3 @@
-import {buildCityMapScript} from './widgy-city-map-script.mjs?v=perf-5';
 // Runs only in the owner's browser. The private export is never uploaded to the repository.
 import {connectToday} from './calendar-connect-today.js?v=perf-5';
 export function personalizedWidget(original, endpoint, widgetEndpoint) {
@@ -10,22 +9,13 @@ export function personalizedWidget(original, endpoint, widgetEndpoint) {
     if(target.origin!==url.origin || target.pathname!=='/api/calendar-widget' || !target.searchParams.get('token'))throw Error('invalid_endpoint');
   }
   const widget=structuredClone(original);
-  if(widgetEndpoint){
-    const map=widget['36'].find(v=>v['1']==='map_request');
-    if(!map)throw Error('unexpected_template');
-    const mapEndpoint=new URL('about:blank',url.origin);
-    // A city name does not change every minute at identical coordinates.
-    // The solar image keeps its 60-second refresh; any GPS change rechecks city.
-    map['3']['66']=[{'5':'Javascript','6':'Async + No main()',
-      '10':buildCityMapScript(mapEndpoint.href,{enabled:true,reuseSeconds:60,cityReuseSeconds:3600})}];
-  }
   const scalar=a=>({a:[{a,b:168,c:0,d:168}],b:0});
   let next=widget.a2, panes=0, native=0;
   function imageVariable(imageURL,offset){
     const name=`calendar_dots_url_${offset<0?'m':'p'}${Math.abs(offset)}`;
     const id=`CA1E0000-0000-4000-D003-${String(offset+13).padStart(12,'0')}`;
     if(widget['36'].some(v=>v['0']===id || v['1']===name))throw Error('unexpected_template');
-    // Match the map's dynamic full-URL binding. The minute bucket prevents a
+    // The minute bucket prevents a
     // previous PNG being reused indefinitely without requesting on every read.
     imageURL.searchParams.set('render','refresh-1');
     const code=`function main(){return ${JSON.stringify(imageURL.href)} + "&refresh=" + Math.floor(Date.now()/60000);}`;
@@ -63,5 +53,6 @@ export function personalizedWidget(original, endpoint, widgetEndpoint) {
     widget['3']='Widgy Calendar Unified';
     widget['4']='Private C16-based calendar. Month dots, TODAY and Home read the same selected calendars. TODAY keeps all daily events, with up to four rows and dots. Home shows the full daily total and the active or next timed event today, falling back to an all-day event. Reminders use the separate iPhone count. The private link grants event titles, times and locations; keep this export private. Renew within one year or after provider access changes. Verify refresh on the device.';
   }
+  widget['4'] += ' Select map-current.png in the World map image layer after import.';
   return widget;
 }

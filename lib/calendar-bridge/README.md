@@ -1,6 +1,6 @@
 # Private calendar bridge
 
-Status: on 2026-10-03 the owner verified unified TODAY, month dots and Home data, including English-first ordering, 24-hour times and long Hebrew title alignment. The owner reported intermittent `Calendar unavailable` after tab changes with `perf-2`, plus only a small speed improvement. `perf-3` removes the intermediate snapshot/field-script dependency and optimizes map rendering without changing pixels; device verification is pending.
+Status: on 2026-10-03 the owner verified unified TODAY, month dots and Home data, including English-first ordering, 24-hour times and long Hebrew title alignment. The owner reported intermittent `Calendar unavailable` after tab changes with `perf-2`, plus only a small speed improvement. `perf-3` removes the intermediate snapshot/field-script dependency; device verification is pending.
 
 Entry page: `/tools/calendar-connect.html`. All setup and account authorization happens in a browser. This adds a private test export based on C16; it does not replace C16 or publish the canceled dynamic-color C17.
 
@@ -74,15 +74,14 @@ The owner chose Google holidays=gold, Apple Hebrew holidays=blue, personal Googl
 
 The owner reported that `perf-1` remained slow despite reducing 2,043 layers/932 conditions to 1,671/560. Vercel logs confirmed native widget requests carrying `render=perf-1` still arrived in repeated sequences. For example, calendar requests at 22:19:34.943, 35.872, 36.284, 36.757 and 37.363 Jerusalem time spanned 2.420 seconds. The final two sampled server responses took 226 ms and 148 ms, with 12 ms and 27 ms function execution. Private HTTP caching did not remove these repeated requests. The navigation actions were existing `button_` layer-visibility actions, without an explicit extra reload action.
 
-`perf-2` replaces the shared async fetch plus four independent Home fetches with one native JSON source. At that stage map/city lookups, navigation, weather, fitness, date rendering and approved Calendar row geometry remained unchanged. Native JSON source fields (`JSON Endpoint`, `Endpoint`, `18` URL, `19` method, `23` key path) are grounded in an existing exported widget: https://gist.github.com/szymonkorytnicki/db8699b80f75faf8cc9d32aa963b1811 . The native-source evaluation order, minute refresh, and actual tap latency still require testing in Widgy on the iPhone; local tests do not emulate its rendering engine.
+`perf-2` replaces the shared async fetch plus four independent Home fetches with one native JSON source. At that stage city lookups, navigation, weather, fitness, date rendering and approved Calendar row geometry remained unchanged. Native JSON source fields (`JSON Endpoint`, `Endpoint`, `18` URL, `19` method, `23` key path) are grounded in an existing exported widget: https://gist.github.com/szymonkorytnicki/db8699b80f75faf8cc9d32aa963b1811 . The native-source evaluation order, minute refresh, and actual tap latency still require testing in Widgy on the iPhone; local tests do not emulate its rendering engine.
 
 ### perf-3 evidence and changes
 
-At 22:36:42.926 Jerusalem time, the phone requested `view=today&format=widgy&render=perf-2` and received HTTP 200 in 155 ms (11 ms function execution). The next map request at 22:36:43.655 took 2.3 s (1.53 s execution). Thus calendar errors on tab changes were not accompanied by a failed HTTP request, and the calendar-only optimization did not address the expensive map renderer.
+At 22:36:42.926 Jerusalem time, the phone requested `view=today&format=widgy&render=perf-2` and received HTTP 200 in 155 ms (11 ms function execution). The calendar request completed successfully.
 
-Direct flat JSON fields remove the URL-variable → JSON-snapshot → field-script chain that could turn a missing/not-yet-resolved value into `Calendar unavailable`. All 39 sources use an identical literal URL and existing private HTTP caching; request coalescing and tap latency are not claimed verified until measured on the phone. Native rendering cadence replaces the removed local freshness checks. Existing map/city client scripts and all month-dot refresh variables remain unchanged.
+Direct flat JSON fields remove the URL-variable → JSON-snapshot → field-script chain that could turn a missing/not-yet-resolved value into `Calendar unavailable`. All 39 sources use an identical literal URL and existing private HTTP caching; request coalescing and tap latency are not claimed verified until measured on the phone. Native rendering cadence replaces the removed local freshness checks.
 
-The map renderer now reuses the exact fully-night pixels and directly copies fully-day pixels, doing trigonometry/blending only in twilight. PNG encoding uses lossless level 6 instead of 9. Full 3306px output, color profile, marker, fonts, clipping and every decoded pixel remain identical to commit `65576a0`. Local warm full-render time was 860 → 491 ms; PNG size was 4,270,206 → 4,339,593 bytes (1.6% larger). Cold texture/engraving setup and phone/network latency are not represented by that warm benchmark. `tools/test-map-perf3.mjs` compares eight complete solar-pose/atlas renders and three complete PNG outputs against the approved baseline.
 
 References:
 
@@ -94,7 +93,7 @@ References:
 
 ## Perf-4 investigation and changes
 
-Observed native phone requests on 2026-10-03: warm TODAY returned in 145–222 ms (10–11 ms execution); cold TODAY took 1.1 s (986 ms execution). A full-resolution map took 1.8 s (1.09 s execution). These are Vercel timings, not end-to-end tap latency.
+Observed native phone requests on 2026-10-03: warm TODAY returned in 145–222 ms (10–11 ms execution); cold TODAY took 1.1 s (986 ms execution). These are Vercel timings, not end-to-end tap latency.
 
 The unified export has 1,671 layers, including 1,231 Calendar layers. Its 25 month panes each contain 4/5/6-week alternatives. The 95 today-badge positions and symmetric font-weight overlays are intentional C16 layout states. There were no unreferenced variables. Do not delete these as accidental duplicates without a native Widgy rendering equivalent.
 
@@ -102,7 +101,4 @@ The unified export has 1,671 layers, including 1,231 Calendar layers. Its 25 mon
 - Read already-selected iCloud collection URLs directly using the same guarded read-only DAV transport and expanded REPORT parser. Discovery remains in account setup; it no longer precedes every uncached month read.
 - Month-dot responses allow private device caching for up to 30 seconds, never beyond the original provider cache deadline. Shared CDN caching remains disabled. Minute URL changes remain intact.
 - Run this preview branch's functions in Frankfurt, where the observed phone requests arrive, instead of forwarding to Washington. Actual provider and on-device latency still require measurement.
-- Build `assets/earth/render-cache-r6.bin.gz` from the approved source textures and engraving algorithm at deployment. The artifact contains only public map pixels. Runtime decompresses those lossless bytes instead of decoding PNG filters and regenerating coast geometry on a new instance. Source contract/style fingerprint and size are validated; missing/incompatible artifacts fall back to the original preparation. Full resolution, solar calculations, coordinates, ICC profile and all output pixels are unchanged.
-- Fuse marker/label and clipping composition into one native image operation. Live map expiry remains one minute.
 
-Build with `node tools/build-map-cache.mjs`. Compare perf-3 by preparing `lib/perf4-map-baseline.js` from commit `614077bad3ae90f386dd99dcdf3ffd1e4e879faf`, then run `node tools/test-map-perf4.mjs`. Do not commit temporary baseline files or personalized exports.

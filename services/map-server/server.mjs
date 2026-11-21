@@ -1,5 +1,5 @@
 import http from 'node:http';
-import {randomUUID, timingSafeEqual} from 'node:crypto';
+import {randomUUID} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
 import {createSharedLocation, authorizeLocation, locationErrorStatus} from '../../lib/location/shared.js';
 import {createFirestore, databaseName} from './firestore.mjs';
@@ -14,9 +14,7 @@ export function validateConfiguration(env) {
   databaseName(env);
 }
 
-
-export function createCityServer({env = () => process.env, lookup, logger = console.info,
-  cityDeadlineMs = 1500, drainDeadlineMs = 6500} = {}) {
+export function createCityServer({env = () => process.env, lookup, logger = console.info} = {}) {
   const store = createFirestore({env}), cache = createLocationCache({store});
   const lookupCity = lookup || createSharedLocation({env, cache: () => cache, reserve: createFirestoreBudget({store})});
   const report = fields => {
@@ -38,7 +36,7 @@ export function createCityServer({env = () => process.env, lookup, logger = cons
     res.once('close', () => terminalReport(res.writableFinished ? 'finished' : 'closed_early'));
     res.setHeader('Cache-Control', 'private, no-store');
     res.setHeader('X-Content-Type-Options', 'nosniff');
-    res.setHeader('X-City-Service', 'cloud-run-trial-v1');
+    res.setHeader('X-City-Service', 'city-service');
     res.setHeader('X-City-Request-ID', id);
     const reply = (status, value) => {
       res.statusCode = status;
@@ -49,7 +47,7 @@ export function createCityServer({env = () => process.env, lookup, logger = cons
       res.end(body);
     };
     let url;
-    try { url = new URL(req.url, 'http://map.invalid'); } catch { return reply(400, {error: 'Invalid request'}); }
+    try { url = new URL(req.url, 'http://city.invalid'); } catch { return reply(400, {error: 'Invalid request'}); }
     const cityRoute = url.pathname === '/api/fetch-probe' && url.searchParams.get('location_shared') === '1';
     if (cityRoute) {
       res.setHeader('Access-Control-Allow-Origin', '*');
@@ -62,7 +60,7 @@ export function createCityServer({env = () => process.env, lookup, logger = cons
       return reply(405, {error: 'Method not allowed'});
     }
     // Cloud Run reserves some paths ending in "z" before requests reach us.
-    if (url.pathname === '/health') return reply(200, {status: 'ready', service: 'cloud-run-trial-v1'});
+    if (url.pathname === '/health') return reply(200, {status: 'ready', service: 'city-service'});
     if (cityRoute) {
       try {
         const point = authorizeLocation(url, env()), result = await lookupCity(point);

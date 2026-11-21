@@ -1,27 +1,6 @@
 {
   "dateUTC": "2026-10-15",
-  "deployedSourceCommit": "49d0ae66865881905ae8647aa4a940fa5609ef6f",
-  "service": "widgy-map-test",
   "region": "me-west1",
-  "health": {"httpStatus": 200, "status": "ready"},
-  "syntheticMap": {
-    "at": "2026-10-14T12:00:00Z",
-    "latitude": 10,
-    "longitude": 20,
-    "city": "Synthetic City A",
-    "liveCityProviderUsed": false,
-    "googleHttpStatus": 200,
-    "vercelHttpStatus": 200,
-    "width": 3306,
-    "height": 1558,
-    "bytes": 4062122,
-    "iccBytes": 480,
-    "completeDecode": true,
-    "googleAndVercelByteIdentical": true,
-    "sha256": "bbdc7440ffca9f291ac927002cd756a318eb9efa9626e4890228114dc8dee3b5",
-    "googleRenderDurationMs": 1092,
-    "localOracleNote": "The local runtime differed in 3219 text-region pixels; the two hosted responses matched byte for byte. No map-asset or renderer changes were made."
-  },
   "firestoreRuntimeRead": {
     "operatorReported": true,
     "marker": "WIDGY_CLOUD_STORAGE_OK",
@@ -36,11 +15,22 @@
     "usedAtHandoff": 376
   },
   "liveCityProbe": {
-    "syntheticPoint": {"latitude": 31.6688, "longitude": 34.5743},
+    "syntheticPoint": {
+      "latitude": 31.6688,
+      "longitude": 34.5743
+    },
     "city": "Ashkelon",
     "country": "Israel",
-    "first": {"httpStatus": 200, "cacheState": "LOOKUP", "elapsedSeconds": 9.493251},
-    "second": {"httpStatus": 200, "cacheState": "MEMORY", "elapsedSeconds": 5.587084},
+    "first": {
+      "httpStatus": 200,
+      "cacheState": "LOOKUP",
+      "elapsedSeconds": 9.493251
+    },
+    "second": {
+      "httpStatus": 200,
+      "cacheState": "MEMORY",
+      "elapsedSeconds": 5.587084
+    },
     "timingNote": "End-to-end timings from the remote verification client include its network path; they are not phone timings."
   },
   "firestorePostHandoff": {
@@ -54,28 +44,5 @@
     "persistedCountry": "Israel",
     "readbackWrites": false,
     "readbackProviderRequests": 0
-  },
-  "nativeGoogleTrial": {
-    "operatorReported": true,
-    "widgyVersion": "27.0.1",
-    "widgyBuild": null,
-    "versionEvidence": "IMG_0423.png: installed app Settings screenshot; build number not shown",
-    "initialMapVisible": true,
-    "status": "failed_native_stability",
-    "failureLocalTime": "2026-10-15T09:12:00+03:00",
-    "trigger": "Calendar to Home navigation",
-    "symptom": "Map absent; navigation and native Memory Used text remain visible",
-    "displayedMemoryMB": 19.7,
-    "memoryNote": "One displayed sample after disappearance; not a measured peak or proof of a memory threshold.",
-    "evidence": ["IMG_0420.jpeg", "IMG_0421.png", "IMG_0422.png"],
-    "operatorLogQueryWindowUTC": ["2026-10-15T06:10:00Z", "2026-10-15T06:14:00Z"],
-    "nearbyLargeResponses": [
-      {"timestampUTC": "2026-10-15T06:12:16.520493Z", "phase": "finished", "status": 200, "elapsedMs": 840, "bodyBytes": 4129677},
-      {"timestampUTC": "2026-10-15T06:12:26.470317Z", "phase": "finished", "status": 200, "elapsedMs": 4, "bodyBytes": 4129677}
-    ],
-    "interpretation": "Hosting migration alone did not resolve disappearance. Nearby server-side completions do not prove receipt, decode, presentation or attribution to one exact widget instance. Root cause remains unconfirmed."
-  },
-  "pending": [
-    "Diagnose native map loss after Calendar to Home; Google hosting is not a proven stability fix"
-  ]
+  }
 }

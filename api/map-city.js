@@ -1,6 +1,6 @@
 // The iPhone renders the image. This route exposes only the established city resolver.
 import { authorizeLocation, locationErrorStatus } from '../lib/location/shared.js';
-import { resolveFileMapCity } from '../lib/location/cloud-city-bridge.js';
+import { resolveMapCity } from '../lib/location/map-city.js';
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'private, no-store');
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     const point = authorizeLocation(params, {
       WIDGY_LOCATION_ACCESS_TOKEN: process.env.WIDGY_MAP_FILE_ACCESS_TOKEN
     }, {requireProvider: false});
-    const result = await resolveFileMapCity(point);
+    const result = await resolveMapCity(point);
     return res.status(200).json({...point, city: result.city, state: result.state});
   } catch (error) {
     return res.status(error instanceof SyntaxError ? 400 : locationErrorStatus(error)).end();

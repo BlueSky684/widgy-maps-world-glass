@@ -10,7 +10,6 @@
   "hebrewRaisedPx": 10,
   "eventBarsChanged": 4,
   "eventBarHeightPx": 79,
-  "dynamicCitySource": "map_request city parameter",
   "additionalNetworkRequests": 0,
   "unrelatedDataAndActionsUnchanged": true,
   "requiresIPhoneVerification": true
