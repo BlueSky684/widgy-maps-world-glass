@@ -19,9 +19,13 @@ for(const p of manifest.files){
  refs.push(...[...text.matchAll(/\/assets\/[A-Za-z0-9_.\/-]+\.(?:png|jpg|jpeg|svg|ttf|otf|txt)/g)].map(m=>m[0]));
  for(const ref of refs){const path=ref.split('?')[0];const target=path.startsWith('/')?path.slice(1):relative(root,resolve(root,dirname(p),path));assert(served.has(target),`${p}: ${target}`);references++;}
 }
+const retired=['home-map','marker','night-map','solar-mask','widgy-live-map','world-map'].map(n=>'api/'+n+'.js');
+for(const path of retired)assert(!existsSync(resolve(root,path)),path);
+assert(read('lib/cloud-night-handler.js').equals(original('api/night-map.js')));
+assert(read('services/map-server/server.mjs').equals(Buffer.from(original('services/map-server/server.mjs').toString().replace('../..about:blank.js','../../lib/cloud-night-handler.js'))));
 let protectedFiles=0;
 for(const p of execFileSync('git',['ls-tree','-r','--name-only',cleanup.baseCommit,'api','lib','services','assets/earth'],{cwd:root,encoding:'utf8'}).trim().split('\n')){
- if(cleanup.removedFiles.includes(p)||p==='api/fetch-probe.js')continue;
+ if(cleanup.removedFiles.includes(p)||retired.includes(p)||p==='services/map-server/server.mjs'||p==='api/fetch-probe.js')continue;
  assert(read(p).equals(original(p)),`Active runtime changed: ${p}`);protectedFiles++;
 }
 const router=read('api/fetch-probe.js').toString();

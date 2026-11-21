@@ -14,7 +14,7 @@
     "tsdav": "2.3.5"
   },
   "scripts": {
-    "build": "node tools/build-map-cache.mjs && node tools/build-public-site.mjs",
+    "build": "node tools/build-public-site.mjs",
     "test:cleanup": "node tools/test-repository-cleanup.mjs"
   }
 }
